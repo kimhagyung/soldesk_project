@@ -26,9 +26,7 @@ public class MainController {
 	}*/
 	
 	@GetMapping("/index")
-	public String main() {
-		
-		
+	public String main() {	
 		return "index";
 	}
 }

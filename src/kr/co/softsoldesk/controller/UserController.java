@@ -5,11 +5,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.UserService;
@@ -23,6 +25,51 @@ public class UserController {
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
 
+	@GetMapping("/login")
+	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
+						@RequestParam(value = "fail", defaultValue = "false") boolean fail,
+						Model model) {
+		
+		model.addAttribute("fail", fail);
+		
+		return "user/login";
+	}
+	@PostMapping("/login_pro")
+	public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, 
+							BindingResult result) {
+		
+		if(result.hasErrors()) {
+		
+			return "user/login";
+		}
+		userService.getLoginUserInfo(tempLoginUserBean);
+		System.out.println("userBeanController:"+tempLoginUserBean.getUser_name());
+		System.out.println("userBeanController 현재 로그인 상태??????/???:"+tempLoginUserBean.isUserLogin());
+		if(loginUserBean.isUserLogin() == true) {
+			
+			return "user/login_succes";
+			
+		}else {
+			
+			return "user/login_fail";
+		}
+	}
+	
+	@GetMapping("/not_login")
+	public String not_login() {
+		
+		return "user/not_login";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		
+		loginUserBean.setUserLogin(false);
+		
+		return "user/logout";
+	}
+	
+	
 	@GetMapping("/join")
 	public String join(@ModelAttribute("joinUserBean") UserBean joinUserBean) {
 		
@@ -37,11 +84,6 @@ public class UserController {
 		userService.addUserInfo(joinUserBean);
 		
 		return "user/join_success";
-	}
-	@GetMapping("/login")
-	public String login() {
-		
-		return "user/login";
 	}
 	
 	@GetMapping("/pro_join")

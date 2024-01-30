@@ -50,7 +50,7 @@ function checkPasswordMatch() {
 function checkUserEmailExist(){
 	
 	var user_email = $("#user_email").val()
-	
+	console.log("user_email",user_email);
 	if(user_email.length == 0){
 		alert('이메일을 입력해주세요')
 		return
@@ -62,7 +62,6 @@ function checkUserEmailExist(){
 		dataType : 'text',
 		success: function(result){
 			if(result.trim()=='true'){
-
 				alert('사용할 수 있는 이메일입니다')
 				$("#userEmailExist").val('true')
 			}else if(result.trim()=='false'){
@@ -107,7 +106,7 @@ body, div, span, h5, button, h2, p {
                 <div class="card">
                     <div class="card-body" style="padding: 30px; font-size: 20px;">
                         <!-- form 태그 추가 -->
-                        <form:form action="${root }/user/join_user" method="post" modelAttribute="joinUserBean" class="needs-validation">
+                        <form:form action="${root }/user/join_user" method="post" modelAttribute="joinUserBean">
                         	<form:hidden path="userEmailExist"/>
                             <div class="mb-3">
                                 <form:label path="user_name">이름</form:label>

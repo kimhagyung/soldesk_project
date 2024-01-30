@@ -7,7 +7,6 @@ public class UserBean {
 	private String user_pwd;  
 	private String confirmPassword;
 	private boolean userEmailExist;
-
 	private boolean userLogin;
 
 	public UserBean() { 

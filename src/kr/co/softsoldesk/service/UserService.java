@@ -40,12 +40,18 @@ public class UserService {
 		UserBean tempLoginUserBean2 = userDao.getLoginUserInfo(tempLoginUserBean);
 		
 		if(tempLoginUserBean2 != null) {
-			
+			loginUserBean.setUser_id(tempLoginUserBean2.getUser_id());
 			loginUserBean.setUser_email(tempLoginUserBean2.getUser_email());
 			loginUserBean.setUser_pwd(tempLoginUserBean2.getUser_pwd());
 			loginUserBean.setUserLogin(true);
 		}
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 이메일:"+tempLoginUserBean2.getUser_email());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 이름:"+tempLoginUserBean2.getUser_name());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 번호:"+tempLoginUserBean2.getUser_id());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 비밀번호:"+tempLoginUserBean2.getUser_pwd());
 	} 
+	
+	
 	 
 }
 

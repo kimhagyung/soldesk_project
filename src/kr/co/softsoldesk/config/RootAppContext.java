@@ -10,9 +10,11 @@ import kr.co.softsoldesk.beans.UserBean;
 
 @Configuration
 public class RootAppContext {
-	@Bean("loginUserBean") //로그인 상태값을 가지고 다니기 위한 userBean이기 때문에 다른 userBean들과 차별점을 두도록함.
+	
+	@Bean("loginUserBean") 
 	@SessionScope
 	public UserBean loginUserBean() {
+ 
 		return new UserBean();
 	}
 }

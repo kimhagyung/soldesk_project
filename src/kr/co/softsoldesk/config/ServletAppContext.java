@@ -1,21 +1,27 @@
 package kr.co.softsoldesk.config;
  
+import javax.annotation.Resource;
+
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.ibatis.session.SqlSessionFactory; 
-import org.mybatis.spring.SqlSessionFactoryBean;   
-import org.mybatis.spring.mapper.MapperFactoryBean; 
-import org.springframework.beans.factory.annotation.Value; 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc; 
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
+import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.UserMapper;
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
@@ -46,7 +52,8 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Value("${db.password}")
 	private String db_password;
-	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean; 
 	/*
 	 * @Autowired private TopMenuService topMenuService;
 	 * 
@@ -55,14 +62,12 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		
 		WebMvcConfigurer.super.addResourceHandlers(registry);
 		registry.addResourceHandler("/**").addResourceLocations("/resource/");
 	}
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		
 		WebMvcConfigurer.super.configureViewResolvers(registry);
 		registry.jsp("/WEB-INF/views/", ".jsp");
 		
@@ -97,61 +102,27 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		return factoryBean;
 	}
-	/*
-	 * @Bean public MapperFactoryBean<TopMenuMapper>
-	 * getTopMenuMapper(SqlSessionFactory factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<TopMenuMapper> factoryBean = new
-	 * MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
-	
-	/*
-	 * @Bean public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory
-	 * factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<UserMapper> factoryBean = new
-	 * MapperFactoryBean<UserMapper>(UserMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
 
-	//interceptor 등록하는 메소드
-	/*
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * 
-	 * //헤더 TopMenuInteceptor topMenuInterceptor = new
-	 * TopMenuInteceptor(topMenuService, loginUserBean); InterceptorRegistration
-	 * reg1 = registry.addInterceptor(topMenuInterceptor);
-	 * reg1.addPathPatterns("/**"); //모든 요청에서 동작
-	 * 
-	 * //로그인 권한? 로그인하지 않았을 경우 CheckLoginInterceptor checkLoginInterceptor = new
-	 * CheckLoginInterceptor(loginUserBean); InterceptorRegistration reg2 =
-	 * registry.addInterceptor(checkLoginInterceptor);
-	 * reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*"); // 수정페이지,
-	 * 로그아웃 페이지, 게시판 폴더의 페이지 요청시 인터셉터 reg2.excludePathPatterns("/board/main");
-	 * //excludePathPatterns: 게시판 폴더의 main은 예외
-	 * 
-	 * 
-	 * }
-	 */
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
 	
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		
+		
+		reg1.addPathPatterns("/**");//모든 요청에서 동작
+		
+	}
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-		
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 	
 	//에러 프로퍼티 파일을 메시지로 등록
 	@Bean
 	public ReloadableResourceBundleMessageSource messageSource() {
-		
 		ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
