@@ -20,7 +20,6 @@ public class UserService {
 	public boolean checkuserEmailExist(String user_email) {
 		
 		String user_name = userDao.checkUserEmailExist(user_email);
-		
 		if(user_name == null) {
 	 
 			return true;

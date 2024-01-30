@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.dao.ProUserDao;
+import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
 
 @Controller
@@ -21,6 +24,9 @@ import kr.co.softsoldesk.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private ProUserService ProuserService;
 	
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
@@ -85,12 +91,25 @@ public class UserController {
 		
 		return "user/join_success";
 	}
-	
+
+	//일류가입
 	@GetMapping("/pro_join")
-	public String pro_join() {
+	public String pro_join(@ModelAttribute("joinProuserBean") ProUserBean joinProuserBean) {
 		
 		return "user/pro_join";
 	}
+	
+	//일류가입 
+	@PostMapping("/join_Prouser")
+	public String join_Prouser(@Valid @ModelAttribute("joinProuserBean") ProUserBean joinProuserBean, BindingResult result) {
+		if(result.hasErrors()) {
+			return "user/join";
+		}
+		ProuserService.addUserInfo(joinProuserBean);
+		
+		return "user/join_success";
+	}
+	
 	
 	@GetMapping("/AccountSetting")
 	public String AccountSetting() {
