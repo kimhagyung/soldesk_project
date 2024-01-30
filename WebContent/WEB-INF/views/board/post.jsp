@@ -12,38 +12,38 @@
 <!-- <script src="../jquery/locations.js"></script> -->
 
 <script>
-	$(function() {
-		
-	    $('#inputGroupFile04').on('change', function (event) {
-	       const selectedImageDiv = $('.selected-image');
+$(function() {
+    $('#inputGroupFile04').on('change', function (event) {
+        const selectedImageDiv = $('.selected-image');
 
-	        if (selectedImageDiv.children().length >= 5) {
-	           alert('최대 5개의 이미지까지만 선택할 수 있습니다.');
-	           return;
-	       }
+        // Count only images, not remove buttons
+        if (selectedImageDiv.find('.selected-image-item:not(.remove-button)').length >= 5) {
+            alert('최대 5개의 이미지까지만 선택할 수 있습니다.');
+            return;
+        }
 
-	          const files = event.target.files;
+        const files = event.target.files;
 
-	          for (const file of files) {
-	            const reader = new FileReader();
+        for (const file of files) {
+            const reader = new FileReader();
 
-	            reader.onload = function (e) {
-	              const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
-	              selectedImageDiv.append(img);
+            reader.onload = function (e) {
+                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
+                selectedImageDiv.append(img);
 
-	              const removeButton = $('<button>').text('삭제').addClass('remove-button');
-	              removeButton.on('click', function () {
-	                img.remove();
-	                removeButton.remove();
-	              });
+                const removeButton = $('<button>').text('삭제').addClass('remove-button');
+                removeButton.on('click', function () {
+                    img.remove();
+                    removeButton.remove();
+                });
 
-	              img.after(removeButton); 
-	            };
+                img.after(removeButton);
+            };
 
-	            reader.readAsDataURL(file);
-	          }
-	        });
-	})
+            reader.readAsDataURL(file);
+        }
+    });
+});
 	var categoryData = {
 			자격증시험: ['스포츠지도사 준비', '한국어능력시험 준비', '한국사능력시험 준비', '정보처리기사 준비', '컴퓨터활용능력 준비'],
 			인테리어: ['가구리폼', '욕실/화장실 리모델링', '도배시공', '주방 리모델링', '조명 인테리어'],
@@ -80,6 +80,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 10px;
+	align-items: center;
 }
 
 .selected-image-item {
@@ -91,14 +92,17 @@
 
 .remove-button {
 	position: absolute;
-	top: 29%;
-	right: 20%;
+	right: 17.2%;
 	height: 5%;
 	background: #D9E8F5;
 	color: #6387A6;;
 	border: none;
 	padding: 5px;
 	cursor: pointer;
+	width: 70px;
+    border-radius: 8px;
+    margin-top: 10px;
+
 }
 
 .t-color {
@@ -115,13 +119,37 @@
     	max-width: 1500px;
 	}
 	.ck-editor__editable {
-	    min-height: 800px;
+	    min-height: 350px;
 	}
+	
+	.col-1{
+		border: 1px solid #C2C2C2;
+    	border-radius: 10px;
+    	width: 50px !important; 
+    	height: 50px !important;
+    	margin-left: 15px;
+    	display: flex;
+    	align-items: center;
+    	justify-content: center;
+	}
+	
+	label.form-control.col-2.btn{
+		display: flex;
+    	align-items: center;
+    	justify-content: center;
+	}
+	
+	span.col-2 {
+		width: fit-content;
+	}
+	
 </style>
 </head>
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />
 <div class="container mt-5" style="width: 70%; height: 100%;">
+
+	<!-- form 태그 작성 -->
 	<div class="community-container container">
 			<div class="commnuity-title t-color ">
 				<input type="text" name="title" class="t-box" placeholder="제목을 입력해 주세요">
@@ -129,63 +157,80 @@
 			<hr>
 			
 			<div class="row commnuity-select">
-				<span class="col-1"> 
+				<div class="col-1"> 
 					<input type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;"> 
 					<label for="inputGroupFile04" class="form-control col-2 btn"> 
-						<i class="bi bi-camera-fill"></i>
+						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</label>
-				</span>
+				</div>
 				<span class="col-2 mt-2">
 					<button class="btn button" data-bs-toggle="modal"
 						data-bs-target="#exampleModal" aria-controls="category">
 						카테고리 <i class="bi bi-caret-down"></i>
 					</button>
 				</span>
-					<div class="modal fade" id="exampleModal" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-scrollable">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리
-										선택</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<div class="accordion">
-										<!-- 아래 스크립트를 body 내부에 추가하세요 -->
-										<script>
-											// 선택된 데이터를 사용하여 출력하는 부분
-											$.each(categoryData, function (city, districts) {
-												document.write('<div class="accordion-item">');
-												document.write('<h2 class="accordion-header">');
-												document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
-												document.write(city);
-												document.write('</button></h2>');
-												document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
-												document.write('<ul class="list-group">');
-												$.each(districts, function (index, district) {
-													document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
-												});
-												document.write('</ul></div></div>');
-											}); 
-										</script>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
-										data-bs-dismiss="modal">취소</button>
-									<button type="button" class="btn btn-primary">선택</button>
-								</div>
-							</div>
-						</div>
-					</div> 
+					<!-- 카테고리 클릭하면 보이는 모달창 -->
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion">
+                    <!-- 아래 스크립트를 body 내부에 추가하세요 -->
+                    <script>
+                        // 선택된 데이터를 사용하여 출력하는 부분
+                        $.each(categoryData, function (city, districts) {
+                            document.write('<div class="accordion-item">');
+                            document.write('<h2 class="accordion-header">');
+                            document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+                            document.write(city);
+                            document.write('</button></h2>');
+                            document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
+                            document.write('<ul class="list-group">');
+                            $.each(districts, function (index, district) {
+                                document.write('<button type="button" class="list-group-item list-group-item-action" onclick="selectDistrict(\'' + district + '\')">' + district + '</button>');
+                            });
+                            document.write('</ul></div></div>');
+                        });
+
+                        // 선택된 값을 저장할 변수
+                        var selectedDistrict = "";
+
+                        // 클릭한 값을 저장하는 함수
+                        function selectDistrict(district) {
+                            selectedDistrict = district;
+                        }
+
+                        // 모달이 닫힐 때 선택된 값 표시
+                        $('#exampleModal').on('hidden.bs.modal', function () {
+                            // 선택된 값이 있는 경우에만 표시
+                            if (selectedDistrict !== "") {
+                                var buttonElement = document.querySelector('.button[aria-controls="category"]');
+                                buttonElement.innerHTML = '카테고리: ' + selectedDistrict + ' <i class="bi bi-caret-down"></i>';
+                            }
+                            // 선택된 값을 초기화
+                            selectedDistrict = "";
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary">선택</button>
+            </div>
+        </div>
+    </div>
+</div> 
 			
 				<span class="col-2 mt-2">
 					<button class="btn button" data-bs-toggle="modal" data-bs-target="#locationModal">
 						지역 <i class="bi bi-caret-down"></i>
 					</button>
 				</span>
+					<!-- 지역 클릭하면 나오는 모달창 -->
 					<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-scrollable">
 							<div class="modal-content">
@@ -230,22 +275,30 @@
 		
 		<div class="selected-image"></div>
 		<hr>
-			<!-- <div class="commnuity-content">
-				<textarea rows="40" cols="105" class="t-box"
-					placeholder="생활속에서 궁금했던 것들을 물어보세요"></textarea>
-			</div> -->
-			<!-- CKeditor  -->
+		
+		<!-- CKeditor: 글 작성 영역  --> 
 		<div id="editor">
 		  
-		  <script>
-		    ClassicEditor
-		      .create( document.querySelector( '#editor' ) )
-		      .catch( error => {
-		        console.error( error );
-		      } );
-		   </script>
+		   <script>
+        		ClassicEditor
+            		.create( document.querySelector( '#editor' ), {
+                		toolbar: {
+                    		items: [
+                    			'Heading',
+                        		'bold',
+                        		'italic',
+                        		'link',
+                        		'bulletedList',
+                    		],
+                		},
+            		} )
+            		.catch( error => {
+                		console.error( error );
+            		} );
+    		</script>
 		     
-		  </div>  
+		  </div> 
+		   
 		  <br />
    	<!-- CKeditor  -->
 		<div class="commnutiy-complete">
