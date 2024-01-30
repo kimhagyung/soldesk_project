@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />	
 <!DOCTYPE html>
 <html>
@@ -141,8 +142,12 @@ $(function() {
 	
 	span.col-2 {
 		width: fit-content;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	
+
 </style>
 </head>
 <body>
@@ -163,69 +168,54 @@ $(function() {
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</label>
 				</div>
-				<span class="col-2 mt-2">
+				<span class="col-2 mt-2 categoryBtn">
 					<button class="btn button" data-bs-toggle="modal"
 						data-bs-target="#exampleModal" aria-controls="category">
 						카테고리 <i class="bi bi-caret-down"></i>
 					</button>
 				</span>
-					<!-- 카테고리 클릭하면 보이는 모달창 -->
-					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="accordion">
-                    <!-- 아래 스크립트를 body 내부에 추가하세요 -->
-                    <script>
-                        // 선택된 데이터를 사용하여 출력하는 부분
-                        $.each(categoryData, function (city, districts) {
-                            document.write('<div class="accordion-item">');
-                            document.write('<h2 class="accordion-header">');
-                            document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
-                            document.write(city);
-                            document.write('</button></h2>');
-                            document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
-                            document.write('<ul class="list-group">');
-                            $.each(districts, function (index, district) {
-                                document.write('<button type="button" class="list-group-item list-group-item-action" onclick="selectDistrict(\'' + district + '\')">' + district + '</button>');
-                            });
-                            document.write('</ul></div></div>');
-                        });
+				<!-- 카테고리 클릭하면 보이는 모달창 -->
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="accordion">
+									<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+									<script>
+									// 선택된 데이터를 사용하여 출력하는 부분
+										$.each(categoryData, function (city, districts) {
+											document.write('<div class="accordion-item">');
+											document.write('<h2 class="accordion-header">');
+											document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+											document.write(city);
+											document.write('</button></h2>');
+											document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
+											document.write('<ul class="list-group">');
+										$.each(districts, function (index, district) {
+											document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
+										});
+										document.write('</ul></div></div>');
+									}); 
+								</script>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">취소</button>
+								<button type="button" class="btn btn-primary"
+									id="selectCategoryBtn">선택</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                        // 선택된 값을 저장할 변수
-                        var selectedDistrict = "";
-
-                        // 클릭한 값을 저장하는 함수
-                        function selectDistrict(district) {
-                            selectedDistrict = district;
-                        }
-
-                        // 모달이 닫힐 때 선택된 값 표시
-                        $('#exampleModal').on('hidden.bs.modal', function () {
-                            // 선택된 값이 있는 경우에만 표시
-                            if (selectedDistrict !== "") {
-                                var buttonElement = document.querySelector('.button[aria-controls="category"]');
-                                buttonElement.innerHTML = '카테고리: ' + selectedDistrict + ' <i class="bi bi-caret-down"></i>';
-                            }
-                            // 선택된 값을 초기화
-                            selectedDistrict = "";
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary">선택</button>
-            </div>
-        </div>
-    </div>
-</div> 
-			
-				<span class="col-2 mt-2">
+				<span class="col-2 mt-2 locationBtn">
 					<button class="btn button" data-bs-toggle="modal" data-bs-target="#locationModal">
 						지역 <i class="bi bi-caret-down"></i>
 					</button>
@@ -265,7 +255,7 @@ $(function() {
 								
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-									<button type="button" class="btn btn-primary">선택</button>
+									<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
 								</div> 
 							</div>
 						</div>
@@ -310,5 +300,50 @@ $(function() {
 </div>
 
 <c:import url="/WEB-INF/views/include/footer.jsp" />
+
+<script>
+	$(function() {
+		// Add a click event handler for the selectCategoryBtn button
+		$("#selectCategoryBtn").click(function() {
+			// Get the text content of the selected list item
+			var selectedCategory = $(".list-group-item.selected").text();
+
+			// Check if a category is selected
+			if (selectedCategory) {
+				console.log('Selected category:', selectedCategory);
+				// Close the modal
+				$("#exampleModal").modal('hide');
+				$(".categoryBtn").text(selectedCategory);
+			} else {
+				console.log('Please select a category.');
+			}
+		});
+
+		$("#selectLocationBtn").click(function() {
+			// Get the text content of the selected list item 
+			var selectedLocation = $(".list-group-item.selected").text();
+
+			// Check if a category is selected
+			if (selectedLocation) {
+				console.log('Selected category:', selectedLocation);
+				// Close the modal
+				$("#locationModal").modal('hide');
+				$(".locationBtn").text(selectedLocation);
+			} else {
+				console.log('Please select a category.');
+			}
+		});
+
+		// Add a click event handler for the list-group items to toggle the "selected" class
+		$(".list-group-item").click(function() {
+			// Remove the "selected" class from all items
+			$(".list-group-item").removeClass("selected");
+
+			// Add the "selected" class to the clicked item
+			$(this).addClass("selected");
+		});
+	});
+</script>
+
 </body>
 </html>
