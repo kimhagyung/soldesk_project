@@ -3,12 +3,14 @@ package kr.co.softsoldesk.service;
 import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.PostBean;
+import kr.co.softsoldesk.dao.PostDao;
 
 @Service
 @PropertySource("/WEB-INF/properties/option.properties")
@@ -16,6 +18,9 @@ public class PostService {
 	
 	@Value("${path.upload}")
 	private String path_upload;
+	
+	@Autowired
+	private PostDao postDao;
 	
 	private String saveUploadFile(MultipartFile upload_photo) {
 		String file_name = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(upload_photo.getOriginalFilename()) + "." +
