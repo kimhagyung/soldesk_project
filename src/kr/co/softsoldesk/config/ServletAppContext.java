@@ -15,12 +15,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import kr.co.softsoldesk.mapper.PostMapper;
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
 import kr.co.softsoldesk.Inteceptor.TopMenuInteceptor;
@@ -94,6 +97,14 @@ public class ServletAppContext implements WebMvcConfigurer{
 		return factory;
 	}
 	
+	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
+	public MapperFactoryBean<PostMapper> getTopMenuMapper(SqlSessionFactory factory) throws Exception{
+		MapperFactoryBean<PostMapper> factoryBean = new MapperFactoryBean<PostMapper>(PostMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
 	/*
 	 * @Bean public MapperFactoryBean<TopMenuMapper>
 	 * getTopMenuMapper(SqlSessionFactory factory) throws Exception {
@@ -152,6 +163,11 @@ public class ServletAppContext implements WebMvcConfigurer{
 		ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
+	}
+	
+	@Bean
+	public StandardServletMultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
 	}
 	
 }

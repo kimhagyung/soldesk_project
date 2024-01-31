@@ -175,13 +175,13 @@ $(function() {
 	<div class="postInfo">
 		<span class="col-2 mt-2">
 			<button class="btn button categoryBtn" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-controls="category">
-				카테고리 <i class="bi bi-caret-down"></i>
+				(선택)카테고리 <i class="bi bi-caret-down"></i>
 			</button>
 		</span>
 				
 		<span class="col-2 mt-2">
 			<button class="btn button locationBtn" data-bs-toggle="modal" data-bs-target="#locationModal">
-				지역 <i class="bi bi-caret-down"></i>
+				(선택)지역 <i class="bi bi-caret-down"></i>
 			</button>
 		</span>
 	</div>
@@ -200,8 +200,8 @@ $(function() {
 			<hr>
 			<div class="commnuity-select">
 				<div class="col-1"> 
-					<form:input path="photo" type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;"/> 
-					<form:label path="photo" for="inputGroupFile04" class="form-control col-2 btn"> 
+					<form:input path="upload_photo" type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;" accept="image/*"/> 
+					<form:label path="upload_photo" for="inputGroupFile04" class="form-control col-2 btn"> 
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</form:label>
 				</div>

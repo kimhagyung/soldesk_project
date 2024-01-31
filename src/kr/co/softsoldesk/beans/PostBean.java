@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class BoardBean {
+public class PostBean {
 
 	private int board_id;
     private int user_id;
@@ -12,12 +12,14 @@ public class BoardBean {
     
     @NotBlank
     private String title;
+    
     private String photo;
     
     @NotBlank
-    private String Content;
-    private String Category;
-    private String Location;
+    private String content;
+    
+    private String category;
+    private String location;
     private int ReportedPostSt; 
     private String board_date;
     
@@ -60,23 +62,24 @@ public class BoardBean {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
+	
 	public String getContent() {
-		return Content;
+		return content;
 	}
 	public void setContent(String content) {
-		Content = content;
+		this.content = content;
 	}
 	public String getCategory() {
-		return Category;
+		return category;
 	}
 	public void setCategory(String category) {
-		Category = category;
+		this.category = category;
 	}
 	public String getLocation() {
-		return Location;
+		return location;
 	}
 	public void setLocation(String location) {
-		Location = location;
+		this.location = location;
 	}
 	public int getReportedPostSt() {
 		return ReportedPostSt;
