@@ -21,7 +21,9 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
@@ -52,8 +54,13 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Value("${db.password}")
 	private String db_password;
+	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean; 
+	
+	@Resource(name="ProUserBean")
+	private ProUserBean ProUserBean; 
+
 	/*
 	 * @Autowired private TopMenuService topMenuService;
 	 * 
@@ -103,6 +110,16 @@ public class ServletAppContext implements WebMvcConfigurer{
 		return factoryBean;
 	}
 
+	@Bean
+	public MapperFactoryBean<ProUserMapper> getProUserMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<ProUserMapper> factoryBean = new MapperFactoryBean<ProUserMapper>(ProUserMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	
