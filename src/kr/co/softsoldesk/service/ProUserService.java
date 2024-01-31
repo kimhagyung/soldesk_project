@@ -29,9 +29,9 @@ public class ProUserService {
 		 
 	}
 	
-	public void addUserInfo(ProUserBean joinProuserBean) {
+	public void addProuserInfo(ProUserBean joinProuserBean) {
 		 
-		proUserDao.addUserInfo(joinProuserBean);
+		proUserDao.addProuserInfo(joinProuserBean);
 	} 
 	/*
 	public void getLoginProuserInfo(ProUserBean tempLoginProuserBean) {

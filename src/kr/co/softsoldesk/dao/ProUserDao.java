@@ -17,7 +17,7 @@ public class ProUserDao {
 		return ProuserMapper.checkProuserEmailExist(pro_email);
 	}
 	
-	public void addUserInfo(ProUserBean joinProuserBean) {
+	public void addProuserInfo(ProUserBean joinProuserBean) {
 		
 		ProuserMapper.addProuserInfo(joinProuserBean);
 	}
