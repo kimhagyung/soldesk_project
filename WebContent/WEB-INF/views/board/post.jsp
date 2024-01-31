@@ -77,46 +77,44 @@ $(function() {
 	};
 </script>
 <style>
-.selected-image {
-	display: flex;
-	flex-wrap: wrap;
-	margin-top: 10px;
-	align-items: center;
-}
+	.selected-image {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
 
-.selected-image-item {
-	position: relative;
-	margin: 5px;
-	max-width: 60px;
-	max-height: 60px;
-}
+	.selected-image-item {
+		position: relative;
+		margin: 5px;
+		max-width: 60px;
+		max-height: 60px;
+		border-radius: 10px;
+	}
 
-.remove-button {
-	position: absolute;
-	right: 17.2%;
-	height: 5%;
-	background: #D9E8F5;
-	color: #6387A6;;
-	border: none;
-	padding: 5px;
-	cursor: pointer;
-	width: 70px;
-    border-radius: 8px;
-    margin-top: 10px;
+	.remove-button {
+		position: absolute;
+		right: 17.2%;
+		height: 5%;
+		background: #D9E8F5;
+		color: #6387A6;;
+		border: none;
+		padding: 5px;
+		cursor: pointer;
+		width: 70px;
+    	border-radius: 8px;
+	}
 
-}
+	.t-color {
+		color: #9E9C9C;
+	}
 
-.t-color {
-	color: #9E9C9C;
-}
+	.t-box {
+		border: none;
+		outline: none;
+		width: 100%;
+	}
 
-.t-box {
-	border: none;
-	outline: none;
-	width: 100%;
-}
-
-.ck.ck-editor {
+	.ck.ck-editor {
     	max-width: 1500px;
 	}
 	.ck-editor__editable {
@@ -126,12 +124,13 @@ $(function() {
 	.col-1{
 		border: 1px solid #C2C2C2;
     	border-radius: 10px;
-    	width: 50px !important; 
-    	height: 50px !important;
+    	width: 60px !important; 
+    	height: 60px !important;
     	margin-left: 15px;
     	display: flex;
     	align-items: center;
     	justify-content: center;
+    	margin-right: 15px;
 	}
 	
 	label.form-control.col-2.btn{
@@ -143,165 +142,202 @@ $(function() {
 	span.col-2 {
 		width: fit-content;
 		display: flex;
-		justify-content: center;
+		align-items: center;
+		margin-bottom: 15px;
+		border: 1px solid black;
+		border-radius: 8px;
+		margin-right: 7.5px;
+		margin-left: 7.5px;
+	}
+	
+	.postInfo {
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+		margin-bottom: 15px;
+	}
+	
+	.commnuity-select{
+		display: flex;
+		flex-direction: row;
 		align-items: center;
 	}
+
+	
 	
 
 </style>
 </head>
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />
-<div class="container mt-5" style="width: 70%; height: 100%;">
 
+<div class="container mt-5" style="width: 70%; height: 100%;">
+	<div class="postInfo">
+		<span class="col-2 mt-2">
+			<button class="btn button categoryBtn" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-controls="category">
+				카테고리 <i class="bi bi-caret-down"></i>
+			</button>
+		</span>
+				
+		<span class="col-2 mt-2">
+			<button class="btn button locationBtn" data-bs-toggle="modal" data-bs-target="#locationModal">
+				지역 <i class="bi bi-caret-down"></i>
+			</button>
+		</span>
+	</div>
+	
 	<!-- form 태그 작성 -->
-	<div class="community-container container">
+	<form:form action="${root }/board/post_pro" method="post" modelAttribute="boardPostBean" enctype="multipart/form-data">
+		<form:hidden path="category" id="modalSelectedCategory" name="selectedCategory" value=""/>
+		<form:hidden path="location" id="modalSelectedLocation" name="selectedLocation" value=""/>
+		
+		<div class="community-container container">
 			<div class="commnuity-title t-color ">
-				<input type="text" name="title" class="t-box" placeholder="제목을 입력해 주세요">
+				<form:input path="title" type="text" name="title" class="t-box" htmlEscape="false" placeholder="제목을 입력해 주세요"/>
+				<!-- 에러 메시지 작성 -->
+				<form:errors path="title" style="color:red"/>
 			</div>
 			<hr>
-			
-			<div class="row commnuity-select">
+			<div class="commnuity-select">
 				<div class="col-1"> 
-					<input type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;"> 
-					<label for="inputGroupFile04" class="form-control col-2 btn"> 
+					<form:input path="photo" type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;"/> 
+					<form:label path="photo" for="inputGroupFile04" class="form-control col-2 btn"> 
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
-					</label>
+					</form:label>
 				</div>
-				<span class="col-2 mt-2 categoryBtn">
-					<button class="btn button" data-bs-toggle="modal"
-						data-bs-target="#exampleModal" aria-controls="category">
-						카테고리 <i class="bi bi-caret-down"></i>
-					</button>
-				</span>
-				<!-- 카테고리 클릭하면 보이는 모달창 -->
-				<div class="modal fade" id="exampleModal" tabindex="-1"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-scrollable">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<div class="accordion">
-									<!-- 아래 스크립트를 body 내부에 추가하세요 -->
-									<script>
-									// 선택된 데이터를 사용하여 출력하는 부분
-										$.each(categoryData, function (city, districts) {
-											document.write('<div class="accordion-item">');
-											document.write('<h2 class="accordion-header">');
-											document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
-											document.write(city);
-											document.write('</button></h2>');
-											document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
-											document.write('<ul class="list-group">');
-										$.each(districts, function (index, district) {
-											document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
-										});
-										document.write('</ul></div></div>');
-									}); 
-								</script>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary"
-									id="selectCategoryBtn">선택</button>
-							</div>
-						</div>
-					</div>
-				</div>
+				
+				<div class="selected-image"></div>
+				
+			</div>
 
-				<span class="col-2 mt-2 locationBtn">
-					<button class="btn button" data-bs-toggle="modal" data-bs-target="#locationModal">
-						지역 <i class="bi bi-caret-down"></i>
-					</button>
-				</span>
-					<!-- 지역 클릭하면 나오는 모달창 -->
-					<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-scrollable">
-							<div class="modal-content">
-							
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								
-								<div class="modal-body">
-									<div class="accordion">
-										<!-- 아래 스크립트를 body 내부에 추가하세요 -->
-										<script>
-											// 선택된 데이터를 사용하여 출력하는 부분
-											$.each(cityData, function (city, districts) {
-												document.write('<div class="accordion-item">');
-												document.write('<h2 class="accordion-header">');
-												document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
-												document.write(city);
-												document.write('</button></h2>');
-												document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#locationModal">');
-												document.write('<ul class="list-group">');
-												$.each(districts, function (index, district) {
-													document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
-												});
-												document.write('</ul></div></div>');
-											});
-										</script>
-									</div>
-								</div>
-								
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-									<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
-								</div> 
-							</div>
-						</div>
-					</div>
-		 
+			<hr>
+			
+			<!-- CKeditor: 글 작성 영역  --> 
+			<div id="editor"></div>
+			<form:textarea path="content" id="hiddenEditorContent" name="editorContent" style="display: none;"></form:textarea>
+	 		<!-- 에러 메시지 작성 -->
+	 		<form:errors path="content" style="color:red"/>
+	 		
+			<br />
+		
+			<div class="commnutiy-complete">
+				<form:button class="btn button-custom" style="color: white; float: right;">등록</form:button>
+			</div>
 		</div>
-		
-		<div class="selected-image"></div>
-		<hr>
-		
-		<!-- CKeditor: 글 작성 영역  --> 
-		<div id="editor">
-		  
-		   <script>
-        		ClassicEditor
-            		.create( document.querySelector( '#editor' ), {
-                		toolbar: {
-                    		items: [
-                    			'Heading',
-                        		'bold',
-                        		'italic',
-                        		'link',
-                        		'bulletedList',
-                    		],
-                		},
-            		} )
-            		.catch( error => {
-                		console.error( error );
-            		} );
-    		</script>
-		     
-		  </div> 
-		   
-		  <br />
-   	<!-- CKeditor  -->
-		<div class="commnutiy-complete">
-			<input type="submit" value="등록" class="btn button-custom"
-				style="color: white; float: right;">
-		</div>
-		
-	</div>
+	</form:form>
+	
 </div>
+
+
+	<!-- 카테고리 클릭하면 보이는 모달창 -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="accordion">
+						<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+						<script>
+							// 선택된 데이터를 사용하여 출력하는 부분
+							$.each(categoryData, function (city, districts) {
+								document.write('<div class="accordion-item">');
+								document.write('<h2 class="accordion-header">');
+								document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+								document.write(city);
+								document.write('</button></h2>');
+								document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
+								document.write('<ul class="list-group">');
+									
+								$.each(districts, function (index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
+								});
+								document.write('</ul></div></div>');
+							}); 
+						</script>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" id="selectCategoryBtn">선택</button>
+				</div>
+			</div>
+		</div>
+	</div>
+				
+	<!-- 지역 클릭하면 나오는 모달창 -->
+	<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-content">
+							
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+								
+				<div class="modal-body">
+					<div class="accordion">
+						<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+						<script>
+							// 선택된 데이터를 사용하여 출력하는 부분
+							$.each(cityData, function (city, districts) {
+								document.write('<div class="accordion-item">');
+								document.write('<h2 class="accordion-header">');
+								document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+								document.write(city);
+								document.write('</button></h2>');
+								document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#locationModal">');
+								document.write('<ul class="list-group">');
+								
+								$.each(districts, function (index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
+								});
+								document.write('</ul></div></div>');
+							});
+						</script>
+					</div>
+				</div>
+								
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
+				</div> 
+			</div>
+		</div>
+	</div>
 
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 
-<script>
+	<!-- 스크립트 -->
+	<script>
+    			ClassicEditor
+        			.create( document.querySelector( '#editor' ), {
+            			toolbar: {
+                			items: [
+                    			'Heading',
+                    			'bold',
+                    			'italic',
+                    			'link',
+                    			'bulletedList',
+                			],
+            			},
+        			} )
+        			.then(editor => {
+    editor.model.document.on('change:data', () => {
+        setTimeout(() => {
+            document.getElementById('hiddenEditorContent').value = editor.getData();
+            console.log(document.getElementById('hiddenEditorContent').value);
+        }, 0);
+    });
+})
+        			.catch( error => {
+            			console.error( error );
+        			} );
+			</script>
+
+	<script>
 	$(function() {
 		// Add a click event handler for the selectCategoryBtn button
 		$("#selectCategoryBtn").click(function() {
@@ -311,6 +347,10 @@ $(function() {
 			// Check if a category is selected
 			if (selectedCategory) {
 				console.log('Selected category:', selectedCategory);
+				
+			    // 폼에 값 설정
+			    document.getElementById("modalSelectedCategory").value = selectedCategory;
+
 				// Close the modal
 				$("#exampleModal").modal('hide');
 				$(".categoryBtn").text(selectedCategory);
@@ -323,9 +363,14 @@ $(function() {
 			// Get the text content of the selected list item 
 			var selectedLocation = $(".list-group-item.selected").text();
 
+			
 			// Check if a category is selected
 			if (selectedLocation) {
 				console.log('Selected category:', selectedLocation);
+				
+				// 폼에 값 설정
+			    document.getElementById("modalSelectedLocation").value = selectedLocation;
+				
 				// Close the modal
 				$("#locationModal").modal('hide');
 				$(".locationBtn").text(selectedLocation);
