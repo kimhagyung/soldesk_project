@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="${root}/jquery/location2.js"></script>
-
 <script>
-$(function() {
-	
+ 
+ $(function() {
 	// 비밀번호 일치 여부 확인
 	$('#password, #confirmPassword').on('keyup', function() {
 		var password = $('#password').val();
@@ -29,44 +29,112 @@ $(function() {
 			message.html('비밀번호가 일치하지 않습니다.').css('color', 'red');
 		}
 	});
-	
-	// 폼 제출 시 필드가 비어있는지 확인
-    $('form').on('submit', function(event) {
-        var valid = true;
-        
-        // 각 필드를 확인하고 비어있으면 메시지 표시
-        if ($('#username').val() === '') {
-            $('#username').next('.invalid-feedback').html('사용자 이름을 입력하세요.').show();
-            valid = false;
-        } else {
-            $('#username').next('.invalid-feedback').hide();
-        }
+});
+//카테고리 선택 최대 3개  
+    var maxCheckboxes = 3;
 
-        if ($('#email').val() === '') {
-            $('#email').next('.invalid-feedback').html('이메일 주소를 입력하세요.').show();
-            valid = false;
-        } else {
-            $('#email').next('.invalid-feedback').hide();
-        }
+    $('.activeSel').on('change', function () {
+        var checkedCheckboxes = $('.activeSel:checked');
 
-        if ($('#password').val() === '') {
-            $('#password').next('.invalid-feedback').html('비밀번호를 입력하세요.').show();
-            valid = false;
-        } else {
-            $('#password').next('.invalid-feedback').hide();
+        if (checkedCheckboxes.length > maxCheckboxes) {
+            $(this).prop('checked', false);
+            window.alert('최대 3개까지 선택할 수 있습니다.');
         }
+        var selectedValues = checkedCheckboxes.map(function () {
+            return $(this).val();
+        }).get();
 
-        if ($('#confirmPassword').val() === '') {
-            $('#confirmPassword').next('.invalid-feedback').html('비밀번호를 입력하세요.').show();
-            valid = false;
-        } else {
-            $('#confirmPassword').next('.invalid-feedback').hide();
-        }
+        console.log('Selected values:', selectedValues);
+    }); 
+ $(function() {
+	  // 시/도와 군/구 데이터
+	    var cityData = {
+	        seoul: ['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'],
+	        busan: ['강서구', '금정구', '남구', '동구', '동래구', '부산진구', '북구', '사상구', '사하구', '서구', '수영구', '연제구', '영도구', '중구', '해운대구'],
+	        incheon: ['계양구', '남동구', '동구', '미추홀구', '부평구', '서구', '연수구', '중구'],
+	        daejun: ['대덕구', '동구', '서구', '유성구', '중구'],
+	        daegu: ['남구', '달서구', '달서군', '동구', '북구', '서구', '수성구', '중구'],
+	        ulsan: ['남구', '동구', '북구', '중구', '울주군'],
+	        kwangju: ['광산구', '남구', '동구', '북구', '서구'],
+	        jeju: ['서귀포시', '제주시'],
+	        sejong: ['세종특별자치시'],
+	        Gyeonggi_do: ['고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '여주시', '오산시', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시', '가평군', '양평군', '연천군'],
+	        Gangwon: ['강릉시', '동해시', '삼척시', '속초시', '원주시', '춘천시', '태백시', '고성군', '양구군', '양양군', '영월군', '인제군', '정선군', '철원군', '평창군', '홍천군', '화천군', '횡성군'],
+	        Chungcheongbuk: ['제천시', '청주시', '충주시', '괴산군', '단양군', '보은군', '영동군', '옥천군', '음성군', '증평군', '진천군'],
+	        Chungcheongnam: ['계룡시', '공주시', '논산시', '당진시', '보령시', '서산시', '아산시', '천안시', '금산군', '부여군', '서천군', '예산군', '청양군', '태안군', '홍성군'],
+	        Gyeongsangbuk: ['경산시', '경주시', '구미시', '김천시', '문경시', '상주시', '안동시', '영주시', '영천시', '포항시', '고령군', '군위군', '봉화군', '성주군', '영덕군', '영양군', '예천군', '울릉군', '울진군', '의성군', '청도군', '청송군', '칠곡군'],
+	        Gyeongsangnam: ['거제시', '김해시', '밀양시', '사천시', '양산시', '진주시', '창원시', '통영시', '거창군', '고성군', '남해군', '산청군', '의령군', '창녕군', '하동군', '함안군', '함양군', '합천군'],
+	        Jeollabuk: ['군산시', '김제시', '남원시', '익산시', '전주시', '정읍시', '고창군', '무주군', '부안군', '순창군', '완주군', '임실군', '장수군', '진안군'],
+	        Jeollanam: ['광양시', '나주시', '목포시', '순천시', '여수시', '강진군', '고흥군', '곡성군', '구례군', '담양군', '무안군', '보성군', '신안군', '영광군', '영암군', '완도군', '장성군', '장흥군', '진도군', '함평군', '해남군', '화순군']
+	    }; 
 
-        return valid;
-    });
+
+	    // 시/도 선택 시 해당 시/도에 맞는 군/구 목록을 동적으로 추가
+	    $('#selectProvince').on('change', function () {
+	        var selectedProvince = $(this).val();
+	        var cities = cityData[selectedProvince];
+	        
+	        // 기존의 군/구 목록을 비움
+	        $('#selectCity').empty();
+	        
+	        // 선택한 시/도에 따른 군/구 목록을 추가
+	        if (cities) {
+	            for (var i = 0; i < cities.length; i++) {
+	                $('#selectCity').append('<option value="' + cities[i] + '">' + cities[i] + '</option>');
+	            }
+	        }
+	    }); 
+		$('#selectCity').on('change', function () {
+			var selectedCity = $('#selectCity').val();
+			var selectedProvince =  $('#selectProvince').val();
+		    var cities = cityData[selectedProvince]; 
+		    console.log("선택한 지역:",selectedProvince); 
+		    console.log("선택한 구:",selectedCity); 
+		    // 선택한 시/도에 따른 군/구 목록을 추가
+		    if (cities) {
+		        for (var i = 0; i < cities.length; i++) {
+		            $('#selectCity').append('<option value="' + cities[i] + '">' + cities[i] + '</option>');
+		        } 
+		    } 
+		}); 
+
+		// 페이지 로드 시 초기 시/도 선택 상자의 change 이벤트를 수동으로 트리거
+	     $('#selectProvince').val('seoul').trigger('change');
 });
 </script>
+<script>
+function checkProuserEmailExist(){
+	
+	var pro_email = $("#pro_email").val()
+	console.log("pro_email",pro_email);
+	if(pro_email.length == 0){
+		alert('이메일을 입력해주세요')
+		return
+	}//이메일을 입력하지 않았을 때
+	
+	$.ajax({
+		url: '${root}/user/checkProuserEmailExist/' + encodeURIComponent(pro_email),
+		type : 'get',
+		dataType : 'text',
+		success: function(result){
+			if(result.trim()=='true'){
+				alert('사용할 수 있는 이메일입니다')
+				$("#ProuserEmailExist").val('true')
+			}else if(result.trim()=='false'){
+				alert('사용할 수 없는 이메일입니다')
+				$("#ProuserEmailExist").val('false')
+			}
+		}
+	})
+} 
+function resetUserIdExist(){
+	
+	$("#ProuserEmailExist").val('false')
+	
+}//사용자 아이디란에 입력 시 UserIdExist의 값을 false 주입ㄴ
+
+</script>
+
 
 <style>
 #username, #email, #password, #confirmPassword {
@@ -80,425 +148,144 @@ $(function() {
 </head>
 
 <body>
-<c:import url="/WEB-INF/views/include/header.jsp" />
+	<c:import url="/WEB-INF/views/include/header.jsp" />
 
-	<div class=" ">
+	<div class="w-75 mx-auto">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-md-5" style="width: 35%;">
 				<h2 class="card-title text-center mb-5 mt-5 fw-bold">아숨에 오신 것을
 					환영합니다!</h2>
 				<div class="card">
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
-						<form class="needs-validation" novalidate>
-							<div class="mb-3">
-								<label for="username" class="form-label">이름</label> <input
-									type="text" class="form-control" id="username"
-									placeholder="사용자 이름을 입력하세요" required>
-								<div class="invalid-feedback">이름을 입력하세요.</div>
-							</div>
-							<div class="mb-3">
-								<label for="email" class="form-label">이메일 주소</label> <input
-									type="email" class="form-control" id="email"
-									placeholder="이메일 주소를 입력하세요" required>
-								<div class="invalid-feedback">올바른 이메일 주소를 입력하세요.</div>
-							</div>
-							<div class="mb-3">
-								<label for="password" class="form-label">비밀번호</label> <input
-									type="password" class="form-control" id="password"
-									placeholder="비밀번호를 입력해주세요" required>
-							</div>
-							<div class="mb-3">
-								<label for="confirmPassword" class="form-label">비밀번호 확인</label>
-								<input type="password" class="form-control" id="confirmPassword"
-									placeholder="비밀번호를 입력해주세요" required>
-								<div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
-							</div>
+						<form:form action="${root }/user/join_Prouser" method="post"
+							modelAttribute="joinProuserBean">
+							<form:hidden path="ProuserEmailExist" />
+							 <div class="form-group mb-3">
+					        <form:label path="pro_name">이름</form:label>
+					        <form:input path="pro_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
+					        <form:errors path="pro_name" style="color:red" />
+					    </div>
+					    
+						    <div class="mb-3 form-group">
+						        <form:label path="pro_email">이메일</form:label>
+						        <div class="input-group">
+						            <form:input type="email" path="pro_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
+						            <div class="input-group-append">
+						                <button type="button" class="btn button-custom" onclick='checkProuserEmailExist()'>중복확인</button>
+						            </div>
+						        </div>
+						        <form:errors path="pro_email" style="color:red" />
+						    </div>
+						    
+						    <div class="form-group mb-3">
+						        <form:label path="pro_pwd">비밀번호</form:label>
+						        <form:password path="pro_pwd" class="form-control" id="password" />
+						        <form:errors path="pro_pwd" style="color:red" />
+						    </div>
+						    
+						    <div class="form-group mb-3">
+						        <form:label path="confirmPassword">비밀번호 확인</form:label>
+						        <form:password path="confirmPassword" class="form-control" id="confirmPassword" />
+						        <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+						    </div>
 							<!-- 추가된 부분 비밀번호 메시지-->
 							<div id="message"></div>
-
+							<!-- "남, 여" 라디오 버튼 부분 추가 -->
+							<div class="form-group mb-3">
+								<label for="male" class="form-label">성별</label>
+								<div class="form-check">
+									<form:radiobutton path="gender" class="form-check-input"
+										id="male" value="남" checked="true" />
+									<form:label path="gender" class="form-check-label" for="male">남</form:label>
+								</div>
+								<div class="form-check">
+									<form:radiobutton path="gender" class="form-check-input"
+										id="female" value="여" />
+									<form:label path="gender" class="form-check-label" for="female">여</form:label>
+								</div>
+							</div>
+							
 							<div class="mt-3">
-								<label for="servicecategory" class="form-label">활동 분야를
+								<label for="servicecategory" class="form-label"> 활동 분야를
 									선택해주세요</label>
 							</div>
-							<div class="accordion" id="category">
-								<div class="accordion-item">
-									<h2 class="accordion-header">
-										<button class="accordion-button" type="button"
-											data-bs-toggle="collapse" data-bs-target="#test_license"
-											aria-expanded="false" aria-controls="test_license">
-											시험/자격증</button>
-									</h2>
-									<div id="test_license" class="accordion-collapse collapse"
-										data-bs-parent="#category">
-										<div class="accordion-body">
-											<ul class="list-group">
-												<li class="list-group-item"><input
-													class="form-check-input me-1" type="checkbox"
-													value="sports" id="sports"> <label
-													class="form-check-label stretched-link" for="sports">스포츠지도사
-														준비</label></li>
-												<li class="list-group-item"><input
-													class="form-check-input me-1" type="checkbox"
-													value="korean" id="korean"> <label
-													class="form-check-label stretched-link" for="korean">한국어능력시험
-														준비</label></li>
-												<li class="list-group-item"><input
-													class="form-check-input me-1" type="checkbox"
-													value="history" id="history"> <label
-													class="form-check-label stretched-link" for="history">한국사능력시험
-														준비</label></li>
-												<li class="list-group-item"><input
-													class="form-check-input me-1" type="checkbox" value="info"
-													id="info"> <label
-													class="form-check-label stretched-link" for="info">정보처리기사
-														준비</label></li>
-												<li class="list-group-item"><input
-													class="form-check-input me-1" type="checkbox"
-													value="computer" id="computer"> <label
-													class="form-check-label stretched-link" for="computer">컴퓨터활용능력
-														준비</label></li>
-											</ul>
-										</div>
-									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#interior"
-												aria-expanded="false" aria-controls="interior">
-												인테리어</button>
+							<div class=" form-group accordion" id="category">
+								<c:forEach var="category" items="${categories}" varStatus="idx">
+									<div class='accordion-item'>
+										<h2 class='accordion-header'>
+										    <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#${category.id}' aria-expanded='false' aria-controls='${category.id}'>${category.title}
+										    </button>
 										</h2>
-										<div id="interior" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="reform" id="reform"> <label
-														class="form-check-label stretched-link" for="reform">가구
-															리폼</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="bath"
-														id="bath"> <label
-														class="form-check-label stretched-link" for="bath">욕실/화장실
-															리모델링</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="papering" id="papering"> <label
-														class="form-check-label stretched-link" for="papering">도배
-															시공</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="kitchen" id="kitchen"> <label
-														class="form-check-label stretched-link" for="kitchen">주방
-															리모델링</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="light" id="light"> <label
-														class="form-check-label stretched-link" for="light">조명
-															인테리어</label></li>
+										<div id='<c:out value="${category.id}" />'
+											class=' form-group accordion-collapse collapse'
+											data-bs-parent='#category'>
+											<div class='accordion-body'>
+												<ul class='list-group'>
+													<c:forEach var="item" items="${category.items}"
+														varStatus="itemIdx">
+														<li class='list-group-item activeSel'>
+															<form:checkbox path="active_detailcategory" class='form-check-input me-1 activeSel' value="${item}" id="${item}_1" />
+															<form:label path="active_detailcategory" class='form-check-label stretched-link activeSel' for="${item}_1">${item.replace('_', ' ')}</form:label>
+														</li>
+													</c:forEach>
 												</ul>
 											</div>
 										</div>
 									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#home_appliances"
-												aria-expanded="false" aria-controls="home_appliances">
-												가전제품</button>
-										</h2>
-										<div id="home_appliances" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="Electronic" id="Electronic"> <label
-														class="form-check-label stretched-link" for="Electronic">전자제품
-															수리</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="computer_repair" id="computer_repair"> <label
-														class="form-check-label stretched-link"
-														for="computer_repair">컴퓨터 수리</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="bidet" id="bidet"> <label
-														class="form-check-label stretched-link" for="bidet">비데
-															렌탈/구입/청소</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="air_conditioner" id="air_conditioner"> <label
-														class="form-check-label stretched-link"
-														for="air_conditioner">에어컨 설치 및 수리</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="refrigerator" id="refrigerator"> <label
-														class="form-check-label stretched-link" for="refrigerator">냉장고
-															설치 및 수리</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#clean"
-												aria-expanded="false" aria-controls="clean">청소</button>
-										</h2>
-										<div id="clean" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="clean_air" id="clean_air"> <label
-														class="form-check-label stretched-link" for="clean_air">에어컨
-															청소</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="bug"
-														id="bug"> <label
-														class="form-check-label stretched-link" for="bug">바퀴벌레
-															퇴치</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="clean_furniture" id="clean_furniture"> <label
-														class="form-check-label stretched-link"
-														for="clean_furniture">가구 청소</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="clean_stair_toilet" id="clean_stair_toilet">
-														<label class="form-check-label stretched-link"
-														for="clean_stair_toilet">계단/화장실 청소</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="fire_recovery" id="fire_recovery"> <label
-														class="form-check-label stretched-link"
-														for="fire_recovery">화재 복구/청소</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
+								</c:forEach>
+							</div>
 
 
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#translate"
-												aria-expanded="false" aria-controls="translate">번역
-											</button>
-										</h2>
-										<div id="translate" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="chinese" id="chinese"> <label
-														class="form-check-label stretched-link" for="chinese">한문
-															번역</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="english" id="english"> <label
-														class="form-check-label stretched-link" for="english">영어
-															번역</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="germany" id="germany"> <label
-														class="form-check-label stretched-link" for="germany">독일어
-															번역</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="japanese" id="japanese"> <label
-														class="form-check-label stretched-link" for="japanese">일본어/일어
-															번역</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="Vietnamese" id="Vietnamese"> <label
-														class="form-check-label stretched-link" for="Vietnamese">베트남어
-															번역</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#document"
-												aria-expanded="false" aria-controls="document">문서</button>
-										</h2>
-										<div id="document" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="write" id="write"> <label
-														class="form-check-label stretched-link" for="write">문서/글
-															작성</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="ppt"
-														id="ppt"> <label
-														class="form-check-label stretched-link" for="ppt">PPT
-															제작</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="subtitles" id="subtitles"> <label
-														class="form-check-label stretched-link" for="subtitles">자막
-															제작</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="business" id="subtitle"> <label
-														class="form-check-label stretched-link" for="subtitle">사업계획서
-															작성</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="data"
-														id="data"> <label
-														class="form-check-label stretched-link" for="data">교정/교열
-															</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#develop"
-												aria-expanded="false" aria-controls="develop">
-												외주(개발)</button>
-										</h2>
-										<div id="develop" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="web"
-														id="web"> <label
-														class="form-check-label stretched-link" for="web">웹
-															개발</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="game"
-														id="game"> <label
-														class="form-check-label stretched-link" for="game">게임
-															개발</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="iOS"
-														id="iOS"> <label
-														class="form-check-label stretched-link" for="iOS">iOS
-															개발</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="qa"
-														id="qa"> <label
-														class="form-check-label stretched-link" for="qa">QA
-															테스트</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="erp"
-														id="erp"> <label
-														class="form-check-label stretched-link" for="erp">ERP
-															개발</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button class="accordion-button collapsed" type="button"
-												data-bs-toggle="collapse" data-bs-target="#pet"
-												aria-expanded="false" aria-controls="pet">반려동물</button>
-										</h2>
-										<div id="pet" class="accordion-collapse collapse"
-											data-bs-parent="#category">
-											<div class="accordion-body">
-												<ul class="list-group">
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox" value="walk"
-														id="walk"> <label
-														class="form-check-label stretched-link" for="walk">반려견
-															산책</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="beauty" id="beauty"> <label
-														class="form-check-label stretched-link" for="beauty">반려동물
-															미용</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="snack" id="snack"> <label
-														class="form-check-label stretched-link" for="snack">반려동물
-															수제간식 만들기</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="training" id="training"> <label
-														class="form-check-label stretched-link" for="training">반려동물
-															훈련</label></li>
-													<li class="list-group-item"><input
-														class="form-check-input me-1" type="checkbox"
-														value="funeral" id="funeral"> <label
-														class="form-check-label stretched-link" for="funeral">반려동물
-															장례</label></li>
-												</ul>
-											</div>
-										</div>
-									</div>
+							<div class="container mt-4">
+								<label for="locationselect" class="form-label">활동 지역를
+									선택해주세요</label>
+								<div class="form-group">
+									<label for="selectProvince">시/도</label>
+									<select class="form-control" id="selectProvince">
+										<!-- 시/도 목록 -->
+										<option value="seoul" selected>서울</option>
+										<option value="busan">부산</option>
+										<option value="incheon">인천</option>
+										<option value="daejun">대전</option>
+										<option value="daegu">대구</option>
+										<option value="ulsan">울산</option>
+										<option value="kwangju">광주</option>
+										<option value="jeju">제주</option>
+										<option value="sejong">세종</option>
+										<option value="Gyeonggi_do">경기</option>
+										<option value="Gangwon">강원</option>
+										<option value="Chungcheongbuk">충북</option>
+										<option value="Chungcheongnam">충남</option>
+										<option value="Gyeongsangbuk">경북</option>
+										<option value="Gyeongsangnam">경남</option>
+										<option value="Jeollabuk">전북</option>
+										<option value="Jeollanam">전남</option>
+									</select>
 								</div>
 
-								<div class="container mt-4">
-									<label for="locationselect" class="form-label">활동 지역를
-										선택해주세요</label>
-
-									<div class="form-group">
-										<label for="selectProvince">시/도</label> <select
-											class="form-control" id="selectProvince">
-											<!-- 시/도 목록 -->
-											<option value="seoul" selected>서울</option>
-											<option value="busan">부산</option>
-											<option value="incheon">인천</option>
-											<option value="daejun">대전</option>
-											<option value="daegu">대구</option>
-											<option value="ulsan">울산</option>
-											<option value="kwangju">광주</option>
-											<option value="jeju">제주</option>
-											<option value="sejong">세종</option>
-											<option value="Gyeonggi_do">경기</option>
-											<option value="Gangwon">강원</option>
-											<option value="Chungcheongbuk">충북</option>
-											<option value="Chungcheongnam">충남</option>
-											<option value="Gyeongsangbuk">경북</option>
-											<option value="Gyeongsangnam">경남</option>
-											<option value="Jeollabuk">전북</option>
-											<option value="Jeollanam">전남</option>
-										</select>
-									</div>
-
-									<div class="form-group">
-										<label for="selectCity">군/구</label> <select
-											class="form-control" id="selectCity">
-											<!-- 선택한 시/도에 따른 군/구 목록은 JavaScript로 동적으로 추가됩니다. -->
-										</select>
-									</div>
+								<div class="form-group">
+									<form:label path="active_location" for="selectCity">군/구</form:label>
+									<form:select path="active_location" class="form-control"
+										id="selectCity">
+										<!-- 선택한 시/도에 따른 군/구 목록은 JavaScript로 동적으로 추가됩니다. -->
+									</form:select>
 								</div>
-						</form>
+							</div> 
+							<div class=" form-group d-grid gap-2 mt-5">
+								<form:button type="submit" class="btn button-custom py-2 fs-5"
+									id="joinButton" style="color: white;">가입하기</form:button>
+							</div>
+						</form:form>
 					</div>
 				</div>
-
-			</div>
-			<div class="d-grid gap-2 mt-5">
-				<button type="submit" class="btn button-custom py-2 fs-5"
-					style="color: white;">가입하기</button>
 			</div>
 		</div>
 	</div>
 
-
-<c:import url="/WEB-INF/views/include/footer.jsp" />
-
-
+	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 </body>
+
+
 
 </html>
