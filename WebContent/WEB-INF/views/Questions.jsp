@@ -10,7 +10,9 @@
 <meta charset="UTF-8">
 <title>Question</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script src="${root }/jquery/Questions.js"></script>
+<script src="${root}/jquery/Questions.js"></script>
+
+
 </head>
 <script>
    $(function() {
@@ -158,18 +160,18 @@ label {
 </style>
 <script>  
 $(document).ready(function () {
-    <%String category = request.getParameter("category"); %>
 
-    var category = "<%=category%>";
-    console.log("category: " + category);
+    <%String serviceCategoryname = request.getParameter("serviceCategoryname"); %>
 
-    if (category === "청소") {
+    var serviceCategoryname = "<%=serviceCategoryname%>";
+    console.log("serviceCategoryname: " + serviceCategoryname);
+
+    if (serviceCategoryname === "청소") {
         logCategoryValues(청소);
-    } else if (category === "번역") {
+    } else if (serviceCategoryname === "번역") {
         logCategoryValues(번역);
-    } else if (category === "문서") {
-        logCategoryValues(문서);
-    }
+    } else if (serviceCategoryname === "문서") {
+
 
     function logCategoryValues(categoryObject) {
         var outputElement = document.querySelector(".formset");
@@ -281,9 +283,6 @@ $(document).ready(function () {
     // ... 나머지 코드 ...
 
 
-
-
-
     
 });
 
@@ -306,16 +305,15 @@ $(document).ready(function () {
       </div>
    </div>
    
-     <div class="question-container questionname" style="left: -450px;"><%=category%></div>
+
+     <div class="question-container questionname" style="left: -450px;"><%=serviceCategoryname%></div>
+
    
   <div class="formset" style="display: none;">
     <div class="question"> 
         
     </div>
 </div>
-
-
-
 
 
     <div class="answer" style="display: none;">
