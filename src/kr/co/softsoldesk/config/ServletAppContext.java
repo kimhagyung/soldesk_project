@@ -6,9 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,17 +21,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
+import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
+import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
+import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
-
-/*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
-import kr.co.softsoldesk.Inteceptor.TopMenuInteceptor;
-import kr.co.softsoldesk.beans.UserBean;
-import kr.co.softsoldesk.mapper.TopMenuMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
-import kr.co.softsoldesk.service.TopMenuService;*/
 
+ 
 @Configuration
 @EnableWebMvc
 @ComponentScan("kr.co.softsoldesk.controller")
@@ -42,25 +40,27 @@ import kr.co.softsoldesk.service.TopMenuService;*/
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer {
 
-	// 프로퍼티의 키를 활용해서 값 가져오기
+	// 프로퍼티의 키를 활용해서 값 가져오기 
+	
+	//프로퍼티의 키를 활용해서 값 가져오기
 	@Value("${db.classname}")
 	private String db_classname;
-
+	
 	@Value("${db.url}")
 	private String db_url;
-
+	
 	@Value("${db.username}")
 	private String db_username;
-
+	
 	@Value("${db.password}")
 	private String db_password;
-
-	/*
-	 * @Autowired private TopMenuService topMenuService;
-	 * 
-	 * @Resource(name = "loginUserBean") private UserBean loginUserBean;
-	 */
-
+	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean; 
+	
+	@Resource(name="loginProuserBean")
+	private ProUserBean loginProuserBean; 
+ 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -70,12 +70,12 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-
+ 
 		WebMvcConfigurer.super.configureViewResolvers(registry);
 		registry.jsp("/WEB-INF/views/", ".jsp");
 
 	}
-
+ 
 	@Bean
 	public BasicDataSource dataSource() {
 		BasicDataSource source = new BasicDataSource();
@@ -107,11 +107,21 @@ public class ServletAppContext implements WebMvcConfigurer {
 				ServiceCategoryMapper.class);
 
 		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	@Bean
+	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<UserMapper> factoryBean = new MapperFactoryBean<UserMapper>(UserMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
 
 		return factoryBean;
 	}
 
 	@Bean
+
 	public MapperFactoryBean<DetailCategoryMapper> getDetilCategoryMapper(SqlSessionFactory factory) throws Exception {
 
 		MapperFactoryBean<DetailCategoryMapper> factoryBean = new MapperFactoryBean<DetailCategoryMapper>(
@@ -182,8 +192,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 
 		return new PropertySourcesPlaceholderConfigurer();
-	}
-
+	} 
 	// 에러 프로퍼티 파일을 메시지로 등록
 	@Bean
 	public ReloadableResourceBundleMessageSource messageSource() {
@@ -191,7 +200,32 @@ public class ServletAppContext implements WebMvcConfigurer {
 		ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
+	} 
+
+
+	public MapperFactoryBean<ProUserMapper> getProUserMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<ProUserMapper> factoryBean = new MapperFactoryBean<ProUserMapper>(ProUserMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
 	}
+	
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
+		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
+		
+		
+		reg1.addPathPatterns("/**");//모든 요청에서 동작
+		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		
+	} 
 
 	public StandardServletMultipartResolver multipartResolver() {
 

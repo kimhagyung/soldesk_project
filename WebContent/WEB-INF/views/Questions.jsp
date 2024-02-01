@@ -11,8 +11,7 @@
 <title>Question</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="${root}/jquery/Questions.js"></script>
-
-
+ 
 </head>
 <script>
    $(function() {
@@ -160,7 +159,11 @@ label {
 </style>
 <script>  
 $(document).ready(function () {
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> develop
     <%String serviceCategoryname = request.getParameter("serviceCategoryname"); %>
 
     var serviceCategoryname = "<%=serviceCategoryname%>";
@@ -171,7 +174,10 @@ $(document).ready(function () {
     } else if (serviceCategoryname === "번역") {
         logCategoryValues(번역);
     } else if (serviceCategoryname === "문서") {
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 
     function logCategoryValues(categoryObject) {
         var outputElement = document.querySelector(".formset");
@@ -305,7 +311,10 @@ $(document).ready(function () {
       </div>
    </div>
    
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
      <div class="question-container questionname" style="left: -450px;"><%=serviceCategoryname%></div>
 
    

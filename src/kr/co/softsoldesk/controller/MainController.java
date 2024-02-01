@@ -73,8 +73,6 @@ public class MainController {
 	public String Questions() {
 		
 		return "/Questions";
-	}
+	} 
 
-
-
-}
+} 

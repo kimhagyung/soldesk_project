@@ -111,6 +111,7 @@
 		</div>
 	</div>
 
+
 	
 	<div class="container mt-5 p-5"> <!--커뮤니티 부분-->
 		<div class="d-flex justify-content-between align-items-center">
@@ -135,7 +136,14 @@
 	            <div class="ms-auto">
                 <!-- 맨 오른쪽에 표시될 내용 -->
 	                <span>유뎅</span>
+<<<<<<< HEAD
 	                <span>|</span>
+=======
+
+	                <span>|</span>
+
+
+>>>>>>> develop
 	                <span class="time" >15:00</span>
 	            </div>
 	        </li>
