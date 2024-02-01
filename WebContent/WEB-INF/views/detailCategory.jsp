@@ -167,7 +167,7 @@
 		  <div class="row row-cols-1 row-cols-md-5 g-4">
 		    <!-- Card 1 -->
 		    <c:forEach var="obj" items="${detailCategoryList }">
-			    <div class="col" onclick="location.href='${root}/Questions?serviceCategoryname=${serviceCategoryname }' ">
+			    <div class="col" onclick="location.href='${root}/Questions?service_category_id=${service_category_id}&detail_category_name=${obj.detail_category_name}' ">
 			    	<div class="card">
 			    		<img src="${root }/category/${obj.file_name}" class="card-img-top" alt="sport" style="object-fit: fill;">
 			      		<div class="card-body text-center ">

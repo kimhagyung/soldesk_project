@@ -10,7 +10,6 @@ public class ProUserBean {
 	private int pro_id; 
 	private String pro_email;
 
-	public List<Category> categories = getCategoryList();
 	@Size(min = 2, max = 8)
 	private String pro_name;
 	
@@ -86,7 +85,8 @@ public class ProUserBean {
 	public void setActive_location(String active_location) {
 		this.active_location = active_location;
 	}
-	
+
+	public List<Category> categories = getCategoryList();
 	//카테고리 값 가져오기 
 	 public List<Category> getCategoryList() {
 	        List<Category> categories = new ArrayList<>();
@@ -100,7 +100,7 @@ public class ProUserBean {
 	        categories.add(new Category("document", "문서", Arrays.asList("문서/글 작성", "PPT 제작", "자막 제작", "사업계획서 제작", "교정/교열")));
 	        categories.add(new Category("develop", "외주(개발)",Arrays.asList("웹 개발", "게임 개발", "iOS 개발", "QA 테스트", "ERP 개발")));
 	        categories.add(new Category("pet", "반려동물", Arrays.asList("반려견 산책", "반려동물 미용", "반려동물 수제간식 만들기", "반려동물 훈련", "반려동물 장례")));
-  
+ 
 	        return categories;
 	 }
 

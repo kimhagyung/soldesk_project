@@ -8,10 +8,7 @@ import kr.co.softsoldesk.beans.ServiceCategoryBean;
 
 public interface ServiceCategoryMapper {
 
-	@Select("select service_category_id\r\n"
-			+ "from servicectg")
+	@Select("select service_category_id from servicectg")
 	List<ServiceCategoryBean> getCategoryList();
-	
-	
-	
+	 
 } //mapper 등록하세요
