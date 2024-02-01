@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
+import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.ProUserMapper;
@@ -58,8 +59,8 @@ public class ServletAppContext implements WebMvcConfigurer{
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean; 
 	
-	@Resource(name="ProUserBean")
-	private ProUserBean ProUserBean; 
+	@Resource(name="loginProuserBean")
+	private ProUserBean loginProuserBean; 
 
 	/*
 	 * @Autowired private TopMenuService topMenuService;
@@ -124,19 +125,21 @@ public class ServletAppContext implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
 	
 		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
+		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
 		
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
 		
 		
 		reg1.addPathPatterns("/**");//모든 요청에서 동작
+		reg2.addPathPatterns("/**");//모든 요청에서 동작
 		
 	}
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
-	}
-	
+	} 
 	//에러 프로퍼티 파일을 메시지로 등록
 	@Bean
 	public ReloadableResourceBundleMessageSource messageSource() {

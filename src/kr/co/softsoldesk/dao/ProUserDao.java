@@ -3,7 +3,7 @@ package kr.co.softsoldesk.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.softsoldesk.beans.ProUserBean; 
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 
 @Repository
@@ -22,8 +22,10 @@ public class ProUserDao {
 		ProuserMapper.addProuserInfo(joinProuserBean);
 	}
 	 
+	public ProUserBean getLoginProuserInfo(ProUserBean tempLoginUserBean2) {
+		
+		return ProuserMapper.getLoginProuserInfo(tempLoginUserBean2);
 	
-	 
-	
+	} 
 	
 }

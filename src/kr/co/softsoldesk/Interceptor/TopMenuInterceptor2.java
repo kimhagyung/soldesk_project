@@ -11,20 +11,21 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 
-public class TopMenuInterceptor implements HandlerInterceptor{
+public class TopMenuInterceptor2 implements HandlerInterceptor{
  
-	@Resource(name="loginUserBean")
-	private UserBean loginUserBean;
+	@Resource(name="loginProuserBean")
+	private ProUserBean loginProuserBean;
 	
-	public TopMenuInterceptor(UserBean loginUserBean) {
-		this.loginUserBean = loginUserBean;
-	} 
+	
+	public TopMenuInterceptor2(ProUserBean loginProuserBean) {
+		this.loginProuserBean = loginProuserBean;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
  
-		request.setAttribute("loginUserBean", loginUserBean); 
+		request.setAttribute("loginProuserBean", loginProuserBean); 
 		return true;
 	}
 	

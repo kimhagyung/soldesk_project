@@ -14,8 +14,8 @@ public class ProUserService {
 	@Autowired
 	private ProUserDao proUserDao;
 	
-	@Resource(name = "ProUserBean")
-	private ProUserBean ProUserBean;
+	@Resource(name = "loginProuserBean")
+	private ProUserBean loginProuserBean;
 	
 	public boolean checkProuserEmailExist(String pro_email) {
 		
@@ -33,23 +33,23 @@ public class ProUserService {
 		 
 		proUserDao.addProuserInfo(joinProuserBean);
 	} 
-	/*
-	public void getLoginProuserInfo(ProUserBean tempLoginProuserBean) {
+	
+	public void getLoginProuserInfo(ProUserBean tempLoginUserBean2) {
 		
-		 ProUserBean tempLoginProuserBean2 = proUserDao.get(tempLoginProuserBean);
+		 ProUserBean tempLoginProuserBean3 = proUserDao.getLoginProuserInfo(tempLoginUserBean2);
 		
-		if(tempLoginProuserBean2 != null) {
-			ProUserBean.set(tempLoginProuserBean2.getPro_id()());
-			ProUserBean.setUser_email(tempLoginProuserBean2.getPro());
-			ProUserBean.setUser_pwd(tempLoginProuserBean2.getUser_pwd());
-			ProUserBean.setUserLogin(true);
+		if(tempLoginProuserBean3 != null) {
+			loginProuserBean.setPro_id(tempLoginProuserBean3.getPro_id());
+			loginProuserBean.setPro_email(tempLoginProuserBean3.getPro_email());
+			loginProuserBean.setPro_pwd(tempLoginProuserBean3.getPro_pwd());
+			loginProuserBean.setProuserLogin(true);
 		}
-		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이메일:"+tempLoginProuserBean2.getUser_email());
-		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이름:"+tempLoginProuserBean2.getUser_name());
-		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 번호:"+tempLoginProuserBean2.getUser_id());
-		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean2.getUser_pwd());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이메일:"+tempLoginProuserBean3.getPro_email());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이름:"+tempLoginProuserBean3.getPro_name());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 번호:"+tempLoginProuserBean3.getPro_id());
+		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean3.getPro_pwd());
 	} 
-	*/
+	
 	
 	 
 }

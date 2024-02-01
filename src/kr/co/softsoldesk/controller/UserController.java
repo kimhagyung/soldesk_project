@@ -11,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.softsoldesk.Validator.ProUserValidator;
+import kr.co.softsoldesk.Validator.UserValidator;
 import kr.co.softsoldesk.beans.Category;
-import kr.co.softsoldesk.beans.CityData;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.ProUserService;
@@ -36,6 +39,13 @@ public class UserController {
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
 
+	@Resource(name = "loginProuserBean")
+	private ProUserBean loginProuserBean;
+	 
+	@Autowired
+	private ProUserBean cateProuser;
+
+	//일반 회원 로그인
 	@GetMapping("/login")
 	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
 						@RequestParam(value = "fail", defaultValue = "false") boolean fail,
@@ -55,7 +65,7 @@ public class UserController {
 		}
 		userService.getLoginUserInfo(tempLoginUserBean);
 		System.out.println("userBeanController:"+tempLoginUserBean.getUser_name());
-		System.out.println("userBeanController 현재 로그인 상태??????/???:"+tempLoginUserBean.isUserLogin());
+		System.out.println("loginUserBean : "+loginUserBean.getUser_name());
 		if(loginUserBean.isUserLogin() == true) {
 			
 			return "user/login_succes";
@@ -66,6 +76,38 @@ public class UserController {
 		}
 	}
 	
+	//고수 로그인
+	@GetMapping("/pro_login")
+	public String pro_login(@ModelAttribute("tempLoginUserBean2") ProUserBean tempLoginUserBean2,
+						@RequestParam(value = "fail", defaultValue = "false") boolean fail,
+						Model model) {
+		
+		model.addAttribute("fail", fail);
+		
+		return "user/pro_login";
+	}
+	@PostMapping("/proUser_login")
+	public String pro_Login(@Valid @ModelAttribute("tempLoginUserBean2") ProUserBean tempLoginUserBean2, 
+							BindingResult result) {
+		
+		if(result.hasErrors()) {
+		
+			return "user/pro_login";
+		}
+		ProuserService.getLoginProuserInfo(tempLoginUserBean2);
+		System.out.println("userBeanController:"+tempLoginUserBean2.getPro_name()); 
+		System.out.println("loginUserBean : "+loginProuserBean.getPro_name());
+		if(loginProuserBean.isProuserLogin() == true) {
+			
+			return "user/login_succes";
+			
+		}else {
+			
+			return "user/pro_login_fail";
+		}
+	}
+	
+	
 	@GetMapping("/not_login")
 	public String not_login() {
 		
@@ -75,9 +117,16 @@ public class UserController {
 	@GetMapping("/logout")
 	public String logout() {
 		
-		loginUserBean.setUserLogin(false);
+		loginUserBean.setUserLogin(false); 
 		
 		return "user/logout";
+	}
+	@GetMapping("/pro_logout")
+	public String pro_logout() {
+		 
+		loginProuserBean.setProuserLogin(false);
+		
+		return "user/pro_logout";
 	}
 	
 	
@@ -101,28 +150,11 @@ public class UserController {
 	@GetMapping("/pro_join")
 	public String pro_join(@ModelAttribute("joinProuserBean") ProUserBean joinProuserBean,
 						   Model model) {
-		List<Category> categories = getCategoryList();
-	    model.addAttribute("categories", categories); 
-	    
+		//List<Category> categories = getCategoryList();
+		
+	    model.addAttribute("categories", cateProuser.getCategoryList()); 
 		return "user/pro_join";
 	}
-	
-	//카테고리 값 가져오기 
-	 private List<Category> getCategoryList() {
-	        List<Category> categories = new ArrayList<>();
-
-	        // Add categories dynamically
-	        categories.add(new Category("test_license", "시험/자격증", Arrays.asList("스포츠지도사 준비", "한국어능력시험 준비", "한국사능력시험 준비", "정보처리기사 준비", "컴퓨터활용능력 준비")));
-	        categories.add(new Category("interior", "인테리어", Arrays.asList("가구리폼", "욕실/화장실 리모델링", "도배시공", "주방 리모델링", "조명 인테리어")));
-	        categories.add(new Category("home_appliances", "가전제품", Arrays.asList("전자제품 수리", "컴퓨터 수리", "비데 렌탈/구입/청소", "에어컨 설치 및 수리", "냉장고 설치 및 수리")));
-	        categories.add(new Category("clean", "청소", Arrays.asList("에어컨 청소", "바퀴벌레 퇴치", "가구 청소", "계단/화장실 청소", "화재 복구/청소")));
-	        categories.add(new Category("translate", "번역", Arrays.asList("한문 번역", "영어 번역", "독일어 번역", "일본어/일어 번역", "베트남어 번역")));
-	        categories.add(new Category("document", "문서", Arrays.asList("문서/글 작성", "PPT 제작", "자막 제작", "사업계획서 제작", "교정/교열")));
-	        categories.add(new Category("develop", "외주(개발)",Arrays.asList("웹 개발", "게임 개발", "iOS 개발", "QA 테스트", "ERP 개발")));
-	        categories.add(new Category("pet", "반려동물", Arrays.asList("반려견 산책", "반려동물 미용", "반려동물 수제간식 만들기", "반려동물 훈련", "반려동물 장례")));
-   
-	        return categories;
-	    }
 	
 	//일류가입 
 	@PostMapping("/join_Prouser")
@@ -133,6 +165,7 @@ public class UserController {
 		ProuserService.addProuserInfo(joinProuserBean);
 		return "user/join_success";
 	}
+	
 	
 	
 	@GetMapping("/AccountSetting")
@@ -147,6 +180,16 @@ public class UserController {
 		return "user/AccountModify";
 	}
 
-
-
+/*
+	@InitBinder
+	public void initBinder(WebDataBinder blinder) { 
+		 
+		UserValidator validator1 = new UserValidator();
+		ProUserValidator validator2 = new ProUserValidator();
+		blinder.addValidators(validator1);
+		blinder.addValidators(validator2);
+		 
+		 
+	} 
+*/
 }
