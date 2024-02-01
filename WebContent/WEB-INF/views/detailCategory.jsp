@@ -13,7 +13,7 @@
 <script>
 
    $(document).ready(function() {
-    // 각 후기 내용을 제한할 길이
+    // 각 후기 내용을 제한할 길이ㅋㅋ
     var maxCharacters = 100;
 
     // 각 후기 내용에 대해 실행
