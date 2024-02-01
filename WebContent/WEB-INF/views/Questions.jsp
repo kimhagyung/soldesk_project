@@ -174,12 +174,12 @@
 				</c:forEach>
 		    </div>
 		    <div class="firstanswer" style="display: none;">
-			    <div class="question" style="margin-top: 40px;">
-			        <div class="answer-form">
-			            <div id="selectedAnswer"></div>
-			        </div>
-			    </div>
-			</div>
+		    <div class="question" style="margin-top: 40px;">
+		        <div class="answer-form">
+		            <div id="selectedAnswer"></div>
+		        </div>
+		    </div>
+		</div>
     
   
     
@@ -211,7 +211,7 @@
     //게이지바 초기값을 0으로 설정합니다!
     updateProgressBar(0);
 
-   /* 
+   
     $(".firstformset form").submit(function(event) {
         event.preventDefault();
         var answer = $("input[name='${value}']:checked").val();
@@ -219,10 +219,10 @@
         $(this).hide(); 
         $(".firstanswer").fadeIn(400);
         setTimeout(function() {
-            $("...그 다음 질문..").fadeIn(400); 
+            $(".secondformset").fadeIn(400); 
         }, 1000);
         updateProgressBar(50);//진행률을 0퍼에서 50퍼로 간다는 의미입니다!
-    }); */
+    });
 
    
     
