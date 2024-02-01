@@ -1,31 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-	crossorigin="anonymous">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-	crossorigin="anonymous"></script>
-<script src="script/jquery-3.4.1.min.js"></script>
 
-<script>
-	$(function() {
-		
-		
-	});
-</script>
+<script src="script/jquery-3.4.1.min.js"></script>
+<script src="${root}/script/jquery-3.4.1.min.js"></script>
 
 <style>
 .card-body {
@@ -36,9 +19,13 @@
 	font-size: 18px;
 }
 </style>
+
 </head>
 <body>
+
 <c:import url="/WEB-INF/views/include/header.jsp" />
+
+	<c:import url="/WEB-INF/views/include/header.jsp" />
 
 	<div class="container mt-5 mb-5">
 		<div class="row justify-content-center">
@@ -68,11 +55,39 @@
 					<hr />
 					<div class="naverlogin"></div>
 				</div>
+						<c:if test="${fail==true }">
+							<div class="alter alter-danger">
+								<h3>로그인 실패</h3>
+								<p>아이디 비밀번호를 확인해 주세요
+							</div>
+						</c:if>
+						<form:form action="${root }/user/login_pro" method="post"
+							modelAttribute="tempLoginUserBean">
+							<div class="mb-3">
+								<form:label path="user_email">이메일</form:label>
+								<form:input path="user_email" class="form-control" type="email"
+									placeholder="이메일 주소를 입력하세요" />
+							</div>
+							<div class="mb-3">
+								<form:label path="user_pwd">비밀번호</form:label>
+								<form:input path="user_pwd" class="form-control"
+									placeholder="비밀번호를 입력해주세요" />
+							</div>
+
+							<div class="form-group" style="display: flex; justify-content: flex-end;">
+							    <form:button class="btn button-custom" style="color: white;">로그인</form:button>
+							    <a href="${root}/user/join" class="btn button-custom">회원가입</a>
+							</div>
+						</form:form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
+
 <c:import url="/WEB-INF/views/include/footer.jsp" />
+
 
 </body>
 </html>

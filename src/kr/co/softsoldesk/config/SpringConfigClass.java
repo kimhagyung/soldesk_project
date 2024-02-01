@@ -1,5 +1,6 @@
 package kr.co.softsoldesk.config;
 
+
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
@@ -7,31 +8,29 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 
 
+
 public class SpringConfigClass implements WebApplicationInitializer{
-//ÀÚ¹ÙÄÚµå·Î web.xmlÀ» ´ëÃ¼
-//À¥¾îÇÃ¸®ÄÉÀÌ¼Ç ¼­¹ö(ÅèÄ¹)°¡ ÃÖÃÊ ±¸µ¿ ½Ã °¢Á¾ ¼³Á¤ Á¤ÀÇ
-	
+ 
 	
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		//¼­¹ö ÃÖÃÊ ±¸µ¿ ½Ã ¿©±â ÀÖ´Â ¸Þ¼Òµå ½ÇÇàµÊ
-		//System.out.println("onstart");
-		
+
+	
 		//web.xml<servlet>
 		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
-		//SpringMVC ÇÁ·ÎÁ§Æ® ¼³Ä¡¸¦ À§ÇØ ÀÛ¼ºÇÏ´Â Å¬·¡½ºÀÇ °´Ã¼¸¦ »ý¼º(½ºÇÁ¸µ ÄÁÅ×ÀÌ³Ê)
 		servletAppContext.register(ServletAppContext.class);
-		//ServletAppContext¸¦ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÄÁÅ×½ºÆ®¿¡ µî·Ï
-		
+	 
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
 		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", dispatcherServlet);
 		
@@ -40,18 +39,19 @@ public class SpringConfigClass implements WebApplicationInitializer{
 		
 		AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
 		rootAppContext.register(RootAppContext.class);
-		//BeanÀ» Á¤ÀÇÇÏ´Â Å¬·¡½º ÁöÁ¤
+
+		
 		
 		ContextLoaderListener listener = new ContextLoaderListener(rootAppContext);
 		servletContext.addListener(listener);
-		//web.xml¿¡¼­ <listener>
+	
 		
 		FilterRegistration.Dynamic filter = servletContext.addFilter("encoding", CharacterEncodingFilter.class);
 		filter.setInitParameter("encoding", "UTF-8");
-		//web.xml¿¡¼­ <filter>
+		
 		
 		filter.addMappingForServletNames(null, false, "dispatcher");
-		//dispatcher¿¡ ÀÇÇØ Ãß°¡µÈ Servlet¿¡¼­ UTF-8·Î ÀÎÄÚµù
+		
 	} 
 	
 }
@@ -64,19 +64,19 @@ public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServlet
 	protected Class<?>[] getRootConfigClasses() {
 		
 		return new Class[] {RootAppContext.class};
-	} //ÇÁ·ÎÁ§Æ®¿¡¼­ »ç¿ëÇÒ BeansµéÀ» Á¤ÀÇÇÏ±â À§ÇÑ Å¬·¡½º ÁöÁ¤
+	} //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Beansï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		
 		return new Class[] {ServletAppContext.class};
-	} //Spring MVC ÇÁ·ÎÁ§Æ® ¼³Á¤À» À§ÇÑ Å¬·¡½º ÁöÁ¤
+	} //Spring MVC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	@Override
 	protected String[] getServletMappings() {
 		
 		return new String[] {"/"};
-	} // DispatcherServlet¿¡ ¸ÅÇÎÇÒ ¿äÃ» ÁÖ¼Ò¸¦ ¼¼ÆÃ
+	} // DispatcherServletï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	@Override
 	protected Filter[] getServletFilters() {
@@ -84,7 +84,11 @@ public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServlet
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
 		return new Filter[] {encodingFilter};
-	} // ÆÄ¶ó¹ÌÅÍ ÀÎÄÚµù ÇÊÅÍ ¼³Á¤
+	} // ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
 	
-} */
+} 
+ 
+	
+}
+*/

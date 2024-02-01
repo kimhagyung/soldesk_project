@@ -53,5 +53,4 @@ public class MyPageController {
 
 	    return "mypage/write_success";
 	}
-	
 }
