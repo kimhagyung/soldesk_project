@@ -112,7 +112,7 @@
             nowIndicator: true, // 현재 시간 마크
             dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
             locale: 'ko', // 한국어 설정
-            console.log("${calendarList}")
+            
 
             select: function (arg) {
                 // 드래그로 이벤트를 생성할 때 모달 창 열기
