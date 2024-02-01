@@ -112,7 +112,7 @@
 	        <div class="row">
 	            <div class="col-md-4">
 	                <div class="profilecontainer" style="margin-top: 8%; margin-bottom: 8%; position: relative;">
-	                    <img class="uploaded-image" id="profile-image" src="../image/1.png" alt="프로필 이미지"
+	                    <img class="uploaded-image" id="profile-image" src="image/1.png" alt="프로필 이미지"
 	                        style="width: 200px; height: 200px; border-radius: 30px; position: relative; border: 1px solid #F3F3F3;">
 	                    <button id="profile-btn"
 	                        style=" width: 40px; height: 40px; border: 1px solid #F3F3F3; position: absolute;
@@ -310,7 +310,7 @@
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="redirectToCareerPage()">수정</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/user/career'">수정</button>
 				</div>
 			</div>
 			<p></p>
@@ -324,7 +324,7 @@
 			<div class="row">
 				<span class="col Subtitle">학력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToAcademicAbilityPage()">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/user/Education'">등록하기</button>
 				</div>
 			</div>
 			<p></p>
@@ -338,7 +338,7 @@
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToPortfolioPage()">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/user/Portfolio'">등록하기</button>
 				</div>
 			</div>
 			<p></p>
@@ -599,24 +599,6 @@
             countChars('editTextArea3', 'charCount3');
         });
     });
-</script>
-
-<script> // 경력 페이지로 이동하는 버튼
-  function redirectToCareerPage() {
-    window.location.href = 'Career.jsp';
-  }
-</script>
-
-<script> // 학력 페이지로 이동하는 버튼
-  function redirectToAcademicAbilityPage() {
-    window.location.href = 'Education.jsp';
-  }
-</script>
-
-<script> // 포폴 페이지로 이동하는 버튼
-    function redirectToPortfolioPage() {
-     window.location.href = 'Portfolio.jsp';
-    }
 </script>
 
 </body>
