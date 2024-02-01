@@ -173,15 +173,13 @@
 						</div>
 						<div class="comment-action-group t-color">
 
-							<span>6시간전</span> &nbsp; <span class="parent-comment"> <span
-								class="co-comment" style="cursor: pointer;">대댓글</span> <!-- 대댓글 클릭시 보이는 부분 -->
-								<div class="comment-input-box input-group mb-3 mt-4 sho-comm" style="display: none; width: 100%;">
-									<input type="text" class="form-control" placeholder="댓글을 남겨주세요"
-										aria-label="Recipient's username"
-										aria-describedby="button-addon2">
-									<button class="btn btn-outline-secondary" type="button"
-										id="button-addon2">등록</button>
-								</div>
+							<span>6시간전</span> &nbsp; 
+							<span class="parent-comment"> 
+								<span class="co-comment" style="cursor: pointer;">대댓글</span> <!-- 대댓글 클릭시 보이는 부분 -->
+								
+									<input type="text" class="form-control" placeholder="댓글을 남겨주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+									<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
+								
 							</span>
 						</div>
 					</div>

@@ -200,7 +200,7 @@ $(function() {
 			<hr>
 			<div class="commnuity-select">
 				<div class="col-1"> 
-					<form:input path="upload_photo" type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;" accept="image/*"/> 
+					<form:input path="upload_photo" type="file" multiple="multiple" class="form-control col-2" id="inputGroupFile04" style="display: none;" accept="image/*"/> 
 					<form:label path="upload_photo" for="inputGroupFile04" class="form-control col-2 btn"> 
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</form:label>

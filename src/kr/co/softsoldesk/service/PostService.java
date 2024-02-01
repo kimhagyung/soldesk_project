@@ -37,13 +37,13 @@ public class PostService {
 
 	public void addPostInfo(PostBean boardPostBean) {
 
-		/*
+		
 		System.out.println(boardPostBean.getTitle());
 		System.out.println(boardPostBean.getContent());
 		System.out.println(boardPostBean.getUpload_photo().getSize());
-		System.out.println("ì¹´í…Œê³ ë¦¬: " + boardPostBean.getCategory());
-		System.out.println("ì§€ì—­: " + boardPostBean.getLocation());
-		*/
+		System.out.println("Ä«Å×°í¸®: " + boardPostBean.getCategory());
+		System.out.println("Áö¿ª: " + boardPostBean.getLocation());
+		
 		
 		MultipartFile upload_photo = boardPostBean.getUpload_photo();
 		
