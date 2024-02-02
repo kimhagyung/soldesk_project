@@ -2,6 +2,7 @@ package kr.co.softsoldesk.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,4 +31,16 @@ public class DetailCategoryService {
 		return detailCategoryDao.getServiceCategoryName(service_category_id);
 	}
 	
+	
+	public List<DetailCategoryBean> getSearchDetailCategories(String searchKeyword) {
+			
+			List<DetailCategoryBean> searchDetailCategories = detailCategoryDao.getSearchDetailCategories(searchKeyword);
+			
+			return searchDetailCategories;
+		}
+
+	 // 자동완성 메서드
+    public List<String> getAutocompleteSuggestions(String searchKeyword) {
+        return detailCategoryDao.getAutocompleteSuggestions(searchKeyword);
+    }
 }

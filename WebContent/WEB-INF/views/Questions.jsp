@@ -7,9 +7,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>detailCategory</title>
+<title>Question</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-</head> 
 	<style>
 		#a_comment-board-title:hover {
 			color: #fff;
@@ -30,9 +29,12 @@
 		.progress-container {
 		    background-color: #ddd;
 		    border-radius: 4px;
-		    position: relative; /* 색칠된 바를 올바르게 위치시키기 위해 상대적 위치 설정 */
-		}
-		
+		    position: fixed; /* 수정된 부분: 화면에 고정 */
+		    top: 12%; /* 수정된 부분: 화면 위에 고정 */
+		    left: 50%; /* 수정된 부분: 가운데 정렬을 위해 50% 위치로 이동 */
+		    transform: translateX(-50%); /* 수정된 부분: 가운데 정렬 */
+		    z-index: 1000; /* 수정된 부분: 다른 요소들 위에 표시되도록 설정 */
+		} 	
 		.progress-bar-empty {
 		    width: 100%;
 		    height: 15px;
@@ -74,6 +76,7 @@
             margin-top: 30px;
             display: none;
             font-size: 20px;
+            left:-40px;
         }
         
           /* 추가한 스타일 */
@@ -92,7 +95,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin: auto;
             position: relative;
-            left: -250px;
+            left: -360px;
         }
 
         .question-title {
@@ -125,113 +128,163 @@
             cursor: pointer;
         }
         
-         .answer-form {
-            width: 200px;
-            background-color: white;
-            padding: 2em;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 5px;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: auto;
-            position: relative;
-            left: 350px;
-            font-size: 20px;
-        }
-		
+		.answer-form {
+		    width: 200px;
+		    background-color: white;
+		    padding: 2em;
+		    border-top-left-radius: 15px;
+		    border-top-right-radius: 5px;
+		    border-bottom-left-radius: 15px;
+		    border-bottom-right-radius: 15px;
+		    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		    margin: auto; 
+		    position: relative;
+		   	left:699px;
+		    font-size: 20px;
+		}
+	
 	</style>
 </head>
 
 <body style="background-color: #EEEEEE;">
-<c:import url="/WEB-INF/views/include/header.jsp" />
-    <div class="header"></div>
-		    <!-- 진행률 바 컨테이너 -->
-		<div class="progress-container" style="margin: 20px auto; width: 60%;"><!-- 마진과 폭을 여기서 설정 -->
-		    <!-- 빈 바 -->
-		    <div class="progress-bar-empty"></div>
-		    <!-- 색칠된 바 -->
-		    <div class="progress-bar-fill" id="myProgressBar">
-		        <span id="progress-text">0%</span>
-		    </div>
-		</div> 
-	    <div class="question-container questionname" style="left: -350px;">
-	       		${param.detail_category_name}
-	    </div>	 
-	    
-		    <div class="firstformset" style="display: none;">	
-		        <c:forEach var="question" items="${requestScope[serviceCategoryname]}">
-				    <div class="question-form">
-				        <div class="question-title">${question.key}</div>
-				            <c:forEach var="value" items="${question.value}">
-				                <label class="radio-label">
-				                    <input type="radio" name="${value}" value="${value}" class="radio-input" style="margin-top: 6px;">
-				                    ${value}
-				                </label> 
-				            </c:forEach>
-				            <input type="submit" value="확인" class="submit-button">
-				    	</div>
-				</c:forEach>
-		    </div>
-		    <div class="firstanswer" style="display: none;">
-		    <div class="question" style="margin-top: 40px;">
-		        <div class="answer-form">
-		            <div id="selectedAnswer"></div>
+    <c:import url="/WEB-INF/views/include/header.jsp" />
+    
+    <div class="progress-container" style="margin:20px auto; width: 50%;">
+        <div class="progress-bar-empty"></div>
+        <div class="progress-bar-fill" id="myProgressBar">
+            <span id="progress-text">0%</span>
+        </div>
+    </div>
+    
+    <div class="question-container questionname" style="left:-456px;">
+        ${param.detail_category_name}
+    </div> 
+	   <div class="form-container">
+        <div class="firstformset" id="questionForm">
+           <c:forEach var="question" items="${requestScope[serviceCategoryname]}">
+               <div class="question-form questionform mt-5 mb-5" data-question="${question.key}">
+                   <div class="question-title">${question.key}</div>
+                   <c:forEach var="value" items="${question.value}">
+                       <label class="radio-label">
+                           <input type="radio" name="answer" value="${value}" class="radio-input" style="margin-top: 6px;">
+                           ${value}
+                       </label>
+                   </c:forEach> 
+           		<input type="button" value="확인" class="submit-button submitbtn">
+               </div> 
+           </c:forEach> 
+        </div>
+		 <div class="firstanswer">
+		    <div class="question answerrr" style="margin-top: 40px;">
+		        <div class="answer-form answerform me-5" style="display: none;">
+		          <!-- 여기에 사용자가 선택한 질문이 위치하는 코드 --> 
 		        </div>
 		    </div>
 		</div>
-    
-  
-    
-    <div style="margin-top: 300px;"></div>
-     <script>
-	       $(document).ready(function () {
-    setTimeout(function() {
-        $(".questionname").fadeIn(400); 
-    }, 1000);
+	</div>
+ <script>
+        $(document).ready(function () {
+        	
+            setTimeout(function () {
+                $(".questionname").fadeIn(400);
+            }, 1000);
+            
+            	$(".firstformset .questionform").hide(); // 모든 질문 숨김
+            	
+            setTimeout(function () { 
+            	$(".firstformset .question-form:first").fadeIn(400); // 첫 번째 질문을 페이드 인
+            }, 1500);
 
-    setTimeout(function() {
-        $(".firstformset").fadeIn(400); 
-    }, 1500);
+            /* 프로그레스바 */
+          	var totalQuestions = $(".firstformset .questionform").length; // 질문의 총 개수
+			var progressBar = document.getElementById("myProgressBar");
+			var currentProgress = 0;
+			
+			function updateProgressBar() {
+			    currentProgress = (currentQuestionIndex / totalQuestions) * 100;
+			    currentProgress = isNaN(currentProgress) ? 0 : currentProgress; // 만약 NaN이면 0으로 설정
+			    currentProgress = currentProgress > 100 ? 100 : currentProgress;
+			    progressBar.style.width = currentProgress + '%';
+			    document.getElementById("progress-text").innerText = currentProgress.toFixed(2) + '%';
+			}
 
-    // 진행률 바를 업데이트하는 함수
-    function updateProgressBar(addValue) {
-        var progressBar = document.getElementById("myProgressBar");
-        // 현재 진행률을 가져오거나 기본값을 0으로 설정
-        var currentProgress = progressBar.style.width ? parseFloat(progressBar.style.width) : 0;
-        var newProgress = currentProgress + addValue;
+			// 초기 상태에서 0%로 설정
+			updateProgressBar();
+ 
+        	var currentQuestionIndex = 0;
+            var questions = $(".firstformset .questionform");
+            //questions.css('margin-top', '90px');
+            var answersContainer = $(".firstanswer");
+            /* 확인버튼을 누르면 */
+            $(document).on('click', '.submitbtn', function () {
+                var selectedAnswer = $("input[name='answer']:checked").val();
 
-        // 진행률이 100퍼센트가 넘지않도록 설정하는 곳입니다
-        newProgress = newProgress > 100 ? 100 : newProgress;
+                console.log("선택한 값", selectedAnswer);
 
-        progressBar.style.width = newProgress + '%';
-        document.getElementById("progress-text").innerText = newProgress + '%'; // 텍스트 업데이트 업데이트하는곳
-    }
-    
-    //게이지바 초기값을 0으로 설정합니다!
-    updateProgressBar(0);
+                if (selectedAnswer) {
+                    var questionForm = questions.eq(currentQuestionIndex);
+                    var answerForm = $("<div class='answer-form answerform'></div>");
+                 	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
+ 
+                 	
+                 	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
+                    //answerForm.html("<div class='user-message message'>" + selectedAnswer + "</div>").hide();
+                    // 만약 "기타"를 선택한 경우 textarea 값을 가져와서 추가
+                    if (selectedAnswer === "기타") {
+                        var textareaValue = questionForm.find('.user-textarea').val();
+                        console.log("작성한 글",textareaValue);
+                        questionForm.append(answerForm);
+                        answerForm.append(textareaValue);
+                    } else {
+                        // 선택한 대답을 추가
+                    	questionForm.append(answerForm);
+                    	answerForm.append(selectedAnswer);
+                    }
+                    answerForm.css('float', 'right');   
+                    answerForm.fadeIn(400);
+                    currentQuestionIndex++;
 
-   
-    $(".firstformset form").submit(function(event) {
-        event.preventDefault();
-        var answer = $("input[name='${value}']:checked").val();
-        $(".firstanswer >> div").append("<div class='user-message message'>" + answer + "</div>");
-        $(this).hide(); 
-        $(".firstanswer").fadeIn(400);
-        setTimeout(function() {
-            $(".secondformset").fadeIn(400); 
-        }, 1000);
-        updateProgressBar(50);//진행률을 0퍼에서 50퍼로 간다는 의미입니다!
-    });
+                    if (currentQuestionIndex < questions.length) {
+                        // 다음 질문이 있으면 해당 질문을 보여줌
+                        var nextQuestionForm = questions.eq(currentQuestionIndex);
+                        questionForm.find('.radio-label').hide(); // 현재 질문의 보기 숨기기
+                        nextQuestionForm.fadeIn(400); 
+                        // 다음 질문에 대한 답변 컨테이너를 생성
+                        var nextAnswerForm = $("<div class='answer-form answerform'></div>").hide();
+                        answerForm.append(nextAnswerForm); 
+                        
+                        // 스크롤을 다음 질문에 대한 답변 컨테이너로 이동
+                        $('html, body').animate({
+                            scrollTop: answerForm.offset().top
+                        }, 400); 
+                        
+                    }  else {
+                        // 마지막 질문일 경우 특정 페이지로 이동
+                        window.location.href = '${root}'; 
+                    } 
+                    updateProgressBar(); // 프로그레스바 업데이트
+                }else { 
+                    alert("값을 선택해 주세요");
+                }
+            });
+            // 라디오 버튼이 변경될 때 이벤트 리스너 추가
+            $('.radio-input').on('change', function () {
+                var selectedValue = $(this).val();
+                console.log("선택한 값", selectedValue);
 
-   
-    
-});
+                // 이전에 생성된 textarea가 있다면 숨기기
+                $('.user-textarea').hide();
+
+                if (selectedValue === "기타") {
+                    // "기타"를 선택한 경우 textarea 추가
+                    var textarea = $("<textarea class='user-textarea' style='width:100%'></textarea>");
+                    // 현재 라디오 버튼 바로 다음에 textarea를 추가
+                    $(this).parent().append(textarea);
+                }
+            });
 
 
-
-    </script>
-<c:import url="/WEB-INF/views/include/footer.jsp" />
-</body>
-
+        });
+ 		</script>
+	</body>
 </html>

@@ -1,15 +1,13 @@
 package kr.co.softsoldesk.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.QuestionBean;
@@ -34,17 +32,26 @@ public class MainController {
 	public String index(Model model) {
 
 		List<ServiceCategoryBean> categoryList = serviceCategoryService.getCategoryList();
-
 		model.addAttribute("categoryList", categoryList);
 
 		return "index";
 	}
-
-	// @GetMapping("/index")
-	// public String main() {
-
-	// return "index"; }
-
+	
+	@GetMapping("/searchDetailCategories")
+    public String searchDetailCategories(@RequestParam(name = "searchKeyword", required = false) String searchKeyword, Model model) {
+        List<DetailCategoryBean> searchResult = detailCategoryService.getSearchDetailCategories(searchKeyword);
+        // 결과를 모델에 담아서 뷰로 전달
+        model.addAttribute("searchResult", searchResult);
+        model.addAttribute("searchKeyword", searchKeyword);
+        
+        System.out.println("searchResult:"+searchResult);
+        System.out.println("searchKeyword:"+searchKeyword);
+        // 뷰의 이름을 반환
+        return "/Questions"; // yourViewName은 실제 사용하는 뷰의 이름으로 대체해야 합니다.
+    }
+	
+	 
+	
 	@GetMapping("/detailCategory")
 	public String detailCategory(@RequestParam("service_category_id") int service_category_id, Model model) {
 
@@ -79,15 +86,20 @@ public class MainController {
 		model.addAttribute("청소", questionBean.getCleaning()); 
 		model.addAttribute("번역", questionBean.getTranslation()); 
 		model.addAttribute("문서", questionBean.getDevelopment()); 
-		model.addAttribute("개발", questionBean.getDocument()); 
+		model.addAttribute("개발외주", questionBean.getDocument()); 
+		model.addAttribute("반려동물", questionBean.getPet()); 
+		
 		model.addAttribute("service_category_id", service_category_id);
-		System.out.println("서비스카테고리번호:"+service_category_id);
+		//System.out.println("서비스카테고리번호:"+service_category_id);
 		String serviceCategoryname = detailCategoryService.getServiceCategoryName(service_category_id);
 		model.addAttribute("serviceCategoryname", serviceCategoryname);
 		  
 		return "/Questions";
 	}
-
+	@GetMapping("/Questions2")
+	public String Questions2(){
+		return "/Questions2";
+	}
 
 
 }
