@@ -129,16 +129,18 @@
     </div>
   </div>
   
-  <div class="container md-5">
-    <div class="justify-content-center">
-      <div class="col text-center Explanation">등록한 경력사항이 아직 없습니다.</div>
-       <div class="col">
-      <ul id="experienceList" class="list-unstyled">
-        <!-- 경력 리스트는 여기에 동적으로 추가될 것입니다. -->
-      </ul>
-      </div>
-    </div>
-  </div>
+	<div class="container md-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+			<div id="Explanation" class="col text-center Explanation">등록한 경력사항이 아직 없습니다.</div>
+				<div class="col">
+					<ul id="experienceList" class="list-unstyled">
+						<!-- 경력 리스트는 여기에 동적으로 추가될 것입니다. -->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
   
   <div class="container mt-5">
     <div class="row justify-content-center">
@@ -305,7 +307,7 @@
 
 
 
-<!-- 모달 데이터 등록 스크립트(미완성 상태)
+<!-- 모달 데이터 등록 스크립트 -->
 <script>
     $(function () {
         var experienceCounter = 1;
@@ -322,10 +324,11 @@
             var experienceId = 'experience' + experienceCounter;
 
             var liElement = $('<li id="' + experienceId + '">');
-            liElement.append('<h4>' + title + '</h4>');
-            liElement.append('<span>' + startYear + '년 ' + startMonth + '월 - ' + endYear + '년 ' + endMonth + '월</span>');
+            liElement.append('<h5>' + title + ' <i class="bi bi-x remove-experience"></i></h5>');
+            liElement.append('<span style="font-size: 12px; color: #C0C0C0;">' + startYear + '년 ' + startMonth + '월 - ' + endYear + '년 ' + endMonth + '월</span>');
             liElement.append('<p>' + description + '</p>');
-            liElement.append('<i class="bi bi-x remove-experience"></i>'); // 삭제 버튼 추가
+            liElement.append('<p class="section-divider">'+'</p>');
+
 
             $('#experienceList').append(liElement);
 
@@ -372,11 +375,11 @@
 		function updateExperienceTextVisibility() {
 		    var experienceListLength = $('#experienceList li').length;
 		
-		    // 클래스 선택자 수정
-		    $('.Explanation').toggle(experienceListLength === 0);
+		    // Id 선택자 수정
+		    $('#Explanation').toggle(experienceListLength === 0);
         }
     });
-</script> -->
+</script>
 
 
 </body>

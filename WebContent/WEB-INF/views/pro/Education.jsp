@@ -97,10 +97,10 @@
 
 	<div class="container md-5">
 		<div class="justify-content-center">
-			<div class="col text-center Explanation">등록한 학력사항이 아직 없습니다.</div>
+			<div id="Explanation" class="col text-center Explanation">등록한 학력사항이 아직 없습니다.</div>
 			<div class="col">
 				<ul id="experienceList" class="list-unstyled">
-					<!-- 경력 리스트는 여기에 동적으로 추가될 것입니다. -->
+					<!-- 학력 리스트는 여기에 동적으로 추가될 것입니다. -->
 				</ul>
 			</div>
 		</div>
@@ -141,31 +141,28 @@
 								제한될 수 있으며 사안에 따라 법적 책임을 물을 수 있습니다. </span></i>
 					</div>
 					<form class="was-validated">
-						<!-- 경력 타이틀 입력 -->
+						<!-- 학교명 입력 -->
 						<div class="mt-4">
-							<label for="validationTextarea" class="form-label">학교명*</label> <input
-								class="form-control" id="validationTextarea"
-								placeholder="ex. 아숨대학교" required></input>
-							<div class="row">
-								<div class="col-auto invalid-feedback">학교명을 입력해주세요.</div>
-								<div class="col text-end"
-									style="color: #B5B5B5; font-size: 14px;">
-									<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/40자
-								</div>
-							</div>
+						    <label for="validationTextareaSchool" class="form-label">학교명*</label>
+						    <input class="form-control" id="validationTextareaSchool" placeholder="ex. 아숨대학교" required></input>
+						    <div class="row">
+						        <div class="col-auto invalid-feedback">학교명을 입력해주세요.</div>
+						        <div class="col text-end" style="color: #B5B5B5; font-size: 14px;">
+						            <span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/40자
+						        </div>
+						    </div>
 						</div>
 					</form>
+					<!-- 전공명 입력 -->
 					<div class="mt-4">
-						<label for="validationTextarea" class="form-label">전공명</label> <input
-							class="form-control" id="validationTextarea"
-							placeholder="ex. 경영학과" required></input>
-						<div class="row">
-							<div class="col-auto invalid-feedback">학교명을 입력해주세요.</div>
-							<div class="col text-end"
-								style="color: #B5B5B5; font-size: 14px;">
-								<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/20자
-							</div>
-						</div>
+					    <label for="validationTextareaMajor" class="form-label">전공명</label>
+					    <input class="form-control" id="validationTextareaMajor" placeholder="ex. 경영학과" required></input>
+					    <div class="row">
+					        <div class="col-auto invalid-feedback">전공명을 입력해주세요.</div>
+					        <div class="col text-end" style="color: #B5B5B5; font-size: 14px;">
+					            <span id="titleCharCountMajor" style="color: #85BCEB;">0&nbsp;</span>/20자
+					        </div>
+					    </div>
 					</div>
 					<div class="mt-4">
 						<label for="validationTextarea" class="form-label">입학 연월*</label>
@@ -236,7 +233,7 @@
 		<!-- JavaScript 부분 -->
 		<script>
 			// 학교명 입력 글자수 세기
-			$('#validationTextarea').on('input', function() {
+			$('#validationTextareaSchool').on('input', function() {
 				var enteredValue = $(this).val();
 				var charCount = enteredValue.length;
 				$('#titleCharCount').text(charCount + " ");
@@ -249,17 +246,17 @@
 			});
 
 			// 전공명 입력 글자수 세기
-			function countChars() {
-				var enteredValue = $('#myTextarea').val();
-				var charCount = enteredValue.length;
-				$('#descriptionCharCount').text(charCount + " ");
-
-				// 20자 제한
-				if (charCount > 20) {
-					$('#myTextarea').val(enteredValue.substring(0, 20));
-					$('#descriptionCharCount').text("20" + " ");
-				}
-			}
+			$('#validationTextareaMajor').on('input', function() {
+		        var enteredValue = $(this).val();
+		        var charCount = enteredValue.length;
+		        $('#titleCharCountMajor').text(charCount + " ");
+		
+		        // 20자 제한
+		        if (charCount > 20) {
+		            $(this).val(enteredValue.substring(0, 20));
+		            $('#titleCharCountMajor').text("20" + " ");
+		        }
+		    });
 		</script>
 
 
@@ -360,77 +357,79 @@
 
 
 
-		<!-- 모달 데이터 등록 스크립트(미완성 상태)
+<!-- 모달 데이터 등록 스크립트(미완성) -->
 <script>
     $(function () {
-        var experienceCounter = 1;
+        var educationCounter = 1;
 
-        // 경력 등록 함수
-        function registerExperience() {
-            var title = $('#validationTextarea').val();
+        // 학력 등록 함수
+        function registerEducation() {
+            var schoolName = $('#validationTextareaSchool').val().trim();
+            var major = $('#validationTextareaMajor').val().trim();
             var startYear = $('#startYear').val();
             var startMonth = $('#startMonth').val();
             var endYear = $('#endYear').val();
             var endMonth = $('#endMonth').val();
-            var description = $('#myTextarea').val();
+            var documentFile = $('#document-fileInput')[0].files[0];
 
-            var experienceId = 'experience' + experienceCounter;
+            // 필수 입력 항목 검증
+            if (!schoolName || !startYear || !startMonth || !endYear || !endMonth) {
+                alert('모든 필수 입력 항목을 입력해주세요.');
+                return;
+            }
 
-            var liElement = $('<li id="' + experienceId + '">');
-            liElement.append('<h4>' + title + '</h4>');
-            liElement.append('<span>' + startYear + '년 ' + startMonth + '월 - ' + endYear + '년 ' + endMonth + '월</span>');
-            liElement.append('<p>' + description + '</p>');
-            liElement.append('<i class="bi bi-x remove-experience"></i>'); // 삭제 버튼 추가
+            // 이미지를 미리 보여주기 위한 코드 (이미지 경로를 활용하거나 서버에 업로드하여 경로를 설정할 수 있습니다.)
+            var imageUrl = '../image/1.png'; // 이미지가 업로드되지 않았을 경우 사용될 이미지 경로
+            if (documentFile) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imageUrl = e.target.result;
+                };
+                reader.readAsDataURL(documentFile);
+            }
 
-            $('#experienceList').append(liElement);
+            var educationId = 'education' + educationCounter;
 
-            experienceCounter++;
+            var liElement = $('<li id="' + educationId + '">');
+            liElement.append('<h5>' + schoolName + ' <i class="bi bi-x remove-education"></i></h5>');
+            liElement.append('<span style="font-size: 12px; color: #C0C0C0;">' + startYear + '년 ' + startMonth + '월 - ' + endYear + '년 ' + endMonth + '월</span>');
+            liElement.append('<p>전공: ' + major + '</p>');
+
+            // 이미지를 미리 보여주기 위한 코드
+            liElement.append('<div class="photo_review"><img src="' + imageUrl + '" class="uploaded-education-image" alt="Education Image" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;"></div>');
+
+            liElement.append('<p class="section-divider">' + '</p>');
+
+            $('#educationList').append(liElement);
+
+            educationCounter++;
 
             // 입력란 초기화
-            $('#validationTextarea').val('');
+            $('#validationTextareaSchool, #validationTextareaMajor').val('');
             $('#startYear, #startMonth, #endYear, #endMonth').val('');
-            $('#myTextarea').val('');
+            $('#document-fileInput').val('');
 
             // 모달 닫기
             $('#staticBackdrop').modal('hide');
 
-            // 경력 리스트 텍스트 가시성 업데이트
-            updateExperienceTextVisibility();
+            // 학력 리스트 텍스트 가시성 업데이트
+            updateEducationTextVisibility();
         }
 
-        // 경력 리스트에서 경력 항목 삭제 함수
-        $('#experienceList').on('click', '.remove-experience', function (event) {
-            event.stopPropagation(); // 경력 항목 클릭 이벤트 방지
-            $(this).closest('li').remove(); // 해당 경력 항목 제거
-            updateExperienceTextVisibility(); // 경력 리스트 텍스트 가시성 업데이트
+        // 학력 등록 버튼 클릭 시
+        $('#staticBackdrop .btn-primary').on('click', function () {
+            registerEducation();
         });
 
-        // 경력 리스트에서 경력 항목 클릭 시
-        $('#experienceList').on('click', 'li', function () {
-            var experienceId = $(this).attr('id');
-            populateModalForEdit(experienceId);
-            $('#staticBackdrop').modal('show');
-        });
-
-        // 초기 경력 리스트 텍스트 가시성 업데이트
-        updateExperienceTextVisibility();
-
-        // 경력 등록 버튼 클릭 시
-		$('#staticBackdrop .btn-primary').on('click', function () {
-		    registerExperience();
-		
-		    // 모달 닫기 추가
-		    $('#staticBackdrop').modal('hide');
-		});
-
-        // 경력 리스트 텍스트 가시성 업데이트 함수
-		function updateExperienceTextVisibility() {
-		    var experienceListLength = $('#experienceList li').length;
-		
-		    // 클래스 선택자 수정
-		    $('.Explanation').toggle(experienceListLength === 0);
+        // 학력 리스트 텍스트 가시성 업데이트 함수
+        function updateEducationTextVisibility() {
+            var educationListLength = $('#educationList li').length;
+            $('#Explanation').toggle(educationListLength === 0);
         }
     });
-</script> -->
+</script>
+
+
+
 </body>
 </html>
