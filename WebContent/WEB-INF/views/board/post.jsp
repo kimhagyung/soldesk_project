@@ -198,10 +198,14 @@ $(function() {
 				<form:errors path="title" style="color:red"/>
 			</div>
 			<hr>
+			
+			<!-- 사진 -->
 			<div class="commnuity-select">
 				<div class="col-1"> 
-					<form:input path="upload_photo" type="file" multiple="multiple" class="form-control col-2" id="inputGroupFile04" style="display: none;" accept="image/*"/> 
-					<form:label path="upload_photo" for="inputGroupFile04" class="form-control col-2 btn"> 
+					
+					<input type="file" class="form-control col-2" id="inputGroupFile04" style="display: none;" accept="image/*" multiple/>
+					
+					<form:label path="upload_photos" for="inputGroupFile04" class="form-control col-2 btn"> 
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</form:label>
 				</div>
@@ -252,16 +256,33 @@ $(function() {
 								document.write('<ul class="list-group">');
 									
 								$.each(districts, function (index, district) {
-									document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
+									document.write('<button type="button" class="list-group-item list-group-item-action ctgBtn" data-district="' + district + '">' + district + '</button>');
 								});
 								document.write('</ul></div></div>');
 							}); 
+							
+						    $(".ctgBtn").click(function () {
+						        $(".ctgBtn").removeClass("selected");
+						        $(this).addClass("selected");
+
+						        var selectedCategory = $(this).data("district");
+
+						        console.log('선택한 카테고리:', selectedCategory);
+
+						        // 폼이나 필요한 곳에 값 설정
+						        document.getElementById("modalSelectedCategory").value = selectedCategory;
+
+						        // 모달 닫기
+						        $("#exampleModal").modal('hide');
+						        $(".categoryBtn").text(selectedCategory);
+						        
+						        
+						 
+						    });
 						</script>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary" id="selectCategoryBtn">선택</button>
+				<div class="modal-footer" style="border: none; height: 30px;">
 				</div>
 			</div>
 		</div>
@@ -281,28 +302,46 @@ $(function() {
 					<div class="accordion">
 						<!-- 아래 스크립트를 body 내부에 추가하세요 -->
 						<script>
-							// 선택된 데이터를 사용하여 출력하는 부분
-							$.each(cityData, function (city, districts) {
-								document.write('<div class="accordion-item">');
-								document.write('<h2 class="accordion-header">');
-								document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
-								document.write(city);
-								document.write('</button></h2>');
-								document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#locationModal">');
-								document.write('<ul class="list-group">');
-								
-								$.each(districts, function (index, district) {
-									document.write('<button type="button" class="list-group-item list-group-item-action">' + district + '</button>');
-								});
-								document.write('</ul></div></div>');
-							});
-						</script>
+    $.each(cityData, function (city, districts) {
+        document.write('<div class="accordion-item">');
+        document.write('<h2 class="accordion-header">');
+        document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+        document.write(city);
+        document.write('</button></h2>');
+        document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#locationModal">');
+        document.write('<ul class="list-group">');
+
+        $.each(districts, function (index, district) {
+            document.write('<button type="button" class="list-group-item list-group-item-action locBtn" data-city="' + city + '" data-district="' + district + '">' + district + '</button>');
+        });
+        document.write('</ul></div></div>');
+    });
+
+    // 구 선택을 처리하는 클릭 이벤트 핸들러 추가
+    $(".locBtn").click(function () {
+        $(".locBtn").removeClass("selected");
+        $(this).addClass("selected");
+
+        // 선택한 도시와 구 가져오기
+        var selectedCity = $(this).data("city");
+        var selectedDistrict = $(this).data("district");
+
+        // 도시와 구 모두 표시
+        console.log('선택한 위치:', selectedCity, selectedDistrict);
+
+        // 폼이나 필요한 곳에 값 설정
+        document.getElementById("modalSelectedLocation").value = selectedCity + '/' + selectedDistrict;
+
+        // 모달 닫기
+        $("#locationModal").modal('hide');
+        $(".locationBtn").text(selectedCity + '/' + selectedDistrict);
+    });
+</script>
+
 					</div>
 				</div>
 								
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
+				<div class="modal-footer" style="border:none; height: 30px;">
 				</div> 
 			</div>
 		</div>
@@ -336,59 +375,6 @@ $(function() {
             			console.error( error );
         			} );
 			</script>
-
-	<script>
-	$(function() {
-		// Add a click event handler for the selectCategoryBtn button
-		$("#selectCategoryBtn").click(function() {
-			// Get the text content of the selected list item
-			var selectedCategory = $(".list-group-item.selected").text();
-
-			// Check if a category is selected
-			if (selectedCategory) {
-				console.log('Selected category:', selectedCategory);
-				
-			    // 폼에 값 설정
-			    document.getElementById("modalSelectedCategory").value = selectedCategory;
-
-				// Close the modal
-				$("#exampleModal").modal('hide');
-				$(".categoryBtn").text(selectedCategory);
-			} else {
-				console.log('Please select a category.');
-			}
-		});
-
-		$("#selectLocationBtn").click(function() {
-			// Get the text content of the selected list item 
-			var selectedLocation = $(".list-group-item.selected").text();
-
-			
-			// Check if a category is selected
-			if (selectedLocation) {
-				console.log('Selected category:', selectedLocation);
-				
-				// 폼에 값 설정
-			    document.getElementById("modalSelectedLocation").value = selectedLocation;
-				
-				// Close the modal
-				$("#locationModal").modal('hide');
-				$(".locationBtn").text(selectedLocation);
-			} else {
-				console.log('Please select a category.');
-			}
-		});
-
-		// Add a click event handler for the list-group items to toggle the "selected" class
-		$(".list-group-item").click(function() {
-			// Remove the "selected" class from all items
-			$(".list-group-item").removeClass("selected");
-
-			// Add the "selected" class to the clicked item
-			$(this).addClass("selected");
-		});
-	});
-</script>
 
 </body>
 </html>

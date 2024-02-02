@@ -8,6 +8,7 @@
                         
         
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
                         
         
         <property name="context-root" value="Soldesk_Project2_Unicode"/>

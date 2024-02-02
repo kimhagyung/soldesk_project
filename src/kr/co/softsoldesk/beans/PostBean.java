@@ -1,5 +1,8 @@
 package kr.co.softsoldesk.beans;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -7,13 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostBean {
 
 	private int board_id;
-    private int user_id;
-    private int pro_id;
+    private int user_id; //참조값
+    private int pro_id; //참조값
     
     @NotBlank
     private String title;
     
     private String photo;
+    private List<String> photos; //파일 이름 받을 리스트
     
     @NotBlank
     private String content;
@@ -21,11 +25,23 @@ public class PostBean {
     private String category;
     private String location;
     private int ReportedPostSt; 
-    private String board_date;
+    private LocalDateTime board_date;
     
     private MultipartFile upload_photo;
+    private List<MultipartFile> upload_photos;
     
-    
+	public List<String> getPhotos() {
+		return photos;
+	}
+	public void setPhotos(List<String> photos) {
+		this.photos = photos;
+	}
+	public List<MultipartFile> getUpload_photos() {
+		return upload_photos;
+	}
+	public void setUpload_photos(List<MultipartFile> upload_photos) {
+		this.upload_photos = upload_photos;
+	}
 	public MultipartFile getUpload_photo() {
 		return upload_photo;
 	}
@@ -87,12 +103,14 @@ public class PostBean {
 	public void setReportedPostSt(int reportedPostSt) {
 		ReportedPostSt = reportedPostSt;
 	}
-	public String getBoard_date() {
+	public LocalDateTime getBoard_date() {
 		return board_date;
 	}
-	public void setBoard_date(String board_date) {
+	public void setBoard_date(LocalDateTime board_date) {
 		this.board_date = board_date;
 	}
+	
+	
     
     
 }

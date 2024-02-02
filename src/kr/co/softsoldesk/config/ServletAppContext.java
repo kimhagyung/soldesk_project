@@ -21,14 +21,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
-import kr.co.softsoldesk.mapper.PostMapper;
-
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
-import kr.co.softsoldesk.mapper.ProUserMapper;
+import kr.co.softsoldesk.mapper.PostMapper;
+import kr.co.softsoldesk.mapper.ProUserMapper; 
 import kr.co.softsoldesk.mapper.UserMapper;
 
 
@@ -110,8 +108,12 @@ public class ServletAppContext implements WebMvcConfigurer{
 
 	
 	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
-	public MapperFactoryBean<PostMapper> getTopMenuMapper(SqlSessionFactory factory) throws Exception{
+	public MapperFactoryBean<PostMapper> PostMapper(SqlSessionFactory factory) throws Exception{
+		
 		MapperFactoryBean<PostMapper> factoryBean = new MapperFactoryBean<PostMapper>(PostMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
 
 	@Bean
 	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory)throws Exception{

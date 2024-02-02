@@ -1,5 +1,7 @@
 package kr.co.softsoldesk.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,9 @@ public class PostDao {
 	public void addBoardPostInfo(PostBean boardPostBean) {
 		
 		postMapper.addBoardPostInfo(boardPostBean);
+	}
+	
+	public List<PostBean> getAllPostList(){
+		return postMapper.getAllPostList();
 	}
 }

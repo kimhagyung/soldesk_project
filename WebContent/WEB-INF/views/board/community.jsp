@@ -173,21 +173,26 @@
 				<div id="feed">
 					<a href="detail-commnuity.jsp" style="text-decoration: none; color: black;"> </a>
 						<div class="feed-container">
-						
-							<div class="row">
-								<span class="f-color">카테고리<span> • 
-									<span class="f-color">지역</span>
+							
+							<c:forEach var="obj" items="${postList }">
+							
+								<button style="background-color: #fff; border: none;" onclick="${root}/board/detailCommunity">
+									<div class="row">
+									<span class="f-color">${obj.category }
+										<span>
+											 • <span class="f-color">${obj.location }</span>
+										</span>
 									</span>
-								</span>
-							</div>
+								</div>
 							
 							<section class="row">
 								<div class="col-10">
-									<p>제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목</p>
-									<p>내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</p>
+									<p>${obj.title }</p>
+									<p>${obj.content }</p>
 								</div>
 								<div class="col-2">
 									<img src="../image/pic1.jpg" class="feed-img" style="width: 120px; height: 120px;" alt="이미지">
+									<!-- 후에 DB에 이미지 저장 후 변경 -->
 								</div>
 							</section>
 							
@@ -195,18 +200,24 @@
 								<div class="col-10">
 									<span class=" f-color">
 										<img src="../image/comment2.png" style="width: 18px;" /> 
-										댓글 수
+										댓글 수 <!-- 후에 변경 -->
 									</span> 
 									
 									<span class=" f-color">
 										<img src="../image/eye.png" style="width: 18px;" />
-										 조회수
+										 조회수 <!-- 후에 변경 -->
 									</span>
 								</div>
 								<span class="col f-color">시간</span>
 							</div>
-							
+								</button>
+								
 							<hr>
+							</c:forEach>
+							
+							
+							
+							
 						</div>
 				</div>
 			</li>
@@ -215,6 +226,7 @@
 
 
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
+
 </body>
 
 </html>

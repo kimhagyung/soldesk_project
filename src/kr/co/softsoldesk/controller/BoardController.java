@@ -1,9 +1,12 @@
 package kr.co.softsoldesk.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +25,10 @@ public class BoardController {
 	PostService postService;
 
 	@GetMapping("/community")
-	public String community() {
+	public String community(Model model) {
+		
+		List<PostBean> postList = postService.getAllPostList();
+		model.addAttribute("postList", postList);
 		
 		return "board/community";
 	}
@@ -50,5 +56,11 @@ public class BoardController {
 		
 		
 		return "board/post_success";
+	}
+	
+	@GetMapping("/detailCommunity")
+	public String detailCommunity() {
+		
+		return "board/detailCommunity";
 	}
 }
