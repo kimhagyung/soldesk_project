@@ -16,12 +16,11 @@ public class RootAppContext {
 	@Bean("loginUserBean") 
 	@SessionScope
 	public UserBean loginUserBean() {
- 
 		return new UserBean();
 	}
 	
 	//일류로그인
-	@Bean("ProUserBean") 
+	@Bean("loginProuserBean") 
 	@SessionScope
 	public ProUserBean ProUserBean() { 
 		return new ProUserBean();

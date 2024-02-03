@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
 <c:set var="root" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
@@ -76,6 +77,40 @@
 	}
 </style>
 
+<script>
+    $(document).ready(function() {
+        $("#searchKeyword").on("input", function() {
+            var inputText = $(this).val();
+            // 콘솔 창에 현재 입력 내용 출력
+            console.log("사용자 입력: " + inputText);
+            if (inputText.length >= 2) { // 최소 2글자 이상일 때 서버에 요청
+                $.ajax({
+                    url: "${root}/autocomplete", // 자동 완성을 처리하는 컨트롤러의 URL
+                    method: "GET",
+                    data: { searchKeyword: inputText },
+                    success: function(data) {
+                        // 서버로부터 받은 검색어 자동 완성 결과를 #searchResults에 표시
+                        $("#searchResults").html(data).show(); 
+                    },
+                    error: function() {
+                        console.error("Failed to retrieve autocomplete suggestions.");
+                    }
+                });
+            } else {
+                // 3글자 미만이면 결과를 숨김
+                $("#searchResults").hide();
+            }
+        });
+
+        // 검색창 밖을 클릭하면 결과를 숨김
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#searchResults, #searchKeyword").length) {
+                $("#searchResults").hide();
+            }
+        });
+    });
+</script>
+
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
 		<div class="container">
@@ -101,35 +136,56 @@
 							</li>
 						</ul>
 						<!-- 검색 폼 -->
-						<form class="d-flex me-5 ms-auto" role="search">
-							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-							<button class="btn ms-2 button-custom" type="submit" style="color: white;">Search</button>
+						<form action="${root}/searchDetailCategories" method="get" class="d-flex me-5 ms-auto" role="search">
+						    <input class="form-control me-2" type="search" id="searchKeyword" placeholder="Search" aria-label="Search"/>
+						    <button class="btn ms-2 button-custom" type="submit" style="color: white;">Search</button>
+						    <!-- 여기에 추가 -->		
+							<!-- 자동완성 결과를 표시할 영역 추가 -->
+							<div id="searchResults"  style="position: relative; background-color: white; border: 1px solid #ccc;
+							     max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
 						</form>
-			 
-					<c:choose>
-						<c:when test="${loginUserBean.userLogin ==false }">
-						<!-- 로그인 및 회원가입 버튼 -->
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-								onclick="location.href='${root}/user/login'">일류로그인</button>
+
+ 
+					<c:choose> 
+						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
+							<!-- 로그인 및 회원가입 버튼 -->
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/login'">회원로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/join'">회원가입</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_join'">일류가입</button>
+							</c:when>
+						<c:when test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
 								onclick="location.href='${root}/user/login'">회원로그인</button>
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-								onclick="location.href='${root}/user/join'">회원가입</button>
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-								onclick="location.href='${root}/user/pro_join'">일류가입</button>
-						</c:when>
-						<c:otherwise>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_logout'">로그아웃</button> 
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage'">마이프로필</button>
-								<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/user/logout'">로그아웃</button>
 							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
 								<span
 									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
 									<span class="visually-hidden">New alerts</span>
 								</span>
 							</i>
-						</c:otherwise>
+						</c:when>
+						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/logout'">로그아웃</button> 
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
+								<span
+									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+									<span class="visually-hidden">New alerts</span>
+								</span>
+							</i>
+						</c:when> 
 					</c:choose>
 					</div>
 				</div>

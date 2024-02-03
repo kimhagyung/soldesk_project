@@ -122,6 +122,7 @@ body, div, span, h5, button, h2, p {
 										</button>
 									</div>
 								</div>
+								<form:errors path="user_email" style="color:red" />
                             </div>
                             <div class="mb-3">
                                 <form:label path="user_pwd">비밀번호</form:label>

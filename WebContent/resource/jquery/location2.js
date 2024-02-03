@@ -21,23 +21,4 @@ $(function() {
         Jeollanam: ['광양시', '나주시', '목포시', '순천시', '여수시', '강진군', '고흥군', '곡성군', '구례군', '담양군', '무안군', '보성군', '신안군', '영광군', '영암군', '완도군', '장성군', '장흥군', '진도군', '함평군', '해남군', '화순군']
     };
     
-
-     // 시/도 선택 시 해당 시/도에 맞는 군/구 목록을 동적으로 추가
-    $('#selectProvince').on('change', function () {
-        var selectedProvince = $(this).val();
-        var cities = cityData[selectedProvince];
-
-        // 기존의 군/구 목록을 비움
-        $('#selectCity').empty();
-
-        // 선택한 시/도에 따른 군/구 목록을 추가
-        if (cities) {
-            for (var i = 0; i < cities.length; i++) {
-                $('#selectCity').append('<option value="' + cities[i] + '">' + cities[i] + '</option>');
-            }
-        }
-    });
-
-    // 페이지 로드 시 초기 시/도 선택 상자의 change 이벤트를 수동으로 트리거
-     $('#selectProvince').val('seoul').trigger('change');
 });
