@@ -33,15 +33,10 @@ public class DetailCategoryDAO {
 		return detailCategoryMapper.getServiceCategoryName(service_category_id);
 	}
 	
-	
-	public List<DetailCategoryBean> getSearchDetailCategories(String searchKeyword) {
-		List<DetailCategoryBean> searchDetailCategories = detailCategoryMapper.getSearchDetailCategories(searchKeyword);
- 
-		return searchDetailCategories;
-	}
+	 
 	
 	 // 자동완성 메서드
-    public List<String> getAutocompleteSuggestions(String searchKeyword) {
+    public List<DetailCategoryBean> getAutocompleteSuggestions(String searchKeyword) {
         return detailCategoryMapper.getAutocompleteSuggestions(searchKeyword);
     }
 	

@@ -40,6 +40,8 @@ public class DetailCategoryBean {
 	public void setFile_name(String file_name) {
 		this.file_name = file_name;
 	}
+
+	
  
 	
 	

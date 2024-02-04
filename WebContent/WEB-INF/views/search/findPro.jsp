@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>findPro</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<%-- <script src="${root}/jquery/locdata.js"></script> --%>
 <script>
 	
 
@@ -24,6 +25,49 @@
 				var truncatedText = text.substring(0, maxCharacters) + '...';
 				$(this).text(truncatedText);
 			}
+		});
+	});
+	
+	$(function() {
+		// Add a click event handler for the selectCategoryBtn button
+		<!--
+		$("#selectCategoryBtn").click(function() {
+			// Get the text content of the selected list item
+			var selectedCategory = $(".list-group-item.selected").text();
+			
+			// Check if a category is selected
+			if (selectedCategory) {
+				console.log('Selected category:', selectedCategory);
+				// Close the modal
+				$("#exampleModal").modal('hide');
+				//$(".categoryBtn").text(selectedCategory);  
+			} else {
+				console.log('Please select a category.');
+			}
+		});-->
+
+		$("#selectLocationBtn").click(function() {
+			// Get the text content of the selected list item 
+			var selectedLocation = $(".list-group-item.selected").text();
+
+			// Check if a category is selected
+			if (selectedLocation) {
+				console.log('Selected category:', selectedLocation);
+				// Close the modal
+				$("#locationModal").modal('hide');
+				$(".locationBtn").text(selectedLocation);
+			} else {
+				console.log('Please select a category.');
+			}
+		});
+
+		// Add a click event handler for the list-group items to toggle the "selected" class
+		$(".list-group-item").click(function() {
+			// Remove the "selected" class from all items
+			$(".list-group-item").removeClass("selected");
+
+			// Add the "selected" class to the clicked item
+			$(this).addClass("selected");
 		});
 	});
 </script>
@@ -97,15 +141,96 @@
 			</h2>
 		</div>
 
-		<div class="btn-catelocat mb-5">
+		<div class="btn-catelocat">
 			<button type="button"
-				class="btn btn-outline-dark mt-4 btncommon categoryBtn"
-				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
-				⋁</button>
+        class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
+        data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <c:if test="${not empty param.detail_category_name}">
+        ${param.detail_category_name}
+    </c:if>
+    <c:if test="${empty param.detail_category_name}">
+        카테고리 ⋁
+    </c:if>
+</button>
+
+
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 ⋁</button>
+				data-bs-toggle="modal" data-bs-target="#locationModal">지역 ⋁</button> 
 		</div>
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리 선택</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+				<div class="modal-body">
+				    <div class="accordion" id="categoryAccordion">
+				      <%-- 서비스 카테고리 리스트 --%>
+						<c:forEach var="category" items="${service_category_name}" varStatus="loop">
+						    <div class="accordion-item">
+						        <h2 class="accordion-header">
+						            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${category}">
+						               ${category}
+						            </button>
+						        </h2>
+						        <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">
+						            <ul class="list-group">
+						                <%-- 상세 카테고리 리스트 --%>
+						                <c:forEach var="detailCategory" items="${detailCategoryList[loop.index]}">
+						                    <button type="button" class="list-group-item list-group-item-action selected" id="selectCategoryBtn"
+						                     onclick="location.href='${root}/search/findPro?service_category_id=${detailCategory.service_category_id}&detail_category_name=${detailCategory.detail_category_name }'">
+						                        ${detailCategory.detail_category_name}
+						                    </button>
+						                </c:forEach>
+						            </ul>
+						        </div>
+						    </div>
+						</c:forEach> 
+				    </div>
+				</div>  
+				</div>
+			</div>
+		</div>
+		<!-- 추가된 locationModal -->
+		<div class="modal fade" id="locationModal" tabindex="-1"
+			aria-labelledby="locationModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="accordion" id="categoryAccordion">
+							<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+							<script>
+								$.each(cityDatas, function(city, districts) {
+									document.write('<div class="accordion-item">');
+									document.write('<h2 class="accordion-header">');
+									document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '">' + city + '</button>');
+									document.write('</h2>');
+									document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+									document.write('<ul class="list-group">');
+								$.each(districts, function(index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action selected">' + district + '</button>');
+									});
+									document.write('</ul></div></div>');
+								});
+							</script>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<div class="row">
 			<div class="col-3">

@@ -21,8 +21,7 @@ public class DetailCategoryService {
 	public List<DetailCategoryBean> getDetailCategoryList(int service_category_id) {
 		
 		List<DetailCategoryBean> detailCategoryList = detailCategoryDao.getDetailCategoryList(service_category_id);
-		
-		
+ 	
 		return detailCategoryList;
 	}
 	
@@ -30,17 +29,9 @@ public class DetailCategoryService {
 		
 		return detailCategoryDao.getServiceCategoryName(service_category_id);
 	}
-	
-	
-	public List<DetailCategoryBean> getSearchDetailCategories(String searchKeyword) {
-			
-			List<DetailCategoryBean> searchDetailCategories = detailCategoryDao.getSearchDetailCategories(searchKeyword);
-			
-			return searchDetailCategories;
-		}
-
-	 // 자동완성 메서드
-    public List<String> getAutocompleteSuggestions(String searchKeyword) {
+	 
+	 // 카테고리 검색 자동완성 메서드
+    public List<DetailCategoryBean> getAutocompleteSuggestions(String searchKeyword) {
         return detailCategoryDao.getAutocompleteSuggestions(searchKeyword);
     }
 }

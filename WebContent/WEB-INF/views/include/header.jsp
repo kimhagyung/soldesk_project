@@ -75,42 +75,132 @@
 	.navbar-custom {
 		background-color: #D9E8F5;
 	}
+	 
+	 .searchResults{
+		position: absolute;
+		top: 57%; 
+		left: 32.5%; 
+		width: 21%; 
+	    background-color: white;
+	     border: 1px solid #ccc; 
+	     max-height: 200px; overflow-y: auto; 
+	     display: none; 
+	     z-index: 100;
+	     
+	 } 
 </style>
-
 <script>
-    $(document).ready(function() {
-        $("#searchKeyword").on("input", function() {
-            var inputText = $(this).val();
-            // 콘솔 창에 현재 입력 내용 출력
-            console.log("사용자 입력: " + inputText);
-            if (inputText.length >= 2) { // 최소 2글자 이상일 때 서버에 요청
-                $.ajax({
-                    url: "${root}/autocomplete", // 자동 완성을 처리하는 컨트롤러의 URL
-                    method: "GET",
-                    data: { searchKeyword: inputText },
-                    success: function(data) {
-                        // 서버로부터 받은 검색어 자동 완성 결과를 #searchResults에 표시
-                        $("#searchResults").html(data).show(); 
-                    },
-                    error: function() {
-                        console.error("Failed to retrieve autocomplete suggestions.");
+$(document).ready(function() {
+    var selectedServiceCategoryId;
+    var selectedDetailCategoryName;
+    $("#searchKeyword").on("input", function() {
+        var inputText = $(this).val();
+        // 콘솔 창에 현재 입력 내용 출력
+        console.log("사용자 입력: " + inputText);
+        if (inputText.length >= 2) {
+            $.ajax({
+                url: "${root}/autocomplete",
+                method: "GET",
+                data: { searchKeyword: inputText },
+                success: function(data) {
+                    showSearchResults(data);
+                    var resultsContainer = $(".searchResults");
+                    resultsContainer.empty();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var listItem = $("<a>")
+                            .addClass("list-group-item list-group-item-action")
+                            .css({
+                                "font-size": "15px"
+                            })
+                            .text(data[i].detail_category_name); 
+                        // 클릭 이벤트에 선택된 항목 정보 추가 (클로저 사용)
+                        (function(index) {
+                            listItem.click(function() {
+                                selectedServiceCategoryId = data[index].service_category_id;
+                                selectedDetailCategoryName = data[index].detail_category_name;
+                            });
+                        })(i); 
+                        resultsContainer.append(listItem);
+                    } 
+                    if (data.length === 0) {
+                        // 결과가 없을 경우 안내 메시지 추가
+                        var noResultItem = $("<div>")
+                            .addClass("list-group-item ")
+                            .css({
+                                "font-size": "15px"
+                            })
+                            .text("검색 결과가 없습니다.");
+                        resultsContainer.append(noResultItem);
                     }
-                });
-            } else {
-                // 3글자 미만이면 결과를 숨김
-                $("#searchResults").hide();
-            }
-        });
 
-        // 검색창 밖을 클릭하면 결과를 숨김
-        $(document).on("click", function(event) {
-            if (!$(event.target).closest("#searchResults, #searchKeyword").length) {
-                $("#searchResults").hide();
-            }
-        });
+                    resultsContainer.show(); // 결과를 보여줌
+                },
+                error: function() {
+                    console.error("Failed to retrieve autocomplete suggestions.");
+                }
+            });
+            
+        } else {
+            $(".searchResults").hide();
+        } 
     });
-</script>
 
+   
+    // 검색 결과 항목을 클릭할 때
+    $(".searchResults").on("click", ".list-group-item", function() {
+        selectedDetailCategoryName = $(this).text(); // 클릭한 항목의 텍스트 가져오기
+        $("#searchKeyword").val(selectedDetailCategoryName); // 검색 텍스트 상자에 설정
+        $(".searchResults").hide(); // 결과 숨기기
+
+        // 선택된 항목에 대한 정보를 사용하여 동작 수행
+        if (selectedServiceCategoryId && selectedDetailCategoryName) {
+            var queryParams = "?service_category_id=" + selectedServiceCategoryId + "&detail_category_name=" + selectedDetailCategoryName;
+            var newLocation = "${root}/Questions" + queryParams;
+            window.location.href = newLocation;
+        }
+    });
+
+    // 검색창 밖을 클릭하면 결과를 숨김
+    $(document).on("click", function(event) {
+        if (!$(event.target).closest("#searchResults, #searchKeyword").length) {
+            $(".searchResults").hide();
+        }
+    });
+    
+// 서버에서 받은 검색어를 리스트로 만들어 표시하는 함수
+    function showSearchResults(data) {
+        var resultsContainer = $(".searchResults");
+        resultsContainer.empty(); // 이전 결과를 지우고 새로운 결과 표시
+      
+       if (data.length > 0) {
+            // 결과가 있을 경우 리스트에 추가
+            for (var i = 0; i < data.length; i++) {
+                var listItem = $("<a>")
+                    .addClass("list-group-item list-group-item-action")
+                    .css({
+                        "font-size": "15px"
+                    })
+                    .text(data[i].detail_category_name);
+                resultsContainer.append(listItem);
+                console.log("showSearchResults 함수 수행"+data[i].detail_category_name);
+            }
+        } else {
+            // 결과가 없을 경우 안내 메시지 추가
+            var noResultItem = $("<div>")
+                .addClass("list-group-item ")
+                .css({
+                    "font-size": "15px"
+                })
+                .text("검색 결과가 없습니다.");
+            resultsContainer.append(noResultItem);
+            console.log("showSearchResults 함수 수행 결과가 없음");
+        } 
+       resultsContainer.show(); // 결과를 보여줌
+    }
+
+});
+</script>
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
 		<div class="container">
@@ -136,16 +226,13 @@
 							</li>
 						</ul>
 						<!-- 검색 폼 -->
-						<form action="${root}/searchDetailCategories" method="get" class="d-flex me-5 ms-auto" role="search">
-						    <input class="form-control me-2" type="search" id="searchKeyword" placeholder="Search" aria-label="Search"/>
-						    <button class="btn ms-2 button-custom" type="submit" style="color: white;">Search</button>
-						    <!-- 여기에 추가 -->		
-							<!-- 자동완성 결과를 표시할 영역 추가 -->
-							<div id="searchResults"  style="position: relative; background-color: white; border: 1px solid #ccc;
-							     max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
+						<form action="${root}/Questions" id="formID" method="get" class="d-flex me-5"  >
+						    <input class="form-control me-5 inputResult" id="searchKeyword" placeholder="Search" autocomplete='off' />
 						</form>
-
- 
+						<!-- 결과 받을 폼 -->
+						<div class="searchResults list-group" >
+						
+						</div>
 					<c:choose> 
 						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
 							<!-- 로그인 및 회원가입 버튼 -->

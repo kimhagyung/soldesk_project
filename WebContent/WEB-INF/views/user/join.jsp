@@ -48,7 +48,6 @@ function checkPasswordMatch() {
 </script>
 <script>
 function checkUserEmailExist(){
-	
 	var user_email = $("#user_email").val()
 	console.log("user_email",user_email);
 	if(user_email.length == 0){
