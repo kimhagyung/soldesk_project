@@ -10,8 +10,31 @@
 <title>커뮤니티테스트페이지</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="${root}/jquery/locdata.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
+
+$(document).ready(function() {
+	function searchFunction() {
+		var searchText = $(".list-group-item.selected").text().toLowerCase();
+		//console.log(searchText);
+		$('.card').each(function() {
+			var cardText = $(this).text().toLowerCase();
+			if (cardText.includes(searchText)) {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
+
+	}
+
+	$('.btn-primary').click(function() {
+		console.log("선택되었음");
+		searchFunction();
+	});
+
+});
+
 	$(function() {
 		// Add a click event handler for the selectCategoryBtn button
 		$("#selectCategoryBtn").click(function() {
@@ -86,10 +109,10 @@
 			<button type="button"
 				class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
 				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
-				⋁</button>
+				<i class="bi bi-caret-down"></i></button>
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 ⋁</button>
+				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button>
 			<button type="button" class="btn button-custom mt-4 me-5"
 				onclick="location.href='${root}/board/post'" style="float: right; color: white;">
 				글쓰기 <img src="../image/pen2.png" style="width: 18px;">
@@ -176,48 +199,37 @@
 							
 							<c:forEach var="obj" items="${postList }">
 							
-								<button style="background-color: #fff; border: none;" onclick="${root}/board/detailCommunity">
-									<div class="row">
-									<span class="f-color">${obj.category }
-										<span>
-											 • <span class="f-color">${obj.location }</span>
-										</span>
-									</span>
-								</div>
-							
-							<section class="row">
-								<div class="col-10">
-									<p>${obj.title }</p>
-									<p>${obj.content }</p>
-								</div>
-								<div class="col-2">
-									<img src="../image/pic1.jpg" class="feed-img" style="width: 120px; height: 120px;" alt="이미지">
-									<!-- 후에 DB에 이미지 저장 후 변경 -->
-								</div>
-							</section>
-							
-							<div class="row">
-								<div class="col-10">
-									<span class=" f-color">
-										<img src="../image/comment2.png" style="width: 18px;" /> 
-										댓글 수 <!-- 후에 변경 -->
-									</span> 
+								<button style="background-color: #fff; border: none; width: 100%;" onclick="location.href='${root}/board/detailCommunity?board_id=${obj.board_id }'">
+									<div class="card" style="border:none;">
+										<div class="cardInfo" style="display: flex; justify-content: left;">
+											<div class="f-color">${obj.category } &nbsp;•&nbsp; ${obj.location }</div><br/>
+										</div>
+										<div class="cardContent" style="display: flex; flex-direction: row; justify-content: space-between;">
+											<div>
+												<div class="title">${obj.title }</div>
+												<div class="content">${obj.content }</div>
+											</div>
+											<div>
+												<img src="../image/pic1.jpg" class="feed-img" style="width: 120px; height: 120px;" alt="이미지">
+												<!-- 후에 DB에 이미지 저장 후 변경 -->
+											</div>
+										</div>
+										<div class="cardBasicInfo" style="display: flex; flex-direction: row; justify-content: space-between;">
+											<div class="viewInfo" style="display: flex; flex-direction: row">
+												<div class="f-color"><i class="bi bi-chat-left-text-fill"></i> &nbsp;댓글 수</div>
+												<div class="f-color"><i class="bi bi-eye-fill"></i> &nbsp;조회수 ${obj.viewCnt }</div>
+											</div>
+											<div class="timeInfo">
+												<div class="f-color time" >${obj.board_date }</div>
+											</div>
+										</div>
+										<hr>
+									</div>
 									
-									<span class=" f-color">
-										<img src="../image/eye.png" style="width: 18px;" />
-										 조회수 <!-- 후에 변경 -->
-									</span>
-								</div>
-								<span class="col f-color">시간</span>
-							</div>
 								</button>
-								
-							<hr>
+							
 							</c:forEach>
-							
-							
-							
-							
+						
 						</div>
 				</div>
 			</li>
@@ -226,6 +238,34 @@
 
 
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var timeElements = document.querySelectorAll('.time');
+
+        timeElements.forEach(function (timeElement) {
+            var boardDate = moment(timeElement.textContent);
+            var now = moment(); // 현재 시간
+            var diffInMinutes = now.diff(boardDate, 'minutes');
+            var diffInHours = now.diff(boardDate, 'hours');
+
+            var relativeTime;
+            if (diffInMinutes < 1) {
+                relativeTime = '방금 전';
+            } else if (diffInHours < 1) {
+                relativeTime = diffInMinutes + '분 전';
+            } else if (diffInHours < 24) {
+                relativeTime = diffInHours + '시간 전';
+            } else if (diffInDays < 7) {
+                relativeTime = diffInDays + '일 전';
+            } else {
+                relativeTime = boardDate.format('YYYY-MM-DD');
+            }
+
+            timeElement.textContent = relativeTime;
+        });
+    });
+</script>
 
 </body>
 

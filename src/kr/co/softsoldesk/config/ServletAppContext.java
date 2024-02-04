@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
@@ -28,6 +30,7 @@ import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 import kr.co.softsoldesk.mapper.UserMapper;
+import kr.co.softsoldesk.service.PostService;
 
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
@@ -64,6 +67,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Resource(name="loginProuserBean")
 	private ProUserBean loginProuserBean; 
+	
+	@Autowired
+	private PostService postService;
 
 	/*
 	 * @Autowired private TopMenuService topMenuService;
@@ -148,6 +154,12 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		reg1.addPathPatterns("/**");//모든 요청에서 동작
 		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		
+		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
+		
+		InterceptorRegistration reg3 = registry.addInterceptor(checkWriterInterceptor);
+		
+		reg3.addPathPatterns("/board/modifyPost", "/board/delete");
 		
 	}
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리

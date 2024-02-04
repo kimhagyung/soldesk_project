@@ -1,5 +1,7 @@
+
 package kr.co.softsoldesk.beans;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,8 +18,7 @@ public class PostBean {
     @NotBlank
     private String title;
     
-    private String photo;
-    private List<String> photos; //파일 이름 받을 리스트
+    private String photos;
     
     @NotBlank
     private String content;
@@ -25,28 +26,39 @@ public class PostBean {
     private String category;
     private String location;
     private int ReportedPostSt; 
-    private LocalDateTime board_date;
+    private Timestamp board_date;
     
-    private MultipartFile upload_photo;
-    private List<MultipartFile> upload_photos;
+    private String writer_name;
     
-	public List<String> getPhotos() {
+    private int viewCnt;
+    
+    public int getViewCnt() {
+		return viewCnt;
+	}
+	public void setViewCnt(int viewCnt) {
+		this.viewCnt = viewCnt;
+	}
+	private List<MultipartFile> uploadFiles;
+    
+    
+    public List<MultipartFile> getUploadFiles() {
+		return uploadFiles;
+	}
+	public void setUploadFiles(List<MultipartFile> uploadFiles) {
+		this.uploadFiles = uploadFiles;
+	}
+	public String getWriter_name() {
+		return writer_name;
+	}
+	public void setWriter_name(String writer_name) {
+		this.writer_name = writer_name;
+	}
+
+	public String getPhotos() {
 		return photos;
 	}
-	public void setPhotos(List<String> photos) {
+	public void setPhotos(String photos) {
 		this.photos = photos;
-	}
-	public List<MultipartFile> getUpload_photos() {
-		return upload_photos;
-	}
-	public void setUpload_photos(List<MultipartFile> upload_photos) {
-		this.upload_photos = upload_photos;
-	}
-	public MultipartFile getUpload_photo() {
-		return upload_photo;
-	}
-	public void setUpload_photo(MultipartFile upload_photo) {
-		this.upload_photo = upload_photo;
 	}
 	public int getBoard_id() {
 		return board_id;
@@ -71,12 +83,6 @@ public class PostBean {
 	}
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	public String getPhoto() {
-		return photo;
-	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
 	}
 	
 	public String getContent() {
@@ -103,12 +109,14 @@ public class PostBean {
 	public void setReportedPostSt(int reportedPostSt) {
 		ReportedPostSt = reportedPostSt;
 	}
-	public LocalDateTime getBoard_date() {
+	public Timestamp getBoard_date() {
 		return board_date;
 	}
-	public void setBoard_date(LocalDateTime board_date) {
+	public void setBoard_date(Timestamp board_date) {
 		this.board_date = board_date;
 	}
+
+
 	
 	
     

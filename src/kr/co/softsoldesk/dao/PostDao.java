@@ -1,3 +1,4 @@
+
 package kr.co.softsoldesk.dao;
 
 import java.util.List;
@@ -22,4 +23,27 @@ public class PostDao {
 	public List<PostBean> getAllPostList(){
 		return postMapper.getAllPostList();
 	}
+	
+	public PostBean getPostInfo(int board_id) {
+		return postMapper.getPostInfo(board_id);
+	}
+	
+	public void modifyPostInfo(PostBean modifyPostBean) {
+		postMapper.modifyPostInfo(modifyPostBean);
+	}
+	
+	public void deletePostInfo(int board_id) {
+		postMapper.deletePostInfo(board_id);
+	}
+	
+	public List<PostBean> getPostLocationInfo(int board_id) {
+		return postMapper.getPostLocationInfo(board_id);
+	}
+
+	
+	 public void plusCnt(int board_id)
+	   {
+		 postMapper.plusCnt(board_id);
+	   }
+
 }

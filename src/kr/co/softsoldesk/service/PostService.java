@@ -1,8 +1,10 @@
+
 package kr.co.softsoldesk.service;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -10,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.support.DaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,38 +38,12 @@ public class PostService {
    @Resource(name = "loginProuserBean")
    private ProUserBean loginProuserBean;
    
-   private List<String> saveUploadFiles(List<MultipartFile> upload_photos) {
-       List<String> file_names = new ArrayList<>();
+   public void addBoardPostInfo(PostBean boardPostBean, List<MultipartFile> uploadFiles) {
 
-       for (MultipartFile upload_photo : upload_photos) {
-           String file_name = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(upload_photo.getOriginalFilename()) + "." +
-                   FilenameUtils.getExtension(upload_photo.getOriginalFilename());
-
-           try {
-               upload_photo.transferTo(new File(path_upload + "/" + file_name));
-               file_names.add(file_name);
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-       }
-
-       return file_names;
-   }
-
-   
-
-   public void addPostInfo(PostBean boardPostBean) {
-       List<MultipartFile> upload_photos = boardPostBean.getUpload_photos();
-
-       if (upload_photos != null && !upload_photos.isEmpty()) {
-           List<String> file_names = saveUploadFiles(upload_photos);
-           boardPostBean.setPhotos(file_names);
-           
-       }
-       
-       System.out.println(boardPostBean.getPhotos());
-
-       /*
+	   String fileNames = uploadFiles.stream().map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
+	   boardPostBean.setPhotos(fileNames);
+	   
+       //System.out.println("사진들" + boardPostBean.getPhotos());
        Integer userLoginID = loginUserBean.getUser_id();
        Integer proLoginID = loginProuserBean.getPro_id();
 
@@ -77,7 +54,7 @@ public class PostService {
            boardPostBean.setPro_id(proLoginID);
            System.out.println("나중에,,,");
        }
-       */
+       
 
        postDao.addBoardPostInfo(boardPostBean);
    }
@@ -85,5 +62,28 @@ public class PostService {
    public List<PostBean> getAllPostList(){
 	   return postDao.getAllPostList();
    }
+   
+   public PostBean getPostInfo(int board_id) {
+	   return postDao.getPostInfo(board_id);
+   }
+   
+   public void modifyPostInfo(PostBean modifyPostBean) { //사진 처리
+	   postDao.modifyPostInfo(modifyPostBean);
+   }
+   
+   public void deletePostInfo(int board_id) {
+	   postDao.deletePostInfo(board_id);
+   }
+   
+   public List<PostBean> getPostLocationInfo(int board_id){
+	   return postDao.getPostLocationInfo(board_id);
+   }
+
+   
+   public void plusCnt(int board_id)
+   {
+	   postDao.plusCnt(board_id);
+   }
+   
 
 }
