@@ -21,7 +21,7 @@ public class ProUserService {
 		
 		String pro_name = proUserDao.checkProuserEmailExist(pro_email);
 		if(pro_name == null) {
-	 
+			System.out.println("pro_name:"+pro_name);
 			return true;
 		}else {
 			return false;

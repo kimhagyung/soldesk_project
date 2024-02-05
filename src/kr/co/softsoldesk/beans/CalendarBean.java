@@ -10,7 +10,7 @@ public class CalendarBean {
 	private Timestamp end_date;
 	private int user_id;
 	private int pro_id;
-	
+	private String searchKeyword;
 	public int getCalendar_Id() {
         return calendar_Id;
     }
@@ -18,6 +18,14 @@ public class CalendarBean {
     public void setCalendar_Id(int calendar_Id) {
         this.calendar_Id = calendar_Id;
     }
+
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 
 	public String getCalendar_memo() {
 		return calendar_memo;

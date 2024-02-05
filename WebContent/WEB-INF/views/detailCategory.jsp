@@ -10,7 +10,7 @@
 <title>detailCategory</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 </head>
-<script>
+<script> 
 
    $(document).ready(function() {
     // 각 후기 내용을 제한할 길이ㅋㅋ
@@ -103,7 +103,7 @@
 <c:import url="/WEB-INF/views/include/header.jsp" />
 
 	<div class="container text-center custom-mt">
-		
+ 
 			<h2>${serviceCategoryname}</h2>
 		
     	
@@ -157,7 +157,7 @@
 			</button>
 		</div>
 	</div>
-	
+ 	 
 	<div class="container mt-5 mb-5">
 		<div class="d-flex justify-content-center align-items-center text-center mb-3 services">
 			<h2>
@@ -165,16 +165,16 @@
 			</h2>
 		</div>
 		  <div class="row row-cols-1 row-cols-md-5 g-4">
-		    <!-- Card 1 -->
+		    <!-- Card 1 --> 
 		    <c:forEach var="obj" items="${detailCategoryList }">
 			    <div class="col" onclick="location.href='${root}/Questions?service_category_id=${service_category_id}&detail_category_name=${obj.detail_category_name}' ">
-			    	<div class="card">
+			        <div class="card">
 			    		<img src="${root }/category/${obj.file_name}" class="card-img-top" alt="sport" style="object-fit: fill;">
 			      		<div class="card-body text-center ">
 			        		<h5 class="card-title text-center">${obj.detail_category_name }</h5>
 			      		</div>
 			    	</div>
-			  	</div>
+			  	</div> 
 		  </c:forEach>	
 	  </div>
 	</div>

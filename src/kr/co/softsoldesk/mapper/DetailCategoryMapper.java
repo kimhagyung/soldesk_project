@@ -21,23 +21,17 @@ public interface DetailCategoryMapper {
 			+ "where s.service_category_id = d.service_category_id\r\n"
 			+ "and s.service_category_id = #{service_category_id}")
 	List<DetailCategoryBean> getDetailCategoryList(int service_category_id);
-	
-	
-	//헤더 검색 기능 디테일 카테고리 검색 
-	@Select("SELECT detail_category_name\r\n"                                                          
+	          
+	                                                                                                   
+	// 자동완성 쿼리
+	@Select("SELECT detail_category_name, service_category_id\r\n"                                                          
 			+ "        FROM detailctg\r\n"                                                             
 			+ "        WHERE detail_category_name LIKE '%' || #{searchKeyword} || '%'\r\n"             
 			+ "           OR service_category_id IN (\r\n"                                             
 			+ "              SELECT service_category_id\r\n"                                           
 			+ "              FROM servicectg\r\n"                                                      
 			+ "              WHERE service_category_name LIKE '%' || #{searchKeyword} || '%'\r\n"      
-			+ "        )")                                                                             
-	List<DetailCategoryBean> getSearchDetailCategories(@Param("searchKeyword") String searchKeyword);               
-	                                                                                                   
-	// 자동완성 쿼리
-    @Select("SELECT DISTINCT service_category_name\r\n"
-            + "FROM servicectg\r\n"
-            + "WHERE service_category_name LIKE '%' || #{searchKeyword} || '%'")
-    List<String> getAutocompleteSuggestions(@Param("searchKeyword") String searchKeyword);
+			+ "        )")  
+    List<DetailCategoryBean> getAutocompleteSuggestions(@Param("searchKeyword") String searchKeyword);
 	
 }

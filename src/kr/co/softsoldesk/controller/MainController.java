@@ -32,23 +32,11 @@ public class MainController {
 	public String index(Model model) {
 
 		List<ServiceCategoryBean> categoryList = serviceCategoryService.getCategoryList();
+
 		model.addAttribute("categoryList", categoryList);
 
 		return "index";
-	}
-	
-	@GetMapping("/searchDetailCategories")
-    public String searchDetailCategories(@RequestParam(name = "searchKeyword", required = false) String searchKeyword, Model model) {
-        List<DetailCategoryBean> searchResult = detailCategoryService.getSearchDetailCategories(searchKeyword);
-        // 결과를 모델에 담아서 뷰로 전달
-        model.addAttribute("searchResult", searchResult);
-        model.addAttribute("searchKeyword", searchKeyword);
-        
-        System.out.println("searchResult:"+searchResult);
-        System.out.println("searchKeyword:"+searchKeyword);
-        // 뷰의 이름을 반환
-        return "/Questions"; // yourViewName은 실제 사용하는 뷰의 이름으로 대체해야 합니다.
-    }
+	}  
 	
 	 
 	
@@ -63,17 +51,11 @@ public class MainController {
 		//서비스 카테고리의 이름 가져오기
 		String serviceCategoryname = detailCategoryService.getServiceCategoryName(service_category_id);
 		model.addAttribute("serviceCategoryname", serviceCategoryname);
-		
+		System.out.println("serviceCategoryname"+serviceCategoryname);
 		//상세 카테고리 정보들
 		List<DetailCategoryBean> detailCategoryList = detailCategoryService.getDetailCategoryList(service_category_id);
 		model.addAttribute("detailCategoryList", detailCategoryList); 
-		//for (DetailCategoryBean detailCategory : detailCategoryList) {
-		//    System.out.println("Service Category ID: " + detailCategory.getService_category_id());
-		//    System.out.println("Detail Category Name: " + detailCategory.getDetail_category_name());
-		//    System.out.println("file name: " + detailCategory.getFile_name());
-
-		//    System.out.println("-----------------------------");
-	//} 
+		System.out.println("detailCategoryList"+detailCategoryList);
 		return "/detailCategory";
 	}
 	
@@ -95,11 +77,7 @@ public class MainController {
 		model.addAttribute("serviceCategoryname", serviceCategoryname);
 		  
 		return "/Questions";
-	}
-	@GetMapping("/Questions2")
-	public String Questions2(){
-		return "/Questions2";
-	}
+	} 
 
 
 }

@@ -22,7 +22,7 @@ public class ProUserBean {
 	private String pro_pwd;
 	@Size(min = 4, max = 20) 
 	private String confirmPassword;
-	private String gender;
+	private String pro_gender;
 	private boolean prouserEmailExist;
 	private boolean prouserLogin;
 	
@@ -32,15 +32,32 @@ public class ProUserBean {
 		this.prouserLogin = false;
 		// 초기화, 로그아웃 상태
 	}
-	
-	public String getGender() {
-		return gender;
+	 
+ 
+
+	public String getPro_gender() {
+		return pro_gender;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+
+
+	public void setPro_gender(String pro_gender) {
+		this.pro_gender = pro_gender;
 	}
- 
+
+
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+
 
 	public boolean isProuserEmailExist() {
 		return prouserEmailExist;
@@ -119,12 +136,12 @@ public class ProUserBean {
 	            if (active_detailcategory[1]==null) {
 	            	 active_detailcategory2 = null;
 	            }
-	            active_detailcategory2 = active_detailcategory[0];
+	            active_detailcategory2 = active_detailcategory[1];
 	            
 	            if (active_detailcategory[2]==null) {
 	            	 active_detailcategory3 = null;
 	            }
-	            active_detailcategory3 = active_detailcategory[0];
+	            active_detailcategory3 = active_detailcategory[2];
 	    	}
 	    }
 	public String getActive_detailcategory1() {

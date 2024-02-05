@@ -25,7 +25,7 @@ public class HomeController {
 	public String home() {
 		
 		System.out.println("HomeController 회원 로그인 로그인상태(false:로그아웃,true:로그인) : "+loginUserBean.isUserLogin());
-		System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserEmailExist());
+		System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserLogin());
 	
 		return "redirect:/index";
 	}
