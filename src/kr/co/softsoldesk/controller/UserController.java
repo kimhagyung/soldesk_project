@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.softsoldesk.Validator.UserValidator;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
-import kr.co.softsoldesk.beans.ProUserBean;
-import kr.co.softsoldesk.beans.ServiceCategoryBean;
+import kr.co.softsoldesk.beans.ProUserBean; 
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
 import kr.co.softsoldesk.service.ProUserService;
@@ -150,6 +149,7 @@ public class UserController {
 		return "user/join_success";
 	}
 
+	
 	//일류가입
 	@GetMapping("/pro_join")
 	public String pro_join(@ModelAttribute("joinProuserBean") ProUserBean joinProuserBean,
@@ -196,11 +196,13 @@ public class UserController {
 	}
 
 
+ 
 	@InitBinder
 	public void initBinder(WebDataBinder blinder) { 
 		 
 		UserValidator validator1 = new UserValidator(); 
 		blinder.addValidators(validator1); 
 	} 
+	 
 
 }

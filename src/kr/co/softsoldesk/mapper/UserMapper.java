@@ -15,4 +15,5 @@ public interface UserMapper {
 	
 	@Select("select * from users where user_email=#{user_email} and user_pwd=#{user_pwd}")
 	UserBean getLoginUserInfo(UserBean tempLoginUserBean);
+	 
 }

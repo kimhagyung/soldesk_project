@@ -1,5 +1,7 @@
 package kr.co.softsoldesk.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,20 @@ public class ProUserDao {
 		return ProuserMapper.getLoginProuserInfo(tempLoginUserBean2);
 	
 	} 
+	
+	public List<String> getSearchProUserByName(String pro_name) {
+		
+		return ProuserMapper.getSearchProUserByName(pro_name);
+		
+	} 
+	
+	public List<ProUserBean> getProUserByName() { 
+		return ProuserMapper.getProUserByName(); 
+	} 
+	
+	public List<String> getProCategoryAndLocation(String activeData) { 
+		return ProuserMapper.getProCategoryAndLocation(activeData); 
+	} 
+	
 	
 }

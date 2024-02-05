@@ -79,15 +79,51 @@
 	 .searchResults{
 		position: absolute;
 		top: 57%; 
-		left: 32.5%; 
-		width: 21%; 
+		left: 45.3%; 
+		width: 22.2%; 
 	    background-color: white;
 	     border: 1px solid #ccc; 
 	     max-height: 200px; overflow-y: auto; 
 	     display: none; 
 	     z-index: 100;
 	     
-	 } 
+	 }  
+	 <style>
+#username, #email, #password, #confirmPassword {
+   font-size: 18px;
+}
+/*
+.card-body {
+   background-color: #C6D7E0;
+}
+*/
+.accordion-item:last-of-type .accordion-button.collapsed {
+    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
+    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
+    background: yellow;
+}
+
+
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: var(--bs-accordion-btn-focus-border-color);
+    outline: 0;
+    box-shadow: white;
+}
+
+.accordion-item:last-of-type .accordion-button.collapsed {
+    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
+    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
+    background: white;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-accordion-active-color);
+    background-color: white;
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
 </style>
 <script>
 $(document).ready(function() {
@@ -213,7 +249,6 @@ $(document).ready(function() {
 								onclick="location.href='${root}/index'">
 						</div>
 					</div>
-
 					<!-- 메뉴 항목 -->
 					<div class="collapse navbar-collapse" id="navbarSupportedContent"
 						style="padding-bottom: 25px; font-size: 20px; ">
@@ -223,16 +258,14 @@ $(document).ready(function() {
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="${root}/search/findPro">일류찾기</a>
-							</li>
+							</li> 
 						</ul>
 						<!-- 검색 폼 -->
-						<form action="${root}/Questions" id="formID" method="get" class="d-flex me-5"  >
+						<form action="${root}/Questions" id="formID" method="get">
 						    <input class="form-control me-5 inputResult" id="searchKeyword" placeholder="Search" autocomplete='off' />
 						</form>
 						<!-- 결과 받을 폼 -->
-						<div class="searchResults list-group" >
-						
-						</div>
+						<div class="searchResults list-group" ></div>
 					<c:choose> 
 						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
 							<!-- 로그인 및 회원가입 버튼 -->

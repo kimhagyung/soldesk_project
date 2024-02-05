@@ -8,10 +8,8 @@
 <meta charset="UTF-8">
 <title>findPro</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<%-- <script src="${root}/jquery/locdata.js"></script> --%>
+<script src="${root}/jquery/locdata.js"></script>
 <script>
-	
-
 	$(document).ready(function() {
 		// 각 후기 내용을 제한할 길이
 		var maxCharacters = 100;
@@ -27,84 +25,69 @@
 			}
 		});
 	});
-	
-	$(function() {
-		// Add a click event handler for the selectCategoryBtn button
-		<!--
-		$("#selectCategoryBtn").click(function() {
-			// Get the text content of the selected list item
-			var selectedCategory = $(".list-group-item.selected").text();
-			
-			// Check if a category is selected
-			if (selectedCategory) {
-				console.log('Selected category:', selectedCategory);
-				// Close the modal
-				$("#exampleModal").modal('hide');
-				//$(".categoryBtn").text(selectedCategory);  
-			} else {
-				console.log('Please select a category.');
-			}
-		});-->
-
-		$("#selectLocationBtn").click(function() {
-			// Get the text content of the selected list item 
-			var selectedLocation = $(".list-group-item.selected").text();
-
-			// Check if a category is selected
-			if (selectedLocation) {
-				console.log('Selected category:', selectedLocation);
-				// Close the modal
-				$("#locationModal").modal('hide');
-				$(".locationBtn").text(selectedLocation);
-			} else {
-				console.log('Please select a category.');
-			}
-		});
-
-		// Add a click event handler for the list-group items to toggle the "selected" class
-		$(".list-group-item").click(function() {
-			// Remove the "selected" class from all items
-			$(".list-group-item").removeClass("selected");
-
-			// Add the "selected" class to the clicked item
-			$(this).addClass("selected");
-		});
-	});
-</script>
+</script> 
 
 <script>
-	$(document).ready(function() {
-		function searchFunction() {
-			var searchText = $('#searchInput').val().toLowerCase();
-			var found = false;
+$(document).ready(function (selectedLocation) {
+    $('.selectedDetailCate').on('click', function () {
+        var selectedCategory = $(this).text().trim();
+        $('#exampleModal').modal('hide');
+        console.log('선택된 디테일 카테고리:', selectedCategory);
+        $(".categoryBtn").text(selectedCategory);
+        sendToServer(selectedCategory, selectedLocation); // Sending only selectedCategory to the server
+    });
 
-			$('.card').each(function() {
-				var cardText = $(this).text().toLowerCase();
-				if (cardText.includes(searchText)) {
-					$(this).show();
-					found = true;
-				} else {
-					$(this).hide();
-				}
-			});
+    $('.selectedLocation').on('click', function (selectedCategory) {
+        var selectedLocation = $(this).text().trim();
+        $('#locationModal').modal('hide');
+        console.log('선택된 위치:', selectedLocation);
+        $(".locationBtn").text(selectedLocation);
+        sendToServer(selectedCategory, selectedLocation); // Sending only selectedLocation to the server
+    });
+    
+});
 
-			if (!found) {
-				alert("검색 결과가 없습니다.");
-			}
-		}
+function sendToServer(selectedCategory, selectedLocation) {
+    $.ajax({
+        type: 'GET',
+        url: '${root}/search/getCategoryInfo',
+        data: {
+            selectedCategory: selectedCategory,
+            selectedLocation: selectedLocation
+        },
+        success: function (data) {
+            console.log("받아온 data:", data); 
+           
+            var outputContainer = $('.here > div'); 
+            outputContainer.empty(); // 기존 내용을 비워줍니다.
 
-		$('#searchButton').click(function() {
-			searchFunction();
-		});
+            for (var i = 0; i < data.length; i++) {
+                var detailCategory = data[i];
 
-		// 엔터 키 입력 이벤트
-		$('#searchInput').keyup(function(event) {
-			if (event.keyCode === 13) { // 13은 엔터 키의 키코드
-				searchFunction();
-			}
-		});
-	});
-</script>
+                var card = $('<div class="card mb-3"></div>');
+                var cardBodyRow = $('<div class="card-body row"></div>');
+                var col10 = $('<div class="col-10"></div>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
+                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+
+                col10.append(boldText, cardContent, starReview, career);
+
+                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
+
+                cardBodyRow.append(col10, col2);
+                card.append(cardBodyRow);
+
+                outputContainer.append(card);
+            }
+        },
+        error: function (error) {
+            console.error('Error fetching category info:', error);
+        }
+    });
+}
+</script> 
 
 <style>
 #a_comment-board-title:hover {
@@ -141,22 +124,27 @@
 			</h2>
 		</div>
 
-		<div class="btn-catelocat">
+		<div class="btn-catelocat mb-5">
 			<button type="button"
-        class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
-        data-bs-toggle="modal" data-bs-target="#exampleModal">
-    <c:if test="${not empty param.detail_category_name}">
-        ${param.detail_category_name}
-    </c:if>
-    <c:if test="${empty param.detail_category_name}">
-        카테고리 ⋁
-    </c:if>
-</button>
-
-
+				class="btn btn-outline-dark mt-4 btncommon categoryBtn"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">
+				<c:if test="${not empty param.detail_category_name}">
+			        ${param.detail_category_name}
+			    </c:if>
+				<c:if test="${empty param.detail_category_name}">
+			        카테고리 ⋁
+			    </c:if>
+			</button>
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 ⋁</button> 
+				data-bs-toggle="modal" data-bs-target="#locationModal">
+				<c:if test="${not empty param.location}">
+			        ${param.location}
+			    </c:if>
+				<c:if test="${empty param.location}">
+			        지역 ⋁
+			    </c:if>
+			</button>
 		</div>
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -167,31 +155,35 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-				<div class="modal-body">
-				    <div class="accordion" id="categoryAccordion">
-				      <%-- 서비스 카테고리 리스트 --%>
-						<c:forEach var="category" items="${service_category_name}" varStatus="loop">
-						    <div class="accordion-item">
-						        <h2 class="accordion-header">
-						            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${category}">
-						               ${category}
-						            </button>
-						        </h2>
-						        <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">
-						            <ul class="list-group">
-						                <%-- 상세 카테고리 리스트 --%>
-						                <c:forEach var="detailCategory" items="${detailCategoryList[loop.index]}">
-						                    <button type="button" class="list-group-item list-group-item-action selected" id="selectCategoryBtn"
-						                     onclick="location.href='${root}/search/findPro?service_category_id=${detailCategory.service_category_id}&detail_category_name=${detailCategory.detail_category_name }'">
-						                        ${detailCategory.detail_category_name}
-						                    </button>
-						                </c:forEach>
-						            </ul>
-						        </div>
-						    </div>
-						</c:forEach> 
-				    </div>
-				</div>  
+					<div class="modal-body">
+						<div class="accordion" id="categoryAccordion">
+							<%-- 서비스 카테고리 리스트 --%>
+							<c:forEach var="category" items="${service_category_name}"
+								varStatus="loop">
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button" type="button"
+											data-bs-toggle="collapse" data-bs-target="#${category}">
+											${category}</button>
+									</h2>
+									<div id="${category}" class="accordion-collapse collapse"
+										data-bs-parent="#categoryAccordion">
+										<ul class="list-group">
+											<%-- 상세 카테고리 리스트 --%>
+											<c:forEach var="detailCategory"
+												items="${detailCategoryList[loop.index]}">
+												<button type="button" 
+													class="list-group-item list-group-item-action selectedDetailCate"
+													id="selectCategoryBtn" name="category" >
+													 ${detailCategory.detail_category_name}
+												</button>
+											</c:forEach>
+										</ul>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -202,30 +194,50 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="accordion" id="categoryAccordion">
 							<!-- 아래 스크립트를 body 내부에 추가하세요 -->
 							<script>
-								$.each(cityDatas, function(city, districts) {
-									document.write('<div class="accordion-item">');
-									document.write('<h2 class="accordion-header">');
-									document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '">' + city + '</button>');
-									document.write('</h2>');
-									document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
-									document.write('<ul class="list-group">');
-								$.each(districts, function(index, district) {
-									document.write('<button type="button" class="list-group-item list-group-item-action selected">' + district + '</button>');
-									});
-									document.write('</ul></div></div>');
-								});
+								$.each(cityDatas,function(city, districts) {
+													document.write('<div class="accordion-item">');
+													document.write('<h2 class="accordion-header">');
+													document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '">'
+																	+ city
+																	+ '</button>');
+													document.write('</h2>');
+													document
+															.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+													document
+															.write('<ul class="list-group">');
+													$
+															.each(
+																	districts,
+																	function(
+																			index,
+																			district) {
+																		document.write('<button type="button" class="list-group-item list-group-item-action selectedLocation">'
+																				+ district
+																				+ '</button>');
+
+																	});
+													document
+															.write('</ul></div></div>');
+												});
+								// 콘솔에 출력하는 함수
+
+								/* // 페이지로 이동하는 함수
+								function redirectToPage(value) {
+									console.log('선택한 값: ' + value);
+									// 여기에 이동할 페이지 URL을 지정합니다.
+									var pageURL = '${root}/search/findPro?${param.service_category_id}&detail_category_name=${param.detail_category_name }&location='
+											+ value; // 예시 URL, 실제로 사용할 URL로 변경하세요.
+									window.location.href = pageURL;
+								} */
 							</script>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
 					</div>
 				</div>
 			</div>
@@ -236,175 +248,87 @@
 			<div class="col-3">
 				<div class="card border-0" style="background-color: #f4f4f4;">
 					<div class="card-body p-4">
-
 						<p>서비스 분야를 선택해 주세요.</p>
 						<span style="color: #888888;"> 서비스 분야를 선택하면 나에게 딱 맞는 고수를
 							필터링해 찾아볼 수 있어요! </span>
-
 					</div>
 				</div>
 			</div>
-			
-			<div class="col-9">
 
-				<div class="mb-5"
-					style="display: flex; justify-content: space-between;">
-					<input id="searchInput" class="form-control"
-						placeholder="어떤 서비스가 필요하세요?" style="width: 90%;"></input>
-					<button id="searchButton" class="btn button-custom"
-						style="color: white;">검색</button>
-				</div>
-
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
-
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
-							</div>
-
-							<div class="career mt-2 lig">
-								<span>경력 10년</span>
-							</div>
-						</div>
-
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
+			<div class="col-9 here">
+				<form action="${root }/search/searchProName" method="get">
+					<div class="mb-5"
+						style="display: flex; justify-content: space-between;">
+						<input id="searchInput" name="searchInput" class="form-control"
+							autocomplete="off" placeholder="어떤 서비스가 필요하세요?"
+							style="width: 90%;"></input>
+						<button id="searchButton" class="btn button-custom"
+							style="color: white;"
+							onclick="location.href='${root}/search/findPro?s=${searchInput }'">검색</button>
 					</div>
-				</div>
+				</form>
+				<c:choose>
+					<c:when test="${not empty search_proname}">
+						<c:forEach var="proname" items="${search_proname}">
+							<div class="card mb-3">
+								<div class="card-body row">
+									<div class="col-10">
+										<b style="font-size: 18px;">${proname}</b>
+										<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
+											/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
+											‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
+											긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
+											참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
+											ZOOM으로 진행.</div>
+										<div class="star-review mt-1">
+											<i class="bi bi-star-fill star"></i> <span
+												class="review-count" style="font-size: 13px;">5.0(리뷰
+												수)</span>
+										</div>
 
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
+										<div class="career mt-2 lig">
+											<span>경력 10년</span>
+										</div>
+									</div>
 
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
+									<div class="col-2 text-center mt-4">
+										<img class="profileimage" src="../image/logo4.png">
+									</div>
+								</div>
 							</div>
+						</c:forEach>
+					</c:when> <%-- 
+					<c:otherwise>
+						<c:forEach var="proname" items="${pro_names}">
+							<div class="card mb-3">
+								<div class="card-body row">
+									<div class="col-10">
+										<b style="font-size: 18px;">${proname.pro_name }</b>
+										<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
+											/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
+											‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
+											긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
+											참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
+											ZOOM으로 진행.</div>
+										<div class="star-review mt-1">
+											<i class="bi bi-star-fill star"></i> <span
+												class="review-count" style="font-size: 13px;">5.0(리뷰
+												수)</span>
+										</div> 
+										<div class="career mt-2 lig">
+											<span>경력 10년</span>
+										</div>
+									</div>
 
-							<div class="career mt-2 lig">
-								<span>경력 20년</span>
+									<div class="col-2 text-center mt-4">
+										<img class="profileimage" src="../image/logo4.png">
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
-					</div>
-				</div>
-
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
-
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
-							</div>
-
-							<div class="career mt-2 lig">
-								<span>경력 30년</span>
-							</div>
-						</div>
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
-					</div>
-				</div>
-
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
-
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
-							</div>
-
-							<div class="career mt-2 lig">
-								<span>경력 40년</span>
-							</div>
-						</div>
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
-					</div>
-				</div>
-
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
-
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
-							</div>
-
-							<div class="career mt-2 lig">
-								<span>경력 50년</span>
-							</div>
-						</div>
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
-					</div>
-				</div>
-
-				<div class="card mb-3">
-					<div class="card-body row">
-						<div class="col-10">
-							<b style="font-size: 18px;">일류 이름입니다. </b>
-							<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스 /
-								회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는 ‘영어
-								발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며 긴 문장에
-								익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인 참여 환영합니다.
-								✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는 ZOOM으로 진행.</div>
-
-							<div class="star-review mt-1">
-								<i class="bi bi-star-fill star"></i> <span class="review-count"
-									style="font-size: 13px;">5.0(리뷰 수)</span>
-							</div>
-
-							<div class="career mt-2 lig">
-								<span>경력 60년</span>
-							</div>
-						</div>
-						<div class="col-2 text-center mt-4">
-							<img class="profileimage" src="../image/logo4.png">
-						</div>
-					</div>
-				</div>
+						</c:forEach>
+					</c:otherwise> --%>
+				</c:choose> 
+				<div><!-- 여기에 출력 --></div>
 			</div>
 		</div>
 
@@ -413,7 +337,7 @@
 	</div>
 	<!--여기까지 본문 -->
 	<!--푸터-->
-<c:import url="/WEB-INF/views/include/footer.jsp" />
+	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 </body>
 

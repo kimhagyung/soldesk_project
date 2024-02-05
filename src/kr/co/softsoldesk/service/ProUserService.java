@@ -1,11 +1,13 @@
 package kr.co.softsoldesk.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.softsoldesk.beans.ProUserBean; 
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
 @Service
@@ -18,15 +20,14 @@ public class ProUserService {
 	private ProUserBean loginProuserBean;
 	
 	public boolean checkProuserEmailExist(String pro_email) {
-		
+		System.out.println("ProUserService pro_email:"+pro_email);
 		String pro_name = proUserDao.checkProuserEmailExist(pro_email);
 		if(pro_name == null) {
-			System.out.println("pro_name:"+pro_name);
+			System.out.println("ProUserService pro_name:"+pro_name);
 			return true;
 		}else {
 			return false;
-		}	
-		 
+		}	 
 	}
 	
 	public void addProuserInfo(ProUserBean joinProuserBean) {
@@ -34,6 +35,7 @@ public class ProUserService {
 		proUserDao.addProuserInfo(joinProuserBean);
 	} 
 	
+
 	public void getLoginProuserInfo(ProUserBean tempLoginUserBean2) {
 		
 		 ProUserBean tempLoginProuserBean3 = proUserDao.getLoginProuserInfo(tempLoginUserBean2);
@@ -50,7 +52,18 @@ public class ProUserService {
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean3.getPro_pwd());
 	} 
 	
+	 public List<String> getSearchProUserByName(String pro_name) {
+	        return proUserDao.getSearchProUserByName(pro_name);
+	    }
 	
+	 public List<ProUserBean> getProUserByName() {
+		 return proUserDao.getProUserByName();
+	 }
+	 
+	 public List<String> getProCategoryAndLocation(String activeData) {
+		 return proUserDao.getProCategoryAndLocation(activeData);
+	 }
+	 
 	 
 }
 
