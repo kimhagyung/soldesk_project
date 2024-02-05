@@ -36,10 +36,6 @@ public class PostDao {
 		postMapper.deletePostInfo(board_id);
 	}
 	
-	public List<PostBean> getPostLocationInfo(int board_id) {
-		return postMapper.getPostLocationInfo(board_id);
-	}
-
 	
 	 public void plusCnt(int board_id)
 	   {

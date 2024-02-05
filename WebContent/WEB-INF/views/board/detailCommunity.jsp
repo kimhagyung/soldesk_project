@@ -1,6 +1,8 @@
+<%@page import="kr.co.softsoldesk.beans.PostBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -74,10 +76,11 @@
 				</div> 
 				<div class="writeTopSecond" style="width: 100%; display:flex; justify-content: flex-end;">
 					
-					<c:if test="${loginUserBean.user_id == readPostBean.user_id }"> <!-- Prouser도 해야 함 -->
+					<c:if test="${loginUserBean.user_id == readPostBean.user_id }"> 
 						<button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'" style="margin-right: 8px";>수정</button>
 						<button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'" style="margin-right: 8px;">삭제</button>
 					</c:if>
+					
 					
 					<button class="pageBtn" onclick="location.href='${root}/board/community'">목록</button>
 				</div>
@@ -87,24 +90,16 @@
 		<div class="post-body-container">
 			<span>${readPostBean.content }</span>
 				<c:if test="${readPostBean.photos != null }">
-					<div id="categoryphoto" class="carousel slide mt-4"style="width: 100%; margin: auto;">
-					<!-- 캐러셀 부분-->
-						<div class="carousel-inner">
-							<div class="carousel-item active">
-								<img src="https://static.cdn.soomgo.com/upload/media/82bd5b5f-e1bb-4fae-9f81-fb0c9c30c551.jpg?webp=1" class="d-block w-100"
-									style="height: 500px;" alt="pic">
-							</div>
-							<div class="carousel-item">
-								<img src="../image/2.png" class="d-block w-100"
-									style="height: 500px;" alt="pic1">
-							</div>
-							<div class="carousel-item">
-								<img src="../image/hobby.png" class="d-block w-100"
-									style="height: 500px;" alt="p">
-							</div>
-						</div>
-						
-						<button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
+    				<div id="categoryphoto" class="carousel slide mt-4" style="width: 100%; margin: auto;">
+        			<!-- 캐러셀 부분-->
+        				<div class="carousel-inner">
+            				<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
+                				<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
+                    				<img src="${root }/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
+                				</div>
+            				</c:forEach>
+        				</div>
+        				<button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
 							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 							<span class="visually-hidden">Previous</span>
 						</button>
@@ -112,10 +107,9 @@
 							<span class="carousel-control-next-icon" aria-hidden="true"></span>
 							<span class="visually-hidden">Next</span>
 						</button>
-					</div>
-		
+    				</div>
 				</c:if>
-				
+			
 			</div>
 			<hr/>
 				
@@ -220,7 +214,8 @@
             var now = moment(); // 현재 시간
             var diffInMinutes = now.diff(boardDate, 'minutes');
             var diffInHours = now.diff(boardDate, 'hours');
-
+			var diffInDays = now.diff(boardDate, 'days');
+			
             var relativeTime;
             if (diffInMinutes < 1) {
                 relativeTime = '방금 전';

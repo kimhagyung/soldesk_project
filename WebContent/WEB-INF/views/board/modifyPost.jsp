@@ -179,14 +179,14 @@ $(function() {
 		
 		<div class="postInfo">
 		<span class="col-2 mt-2">
-			<button class="btn button categoryBtn" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-controls="category">
-				(선택)카테고리 <i class="bi bi-caret-down"></i>
+			<button class="btn button categoryBtn" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-controls="category" onclick="handleOtherButtonClicked(event)">
+				${ctgBtnText } <i class="bi bi-caret-down"></i>
 			</button>
 		</span>
 				
 		<span class="col-2 mt-2">
-			<button class="btn button locationBtn" data-bs-toggle="modal" data-bs-target="#locationModal">
-				(선택)지역 <i class="bi bi-caret-down"></i>
+			<button class="btn button locationBtn" data-bs-toggle="modal" data-bs-target="#locationModal" onclick="handleOtherButtonClicked(event)">
+				${locBtnText } <i class="bi bi-caret-down"></i>
 			</button>
 		</span>
 	</div>
@@ -212,9 +212,10 @@ $(function() {
 					<form:label path="photos" for="inputGroupFile04" class="form-control col-2 btn"> 
 						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
 					</form:label>
+					<form:hidden path="photos"/>
 				</div>
 				
-				<div class="selected-image"></div>
+				<div class="selected-image">${photos }</div>
 				
 			</div>
 
@@ -381,6 +382,15 @@ $(function() {
             			console.error( error );
         			} );
 			</script>
+	<script>
+function handleOtherButtonClicked(event) {
+    // 추가 로직을 원한다면 여기에 작성
+
+    // 폼 제출을 막음
+    event.preventDefault();
+}
+</script>
+
 
 </body>
 </html>

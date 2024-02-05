@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -210,7 +211,15 @@ $(document).ready(function() {
 												<div class="content">${obj.content }</div>
 											</div>
 											<div>
-												<img src="../image/pic1.jpg" class="feed-img" style="width: 120px; height: 120px;" alt="이미지">
+												<c:if test="${obj.photos != null}">
+													<c:forEach var="photo" items="${fn:split(obj.photos, ',')}" varStatus="loop">
+														<c:if test="${loop.index == 0}">
+        													<img src="${root}/upload/${photo}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+    													</c:if>
+													</c:forEach>
+												</c:if>
+												
+												
 												<!-- 후에 DB에 이미지 저장 후 변경 -->
 											</div>
 										</div>
@@ -248,7 +257,8 @@ $(document).ready(function() {
             var now = moment(); // 현재 시간
             var diffInMinutes = now.diff(boardDate, 'minutes');
             var diffInHours = now.diff(boardDate, 'hours');
-
+			var diffInDays = now.diff(boardDate, 'days');
+			
             var relativeTime;
             if (diffInMinutes < 1) {
                 relativeTime = '방금 전';

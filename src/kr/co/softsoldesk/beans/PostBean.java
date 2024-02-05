@@ -2,7 +2,6 @@
 package kr.co.softsoldesk.beans;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -12,13 +11,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostBean {
 
 	private int board_id;
-    private int user_id; //참조값
-    private int pro_id; //참조값
+    private Integer user_id; 
+    public Integer getUser_id() {
+		return user_id;
+	}
+	public Integer getPro_id() {
+		return pro_id;
+	}
+	private Integer pro_id; 
     
     @NotBlank
     private String title;
     
-    private String photos;
+    private String photos;  //db에 저장하기 위한 값
+    
+    private List<MultipartFile> upload_photos;
     
     @NotBlank
     private String content;
@@ -28,11 +35,17 @@ public class PostBean {
     private int ReportedPostSt; 
     private Timestamp board_date;
     
-    private String writer_name;
-    
     private int viewCnt;
     
-    public int getViewCnt() {
+    private String writer_name;
+    
+    public List<MultipartFile> getUpload_photos() {
+		return upload_photos;
+	}
+	public void setUpload_photos(List<MultipartFile> upload_photos) {
+		this.upload_photos = upload_photos;
+	}
+	public int getViewCnt() {
 		return viewCnt;
 	}
 	public void setViewCnt(int viewCnt) {
@@ -66,18 +79,13 @@ public class PostBean {
 	public void setBoard_id(int board_id) {
 		this.board_id = board_id;
 	}
-	public int getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(int user_id) {
+	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
 	}
-	public int getPro_id() {
-		return pro_id;
-	}
-	public void setPro_id(int pro_id) {
+	public void setPro_id(Integer pro_id) {
 		this.pro_id = pro_id;
 	}
+	
 	public String getTitle() {
 		return title;
 	}

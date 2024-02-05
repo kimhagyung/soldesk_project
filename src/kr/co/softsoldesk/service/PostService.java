@@ -1,4 +1,3 @@
-
 package kr.co.softsoldesk.service;
 
 import java.io.File;
@@ -43,19 +42,26 @@ public class PostService {
 	   String fileNames = uploadFiles.stream().map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
 	   boardPostBean.setPhotos(fileNames);
 	   
-       //System.out.println("사진들" + boardPostBean.getPhotos());
-       Integer userLoginID = loginUserBean.getUser_id();
-       Integer proLoginID = loginProuserBean.getPro_id();
+	   for(MultipartFile uploadFile : uploadFiles) {
+		   String photo_name = FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "." + 
+				   			FilenameUtils.getExtension(uploadFile.getOriginalFilename());
+		   
+		   try {
+			uploadFile.transferTo(new File(path_upload + "/" + photo_name));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		  
+	   }  
+	   //유저가 0이면(프로 가입)
+	   //writeContentBean.setContent_writer_idx(loginUserBean.getUser_idx());
+	   if(loginProuserBean.isProuserLogin()==true) {
 
-       if (userLoginID != null) {
-           boardPostBean.setUser_id(userLoginID);
-           System.out.println("userLoginID Bean에 저장" + boardPostBean.getUser_id());
-       } else {
-           boardPostBean.setPro_id(proLoginID);
-           System.out.println("나중에,,,");
-       }
-       
-
+		   boardPostBean.setPro_id(loginProuserBean.getPro_id());
+	   } 
+	   else if(loginUserBean.isUserLogin()==true) { 
+		   boardPostBean.setUser_id(loginUserBean.getUser_id()); 
+	   }
        postDao.addBoardPostInfo(boardPostBean);
    }
    
@@ -67,16 +73,27 @@ public class PostService {
 	   return postDao.getPostInfo(board_id);
    }
    
-   public void modifyPostInfo(PostBean modifyPostBean) { //사진 처리
+   public void modifyPostInfo(PostBean modifyPostBean, List<MultipartFile> uploadFiles) { 
+	   String fileNames = uploadFiles.stream().map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
+	   modifyPostBean.setPhotos(fileNames);
+	   
+	   for(MultipartFile uploadFile : uploadFiles) {
+		   String photo_name = FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "." + 
+				   			FilenameUtils.getExtension(uploadFile.getOriginalFilename());
+		   
+		   try {
+			uploadFile.transferTo(new File(path_upload + "/" + photo_name));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		  
+	   }
+	   
 	   postDao.modifyPostInfo(modifyPostBean);
    }
    
    public void deletePostInfo(int board_id) {
 	   postDao.deletePostInfo(board_id);
-   }
-   
-   public List<PostBean> getPostLocationInfo(int board_id){
-	   return postDao.getPostLocationInfo(board_id);
    }
 
    
