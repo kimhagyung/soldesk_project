@@ -108,25 +108,25 @@ public class ProUserBean {
 	        return active_detailcategory;
 	    }
 
-	    public void setActive_detailcategory(String[] active_detailcategory) {
-	    	if (active_detailcategory != null) {
-	            // 배열의 길이에 따라 각 변수에 값을 할당
-	            if (active_detailcategory[0]==null) {
-	            	 active_detailcategory1 = null;
-	            }
-	            active_detailcategory1 = active_detailcategory[0];
-		             
-	            if (active_detailcategory[1]==null) {
-	            	 active_detailcategory2 = null;
-	            }
-	            active_detailcategory2 = active_detailcategory[0];
-	            
-	            if (active_detailcategory[2]==null) {
-	            	 active_detailcategory3 = null;
-	            }
-	            active_detailcategory3 = active_detailcategory[0];
-	    	}
-	    }
+		public void setActive_detailcategory(String[] active_detailcategory) {
+	          if (active_detailcategory != null) {
+	               // 배열의 길이에 따라 각 변수에 값을 할당
+	               if (active_detailcategory[0]==null) {
+	                   active_detailcategory1 = null;
+	               }
+	               active_detailcategory1 = active_detailcategory[0];
+	                   
+	               if (active_detailcategory[1]==null) {
+	                   active_detailcategory2 = null;
+	               }
+	               active_detailcategory2 = active_detailcategory[1];
+	               
+	               if (active_detailcategory[2]==null) {
+	                   active_detailcategory3 = null;
+	               }
+	               active_detailcategory3 = active_detailcategory[2];
+	          }
+	       }
 	public String getActive_detailcategory1() {
 			return active_detailcategory1;
 		}

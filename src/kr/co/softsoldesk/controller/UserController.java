@@ -1,10 +1,5 @@
 package kr.co.softsoldesk.controller;
 
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +27,9 @@ import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
 
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
 	@Autowired
 	private UserService userService;
 
@@ -62,6 +55,7 @@ public class UserController {
 		
 		return "user/login";
 	}
+	
 	@PostMapping("/login_pro")
 	public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, 
 							BindingResult result) {
@@ -70,7 +64,6 @@ public class UserController {
 		
 			return "user/login";
 		}
-		
 		userService.getLoginUserInfo(tempLoginUserBean);
 		System.out.println("userBeanController:"+tempLoginUserBean.getUser_name());
 		System.out.println("loginUserBean : "+loginUserBean.getUser_name());
@@ -94,6 +87,7 @@ public class UserController {
 		
 		return "user/pro_login";
 	}
+	
 	@PostMapping("/proUser_login")
 	public String pro_Login(@Valid @ModelAttribute("tempLoginUserBean2") ProUserBean tempLoginUserBean2, 
 							BindingResult result) {
@@ -103,8 +97,8 @@ public class UserController {
 			return "user/pro_login";
 		}
 		ProuserService.getLoginProuserInfo(tempLoginUserBean2);
-		System.out.println("userBeanController:"+tempLoginUserBean2.getPro_name()); 
-		System.out.println("loginUserBean : "+loginProuserBean.getPro_name());
+		System.out.println("userBeanController_pro:"+tempLoginUserBean2.getPro_name()); 
+		System.out.println("loginUserBean_pro : "+loginProuserBean.getPro_name());
 		if(loginProuserBean.isProuserLogin() == true) {
 			
 			return "user/login_succes";
@@ -140,11 +134,9 @@ public class UserController {
 	
 	@GetMapping("/join")
 	public String join(@ModelAttribute("joinUserBean") UserBean joinUserBean) {
-
 		
 		return "user/join";
 	}
-
 	
 	@PostMapping("/join_user")
 	public String join_pro(@Valid @ModelAttribute("joinUserBean") UserBean joinUserBean, BindingResult result) {
@@ -190,10 +182,6 @@ public class UserController {
 		return "user/AccountModify";
 	}
 
-
-
-
-
 /*
 	@InitBinder
 	public void initBinder(WebDataBinder blinder) { 
@@ -206,5 +194,4 @@ public class UserController {
 		 
 	} 
 */
-
 }

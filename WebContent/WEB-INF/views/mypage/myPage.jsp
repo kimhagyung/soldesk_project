@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>mypage</title>
+<title>myPage</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script>
 	$(function(){
@@ -84,7 +84,7 @@
 		  <li class="list-group-item mt-3">
 			  <h4><b>일정</b></h4>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="calender2.html">캘린더</a>
+				  <a href="${root}/common/calendar">캘린더</a>
 				  
 			  </div>
 			  

@@ -155,62 +155,6 @@ body, div, span, h5, button, h2, p {
 </style>
 </head>
 
-
-<body>
-<c:import url="/WEB-INF/views/include/header.jsp" />
-
-	<div class="container mt-5 mb-5">
-		<div class="row justify-content-center">
-			<div class="col-md-5">
-				<h2 class="card-title text-center mb-5 mt-5 fw-bold">아숨에 오신 것을
-					환영합니다!</h2>
-				<div class="card">
-					<div class="card-body" style="padding: 30px; font-size: 20px;">
-						<form class="needs-validation" novalidate>
-							<div class="mb-3">
-								<label for="username" class="form-label">이름</label> <input
-									type="text" class="form-control" id="username"
-									placeholder="사용자 이름을 입력하세요" required>
-								<div class="invalid-feedback">이름을 입력하세요.</div>
-							</div>
-							<div class="mb-3">
-								<label for="email" class="form-label">이메일 주소</label> <input
-									type="email" class="form-control" id="email"
-									placeholder="이메일 주소를 입력하세요" required>
-								<div class="invalid-feedback">올바른 이메일 주소를 입력하세요.</div>
-							</div>
-							<div class="mb-3">
-								<label for="password" class="form-label">비밀번호</label> <input
-									type="password" class="form-control" id="password"
-									placeholder="비밀번호를 입력해주세요" required>
-								<div class="invalid-feedback">영문과 숫자 조합 8자리 이상을 입력하세요.</div>
-							</div>
-							<div class="mb-3">
-								<label for="confirmPassword" class="form-label">비밀번호 확인</label>
-								<input type="password" class="form-control" id="confirmPassword"
-									placeholder="비밀번호를 입력하세요" required>
-								<div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
-							</div>
-							<!-- 추가된 부분 -->
-							<div id="message"></div>
-
-							<div class="d-grid gap-2 mt-5">
-								<button type="submit" class="btn button-custom py-2 fs-5"
-									style="color: white;">가입하기</button>
-							</div>
-						</form>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<c:import url="/WEB-INF/views/include/footer.jsp" />
-</body>
-
-</html>
-
- 
 <body>
     <c:import url="/WEB-INF/views/include/header.jsp" />
 

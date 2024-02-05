@@ -271,7 +271,7 @@ function resetUserIdExist(){
 									</form:select>
 								</div>
 							</div> 
-							<div class=" form-group d-grid gap-2 mt-5">
+							<div class="form-group d-grid gap-2 mt-5">
 								<form:button type="submit" class="btn button-custom py-2 fs-5"
 									id="joinButton" style="color: white;">가입하기</form:button>
 							</div>

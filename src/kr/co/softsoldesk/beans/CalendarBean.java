@@ -6,10 +6,14 @@ public class CalendarBean {
 
 	private int calendar_Id;
 	private String calendar_memo;
+	
+	
 	private Timestamp start_date;
 	private Timestamp end_date;
-	private int user_id;
-	private int pro_id;
+	private Timestamp alarm_date;
+	
+	private Integer user_id;
+	private Integer pro_id;
 	
 	public int getCalendar_Id() {
         return calendar_Id;
@@ -43,19 +47,28 @@ public class CalendarBean {
 		this.end_date = end_date;
 	}
 	
-	public int getUser_id() {
+	
+	public Timestamp getAlarm_date() {
+		return alarm_date;
+	}
+
+	public void setAlarm_date(Timestamp alarm_date) {
+		this.alarm_date = alarm_date;
+	}
+
+	public Integer getUser_id() {
 		return user_id;
 	}
 	
-	public void setUser_id(int user_id) {
+	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
 	}
 	
-	public int getPro_id() {
+	public Integer getPro_id() {
 		return pro_id;
 	}
 	
-	public void setPro_id(int pro_id) {
+	public void setPro_id(Integer pro_id) {
 		this.pro_id = pro_id;
 	}
 	

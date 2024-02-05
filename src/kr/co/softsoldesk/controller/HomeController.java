@@ -15,12 +15,6 @@ import kr.co.softsoldesk.beans.UserBean;
 public class HomeController {
 	
 
-	//@Resource(name = "loginUserBean")
-	//private UserBean loginUserBean; // UserBean이 객체로 만들어지고 초기값 가져옴
-		
-	//System.out.println(loginUserBean);
-	//System.out.println(loginUserBean.isUserLogin());
-
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean; // UserBean이 객체로 만들어지고 초기값 가져옴
 	
@@ -31,8 +25,8 @@ public class HomeController {
 	public String home() {
 		
 		System.out.println("HomeController 회원 로그인 로그인상태(false:로그아웃,true:로그인) : "+loginUserBean.isUserLogin());
-		System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserEmailExist());
-	
+	     System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserLogin());
+	      
 		return "redirect:/index";
 	}
 }

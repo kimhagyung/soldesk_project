@@ -136,14 +136,7 @@
 	            <div class="ms-auto">
                 <!-- 맨 오른쪽에 표시될 내용 -->
 	                <span>유뎅</span>
-<<<<<<< HEAD
 	                <span>|</span>
-=======
-
-	                <span>|</span>
-
-
->>>>>>> develop
 	                <span class="time" >15:00</span>
 	            </div>
 	        </li>
