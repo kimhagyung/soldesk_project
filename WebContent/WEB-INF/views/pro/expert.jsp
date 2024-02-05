@@ -74,6 +74,8 @@
 
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
 
+<script src="${root}/jquery/locdata.js"></script> <!-- 카테고리.js 불러오기 -->
+
 
 <script>
 	$(function () {
@@ -192,14 +194,74 @@
 			<div class="row">
 				<span class="col Subtitle">제공 서비스</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD">수정</button>
-				</div>
+	                <button type="button" class="InvisibleButton AfterMD" id="editBtn1">수정</button>
+	                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn1">저장</button>
+	            </div>
 			</div>
 			<p></p>
-			<p class="content">동그란 사각형</p>
+			<div>
+			    <ul class="list-group list-group-provided-services" id="providedServicesList">
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			            <button type="button" class="btn btn-outline-primary categoryBtn"
+						data-bs-toggle="modal" data-bs-target="#exampleModal">서비스 추가</button>
+			        </li>
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			        정보처리기사 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        </li>
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			        컴퓨터활용능력 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        </li>
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			        웹 개발 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        </li>
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			        QA 테스트 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        </li>
+			        <li class="list-group-item d-flex justify-content-between align-items-center">
+			        베트남어 번역 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        </li>
+			    </ul>
+			</div>
+
 			<p></p>
 		</div>
 	</div>
+	
+	<!-- 카테고리 모달 -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">서비스 추가</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="accordion" id="categoryAccordion">
+							<script>
+								$.each(categoryData, function(cate, districts) {
+									document.write('<div class="accordion-item">');
+									document.write('<h2 class="accordion-header">');
+									document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + cate + '">'+ cate + '</button>');
+									document.write('</h2>');
+									document.write('<div id="' + cate + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+									document.write('<ul class="list-group">');
+								$.each(districts, function(index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action selected">'+ district + '</button>');
+									});
+									document.write('</ul></div></div>');
+								});
+							</script>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="selectCategoryBtn">선택</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	
 	<div class="container mt-3 d-flex justify-content-center">
 	    <!-- 5.활동 지역 -->
@@ -483,6 +545,65 @@
             });
         });
 </script>
+
+
+
+<script> // 4. 제공 서비스
+$(function () {
+    // selectCategoryBtn 버튼에 대한 클릭 이벤트 핸들러 추가
+    $("#selectCategoryBtn").click(function () {
+        // 선택된 리스트 항목의 텍스트 내용 가져오기
+        var selectedCategory = $(".list-group-item.selected").text();
+
+        // 카테고리가 선택되었는지 확인
+        if (selectedCategory) {
+            console.log('선택된 카테고리:', selectedCategory);
+            // 모달 닫기
+            $("#exampleModal").modal('hide');
+
+            // 동적으로 리스트 아이템 생성 및 추가 (제공 서비스 섹션에만 추가)
+            var newItem = $("<li class='list-group-item d-flex justify-content-between align-items-center' id='providedServiceItem'>" + selectedCategory + "<button class='btn btn-sm btn-secondary ml-auto' onclick='removeService(this)'>삭제</button></li>");
+
+            // 클릭된 항목에 "selected" 클래스 추가
+            newItem.find("button").click(function () {
+                newItem.remove();
+            });
+
+            // 리스트에 추가 (제공 서비스 섹션에만 추가)
+            $(".list-group-provided-services").append(newItem);
+        } else {
+            console.log('카테고리를 선택하세요.');
+        }
+    });
+
+    // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
+    $(".list-group-item").click(function () {
+        // 모든 항목에서 "selected" 클래스 제거
+        $(".list-group-item").removeClass("selected");
+
+        // 클릭된 항목에 "selected" 클래스 추가
+        $(this).addClass("selected");
+    });
+});
+
+// 제공 서비스 섹션에서 삭제 버튼 클릭 시 해당 li 제거
+function removeService(button) {
+    $(button).closest("li").remove();
+}
+</script>
+
+
+<script>
+    // 직접 삭제 기능 구현
+    function removeService(button) {
+        // 해당 li 요소 찾기
+        var listItem = $(button).closest('li');
+        
+        // li 요소 삭제
+        listItem.remove();
+    }
+</script>
+
     
 <script> // 5. 고수 서비스 상세설명
     // textarea 글자수 세기

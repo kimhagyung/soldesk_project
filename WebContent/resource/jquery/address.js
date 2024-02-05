@@ -1,11 +1,4 @@
 
-// Kakao 지도 API가 이미 로드되었는지 확인
-if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
-    console.error('Kakao 지도 API가 정의되지 않았음.');
-
-    // 더 이상 진행하지 않고 종료
-} else { // address.js에서 사용하는 Kakao 지도 API 기능 사용 가능
-    
     var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
     var mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 초기 중심좌표
@@ -129,4 +122,3 @@ if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
     // 초기화 함수 호출
     sample6_execDaumPostcode();
     
-}
