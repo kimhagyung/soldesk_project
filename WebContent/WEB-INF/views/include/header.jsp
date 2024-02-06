@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>      
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <c:set var="root" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
@@ -100,37 +100,58 @@
 								<a class="nav-link" href="${root}/search/findPro">일류찾기</a>
 							</li>
 						</ul>
-
 						<!-- 검색 폼 -->
-						<form class="d-flex ms-auto" role="search">
+						<form class="d-flex me-5 ms-auto" role="search">
 							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 							<button class="btn ms-2 button-custom" type="submit" style="color: white;">Search</button>
 						</form>
-
-						<!-- 로그인 및 회원가입 버튼 -->
-						<button class="btn ms-2 button-custom" type="button" style="color: white;"
-							onclick="location.href='${root}/user/login'">로그인</button>
-						<button class="btn ms-2 button-custom" type="button" style="color: white;"
-							onclick="location.href='${root}/user/join'">회원가입</button>
-						<button class="btn ms-2 button-custom" type="button" style="color: white;"
-							onclick="location.href='${root}/user/pro_join'">일류가입</button>
-
-						<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
-							<span
-								class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-								<span class="visually-hidden">New alerts</span>
-							</span>
-						</i>
-
-
-
+ 
+					<c:choose> 
+						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
+							<!-- 로그인 및 회원가입 버튼 -->
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/login'">회원로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/join'">회원가입</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_join'">일류가입</button>
+							</c:when>
+						<c:when test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+								onclick="location.href='${root}/user/login'">회원로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_logout'">로그아웃</button> 
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
+								<span
+									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+									<span class="visually-hidden">New alerts</span>
+								</span>
+							</i>
+						</c:when>
+						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/user/logout'">로그아웃</button> 
+							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
+								<span
+									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+									<span class="visually-hidden">New alerts</span>
+								</span>
+							</i>
+						</c:when> 
+					</c:choose>
 					</div>
 				</div>
 			</nav>
 		</div>
 	</div>
-
-
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
@@ -83,6 +84,11 @@
 			 display: flex;
              justify-content: flex-end;
 		}
+		
+		.star {
+			padding: 0px 0px;
+		}
+		
     </style>
     <script>
     $(function(){
@@ -105,15 +111,19 @@
                             <div class="service_name" style="font-size: 14px; color: #737373;">성인 심리상담</div>
                         </div>
                     </div>
+                    <!-- form:form태그 -->
+                    <form:form action='${root }/review_write_pro' method='post' modelAttribute="reviewWriteBean">
+                    	
+                    </form:form>
                     <div class="provider_star_rate" style="width: 75%; padding-top: 45px;">
                         <div class="star_rate_title" style="font-size: 16px;"><strong>일류님은 어떠셨나요?</strong></div>
                         <div class="starrateExplain" style="color: #B5B5B5; font-size: 14px;">별점을 선택해주세요</div>
                         <div class="stars">
-                            <button class="star" style="padding: 0px 0px;"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star" style="padding: 0px 0px;"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star" style="padding: 0px 0px;"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star" style="padding: 0px 0px;"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star" style="padding: 0px 0px;"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
+                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
+                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
+                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
+                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
+                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
                         </div>
                         <div class="rateMessage" style="color: #B5B5B5;"></div>
                     </div>
