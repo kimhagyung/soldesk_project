@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,16 +22,27 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+<<<<<<< HEAD
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
+=======
+import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+<<<<<<< HEAD
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
+=======
+import kr.co.softsoldesk.mapper.PostMapper;
+import kr.co.softsoldesk.mapper.ProUserMapper; 
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 import kr.co.softsoldesk.mapper.UserMapper;
+import kr.co.softsoldesk.service.PostService;
+
 
 @Configuration
 @EnableWebMvc
@@ -54,6 +66,18 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 	@Value("${db.password}")
 	private String db_password;
+<<<<<<< HEAD
+=======
+	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean; 
+	
+	@Resource(name="loginProuserBean")
+	private ProUserBean loginProuserBean; 
+	
+	@Autowired
+	private PostService postService;
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
@@ -98,6 +122,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factory;
 	}
 
+<<<<<<< HEAD
 	// 카테고리 mapper 등록
 	@Bean
 	public MapperFactoryBean<ServiceCategoryMapper> getServiceCategoryMapper(SqlSessionFactory factory)
@@ -105,11 +130,27 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		MapperFactoryBean<ServiceCategoryMapper> factoryBean = new MapperFactoryBean<ServiceCategoryMapper>(
 				ServiceCategoryMapper.class);
+=======
+	
+	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
+	public MapperFactoryBean<PostMapper> PostMapper(SqlSessionFactory factory) throws Exception{
+		
+		MapperFactoryBean<PostMapper> factoryBean = new MapperFactoryBean<PostMapper>(PostMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+
+	@Bean
+	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<UserMapper> factoryBean = new MapperFactoryBean<UserMapper>(UserMapper.class);
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 
 		factoryBean.setSqlSessionFactory(factory);
 
 		return factoryBean;
 	}
+
 
 	@Bean
 	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory) throws Exception {
@@ -119,6 +160,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		return factoryBean;
 	}
+<<<<<<< HEAD
 
 	@Bean
 	public MapperFactoryBean<ProUserMapper> getProUserMapper(SqlSessionFactory factory) throws Exception {
@@ -127,6 +169,29 @@ public class ServletAppContext implements WebMvcConfigurer {
 		factoryBean.setSqlSessionFactory(factory);
 
 		return factoryBean;
+=======
+	
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
+		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
+		
+		
+		reg1.addPathPatterns("/**");//모든 요청에서 동작
+		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		
+		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
+		
+		InterceptorRegistration reg3 = registry.addInterceptor(checkWriterInterceptor);
+		
+		reg3.addPathPatterns("/board/modifyPost", "/board/delete");
+		
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 	}
 
 	@Bean
@@ -210,6 +275,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
 	}
+<<<<<<< HEAD
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -233,4 +299,12 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return new StandardServletMultipartResolver();
 	}
 
+=======
+	
+	@Bean
+	public StandardServletMultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
+	}
+	
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 }

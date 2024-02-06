@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-        
+            
+    
     <wb-module deploy-name="Soldesk_Project2_Unicode-0.0.1-SNAPSHOT">
-                
+                        
+        
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                
+                        
+        
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                
+                        
+        
         <property name="context-root" value="Soldesk_Project2_Unicode"/>
+<<<<<<< HEAD
+=======
+                        
+        
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
         <property name="java-output-path" value="/Soldesk_Project2_Unicode/target/classes"/>
-            
-    </wb-module>
+                    
     
+    </wb-module>
+        
+
 </project-modules>

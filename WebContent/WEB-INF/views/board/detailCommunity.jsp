@@ -1,6 +1,8 @@
+<%@page import="kr.co.softsoldesk.beans.PostBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -8,7 +10,7 @@
 <meta charset="UTF-8">
 <title>상세 글 페이지</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
 	$(function() {
 		
@@ -29,75 +31,88 @@
 	font-size: 30px;
 	float: right;
 }
+
+.pageBtn {
+	background-color: #fff; 
+	border: 1px solid #B8B2B2; 
+	border-radius: 8px; 
+	color: #B8B2B2; 
+	font-size: 14px;
+}
 </style>
 </head>
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />
 	<div class="container mt-5" style="width: 60%;">
 		<div class="post-header mt-5">
-			<div class="category t-color">과외</div>
+			<div class="category t-color">${readPostBean.category }</div>
 			<div class="post-title">
-				<h2>부엌쪽 한쪽 벽면 부분도배 견적 질문</h2>
+				<h2>${readPostBean.title }</h2>
 				<!-- 제목 -->
 			</div>
-			<div class="post-location t-color">서울/종로구</div>
-			<div class="row justify-content-between mt-5">
-				<div class="col-4">
-					<div class="row">
-						<div class="col-2">
-							<img src="../image/profile.png" style="width: 45px;">
+			<div class="post-location t-color">${readPostBean.location }</div>
+			
+			<div class="writeTop">
+				<div class="writeTopfirst">
+					<div class="writer" style="display: flex; justify-content: space-between;">
+						<div style="display:flex; flex-direction: row;">
+							<img src="../image/profile.png" style="width: 45px; margin-right: 10px;">
+							<div class="writerInfo" style="display: flex; flex-direction: column">
+								<span>${readPostBean.writer_name }</span>
+								<div class="time">${readPostBean.board_date }</div>  <!-- 조회수도 같이 하기 --설에 -->
+							</div>
 						</div>
-						<div class="col-8">
-							<span>으녕</span>
-							<p>
-								<span>30분전</span>
+						<div>
+							<i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<li>
+									<a class="dropdown-item" type="button" class="btn btn-primary" data-bs-toggle="modal"
+										data-bs-target="#exampleModal">게시글 신고</a>
+							 	</li>
+							</ul>
 						</div>
+						
 					</div>
-				</div>
-				<div class="col-4 ms-5">
-					<i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink"
-						role="button" data-bs-toggle="dropdown"></i>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						<li><a class="dropdown-item" type="button"
-							class="btn btn-primary" data-bs-toggle="modal"
-							data-bs-target="#exampleModal">댓글신고</a></li>
-					</ul>
+				</div> 
+				<div class="writeTopSecond" style="width: 100%; display:flex; justify-content: flex-end;">
+					
+					<c:if test="${loginUserBean.user_id == readPostBean.user_id }"> 
+						<button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'" style="margin-right: 8px";>수정</button>
+						<button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'" style="margin-right: 8px;">삭제</button>
+					</c:if>
+					
+					
+					<button class="pageBtn" onclick="location.href='${root}/board/community'">목록</button>
 				</div>
 			</div>
+			<hr/>
 		</div>
-		<hr>
 		<div class="post-body-container">
-			<span>냉장고 옆쪽 벽면인데 냉동고에서 비트가 터져흘러서... 사진처럼 아래쪽 벽이 보라색으로 물들었어요
-				예전에 시공하고 남은 같은 벽지 보유중이라 그걸로 해당벽면만 다시 도배하고싶은데요ㅜㅜ 대략 견적 얼마정도 나올까요??</span>
-			<div id="categoryphoto" class="carousel slide mt-4"
-				style="width: 100%; margin: auto;">
-				<!-- 캐러셀 부분-->
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<img src="https://static.cdn.soomgo.com/upload/media/82bd5b5f-e1bb-4fae-9f81-fb0c9c30c551.jpg?webp=1" class="d-block w-100"
-							style="height: 500px;" alt="pic">
-					</div>
-					<div class="carousel-item">
-						<img src="../image/2.png" class="d-block w-100"
-							style="height: 500px;" alt="pic1">
-					</div>
-					<div class="carousel-item">
-						<img src="../image/hobby.png" class="d-block w-100"
-							style="height: 500px;" alt="p">
-					</div>
-				</div>
-				<button class="carousel-control-prev" type="button"
-					data-bs-target="#categoryphoto" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button class="carousel-control-next" type="button"
-					data-bs-target="#categoryphoto" data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
+			<span>${readPostBean.content }</span>
+				<c:if test="${readPostBean.photos != null }">
+    				<div id="categoryphoto" class="carousel slide mt-4" style="width: 100%; margin: auto;">
+        			<!-- 캐러셀 부분-->
+        				<div class="carousel-inner">
+            				<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
+                				<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
+                    				<img src="${root }/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
+                				</div>
+            				</c:forEach>
+        				</div>
+        				<button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#categoryphoto" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+    				</div>
+				</c:if>
+			
 			</div>
-		</div>
+			<hr/>
+				
 		<div class="post-comment-count mt-4">
 			<i class="bi bi-chat-right-text"> 댓글 3</i>
 		</div>
@@ -173,16 +188,14 @@
 						</div>
 						<div class="comment-action-group t-color">
 
-							<span>6시간전</span> &nbsp; <span class="parent-comment"> <span
-								class="co-comment" style="cursor: pointer;">대댓글</span> <!-- 대댓글 클릭시 보이는 부분 -->
-								<div class="comment-input-box input-group mb-3 mt-4 sho-comm" style="display: none; width: 100%;">
-									<input type="text" class="form-control" placeholder="댓글을 남겨주세요"
-										aria-label="Recipient's username"
-										aria-describedby="button-addon2">
-									<button class="btn btn-outline-secondary" type="button"
-										id="button-addon2">등록</button>
-								</div>
-							</span>
+							<span>6시간전</span> &nbsp; 
+							<!-- <span class="parent-comment"> 
+								<span class="co-comment" style="cursor: pointer;">대댓글</span> 대댓글 클릭시 보이는 부분
+								
+									<input type="text" class="form-control" placeholder="댓글을 남겨주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+									<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
+								
+							</span> -->
 						</div>
 					</div>
 				</li>
@@ -191,5 +204,35 @@
 	</div>
 	
 <c:import url="/WEB-INF/views/include/footer.jsp" />
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var timeElements = document.querySelectorAll('.time');
+
+        timeElements.forEach(function (timeElement) {
+            var boardDate = moment(timeElement.textContent);
+            var now = moment(); // 현재 시간
+            var diffInMinutes = now.diff(boardDate, 'minutes');
+            var diffInHours = now.diff(boardDate, 'hours');
+			var diffInDays = now.diff(boardDate, 'days');
+			
+            var relativeTime;
+            if (diffInMinutes < 1) {
+                relativeTime = '방금 전';
+            } else if (diffInHours < 1) {
+                relativeTime = diffInMinutes + '분 전';
+            } else if (diffInHours < 24) {
+                relativeTime = diffInHours + '시간 전';
+            } else if (diffInDays < 7) {
+                relativeTime = diffInDays + '일 전';
+            } else {
+                relativeTime = boardDate.format('YYYY-MM-DD');
+            }
+
+            timeElement.textContent = relativeTime;
+        });
+    });
+</script>
+
 </body>
 </html>

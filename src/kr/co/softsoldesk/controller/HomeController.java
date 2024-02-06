@@ -2,6 +2,7 @@ package kr.co.softsoldesk.controller;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,18 @@ public class HomeController {
 	private ProUserBean loginProuserBean;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
-	public String home() {
+	public String home(HttpServletRequest request) {
+		
+		System.out.println(request.getServletContext().getRealPath("/"));
 		
 		System.out.println("HomeController 회원 로그인 로그인상태(false:로그아웃,true:로그인) : "+loginUserBean.isUserLogin());
+<<<<<<< HEAD
 	     System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserLogin());
 	      
+=======
+		System.out.println("HomeController 일류 로그인상태(false:로그아웃,true:로그인) : "+loginProuserBean.isProuserLogin());
+	
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 		return "redirect:/index";
 	}
 }

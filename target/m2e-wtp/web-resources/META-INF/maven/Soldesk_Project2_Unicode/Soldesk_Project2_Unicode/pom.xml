@@ -72,6 +72,7 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.5.Final</version>
 		</dependency>
+<<<<<<< HEAD
 
 		<dependency>
 			<groupId>javax.annotation</groupId>
@@ -83,6 +84,14 @@
         <artifactId>jackson-databind</artifactId>
         <version>2.13.0</version> <!-- 최신 버전 사용 가능 -->
     </dependency>
+=======
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

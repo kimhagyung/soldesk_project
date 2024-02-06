@@ -5,4 +5,8 @@ eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/views/board/community.jsp=UTF-8
 encoding//WebContent/WEB-INF/views/index.jsp=UTF-8
 encoding//WebContent/WEB-INF/views/search/findPro.jsp=UTF-8
+<<<<<<< HEAD
+=======
+encoding//src/kr/co/softsoldesk/config/SpringConfigClass.java=UTF-8
+>>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 encoding/<project>=UTF-8
