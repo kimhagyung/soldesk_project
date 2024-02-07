@@ -28,32 +28,120 @@
 </script> 
 
 <script>
-$(document).ready(function (selectedLocation) {
+$(document).ready(function () {
     $('.selectedDetailCate').on('click', function () {
         var selectedCategory = $(this).text().trim();
+        //var selectedLocation = $(".locationBtn").text().trim(); // Get selectedLocation
         $('#exampleModal').modal('hide');
+        //console.log('선택된 디테일 카테고리:', selectedCategory,selectedLocation);
         console.log('선택된 디테일 카테고리:', selectedCategory);
-        $(".categoryBtn").text(selectedCategory);
-        sendToServer(selectedCategory, selectedLocation); // Sending only selectedCategory to the server
+        $(".categoryBtn").text(selectedCategory); 
+        sendToServerCategory(selectedCategory);
+        sendToServer(selectedCategory,selectedLocation); // Send both selectedCategory and selectedLocation
     });
 
-    $('.selectedLocation').on('click', function (selectedCategory) {
+    $('.selectedLocation').on('click', function() {
         var selectedLocation = $(this).text().trim();
+        //var selectedCategory = $(".categoryBtn").text().trim(); // Get selectedCategory
         $('#locationModal').modal('hide');
-        console.log('선택된 위치:', selectedLocation);
+        //console.log('선택된 위치:', selectedLocation,selectedCategory);
+        console.log('선택된 위치:',selectedLocation);
         $(".locationBtn").text(selectedLocation);
-        sendToServer(selectedCategory, selectedLocation); // Sending only selectedLocation to the server
-    });
-    
+        sendToServerLocation(selectedLocation);
+        sendToServer(selectedCategory,selectedLocation); // Send both selectedCategory and selectedLocation
+    }); 
 });
 
 function sendToServer(selectedCategory, selectedLocation) {
+	// 값이 없을 때 디폴트로 null 설정 
     $.ajax({
         type: 'GET',
         url: '${root}/search/getCategoryInfo',
         data: {
             selectedCategory: selectedCategory,
-            selectedLocation: selectedLocation
+            active_location: selectedLocation
+        },
+        success: function (data) {
+            console.log("받아온 data:", data); 
+           
+            var outputContainer = $('.here > div'); 
+            outputContainer.empty(); // 기존 내용을 비워줍니다.
+
+            for (var i = 0; i < data.length; i++) {
+                var detailCategory = data[i];
+
+                var card = $('<div class="card mb-3"></div>');
+                var cardBodyRow = $('<div class="card-body row"></div>');
+                var col10 = $('<div class="col-10"></div>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
+                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+
+                col10.append(boldText, cardContent, starReview, career);
+
+                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
+
+                cardBodyRow.append(col10, col2);
+                card.append(cardBodyRow);
+
+                outputContainer.append(card);
+            }
+        },
+        error: function (error) {
+            console.error('Error fetching category info:', error);
+        }
+    });
+}
+
+function sendToServerCategory(selectedCategory) {
+	// 값이 없을 때 디폴트로 null 설정 
+    $.ajax({
+        type: 'GET',
+        url: '${root}/search/getCategoryInfo',
+        data: {
+            selectedCategory: selectedCategory 
+        },
+        success: function (data) {
+            console.log("받아온 data:", data); 
+           
+            var outputContainer = $('.here > div'); 
+            outputContainer.empty(); // 기존 내용을 비워줍니다.
+
+            for (var i = 0; i < data.length; i++) {
+                var detailCategory = data[i];
+
+                var card = $('<div class="card mb-3"></div>');
+                var cardBodyRow = $('<div class="card-body row"></div>');
+                var col10 = $('<div class="col-10"></div>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
+                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+
+                col10.append(boldText, cardContent, starReview, career);
+
+                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
+
+                cardBodyRow.append(col10, col2);
+                card.append(cardBodyRow);
+
+                outputContainer.append(card);
+            }
+        },
+        error: function (error) {
+            console.error('Error fetching category info:', error);
+        }
+    });
+}
+
+function sendToServerLocation(selectedLocation) {
+	// 값이 없을 때 디폴트로 null 설정 
+    $.ajax({
+        type: 'GET',
+        url: '${root}/search/getCategoryInfo',
+        data: { 
+            active_location: selectedLocation
         },
         success: function (data) {
             console.log("받아온 data:", data); 

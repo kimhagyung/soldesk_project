@@ -284,7 +284,7 @@ $(document).ready(function() {
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/user/pro_logout'">로그아웃</button> 
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
 								<span
 									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
@@ -298,7 +298,7 @@ $(document).ready(function() {
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/user/logout'">로그아웃</button> 
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
 							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
 								<span
 									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">

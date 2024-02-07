@@ -25,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
@@ -136,13 +137,18 @@ public class ServletAppContext implements WebMvcConfigurer {
 	
 		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
 		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
-		
+		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean);
+
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
 		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
-		
-		
-		reg1.addPathPatterns("/**");//모든 요청에서 동작
-		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		InterceptorRegistration reg3 = registry.addInterceptor(loginInterceptor);
+
+		reg1.addPathPatterns("/**");// 모든 요청에서 동작
+		reg2.addPathPatterns("/**");// 모든 요청에서 동작
+		//reg3.addPathPatterns("/common/calendar");
+		reg3.addPathPatterns("/common/myPage");
+		reg3.addPathPatterns("/common/AccountModify");
+		reg3.addPathPatterns("/common/AccountSetting");
 		
 	}
 	

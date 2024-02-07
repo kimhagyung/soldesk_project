@@ -63,20 +63,24 @@ public class UserController {
 							BindingResult result) {
 		
 		if(result.hasErrors()) {
-		
 			return "user/login";
 		}
+ 		try {
 		userService.getLoginUserInfo(tempLoginUserBean);
-		System.out.println("userBeanController:"+tempLoginUserBean.getUser_name());
-		System.out.println("loginUserBean : "+loginUserBean.getUser_name());
+		System.out.println("userController-getUser_name:"+tempLoginUserBean.getUser_name());
 		if(loginUserBean.isUserLogin() == true) {
 			
 			return "user/login_succes";
 			
 		}else {
-			
 			return "user/login_fail";
 		}
+		}catch (NullPointerException e) {
+	        e.printStackTrace();
+	        // NullPointerException이 발생하면 로그인 실패로 처리
+	        return "user/login_fail";
+	    }
+	    
 	}
 	
 	//고수 로그인
@@ -86,9 +90,9 @@ public class UserController {
 						Model model) {
 		
 		model.addAttribute("fail", fail);
-		
 		return "user/pro_login";
 	}
+	
 	@PostMapping("/proUser_login")
 	public String pro_Login(@Valid @ModelAttribute("tempLoginUserBean2") ProUserBean tempLoginUserBean2, 
 							BindingResult result) {
@@ -97,17 +101,23 @@ public class UserController {
 		
 			return "user/pro_login";
 		}
-		ProuserService.getLoginProuserInfo(tempLoginUserBean2);
-		System.out.println("userBeanController:"+tempLoginUserBean2.getPro_name()); 
-		System.out.println("loginUserBean : "+loginProuserBean.getPro_name());
-		if(loginProuserBean.isProuserLogin() == true) {
-			
-			return "user/login_succes";
-			
-		}else {
-			
-			return "user/pro_login_fail";
-		}
+		try {
+			ProuserService.getLoginProuserInfo(tempLoginUserBean2);
+			System.out.println("userBeanController:"+tempLoginUserBean2.getPro_name()); 
+			System.out.println("loginUserBean : "+loginProuserBean.getPro_name());
+			if(loginProuserBean.isProuserLogin() == true) {
+				
+				return "user/login_succes";
+				
+			}else {
+				
+				return "user/pro_login_fail";
+			}
+		}catch (NullPointerException e) {
+	        e.printStackTrace();
+	        // NullPointerException이 발생하면 로그인 실패로 처리
+	        return "user/pro_login_fail";
+	    }
 	}
 	
 	
@@ -159,12 +169,10 @@ public class UserController {
 		    
 		    for (int i = 1; i <= 8; i++) {
 		        List<DetailCategoryBean> list1 = detailCategoryService.getDetailCategoryList(i);
-		        String categoryName = detailCategoryService.getServiceCategoryName(i);
-		        
+		        String categoryName = detailCategoryService.getServiceCategoryName(i); 
 		        detailCategoryList.add(list1);
 		        service_Category_Name.add(categoryName);
 		    }
-		    
 		    model.addAttribute("detailCategoryList", detailCategoryList);
 		    model.addAttribute("service_category_name", service_Category_Name); 
 		
@@ -181,21 +189,6 @@ public class UserController {
 		return "user/join_success";
 	}
 	
-	
-	
-	@GetMapping("/AccountSetting")
-	public String AccountSetting() {
-		
-		return "user/AccountSetting";
-	}
-	
-	@GetMapping("/AccountModify")
-	public String AccountModify() {
-		
-		return "user/AccountModify";
-	}
-
-
  
 	@InitBinder
 	public void initBinder(WebDataBinder blinder) { 

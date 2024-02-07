@@ -27,6 +27,11 @@ public class UserDao {
 		return userMapper.getLoginUserInfo(tempLoginUserBean);
 	}
 	
+	public void updateAccountUser(UserBean userBean)  {
+		
+		userMapper.updateAccountUser(userBean);
+	}
+	
 	 
 	
 	
