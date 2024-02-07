@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <c:set var="root" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
@@ -75,168 +74,8 @@
 	.navbar-custom {
 		background-color: #D9E8F5;
 	}
-	 
-	 .searchResults{
-		position: absolute;
-		top: 57%; 
-		left: 45.3%; 
-		width: 22.2%; 
-	    background-color: white;
-	     border: 1px solid #ccc; 
-	     max-height: 200px; overflow-y: auto; 
-	     display: none; 
-	     z-index: 100;
-	     
-	 }  
-	 <style>
-#username, #email, #password, #confirmPassword {
-   font-size: 18px;
-}
-/*
-.card-body {
-   background-color: #C6D7E0;
-}
-*/
-.accordion-item:last-of-type .accordion-button.collapsed {
-    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
-    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
-    background: yellow;
-}
-
-
-
-.accordion-button:focus {
-    z-index: 3;
-    border-color: var(--bs-accordion-btn-focus-border-color);
-    outline: 0;
-    box-shadow: white;
-}
-
-.accordion-item:last-of-type .accordion-button.collapsed {
-    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
-    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
-    background: white;
-}
-
-.accordion-button:not(.collapsed) {
-    color: var(--bs-accordion-active-color);
-    background-color: white;
-    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
-}
-
 </style>
-<script>
-$(document).ready(function() {
-    var selectedServiceCategoryId;
-    var selectedDetailCategoryName;
-    $("#searchKeyword").on("input", function() {
-        var inputText = $(this).val();
-        // 콘솔 창에 현재 입력 내용 출력
-        console.log("사용자 입력: " + inputText);
-        if (inputText.length >= 2) {
-            $.ajax({
-                url: "${root}/autocomplete",
-                method: "GET",
-                data: { searchKeyword: inputText },
-                success: function(data) {
-                    showSearchResults(data);
-                    var resultsContainer = $(".searchResults");
-                    resultsContainer.empty();
 
-                    for (var i = 0; i < data.length; i++) {
-                        var listItem = $("<a>")
-                            .addClass("list-group-item list-group-item-action")
-                            .css({
-                                "font-size": "15px"
-                            })
-                            .text(data[i].detail_category_name); 
-                        // 클릭 이벤트에 선택된 항목 정보 추가 (클로저 사용)
-                        (function(index) {
-                            listItem.click(function() {
-                                selectedServiceCategoryId = data[index].service_category_id;
-                                selectedDetailCategoryName = data[index].detail_category_name;
-                            });
-                        })(i); 
-                        resultsContainer.append(listItem);
-                    } 
-                    if (data.length === 0) {
-                        // 결과가 없을 경우 안내 메시지 추가
-                        var noResultItem = $("<div>")
-                            .addClass("list-group-item ")
-                            .css({
-                                "font-size": "15px"
-                            })
-                            .text("검색 결과가 없습니다.");
-                        resultsContainer.append(noResultItem);
-                    }
-
-                    resultsContainer.show(); // 결과를 보여줌
-                },
-                error: function() {
-                    console.error("Failed to retrieve autocomplete suggestions.");
-                }
-            });
-            
-        } else {
-            $(".searchResults").hide();
-        } 
-    });
-
-   
-    // 검색 결과 항목을 클릭할 때
-    $(".searchResults").on("click", ".list-group-item", function() {
-        selectedDetailCategoryName = $(this).text(); // 클릭한 항목의 텍스트 가져오기
-        $("#searchKeyword").val(selectedDetailCategoryName); // 검색 텍스트 상자에 설정
-        $(".searchResults").hide(); // 결과 숨기기
-
-        // 선택된 항목에 대한 정보를 사용하여 동작 수행
-        if (selectedServiceCategoryId && selectedDetailCategoryName) {
-            var queryParams = "?service_category_id=" + selectedServiceCategoryId + "&detail_category_name=" + selectedDetailCategoryName;
-            var newLocation = "${root}/Questions" + queryParams;
-            window.location.href = newLocation;
-        }
-    });
-
-    // 검색창 밖을 클릭하면 결과를 숨김
-    $(document).on("click", function(event) {
-        if (!$(event.target).closest("#searchResults, #searchKeyword").length) {
-            $(".searchResults").hide();
-        }
-    });
-    
-// 서버에서 받은 검색어를 리스트로 만들어 표시하는 함수
-    function showSearchResults(data) {
-        var resultsContainer = $(".searchResults");
-        resultsContainer.empty(); // 이전 결과를 지우고 새로운 결과 표시
-      
-       if (data.length > 0) {
-            // 결과가 있을 경우 리스트에 추가
-            for (var i = 0; i < data.length; i++) {
-                var listItem = $("<a>")
-                    .addClass("list-group-item list-group-item-action")
-                    .css({
-                        "font-size": "15px"
-                    })
-                    .text(data[i].detail_category_name);
-                resultsContainer.append(listItem);
-                console.log("showSearchResults 함수 수행"+data[i].detail_category_name);
-            }
-        } else {
-            // 결과가 없을 경우 안내 메시지 추가
-            var noResultItem = $("<div>")
-                .addClass("list-group-item ")
-                .css({
-                    "font-size": "15px"
-                })
-                .text("검색 결과가 없습니다.");
-            resultsContainer.append(noResultItem);
-            console.log("showSearchResults 함수 수행 결과가 없음");
-        } 
-       resultsContainer.show(); // 결과를 보여줌
-    }
-
-});
-</script>
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
 		<div class="container">
@@ -249,6 +88,7 @@ $(document).ready(function() {
 								onclick="location.href='${root}/index'">
 						</div>
 					</div>
+
 					<!-- 메뉴 항목 -->
 					<div class="collapse navbar-collapse" id="navbarSupportedContent"
 						style="padding-bottom: 25px; font-size: 20px; ">
@@ -258,14 +98,14 @@ $(document).ready(function() {
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="${root}/search/findPro">일류찾기</a>
-							</li> 
+							</li>
 						</ul>
 						<!-- 검색 폼 -->
-						<form action="${root}/Questions" id="formID" method="get">
-						    <input class="form-control me-5 inputResult" id="searchKeyword" placeholder="Search" autocomplete='off' />
+						<form class="d-flex me-5 ms-auto" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn ms-2 button-custom" type="submit" style="color: white;">Search</button>
 						</form>
-						<!-- 결과 받을 폼 -->
-						<div class="searchResults list-group" ></div>
+ 
 					<c:choose> 
 						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
 							<!-- 로그인 및 회원가입 버튼 -->
@@ -284,7 +124,7 @@ $(document).ready(function() {
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/user/pro_logout'">로그아웃</button> 
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
+									onclick="location.href='${root}/common/myPage'">마이프로필</button>
 							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
 								<span
 									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
@@ -298,7 +138,7 @@ $(document).ready(function() {
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/user/logout'">로그아웃</button> 
 							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
+									onclick="location.href='${root}/common/myPage'">마이프로필</button>
 							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
 								<span
 									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">

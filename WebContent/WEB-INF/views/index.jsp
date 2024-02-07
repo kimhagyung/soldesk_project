@@ -65,45 +65,45 @@
 
 	<div class="container d-flex justify-content-center mb-3"> <!-- 카테고리 부분 -->
 		<div class="categories list-group list-group-horizontal mt-3" style="width: 50%;">
-			<button type="button"  onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[0].service_category_id }'"
-				class="license list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="image/study.png" alt="과외 이미지" class="img-fluid" style="width: 50%;">
-				<span class="ms-2  text-center mt-2 fw-bold">시험/자격증</span>
-			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[1].service_category_id }'"
-				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="image/interior.png" alt="인테리어 이미지" class="img-fluid" style="width: 50%;">
-				<span class="ms-2 text-center mt-2 fw-bold">인테리어</span>
-			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[2].service_category_id }'"
-				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="image/repair-11252667.png" alt="가전제품 이미지" class="img-fluid" style="width: 50%;">
-				<span class="ms-2 text-center mt-2 fw-bold">가전제품</span>
-			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[3].service_category_id }'"
+			<button type="button" onclick="location.href='Questions.jsp?category=청소';"
 				class="clean list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
 				<img src="image/clean (1).png" alt="청소 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">청소</span>
 			</button>
+			<button type="button"  onclick="location.href='detailCategory.html';"
+				class="license list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
+				<img src="image/study.png" alt="과외 이미지" class="img-fluid" style="width: 50%;">
+				<span class="ms-2  text-center mt-2 fw-bold">시험/자격증</span>
+			</button>
+			<button type="button" 
+				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
+				<img src="image/interior.png" alt="인테리어 이미지" class="img-fluid" style="width: 50%;">
+				<span class="ms-2 text-center mt-2 fw-bold">인테리어</span>
+			</button>
+			<button type="button"
+				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
+				<img src="image/repair-11252667.png" alt="가전제품 이미지" class="img-fluid" style="width: 50%;">
+				<span class="ms-2 text-center mt-2 fw-bold">가전제품</span>
+			</button>
 		</div>
 
 		<div class="categories list-group list-group-horizontal mt-3" style="max-width: 50%;">
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[4].service_category_id }'"
+			<button type="button" onclick="location.href='Questions.jsp?category=번역';"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
 				<img src="image/translation-2751742.png" alt="번역 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">번역</span>
 			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[5].service_category_id }'"
+			<button type="button" onclick="location.href='Questions.jsp?category=문서';"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
 				<img src="image/document.png" alt="문서 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">문서</span>
 			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[6].service_category_id }'"
+			<button type="button"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
 				<img src="image/development.png" alt="개발 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2  text-center mt-2 fw-bold">개발</span>
 			</button>
-			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[7].service_category_id }'"
+			<button type="button"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
 				<img src="image/pet.png" alt="반려동물 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">반려동물</span>
@@ -135,7 +135,7 @@
 	            <div class="ms-auto">
                 <!-- 맨 오른쪽에 표시될 내용 -->
 	                <span>유뎅</span>
-	                <span>|</span>
+	                 <span>|</span>
 	                <span class="time" >15:00</span>
 	            </div>
 	        </li>

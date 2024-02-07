@@ -1,49 +1,17 @@
 package kr.co.softsoldesk.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping; 
 
-import kr.co.softsoldesk.beans.CalendarBean;
-import kr.co.softsoldesk.service.CalendarService;
-
-
-@Controller
-@RequestMapping("/mypage")
+@Controller 
 public class MyPageController {
-	
-	@Autowired
-	CalendarService calendarService;
-	
-	@GetMapping("/myPage")
-	public String myPage() {
-		
-		return "mypage/myPage";
-	}
 
-	@GetMapping("/calendar")
-	public String calender(Model model) {
+	@GetMapping("/calender")
+	public String calender() {
 		
-		List<CalendarBean> calendarList = calendarService.getCalendarList();
-		model.addAttribute("calendarList", calendarList);
-		
-		return "mypage/calendar";
+		return "calender";
 	}
 	
-	@PostMapping("/calendar_pro")
-	public String calendar_pro(@ModelAttribute("writeCalendarBean") CalendarBean writeCalendarBean) {
-		
-
-		calendarService.addCalendarInfo(writeCalendarBean);
-
-	    return "mypage/write_success";
-	}
+	
 	
 }

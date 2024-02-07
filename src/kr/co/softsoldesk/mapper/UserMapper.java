@@ -1,8 +1,7 @@
 package kr.co.softsoldesk.mapper;
 
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Select; 
 
 import kr.co.softsoldesk.beans.UserBean;
 
@@ -16,10 +15,4 @@ public interface UserMapper {
 	
 	@Select("select * from users where user_email=#{user_email} and user_pwd=#{user_pwd}")
 	UserBean getLoginUserInfo(UserBean tempLoginUserBean);
-	
-	@Update("UPDATE users " +
-	        "SET user_name = #{user_name}, user_email = #{user_email}, user_pwd = #{user_pwd} " +
-	        "WHERE user_id = #{user_id}")
-	void updateAccountUser(UserBean AccountModifyCom); 
-
 }
