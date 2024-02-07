@@ -10,27 +10,8 @@
 <title>Account Setting</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script>
-	/*  
-	function AccountSecession(){
-		var pro_id = ${param.id}
-		console.log("pro_id",pro_id);
- 
-		$.ajax({
-			url: '${root}/common/ProAccountSecession/' + encodeURIComponent(user_email),
-			type : 'get',
-			dataType : 'text',
-			success: function(result){
-				if(result.trim()=='true'){
-					alert('사용할 수 있는 이메일입니다')
-					$("#userEmailExist").val('true')
-				}else if(result.trim()=='false'){
-					alert('사용할 수 없는 이메일입니다')
-					$("#userEmailExist").val('false')
-				}
-			}
-		})
-	} */
-</script>
+        
+    </script>
 <style>
 .img-fluid {
 	border-radius: 50%;
@@ -80,7 +61,7 @@
 </style>
 </head>
 <body>
-	<c:import url="/WEB-INF/views/include/header.jsp" />
+<c:import url="/WEB-INF/views/include/header.jsp" />
 	<div class="container mt-5 mb-5">
 		<div class="row justify-content-center">
 			<div class="col-md-6">
@@ -91,60 +72,31 @@
 					<img src="../image/1.png" class="img-fluid" alt="프로필 이미지"
 						style="width: 100px; height: 100px; margin-top: 8%; margin-bottom: 8%;">
 				</div>
-				<c:choose>
-					<c:when test="${loginUserBean.userLogin ==true }">
-						<div class="">
-							<div class="name" style="color: #b4b8c2;">이름(아숨 활동명)</div>
-							<span>${AccountModifyCom.user_name }</span>
-							<hr class="custom-hr" />
-						</div>
-						<div class="">
-							<div class="name" style="color: #b4b8c2;">이메일</div>
-							<span>${AccountModifyCom.user_email }</span>
-							<hr class="custom-hr" />
-						</div>
-						<div class="">
-							<div style="color: #b4b8c2;">비밀번호</div>
-							<span style="font-size: 10px;">${AccountModifyCom.user_pwd }</span>
-							<hr class="custom-hr" />
-						</div>
 
-						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button class="btn btn-primary me-md-2" id="modalOpenButton"
-								type="button"
-								style="margin-top: 5%; color: #b4b8c2; border: 1px solid #b4b8c2; background-color: #ffffff">탈퇴하기</button>
-							<button class="btn button-custom" type="button"
-								onclick="location.href='${root}/common/AccountModify?id=${param.id }'"
-								style="margin-top: 5%; color: #ffffff;">수정하기</button>
-						</div>
-					</c:when>
-					<c:when test="${loginProuserBean.prouserLogin ==true}">
-						<div class="">
-							<div class="name" style="color: #b4b8c2;">이름(아숨 활동명)</div>
-							<span>${ProAccountModifyCom.pro_name }</span>
-							<hr class="custom-hr" />
-						</div>
-						<div class="">
-							<div class="name" style="color: #b4b8c2;">이메일</div>
-							<span>${ProAccountModifyCom.pro_email }</span>
-							<hr class="custom-hr" />
-						</div>
-						<div class="">
-							<div style="color: #b4b8c2;">비밀번호</div>
-							<span style="font-size: 10px;">${ProAccountModifyCom.pro_pwd }</span>
-							<hr class="custom-hr" />
-						</div>
+				<div class="">
+					<div class="name" style="color: #b4b8c2;">이름(아숨 활동명)</div>
+					<span>OOO</span>
+					<hr class="custom-hr" />
+				</div>
+				<div class="">
+					<div class="name" style="color: #b4b8c2;">이메일</div>
+					<span>O@example.com</span>
+					<hr class="custom-hr" />
+				</div>
+				<div class="">
+					<div class="name" style="color: #b4b8c2;">비밀번호</div>
+					<span style="font-size: 10px;">●●●●●●</span>
+					<hr class="custom-hr" />
+				</div>
 
-						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-							<button class="btn btn-primary me-md-2" id="modalOpenButton"
-								type="button"
-								style="margin-top: 5%; color: #b4b8c2; border: 1px solid #b4b8c2; background-color: #ffffff">탈퇴하기</button>
-							<button class="btn button-custom" type="button"
-								onclick="location.href='${root}/common/AccountModify?id=${param.id }'"
-								style="margin-top: 5%; color: #ffffff;">수정하기</button>
-						</div>
-					</c:when>
-				</c:choose>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+					<button class="btn btn-primary me-md-2" id="modalOpenButton"
+						type="button"
+						style="margin-top: 5%; color: #b4b8c2; border: 1px solid #b4b8c2; background-color: #ffffff">탈퇴하기</button>
+					<button class="btn button-custom" type="button"
+						onclick="moveToModifyPage()"
+						style="margin-top: 5%; color: #ffffff;">수정하기</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -164,13 +116,12 @@
 					type="button"
 					style="border: 1px solid #6387A6; color: #6387A6; background-color: #fff;"
 					onclick="closeModal()">취소</button>
-				<button class="btn button-custom" type="button" style="color: #fff;"
-				onclick="location.href='${root}/common/AccountSecession">탈퇴</button>
+				<button class="btn button-custom" type="button" style="color: #fff;">탈퇴</button>
 			</div>
 		</div>
 	</div>
 
-	<c:import url="/WEB-INF/views/include/footer.jsp" />
+<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 	<script type="text/javascript">
        function moveToModifyPage(){
