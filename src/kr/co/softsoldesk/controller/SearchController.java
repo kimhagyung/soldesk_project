@@ -1,16 +1,76 @@
 package kr.co.softsoldesk.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.service.DetailCategoryService;
+import kr.co.softsoldesk.service.ProUserService;
+import kr.co.softsoldesk.service.ServiceCategoryService;
 
 @Controller
 @RequestMapping("/search")
 public class SearchController {
-
+	@Autowired
+	ServiceCategoryService serviceCategoryService;
+	
+	@Autowired
+	DetailCategoryService detailCategoryService;
+	
+	@Autowired
+	ProUserService proUserService;
+	 
 	@GetMapping("/findPro")
-	public String findPro() {
-		
-		return "search/findPro";
+	public String findPro(Model model) {
+	    
+	    ArrayList<List<DetailCategoryBean>> detailCategoryList = new ArrayList<>();
+	    ArrayList<String> service_Category_Name = new ArrayList<>();
+	    
+	    for (int i = 1; i <= 8; i++) {
+	        List<DetailCategoryBean> list1 = detailCategoryService.getDetailCategoryList(i);
+	        String categoryName = detailCategoryService.getServiceCategoryName(i);
+	        
+	        detailCategoryList.add(list1);
+	        service_Category_Name.add(categoryName);
+	    }
+	    model.addAttribute("detailCategoryList", detailCategoryList);
+	    model.addAttribute("service_category_name", service_Category_Name); 
+	     
+	    
+	    List<ProUserBean> pro_names = proUserService.getProUserByName();
+	    model.addAttribute("pro_names",pro_names);
+	    return "search/findPro";
 	}
+	
+	@GetMapping("/searchProName")
+	public String searchProName(@RequestParam("searchInput") String searchInput,
+								Model model) {
+		System.out.println("searchInput:"+searchInput); //받은 값  
+		List<String> search_proname = proUserService.getSearchProUserByName(searchInput);
+		model.addAttribute("search_proname",search_proname); //유사한 고수 이름  
+		//List<String> activeProUser=proUserService.getProCategoryAndLocation(activeData); //전달받은 값  
+		System.out.println("유사한 고수 이름:"+search_proname);
+		return "search/findPro";
+	} 
+	
+	/*
+
+	@GetMapping("/getCategoryInfo") 
+	public String getCategoryInfo(@RequestParam("selectedCategory") String selectedCategory, Model model) {
+		System.out.println("SearchController-selectedCategory:"+selectedCategory);
+        List<String> proActive = proUserService.getProCategoryAndLocation(selectedCategory);
+        System.out.println("SearchController-proActive:"+proActive);
+        model.addAttribute("proActive",proActive); 
+        return "search/findPro";
+    } 
+    */
 }

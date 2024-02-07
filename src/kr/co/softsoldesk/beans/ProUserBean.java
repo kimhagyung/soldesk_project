@@ -10,7 +10,6 @@ public class ProUserBean {
 	private int pro_id; 
 	private String pro_email;
 
-	public List<Category> categories = getCategoryList();
 	@Size(min = 2, max = 8)
 	private String pro_name;
 	
@@ -23,7 +22,7 @@ public class ProUserBean {
 	private String pro_pwd;
 	@Size(min = 4, max = 20) 
 	private String confirmPassword;
-	private String gender;
+	private String pro_gender;
 	private boolean prouserEmailExist;
 	private boolean prouserLogin;
 	
@@ -33,15 +32,22 @@ public class ProUserBean {
 		this.prouserLogin = false;
 		// 초기화, 로그아웃 상태
 	}
-	
-	public String getGender() {
-		return gender;
+	 
+ 
+
+	public String getPro_gender() {
+		return pro_gender;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+
+
+	public void setPro_gender(String pro_gender) {
+		this.pro_gender = pro_gender;
 	}
+
  
+
+
 
 	public boolean isProuserEmailExist() {
 		return prouserEmailExist;
@@ -86,30 +92,14 @@ public class ProUserBean {
 	public void setActive_location(String active_location) {
 		this.active_location = active_location;
 	}
-	
-	//카테고리 값 가져오기 
-	 public List<Category> getCategoryList() {
-	        List<Category> categories = new ArrayList<>();
 
-	        // Add categories dynamically
-	        categories.add(new Category("test_license", "시험/자격증", Arrays.asList("스포츠지도사 준비", "한국어능력시험 준비", "한국사능력시험 준비", "정보처리기사 준비", "컴퓨터활용능력 준비")));
-	        categories.add(new Category("interior", "인테리어", Arrays.asList("가구리폼", "욕실/화장실 리모델링", "도배시공", "주방 리모델링", "조명 인테리어")));
-	        categories.add(new Category("home_appliances", "가전제품", Arrays.asList("전자제품 수리", "컴퓨터 수리", "비데 렌탈/구입/청소", "에어컨 설치 및 수리", "냉장고 설치 및 수리")));
-	        categories.add(new Category("clean", "청소", Arrays.asList("에어컨 청소", "바퀴벌레 퇴치", "가구 청소", "계단/화장실 청소", "화재 복구/청소")));
-	        categories.add(new Category("translate", "번역", Arrays.asList("한문 번역", "영어 번역", "독일어 번역", "일본어/일어 번역", "베트남어 번역")));
-	        categories.add(new Category("document", "문서", Arrays.asList("문서/글 작성", "PPT 제작", "자막 제작", "사업계획서 제작", "교정/교열")));
-	        categories.add(new Category("develop", "외주(개발)",Arrays.asList("웹 개발", "게임 개발", "iOS 개발", "QA 테스트", "ERP 개발")));
-	        categories.add(new Category("pet", "반려동물", Arrays.asList("반려견 산책", "반려동물 미용", "반려동물 수제간식 만들기", "반려동물 훈련", "반려동물 장례")));
-  
-	        return categories;
-	 }
-
+	 
 		public String[] getActive_detailcategory() {
 	        return active_detailcategory;
 	    }
 
 	    public void setActive_detailcategory(String[] active_detailcategory) {
-	    	if (active_detailcategory != null) {
+	    	
 	            // 배열의 길이에 따라 각 변수에 값을 할당
 	            if (active_detailcategory[0]==null) {
 	            	 active_detailcategory1 = null;
@@ -119,14 +109,14 @@ public class ProUserBean {
 	            if (active_detailcategory[1]==null) {
 	            	 active_detailcategory2 = null;
 	            }
-	            active_detailcategory2 = active_detailcategory[0];
+	            active_detailcategory2 = active_detailcategory[1];
 	            
 	            if (active_detailcategory[2]==null) {
 	            	 active_detailcategory3 = null;
 	            }
-	            active_detailcategory3 = active_detailcategory[0];
+	            active_detailcategory3 = active_detailcategory[2];
 	    	}
-	    }
+	  
 	public String getActive_detailcategory1() {
 			return active_detailcategory1;
 		}

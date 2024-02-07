@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chatting</title>
-<script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script ="${root}/script/jquery-3.4.1.min.js"></script>
 <!-- Bootstrap JavaScript 파일 로드 -->
 </head>
 <style>
@@ -216,7 +216,7 @@ textarea {
 						12월 25일 월요일</div>
 					<div class="proChat"
 						style="padding-left: 3%; padding-top: 2%; padding-bottom: 2%;">
-						<img src="../image/1.png"
+						<img ="../image/1.png"
 							style="width: 31px; height: 31px; border-radius: 50%; margin-right: 1.5%;">
 						<div class="Content">
 							<div style="display: flex; position: relative;">
@@ -277,13 +277,13 @@ textarea {
 									안녕하세요.</div>
 							</div>
 						</div>
-						<img src="../image/1.png"
+						<img ="../image/1.png"
 							style="width: 31px; height: 31px; border-radius: 50%; margin-left: 1.5%;">
 					</div>
 
 					<div class="proChat"
 						style="padding-left: 3%; padding-top: 2%; padding-bottom: 2%;">
-						<img src="../image/1.png"
+						<img ="../image/1.png"
 							style="width: 31px; height: 31px; border-radius: 50%; margin-right: 1.5%;">
 						<div class="Content">
 							<div style="display: flex; position: relative;">
@@ -330,7 +330,7 @@ textarea {
 
 					<div class="proChat"
 						style="padding-left: 3%; padding-top: 2%; padding-bottom: 2%;">
-						<img src="../image/1.png"
+						<img ="../image/1.png"
 							style="width: 31px; height: 31px; border-radius: 50%; margin-right: 1.5%;">
 						<div class="Content">
 							<div style="display: flex; position: relative;">

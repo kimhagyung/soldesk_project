@@ -48,7 +48,6 @@ function checkPasswordMatch() {
 </script>
 <script>
 function checkUserEmailExist(){
-	
 	var user_email = $("#user_email").val()
 	console.log("user_email",user_email);
 	if(user_email.length == 0){
@@ -126,7 +125,7 @@ body, div, span, h5, button, h2, p {
                             </div>
                             <div class="mb-3">
                                 <form:label path="user_pwd">비밀번호</form:label>
-								<form:password path="user_pwd" class="form-control" id="password" onkeyup="checkPasswordMatch()"/>
+								<form:password path="user_pwd" autocomplete="new-password" class="form-control" id="password" onkeyup="checkPasswordMatch()"/>
 							</div>
                             <div class="mb-3">
                                 <form:label path="confirmPassword">비밀번호 확인</form:label>
