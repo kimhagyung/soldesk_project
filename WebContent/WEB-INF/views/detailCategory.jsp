@@ -10,14 +10,10 @@
 <title>detailCategory</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 </head>
-<script>
-	$(function(){
-	
-	})
-	
+<script> 
 
    $(document).ready(function() {
-    // 각 후기 내용을 제한할 길이
+    // 각 후기 내용을 제한할 길이ㅋㅋ
     var maxCharacters = 100;
 
     // 각 후기 내용에 대해 실행
@@ -107,58 +103,61 @@
 <c:import url="/WEB-INF/views/include/header.jsp" />
 
 	<div class="container text-center custom-mt">
-    	<h2>시험/자격증</h2>
+ 
+			<h2>${serviceCategoryname}</h2>
+		
+    	
     	<span>지금 시작해보세요</span>
  	</div>
  	
- 	<div class="container d-flex justify-content-center mb-3" id="categories"> <!-- 카테고리 부분 -->
-		<div class="list-group list-group-horizontal mt-3" style="width: 50%;">
-			<button type="button"
-				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
-				<img src="../image/clean (1).png" alt="청소 이미지" class="img-fluid" style="max-width: 50%;">
-				<span class="ms-2 text-center mt-2 fw-bold">청소</span>
-			</button>
-			<button type="button"
-				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="../image/study.png" alt="과외 이미지" class="img-fluid" style="width: 50%;">
+ 	<div class="container d-flex justify-content-center mb-3"> <!-- 카테고리 부분 -->
+		<div class="categories list-group list-group-horizontal mt-3" style="width: 50%;">
+			<button type="button"  onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[0].service_category_id }'"
+				class="license list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
+				<img src="image/study.png" alt="과외 이미지" class="img-fluid" style="width: 50%;">
 				<span class="ms-2  text-center mt-2 fw-bold">시험/자격증</span>
 			</button>
-			<button type="button"
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[1].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="../image/interior.png" alt="인테리어 이미지" class="img-fluid" style="width: 50%;">
+				<img src="image/interior.png" alt="인테리어 이미지" class="img-fluid" style="width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">인테리어</span>
 			</button>
-			<button type="button"
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[2].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
-				<img src="../image/repair-11252667.png" alt="가전제품 이미지" class="img-fluid" style="width: 50%;">
+				<img src="image/repair-11252667.png" alt="가전제품 이미지" class="img-fluid" style="width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">가전제품</span>
+			</button>
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[3].service_category_id }'"
+				class="clean list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
+				<img src="image/clean (1).png" alt="청소 이미지" class="img-fluid" style="max-width: 50%;">
+				<span class="ms-2 text-center mt-2 fw-bold">청소</span>
 			</button>
 		</div>
 
-		<div class="list-group list-group-horizontal mt-3" style="max-width: 50%;">
-			<button type="button"
+		<div class="categories list-group list-group-horizontal mt-3" style="max-width: 50%;">
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[4].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
-				<img src="../image/translation-2751742.png" alt="번역 이미지" class="img-fluid" style="max-width: 50%;">
+				<img src="image/translation-2751742.png" alt="번역 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">번역</span>
 			</button>
-			<button type="button"
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[5].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
-				<img src="../image/document.png" alt="문서 이미지" class="img-fluid" style="max-width: 50%;">
+				<img src="image/document.png" alt="문서 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">문서</span>
 			</button>
-			<button type="button"
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[6].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
-				<img src="../image/development.png" alt="개발 이미지" class="img-fluid" style="max-width: 50%;">
+				<img src="image/development.png" alt="개발 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2  text-center mt-2 fw-bold">개발</span>
 			</button>
-			<button type="button"
+			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[7].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0">
-				<img src="../image/pet.png" alt="반려동물 이미지" class="img-fluid" style="max-width: 50%;">
+				<img src="image/pet.png" alt="반려동물 이미지" class="img-fluid" style="max-width: 50%;">
 				<span class="ms-2 text-center mt-2 fw-bold">반려동물</span>
 			</button>
 		</div>
 	</div>
-	
+ 	 
 	<div class="container mt-5 mb-5">
 		<div class="d-flex justify-content-center align-items-center text-center mb-3 services">
 			<h2>
@@ -166,52 +165,17 @@
 			</h2>
 		</div>
 		  <div class="row row-cols-1 row-cols-md-5 g-4">
-		    <!-- Card 1 -->
-		    <div class="col">
-		    	<div class="card">
-		      		<img src="../image/sports.jpg" class="card-img-top" alt="sports" style="object-fit: cover;">
-		      		<div class="card-body text-center ">
-		        	<h5 class="card-title text-center">스포츠지도사 준비</h5>
-		      	</div>
-		    </div>
-		  </div>
-	  
-		  <div class="col">
-		    <div class="card">
-		      <img src="../image/korean.png" class="card-img-top" alt="korean">
-		      <div class="card-body text-center ">
-		        <h5 class="card-title text-center">한국어능력시험 준비</h5>
-		      </div>
-		    </div>
-		  </div>
-	
-		    <!-- Card 3 -->
-		    <div class="col">
-			    <div class="card">
-			      <img src="../image/history.png" class="card-img-top" alt="history">
-			      <div class="card-body text-center ">
-			        <h5 class="card-title text-center">한국사능력시험 준비</h5>
-			      </div>
-			    </div>
-		  	</div>
-	  	
-		  	<div class="col">
-			    <div class="card">
-			      <img src="../image/coding.jpg" class="card-img-top" alt="coding">
-			      <div class="card-body text-center ">
-			        <h5 class="card-title text-center">정보처리기사 준비</h5>
-			      </div>
-			    </div>
-		  	</div>
-	  	
-		  	<div class="col">
-			    <div class="card">
-			      <img src="../image/computer.png" class="card-img-top" alt="computer">
-			      <div class="card-body text-center ">
-			        <h5 class="card-title text-center">컴퓨터 활용능력 준비</h5>
-			      </div>
-			    </div>
-		  	</div>
+		    <!-- Card 1 --> 
+		    <c:forEach var="obj" items="${detailCategoryList }">
+			    <div class="col" onclick="location.href='${root}/Questions?service_category_id=${service_category_id}&detail_category_name=${obj.detail_category_name}' ">
+			        <div class="card">
+			    		<img src="${root }/category/${obj.file_name}" class="card-img-top" alt="sport" style="object-fit: fill;">
+			      		<div class="card-body text-center ">
+			        		<h5 class="card-title text-center">${obj.detail_category_name }</h5>
+			      		</div>
+			    	</div>
+			  	</div> 
+		  </c:forEach>	
 	  </div>
 	</div>
 	

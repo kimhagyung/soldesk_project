@@ -34,20 +34,20 @@
 				<h2 class="card-title text-center mb-5 mt-5 fw-bold">일류 로그인</h2>
 				<div class="card">
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
-						<c:if test="${fail==true }">
-							<div class="alter alter-danger">
-								<h3>로그인 실패</h3>
-								<p>아이디 비밀번호를 확인해 주세요
-							</div>
-						</c:if>
+						<c:if test="${fail == true }">
+						<div class="alert alert-danger">
+							<h3>로그인 실패</h3>
+							<p>아이디 비밀번호를 확인해주세요</p>
+							</div>	
+						</c:if> 
 						<form:form action="${root }/user/proUser_login" method="post" modelAttribute="tempLoginUserBean2">
 							<div class="mb-3">
-								<form:label path="pro_email">이메일</form:label>
+								<form:label path="pro_email"   autocomplete="off">이메일</form:label>
 								<form:input path="pro_email" class="form-control" type="email"
 									placeholder="이메일 주소를 입력하세요" />
 							</div>
 							<div class="mb-3">
-								<form:label path="pro_pwd">비밀번호</form:label>
+								<form:label path="pro_pwd" autocomplete="new-password">비밀번호</form:label>
 								<form:password path="pro_pwd" class="form-control"
 									placeholder="비밀번호를 입력해주세요" />
 							</div>

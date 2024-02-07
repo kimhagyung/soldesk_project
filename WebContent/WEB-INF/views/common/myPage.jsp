@@ -49,7 +49,8 @@
 								</div>
 							</div>
 							<div class="col-4 ms-5  mt-3 text-end">
-									<button class="btn button-custom account">계정설정</button>
+								<button class="btn button-custom account"
+								onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
 							</div>
 	 
 						</div>
@@ -108,11 +109,6 @@
 	<!--여기까지 본문 -->
 	<!--푸터-->
 <c:import url="/WEB-INF/views/include/footer.jsp" />
-		
-	<script>
-		  $(".account").click(function() {
-                window.location.href = 'AccountSetting.html';
-            });
-	</script>	
+	 
 	</body>
 </html>
