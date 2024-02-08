@@ -68,6 +68,15 @@
     font-size: 15px;
 }
 
+/* 4. 제공서비스 버튼, 숨겨진 상태로 설정 */
+    .btn.btn-sm.btn-secondary {
+        display: none;
+    }
+    
+    .btn.btn-outline-primary.categoryBtn {
+    display: none;
+} 
+
 	
 </style>
 <!-- style="background-color: palegreen" -->
@@ -75,6 +84,8 @@
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
 
 <script src="${root}/jquery/locdata.js"></script> <!-- 카테고리.js 불러오기 -->
+
+<%-- <script src="${root}/jquery/expert_script.js"></script> --%> <!-- 고수프로필.js 불러오기 -->
 
 
 <script>
@@ -175,27 +186,15 @@
 		</div>
 	</div>
 	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 3.대표 서비스 -->
-		<div class="col-md-6 section-divider">
-			<div class="row">
-				<span class="col Subtitle">대표 서비스</span>
-				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD">등록하기</button>
-				</div>
-			</div>
-			<p></p>
-			<p class="content">웹 개발</p>
-			<p></p>
-		</div>
-	</div>
+	<!-- 3.대표 서비스(였던것) -->
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 4.제공 서비스 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">
 				<span class="col Subtitle">제공 서비스</span>
 				<div class="col text-end">
-	                <button type="button" class="InvisibleButton AfterMD" id="editBtn1">수정</button>
-	                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn1">저장</button>
+	                <button type="button" class="InvisibleButton AfterMD" id="editBtn4">수정</button>
+	                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn4">저장</button>
 	            </div>
 			</div>
 			<p></p>
@@ -206,13 +205,7 @@
 						data-bs-toggle="modal" data-bs-target="#exampleModal">서비스 추가</button>
 			        </li>
 			        <li class="list-group-item d-flex justify-content-between align-items-center">
-			        정보처리기사 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
-			        </li>
-			        <li class="list-group-item d-flex justify-content-between align-items-center">
-			        컴퓨터활용능력 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
-			        </li>
-			        <li class="list-group-item d-flex justify-content-between align-items-center">
-			        웹 개발 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
+			        정보처리기사 준비 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
 			        </li>
 			        <li class="list-group-item d-flex justify-content-between align-items-center">
 			        QA 테스트 <button class="btn btn-sm btn-secondary" onclick="removeService(this)">삭제</button>
@@ -284,7 +277,7 @@
 			<div class="row">
 				<span class="col Subtitle">이동 가능 거리</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD">수정</button>
+					<!-- <button type="button" class="InvisibleButton AfterMD">수정</button> -->
 				</div>
 			</div>
 			<p></p>
@@ -377,7 +370,7 @@
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career'">수정</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/career'">등록하기</button>
 				</div>
 			</div>
 			<p></p>
@@ -448,8 +441,6 @@
 <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f1d1be7f35b4c48c6c89640c05aaae"></script> -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f1d1be7f35b4c48c6c89640c05aaae&libraries=services"></script>
 <script type="text/javascript" src="${root}/jquery/address.js"></script>
-
-
 
 
 <!--  -->
@@ -561,8 +552,8 @@ $(function () {
             // 모달 닫기
             $("#exampleModal").modal('hide');
 
-            // 동적으로 리스트 아이템 생성 및 추가 (제공 서비스 섹션에만 추가)
-            var newItem = $("<li class='list-group-item d-flex justify-content-between align-items-center' id='providedServiceItem'>" + selectedCategory + "<button class='btn btn-sm btn-secondary ml-auto' onclick='removeService(this)'>삭제</button></li>");
+         // 동적으로 리스트 아이템 생성 및 추가 (제공 서비스 섹션에만 추가)
+            var newItem = $("<li class='list-group-item d-flex justify-content-between align-items-center' id='providedServiceItem'>" + selectedCategory + "<button class='btn btn-sm btn-secondary ml-auto' onclick='removeService(this)' style='display: inline-block;'>삭제</button></li>");
 
             // 클릭된 항목에 "selected" 클래스 추가
             newItem.find("button").click(function () {
@@ -584,26 +575,46 @@ $(function () {
         // 클릭된 항목에 "selected" 클래스 추가
         $(this).addClass("selected");
     });
+    
+    $(function () {
+        // 수정 버튼 클릭 시 처리
+        $("#editBtn4").click(function () {
+            // 수정 버튼 클릭 시 처리
+            $(this).addClass("d-none");
+            $("#saveBtn4").removeClass("d-none");
+            $(".deleteBtn").addClass("d-none");
+            // 수정 모드일 때 입력창 나타남
+            $(".list-group-provided-services .btn-secondary").attr("disabled", false).show();
+            // 서비스 추가 버튼 나타남
+            $(".list-group-item .categoryBtn").show();
+        });
+
+        // 저장 버튼 클릭 시 처리
+        $("#saveBtn4").click(function () {
+            // 저장 버튼 클릭 시 처리
+            $("#editBtn4").removeClass("d-none");
+            $(this).addClass("d-none");
+            $(".deleteBtn").removeClass("d-none");
+            // 저장 모드일 때 입력창 사라짐
+            $(".list-group-provided-services .btn-secondary").attr("disabled", true).hide();
+            // 서비스 추가 버튼 사라짐
+            $(".list-group-item .categoryBtn").hide();
+        });
+
+        // 서비스 삭제 버튼 클릭 시 처리
+        $(".deleteBtn").click(function () {
+            $(this).closest("li").remove();
+        });
+    });
+
 });
 
 // 제공 서비스 섹션에서 삭제 버튼 클릭 시 해당 li 제거
 function removeService(button) {
     $(button).closest("li").remove();
 }
+
 </script>
-
-
-<script>
-    // 직접 삭제 기능 구현
-    function removeService(button) {
-        // 해당 li 요소 찾기
-        var listItem = $(button).closest('li');
-        
-        // li 요소 삭제
-        listItem.remove();
-    }
-</script>
-
     
 <script> // 5. 고수 서비스 상세설명
     // textarea 글자수 세기
@@ -708,6 +719,5 @@ function removeService(button) {
         });
     });
 </script>
-
 </body>
 </html>
