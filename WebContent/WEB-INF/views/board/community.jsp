@@ -225,8 +225,8 @@ $(document).ready(function() {
 										</div>
 										<div class="cardBasicInfo" style="display: flex; flex-direction: row; justify-content: space-between;">
 											<div class="viewInfo" style="display: flex; flex-direction: row">
-												<div class="f-color"><i class="bi bi-chat-left-text-fill"></i> &nbsp;댓글 수</div>
-												<div class="f-color"><i class="bi bi-eye-fill"></i> &nbsp;조회수 ${obj.viewCnt }</div>
+												<div class="f-color" style="display:flex; flex-direction: row; align-items: center;"><i class="bi bi-chat-left-text-fill" style="margin-right: 5px; margin-top: 1px;"></i><div>댓글 수 ${obj.commentCnt }</div></div>
+												<div class="f-color" style="margin-left: 20px;"><i class="bi bi-eye-fill" style="margin-right: 5px;"></i>조회수 ${obj.viewCnt }</div>
 											</div>
 											<div class="timeInfo">
 												<div class="f-color time" >${obj.board_date }</div>

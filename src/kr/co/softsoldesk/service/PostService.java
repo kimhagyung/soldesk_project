@@ -16,8 +16,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.softsoldesk.beans.CommentBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.PostDao;
 
@@ -54,7 +56,7 @@ public class PostService {
 		  
 	   }  
 	   //유저가 0이면(프로 가입)
-	   //writeContentBean.setContent_writer_idx(loginUserBean.getUser_idx());
+	   
 	   if(loginProuserBean.isProuserLogin()==true) {
 
 		   boardPostBean.setPro_id(loginProuserBean.getPro_id());
@@ -102,5 +104,50 @@ public class PostService {
 	   postDao.plusCnt(board_id);
    }
    
+   //---------------------신고-------------------
+   
+   public void addReportInfo(ReportBean writeReportBean) {
+		/*
+		 * if(loginProuserBean.isProuserLogin()==true) {
+		 * 
+		 * writeReportBean.setPro_id(loginProuserBean.getPro_id()); } else
+		 * if(loginUserBean.isUserLogin()==true) {
+		 * writeReportBean.setUser_id(loginUserBean.getUser_id()); }
+		 */
+       postDao.addReportInfo(writeReportBean);
+   }
+   
+   //------------------------댓글------------------------
+   
+   public void addComment(CommentBean writeCommentBean) {
+	   
+	   if(loginProuserBean.isProuserLogin()==true) {
 
+		   writeCommentBean.setPro_id(loginProuserBean.getPro_id());
+	   } 
+	   else if(loginUserBean.isUserLogin()==true) { 
+		   writeCommentBean.setUser_id(loginUserBean.getUser_id()); 
+	   }
+       postDao.addComment(writeCommentBean);
+   }
+   
+   public List<CommentBean> getAllComments(int board_id){
+	   return postDao.getAllComments(board_id);
+   }
+   
+   public int commentCnt(int board_id) {
+	   return postDao.commentCnt(board_id);
+   }
+   
+   public void modifyComment(CommentBean modifyCommentBean) {
+	   postDao.modifyComment(modifyCommentBean);
+   }
+   
+   public void deleteComment(int comment_id) {
+		 postDao.deleteComment(comment_id);
+	 }
+   
+   public int commentCntAtPost(int board_id) {
+	   return postDao.commentCntAtPost(board_id);
+   }
 }

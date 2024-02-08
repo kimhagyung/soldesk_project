@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.softsoldesk.beans.CommentBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.PostService;
 
@@ -36,13 +39,16 @@ public class BoardController {
 	private ProUserBean loginProuserBean;
 
 	@GetMapping("/community")
-	public String community(Model model) {
+	public String community(Model model) {  //@RequestParam("board_id") int board_id,
 		
 		List<PostBean> postList = postService.getAllPostList();
 		
-		
+		//댓글 수
+		//int commentCnt = postService.commentCntAtPost(board_id);
 		
 		model.addAttribute("postList", postList);
+		//model.addAttribute("commentCnt", commentCnt);
+		
 		return "board/community";
 	}
 	
@@ -86,7 +92,9 @@ public class BoardController {
 	}
 	
 	@GetMapping("/detailCommunity")
-	public String detailCommunity(@RequestParam("board_id") int board_id, Model model) {
+	public String detailCommunity(@RequestParam("board_id") int board_id, Model model,
+			@ModelAttribute("writeCommentBean") CommentBean writeCommentBean,
+			@ModelAttribute("writeReportBean") ReportBean writeReportBean) {
 		//1. 조회수 증가 +1
 		postService.plusCnt(board_id);
 		//2. 해당 게시글 정보 부르기 
@@ -94,27 +102,35 @@ public class BoardController {
 		 PostBean readPostBean = postService.getPostInfo(board_id);
 		 //System.out.println("다중 이미지: " + readPostBean.getPhotos());
 		 
-		if(loginUserBean.isUserLogin()) {
-			model.addAttribute("board_id", board_id);
-			model.addAttribute("user_id", loginUserBean.getUser_id());
-			model.addAttribute("readPostBean", readPostBean);
-		} else if(loginProuserBean.isProuserLogin()) {
-			 model.addAttribute("board_id", board_id);
-			model.addAttribute("pro_id", loginProuserBean.getPro_id());
-			model.addAttribute("readPostBean", readPostBean);
-		}
-		
-		 System.out.println("유저: " + loginUserBean.isUserLogin());
-	       System.out.println("프로: " + loginProuserBean.isProuserLogin());
-	       System.out.println("user: " + readPostBean.getUser_id());
-	       System.out.println("pro: " + readPostBean.getPro_id());
 		 
-		// model.addAttribute("loginUserBean", loginUserBean);
-	    // model.addAttribute("loginProuserBean", loginProuserBean);
-		
+			model.addAttribute("board_id", board_id);
+			
+			model.addAttribute("readPostBean", readPostBean);
+			model.addAttribute("writeReportBean", writeReportBean);
+			model.addAttribute("writeCommentBean", writeCommentBean);
+			
+			model.addAttribute("loginUserBean", loginUserBean);
+			model.addAttribute("loginProuserBean", loginProuserBean);
 
 		
+			//댓글 추가
+			List<CommentBean> comments = postService.getAllComments(board_id);
+			model.addAttribute("comments", comments);
+			
+			
+	       
+		
 		return "board/detailCommunity";
+	}
+	
+	@PostMapping("/detail_reportPro")
+	public String detail_reportPro(@ModelAttribute("writeReportBean") ReportBean writeReportBean) {
+		
+		System.out.println("dddddd"+writeReportBean.getReport_msg());
+		
+		postService.addReportInfo(writeReportBean);
+		
+		return "board/detail_reportPro_success";
 	}
 	
 	@GetMapping("/not_writer")
@@ -171,4 +187,6 @@ public class BoardController {
 		
 		return "board/delete";
 	}
+	
+
 }

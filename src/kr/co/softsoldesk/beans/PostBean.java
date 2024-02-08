@@ -37,7 +37,15 @@ public class PostBean {
     
     private int viewCnt;
     
-    private String writer_name;
+    private int commentCnt;
+    
+    public int getCommentCnt() {
+		return commentCnt;
+	}
+	public void setCommentCnt(int commentCnt) {
+		this.commentCnt = commentCnt;
+	}
+	private String writer_name;
     
     public List<MultipartFile> getUpload_photos() {
 		return upload_photos;
