@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -92,6 +93,17 @@ $(document).ready(function() {
         return deleteButton;
     }
 
+    // 이미지 업로드 버튼 생성 함수
+    function createUploadButton(containerId, previewId) {
+        var uploadButton = $('<div class="document-container">')
+            .append('<div id="' + previewId.substring(1) + '" class="d-none"></div>')
+            .append('<button class="btn document-upload-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2;">' +
+                '<i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>' +
+                '</button>')
+            .append('<input  type="file" class="document-fileInput" style="display: none;" accept="image/*" multiple>'); 
+        return uploadButton;
+    }
+
     // 이미지 초기화 함수
     function resetImagePreview(containerId, fileInputId, previewId) {
         var documentContainer = $(containerId);
@@ -102,58 +114,60 @@ $(document).ready(function() {
         documentContainer.append(newUploadButton);
     }
 
-    // 이미지 업로드 버튼 생성 함수
-    function createUploadButton(containerId, previewId) {
-        var uploadButton = $('<label for="representative-document-fileInput">')
-            .append('<div id="' + previewId.substring(1) + '" class="d-none"></div>')
-            .append('<button class="btn" id="representative-document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2;">' +
-                '<i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>' +
-                '</button>')
-            .append('<input  type="file" id="representative-document-fileInput" style="display: none;" accept="image/*">');
-
-        return uploadButton;
-    }
- 
-
-    // 상세 이미지 등록 처리
-    $('#document-btn').click(function() {
-        $('#document-fileInput').click();
-    });
-
-    
     // 상세 이미지 선택 시 처리
-    $('#document-fileInput').change(function() {
+    $(document).on('change', '.document-fileInput', function() {
         var currentImageCount = $('.uploaded-document-image').length;
         if (currentImageCount >= 10) {
             alert('최대 10장까지만 첨부할 수 있습니다.');
             return;
         }
 
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var newImage = $('<img>').attr({
-                src: e.target.result,
-                alt: 'Uploaded Document',
-                class: 'uploaded-document-image',
-                style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
-            });
+        var files = this.files;
+        var documentContainer = $(this).closest('.document-container');
 
-            var documentContainer = $('#document-btn-container');
+        for (var i = 0; i < files.length; i++) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var newImage = $('<img>').attr({
+                    src: e.target.result,
+                    alt: 'Uploaded Document',
+                    class: 'uploaded-document-image',
+                    style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
+                });
 
-            var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
+                var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
 
-            var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
+                var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
 
-            deleteButton.click(function() {
-                imageContainer.remove();
-            });
+                deleteButton.click(function() {
+                    imageContainer.remove();
+                });
 
-            imageContainer.append(deleteButton);
+                imageContainer.append(deleteButton);
 
-            documentContainer.append(imageContainer);
-        };
+                documentContainer.before(imageContainer);
+            };
 
-        reader.readAsDataURL(this.files[0]);
+            reader.readAsDataURL(files[i]);
+        }
+
+        // Reset file input to allow uploading same images again
+        resetImagePreview(documentContainer, '#document-fileInput', '#document-btn-container');
+    });
+
+    // 삭제 버튼 생성 함수
+    function createDeleteButton(containerId, previewId) {
+        var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
+        deleteButton.click(function() {
+            resetImagePreview(containerId, '#representative-document-fileInput', previewId);
+        });
+
+        return deleteButton;
+    }
+
+    // 초기 이미지 업로드 버튼 생성
+    var initialUploadButton = createUploadButton('#document-btn-container', '#document-btn-container');
+    $('#document-btn-container').append(initialUploadButton);
     });
 });
 
@@ -176,15 +190,15 @@ $(document).ready(function() {
 					<strong>필수 정보*</strong>
 				</div>
 
-				<form:form action="${root}/pro/ProPortfolio" method="post" modelAttribute="Proportfolio_pro" enctype="multipart/form-data">
-					
+				<form:form action="${root}/pro/ModifyProPortfolio" method="post" modelAttribute="ProportfolioModify" enctype="multipart/form-data">
+					<form:hidden path="portfolio_id"/>
 					<div class=form-container><!--enctype="multipart/form-data"  -->
 						<div class="mt-4">
 							<form:label path="service_type" class="form-label"
 								style="font-weight: bold;">서비스 종류</form:label>
 							<form:input path="service_type" autocomplete="off"
 								class="form-control required service"
-								placeholder="서비스한 활동명을 입력해 주세요" />
+								placeholder="서비스한 활동명을 입력해 주세요" value="${PortfolioIdList.service_type }" />
 							<div class="row">
 								<div class="col text-end"
 									style="color: #B5B5B5; font-size: 14px;">
@@ -199,7 +213,13 @@ $(document).ready(function() {
 								<form:label path="portfolio_title" class="form-label"
 									style="font-weight: bold;">포트폴리오 제목</form:label>
 								<form:input path="portfolio_title" autocomplete="off"
-									class="form-control" placeholder="포트폴리오 제목을 입력해주세요." /> 
+									class="form-control" placeholder="포트폴리오 제목을 입력해주세요." value="${PortfolioIdList.portfolio_title }" />
+								<!-- <div class="row">
+								<div class="col text-end"
+									style="color: #B5B5B5; font-size: 14px;">
+									<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/30자
+								</div>
+							</div> -->
 							</div>
 						</div>
 
@@ -213,10 +233,32 @@ $(document).ready(function() {
 							</div>
 							<div class="photo_review" style="padding-top: 22.5px;">
 								<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
-								    <label class="btn" id="document-btn" style="position: relative; width: 100px; height: 100px; border: 1px dashed #d2d2d2; display: flex; align-items: center; justify-content: center;">
-								        <i class="bi bi-plus-circle upload-icon" style="color: #6387A6; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
-								    </label>
-								    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" />
+									<div class="row">
+										<div class="col-2">
+										
+										<label  class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
+											<i class="bi bi-plus-circle upload-icon mt-5" style="color: #6387A6"></i>
+										</label>
+										<input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*"  /> 
+										</div>
+										<div class="col-4">
+										<%--
+										<c:if test="${PortfolioIdList.detailed_images != null}">
+										<c:forEach var="portfolio_img" items="${fn:split(PortfolioIdList.detailed_images, ',')}" varStatus="loop">
+											<c:if test="${loop.index == 0}"> 
+													<div class="col-2"> 
+				  										<img src="${root}/portfolio/${portfolio_img}" name="uploadFiles" class="feed-img delete" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+													</div>
+												</c:if> 
+											</c:forEach>
+										</c:if>	  	
+									 --%>
+										</div>
+									</div>
+									
+								  	
+									
+									
 								</div>
 							</div>
 							<p></p>
@@ -236,7 +278,7 @@ $(document).ready(function() {
 											<div class="text-decoration-none locationBtn" data-bs-toggle="modal"
 												data-bs-target="#locationModal"
 												style="width: 100%; padding: 0; border: none; position: relative; color: black;">
-												<input class="form-control w-100"
+												<input class="form-control w-100" value="${PortfolioIdList.location_info }"
 													placeholder="시/군/구를 선택해주세요."/>
 											</div>
 										</div>
@@ -305,7 +347,7 @@ $(document).ready(function() {
 									<div class="mt-4">
 										<form:label path="final_amount" class="form-label"
 											style="font-weight: bold;">최종 금액</form:label>
-										<form:input path="final_amount" class="form-control"
+										<form:input path="final_amount" class="form-control" value="${PortfolioIdList.final_amount }"
 											placeholder="최종 금액을 입력해주세요." />
 									</div>
 
@@ -313,7 +355,7 @@ $(document).ready(function() {
 										<div class="col-md-6 mt-4" style="margin-right: 0;">
 											<form:label path="work_year" class="form-label"
 												style="font-weight: bold;">작업 연도</form:label>
-											<form:select path="work_year" class="form-control required"
+											<form:select path="work_year" class="form-control required" value="${PortfolioIdList.work_year }"
 												id="yearSelect">
 												<!-- 연도 선택 스크립트 -->
 											</form:select>
@@ -324,35 +366,21 @@ $(document).ready(function() {
 													<form:label path="work_period" class="form-label"
 														style="font-weight: bold;">작업 소요기간</form:label>
 													<form:input path="work_period"
-														class="form-control required"
+														class="form-control required" value="${PortfolioIdList.work_period }"
 														placeholder="소요기간(ex.4개월, 1년반)" min="1" />
 												</div>
-												<!-- <div class="col-md-6">
-											<label for="durationUnit" class="form-label"
-												style="font-weight: bold;">&nbsp;</label> <select
-												class="form-control" id="durationUnit" required>
-												<option value="hours">시간</option>
-												<option value="days">일</option>
-												<option value="weeks">주</option>
-												<option value="months">개월</option>
-											</select>
-										</div> -->
 											</div>
-										</div>
-
-
-
-									</div>
-
+										</div> 
+									</div> 
 									<div class="mt-4">
 										<form:label path="detailed_introduction" class="form-label"
 											style="font-weight: bold;">상세 설명</form:label>
 										<div class="review_text">
-											<form:textarea path="detailed_introduction"
-												class="form-control myTextarea"
-												style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
-												placeholder="해당 경력에 대한 상세한 설명을 작성해 주세요."
-												oninput="countChars()" rows="5"></form:textarea>
+											<textarea name="detailed_introduction"
+											    class="form-control myTextarea"
+											    style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
+											    placeholder="해당 경력에 대한 상세한 설명을 작성해 주세요."
+											    rows="5">${PortfolioIdList.detailed_introduction}</textarea>
 											<div class="col text-end"
 												style="color: #B5B5B5; font-size: 14px;">
 												<span id="descriptionCharCount" style="color: #85BCEB;">0&nbsp;</span>/100자

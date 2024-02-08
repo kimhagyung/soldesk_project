@@ -3,10 +3,12 @@ package kr.co.softsoldesk.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +31,14 @@ public class ProController {
 	private ProUserBean loginProuserBean;
 	
     @GetMapping("/expert")
-    public String expert() {
-      	
+    public String expert(@RequestParam("id") int id,Model model) {
+    
+    	List<PortFolioBean> portfoliList=portfolioService.getPortfolioList(id);
+    	model.addAttribute("portfoliList",portfoliList);
+    
+    	for(PortFolioBean  port:portfoliList) {
+    		System.out.println("포트폴리오 사진:"+port.getDetailed_images());
+    	}
     	return "pro/expert";
     }
 
@@ -49,55 +57,58 @@ public class ProController {
     										Model model) {
     	//model.addAttribute("ProPortpolio_pro",ProPortpolio_pro);
     	
-    	
-    	String aaa = "aaaaaa";
-    	Proportfolio_pro.setTest("ddddd");
-    	model.addAttribute("aaa", aaa);
+    	 
     	model.addAttribute("Proportfolio_pro", Proportfolio_pro);
     	
         //return "pro/Portfolio";
     	return "pro/Portfolio";
-    }
-    /*
-    @PostMapping("/ProPortfolio1")
-    public String ProPortfolio(@ModelAttribute("Proportfolio_pro") PortFolioBean Proportfolio_pro,
-    								@RequestParam("uploadFiles") List<MultipartFile> uploadFiles,
-    								Model model) {
+    } 
     
-    	 System.out.println("11111: "+Proportfolio_pro.getTest());
-    	
-			portfolioService.addProPortfolioInfo(Proportfolio_pro, uploadFiles);
-		   
-		    System.out.println("프로: " + loginProuserBean.getPro_id()); 
-		    System.out.println("이미지: " + Proportfolio_pro.getDetailed_images()); 
-		    System.out.println("상세소개: " + Proportfolio_pro.getDetailed_introduction()); 
-		    System.out.println("지역" + Proportfolio_pro.getLocation_info()); 
-		    System.out.println("작업기간: " + Proportfolio_pro.getWork_period());  
-		 
-		   model.addAttribute("Proportfolio_pro", Proportfolio_pro);
-    	
-    	return "pro/portfolio_success";
-    }
- */
+    
     @PostMapping("/ProPortfolio")
     public String ProPortfolio(@ModelAttribute("Proportfolio_pro") PortFolioBean Proportfolio_pro, Model model
     		,@RequestParam("uploadFiles") List<MultipartFile> uploadFiles) {
-    
-    	 System.out.println("11111: "+Proportfolio_pro.getTest());
-    	
-			//portfolioService.addProPortfolioInfo(Proportfolio_pro, uploadFiles);
+     
     	  	portfolioService.addProPortfolioInfo(Proportfolio_pro, uploadFiles);
-		   
-		    System.out.println("프로: " + loginProuserBean.getPro_id()); 
-		    System.out.println("이미지: " + Proportfolio_pro.getDetailed_images()); 
-		    System.out.println("상세소개: " + Proportfolio_pro.getDetailed_introduction()); 
-		    System.out.println("지역" + Proportfolio_pro.getLocation_info()); 
-		    System.out.println("작업기간: " + Proportfolio_pro.getWork_period());  
-		    System.out.println("서비스기간: " + Proportfolio_pro.getService_type());  
-		 
 		   model.addAttribute("Proportfolio_pro", Proportfolio_pro);
     	
     	return "pro/portfolio_success";
     }
+    
+    
+    @GetMapping("/Portfolio_modify")
+	public String Portfolio_modify(@RequestParam("portfolio_id") int portfolio_id, @ModelAttribute("ProportfolioModify") PortFolioBean ProportfolioModify,
+							Model model) {
+		
+    	PortFolioBean PortfolioIdList = portfolioService.getPortfolioIdList(portfolio_id);
+
+    	System.out.println("PortfolioIdList.getDetailed_introduction: "+PortfolioIdList.getDetailed_introduction() );
+    	System.out.println("PortfolioIdList.getDetailed_images: "+PortfolioIdList.getDetailed_images() );
+    	System.out.println("PortfolioIdList.getLocation_info: "+PortfolioIdList.getLocation_info() );
+    	
+		model.addAttribute("PortfolioIdList",PortfolioIdList);
+		
+		return "pro/Portfolio_modify";
+		
+	}
+    
+	@PostMapping("/ModifyProPortfolio")
+	public String ModifyProPortfolio(@Valid @ModelAttribute("ProportfolioModify") PortFolioBean ProportfolioModify,
+								@RequestParam("uploadFiles") List<MultipartFile> uploadFiles,
+								 BindingResult result) {
+		
+		if(result.hasErrors()) {
+			return "pro/Portfolio_modify";
+		}
+		
+		try { 
+			portfolioService.modifyPortfolioInfo(ProportfolioModify, uploadFiles);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		
+		return "pro/ModifyProPortfolio_success";
+	}
     
  } 

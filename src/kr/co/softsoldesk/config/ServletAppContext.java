@@ -200,51 +200,8 @@ public class ServletAppContext implements WebMvcConfigurer {
 		factoryBean.setSqlSessionFactory(factory);
 
 		return factoryBean;
-	}
-
-	/*
-	 * @Bean public MapperFactoryBean<TopMenuMapper>
-	 * getTopMenuMapper(SqlSessionFactory factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<TopMenuMapper> factoryBean = new
-	 * MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
-
-	/*
-	 * @Bean public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory
-	 * factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<UserMapper> factoryBean = new
-	 * MapperFactoryBean<UserMapper>(UserMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
-
-	// interceptor 등록하는 메소드
-	/*
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * 
-	 * //헤더 TopMenuInteceptor topMenuInterceptor = new
-	 * TopMenuInteceptor(topMenuService, loginUserBean); InterceptorRegistration
-	 * reg1 = registry.addInterceptor(topMenuInterceptor);
-	 * reg1.addPathPatterns("/**"); //모든 요청에서 동작
-	 * 
-	 * //로그인 권한? 로그인하지 않았을 경우 CheckLoginInterceptor checkLoginInterceptor = new
-	 * CheckLoginInterceptor(loginUserBean); InterceptorRegistration reg2 =
-	 * registry.addInterceptor(checkLoginInterceptor);
-	 * reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*"); // 수정페이지,
-	 * 로그아웃 페이지, 게시판 폴더의 페이지 요청시 인터셉터 reg2.excludePathPatterns("/board/main");
-	 * //excludePathPatterns: 게시판 폴더의 main은 예외
-	 * 
-	 * 
-	 * }
-	 */
+	} 
+	 
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 		@Bean
 		public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -259,13 +216,14 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return res;
 	}
 
+	//이미지 
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
-
 		return new StandardServletMultipartResolver();
 	}
 
- @Override
+	//자동완성관련
+	@Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new MappingJackson2HttpMessageConverter());
     }
