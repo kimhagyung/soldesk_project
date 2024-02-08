@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,14 +74,6 @@
 <!-- style="background-color: palegreen" -->
 
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
-
-
-<script>
-	$(function () {
-	// "header.html" 파일을 로드하여 .header 클래스를 가진 요소에 삽입
-	
-	})
-</script>
 
 </head>
 <!-- -->
@@ -310,7 +303,7 @@
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="redirectToCareerPage()">수정</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career?id=${param.id }'">수정</button>
 				</div>
 			</div>
 			<p></p>
@@ -338,7 +331,7 @@
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToPortfolioPage()">등록하기</button>
+					<button class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Portfolio?id=${param.id }'">등록하기</button>
 				</div>
 			</div>
 			<p></p>

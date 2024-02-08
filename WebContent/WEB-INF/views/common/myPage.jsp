@@ -49,10 +49,14 @@
 								</div>
 							</div>
 							<div class="col-4 ms-5  mt-3 text-end">
+							 <c:choose>
+                               <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
+                                    <button class="btn button-custom " onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
+                                </c:when>
+                             </c:choose> 
 								<button class="btn button-custom account"
 								onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
 							</div>
-	 
 						</div>
 		  </li>
 		  

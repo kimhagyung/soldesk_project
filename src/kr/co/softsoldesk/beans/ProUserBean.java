@@ -14,10 +14,12 @@ public class ProUserBean {
 	private String pro_name;
 	
 	private String active_location;
+	
 	private String[] active_detailcategory = new String[3];
 	private String active_detailcategory1;
 	private String active_detailcategory2;
 	private String active_detailcategory3;
+	
 	@Size(min = 4, max = 20)
 	private String pro_pwd;
 	@Size(min = 4, max = 20) 
@@ -94,28 +96,28 @@ public class ProUserBean {
 	}
 
 	 
-		public String[] getActive_detailcategory() {
-	        return active_detailcategory;
-	    }
+	public String[] getActive_detailcategory() {
+        return active_detailcategory;
+    }
 
-	    public void setActive_detailcategory(String[] active_detailcategory) {
-	    	
-	            // 배열의 길이에 따라 각 변수에 값을 할당
-	            if (active_detailcategory[0]==null) {
-	            	 active_detailcategory1 = null;
-	            }
-	            active_detailcategory1 = active_detailcategory[0];
-		             
-	            if (active_detailcategory[1]==null) {
-	            	 active_detailcategory2 = null;
-	            }
-	            active_detailcategory2 = active_detailcategory[1];
-	            
-	            if (active_detailcategory[2]==null) {
-	            	 active_detailcategory3 = null;
-	            }
-	            active_detailcategory3 = active_detailcategory[2];
-	    	}
+    public void setActive_detailcategory(String[] active_detailcategory) {
+    	
+            // 배열의 길이에 따라 각 변수에 값을 할당
+            if (active_detailcategory[0]==null) {
+            	 active_detailcategory1 = null;
+            }
+            active_detailcategory1 = active_detailcategory[0];
+	             
+            if (active_detailcategory[1]==null) {
+            	 active_detailcategory2 = null;
+            }
+            active_detailcategory2 = active_detailcategory[1];
+            
+            if (active_detailcategory[2]==null) {
+            	 active_detailcategory3 = null;
+            }
+            active_detailcategory3 = active_detailcategory[2];
+    	}
 	  
 	public String getActive_detailcategory1() {
 			return active_detailcategory1;

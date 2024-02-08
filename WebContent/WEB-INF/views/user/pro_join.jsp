@@ -268,7 +268,6 @@ function resetUserIdExist(){
                               <option value="Jeollanam">전남</option>
                            </select>
                         </div>
-
                         <div class="form-group">
                            <form:label path="active_location" for="selectCity">군/구</form:label>
                            <form:select path="active_location" class="form-control"

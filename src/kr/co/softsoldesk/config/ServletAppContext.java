@@ -28,10 +28,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
+import kr.co.softsoldesk.mapper.PortFolioMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
@@ -131,6 +133,16 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factoryBean;
 	}
 	
+	//포트폴리오mapper
+	@Bean
+	public MapperFactoryBean<PortFolioMapper> getPortFolioMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<PortFolioMapper> factoryBean = new MapperFactoryBean<PortFolioMapper>(PortFolioMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -149,6 +161,8 @@ public class ServletAppContext implements WebMvcConfigurer {
 		reg3.addPathPatterns("/common/myPage");
 		reg3.addPathPatterns("/common/AccountModify");
 		reg3.addPathPatterns("/common/AccountSetting");
+		
+		reg3.addPathPatterns("/pro/**"); 
 		
 	}
 	
@@ -245,14 +259,15 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return res;
 	}
 
-
+	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
 
 		return new StandardServletMultipartResolver();
 	}
-	
-	 @Override
-	    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-	        converters.add(new MappingJackson2HttpMessageConverter());
-	    }
+
+ @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+ 
 }
