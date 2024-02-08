@@ -1,6 +1,7 @@
 package kr.co.softsoldesk.config;
 
 import javax.servlet.FilterRegistration;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -13,9 +14,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 
 public class SpringConfigClass implements WebApplicationInitializer{
- 
-	
-	
+
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
   
@@ -40,6 +39,11 @@ public class SpringConfigClass implements WebApplicationInitializer{
 		filter.setInitParameter("encoding", "UTF-8");
 		
 		filter.addMappingForServletNames(null, false, "dispatcher");
+		
+
+		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(null, 52428800, 52428800, 0);
+		
+		servlet.setMultipartConfig(multipartConfigElement);
  
 	} 
 	

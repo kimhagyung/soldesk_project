@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,15 +75,17 @@
 <!-- style="background-color: palegreen" -->
 
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
-
-
 <script>
-	$(function () {
-	// "header.html" 파일을 로드하여 .header 클래스를 가진 요소에 삽입
-	
-	})
+$(document).ready(function() {
+    var maxTextLength = 100; // 최대 글자 수 설정
+    $('.detailed-content').each(function() {
+        var text = $(this).text();
+        if (text.length > maxTextLength) {
+            $(this).text(text.slice(0, maxTextLength) + '...');
+        }
+    });
+});
 </script>
-
 </head>
 <!-- -->
 <body>
@@ -310,7 +314,7 @@
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="redirectToCareerPage()">수정</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career?id=${param.id }'">수정</button>
 				</div>
 			</div>
 			<p></p>
@@ -331,36 +335,51 @@
 			<p class="content">@학력 페이지에서 값 받아오는 곳@</p>
 			<p></p>
 		</div>
-	</div>
-	
+	</div> 
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 12.포트폴리오 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToPortfolioPage()">등록하기</button>
+					<button class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Portfolio?id=${param.id }'">등록하기</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">설명과 포트폴리오 등록버튼</p>
-			<h5 class="content">@이동할 포폴 페이지 제작@</h5>
+			<p></p> 
+			<c:forEach var="obj" items="${portfoliList }">
+			
+				<hr>
+				<div class="portfolio-feed" style="cursor:pointer ;" >
+					<div class="row">
+						<div class="col-10"> 
+							<div class="col">
+								<div class="row-3">
+									서비스 종류:${obj.service_type } 
+								</div>
+								<div class="row-3">
+									제목: ${obj.portfolio_title }  
+								</div>
+								<div class="row-3 detailed-content">
+									상세 내용:${obj.detailed_introduction }
+								</div>
+							</div> 
+						</div>
+						  <c:if test="${obj.detailed_images != null}">
+							<c:forEach var="portfolio_img" items="${fn:split(obj.detailed_images, ',')}" varStatus="loop">
+								<c:if test="${loop.index == 0}"> 
+									<div class="col-2"> 
+  										<img src="${root}/portfolio/${portfolio_img}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+									</div>
+								</c:if> 
+							</c:forEach>
+						</c:if>	  		
+						<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/Portfolio_modify?portfolio_id=${obj.portfolio_id }'">수정</button>
+					</div>
+				</div> 
+			</c:forEach>
 			<p></p>
 		</div>
 	</div>
-	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 13.사진 및 동영상 -->
-	<div class="col-md-6 section-divider">
-			<div class="row">
-				<span class="col Subtitle">사진 및 동영상</span>
-				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD">수정</button>
-				</div>
-			</div>
-			<p></p>
-			<p class="content">설명과 사진/영상 등록버튼</p>
-			<p></p>
-		</div>
-	</div>
+	 
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 14.리뷰 -->
 		<div class="col-md-6">

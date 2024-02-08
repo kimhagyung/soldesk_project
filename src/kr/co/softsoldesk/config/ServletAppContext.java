@@ -25,12 +25,15 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
+import kr.co.softsoldesk.mapper.PortFolioMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
@@ -130,19 +133,36 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factoryBean;
 	}
 	
+	//포트폴리오mapper
+	@Bean
+	public MapperFactoryBean<PortFolioMapper> getPortFolioMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<PortFolioMapper> factoryBean = new MapperFactoryBean<PortFolioMapper>(PortFolioMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	
 		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
 		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
-		
+		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean);
+
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
 		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
+		InterceptorRegistration reg3 = registry.addInterceptor(loginInterceptor);
+
+		reg1.addPathPatterns("/**");// 모든 요청에서 동작
+		reg2.addPathPatterns("/**");// 모든 요청에서 동작
+		//reg3.addPathPatterns("/common/calendar");
+		reg3.addPathPatterns("/common/myPage");
+		reg3.addPathPatterns("/common/AccountModify");
+		reg3.addPathPatterns("/common/AccountSetting");
 		
-		
-		reg1.addPathPatterns("/**");//모든 요청에서 동작
-		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		reg3.addPathPatterns("/pro/**"); 
 		
 	}
 	
@@ -180,51 +200,8 @@ public class ServletAppContext implements WebMvcConfigurer {
 		factoryBean.setSqlSessionFactory(factory);
 
 		return factoryBean;
-	}
-
-	/*
-	 * @Bean public MapperFactoryBean<TopMenuMapper>
-	 * getTopMenuMapper(SqlSessionFactory factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<TopMenuMapper> factoryBean = new
-	 * MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
-
-	/*
-	 * @Bean public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory
-	 * factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<UserMapper> factoryBean = new
-	 * MapperFactoryBean<UserMapper>(UserMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
-
-	// interceptor 등록하는 메소드
-	/*
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * 
-	 * //헤더 TopMenuInteceptor topMenuInterceptor = new
-	 * TopMenuInteceptor(topMenuService, loginUserBean); InterceptorRegistration
-	 * reg1 = registry.addInterceptor(topMenuInterceptor);
-	 * reg1.addPathPatterns("/**"); //모든 요청에서 동작
-	 * 
-	 * //로그인 권한? 로그인하지 않았을 경우 CheckLoginInterceptor checkLoginInterceptor = new
-	 * CheckLoginInterceptor(loginUserBean); InterceptorRegistration reg2 =
-	 * registry.addInterceptor(checkLoginInterceptor);
-	 * reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*"); // 수정페이지,
-	 * 로그아웃 페이지, 게시판 폴더의 페이지 요청시 인터셉터 reg2.excludePathPatterns("/board/main");
-	 * //excludePathPatterns: 게시판 폴더의 main은 예외
-	 * 
-	 * 
-	 * }
-	 */
+	} 
+	 
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 		@Bean
 		public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -239,14 +216,16 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return res;
 	}
 
-
+	//이미지 
+	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
-
 		return new StandardServletMultipartResolver();
 	}
-	
-	 @Override
-	    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-	        converters.add(new MappingJackson2HttpMessageConverter());
-	    }
+
+	//자동완성관련
+	@Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+ 
 }
