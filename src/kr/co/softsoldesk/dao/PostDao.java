@@ -3,6 +3,7 @@ package kr.co.softsoldesk.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -83,4 +84,13 @@ public class PostDao {
 		 return postMapper.commentCntAtPost(board_id);
 	 }
 	 
+	 //---------------------검색-----------------------------
+	 
+	 public List<PostBean> getSearchedPostList(RowBounds rowBounds, @Param("searchType") String searchType, @Param("searchText") String searchText){
+		 return postMapper.getSearchedPostList(rowBounds, searchType, searchText);
+	 }
+	 
+	 public int getSearchedPostCnt(String searchType, String searchText) {
+	        return postMapper.getSearchedPostCnt(searchType, searchText);
+	 }
 }

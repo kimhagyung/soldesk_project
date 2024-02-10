@@ -14,7 +14,26 @@ public class PageBean {
 
 	private int currentPage;
 	
+	private String SearchType;
+	private String SearchText;
 	
+	
+	public String getSearchType() {
+		return SearchType;
+	}
+
+	public void setSearchType(String searchType) {
+		SearchType = searchType;
+	}
+
+	public String getSearchText() {
+		return SearchText;
+	}
+
+	public void setSearchText(String searchText) {
+		SearchText = searchText;
+	}
+
 	public PageBean(int contentCnt, int currentPage, int contentPageCnt, int paginationCnt) {
 		
 		this.currentPage = currentPage;

@@ -173,4 +173,19 @@ public class PostService {
 	   
 	   return pageBean;
    }
+   
+   //----------------검색-----------------------------
+   
+   public List<PostBean> getSearchedPostList(int page, String searchType, String searchText) {
+       int start = (page - 1) * page_listcnt;
+       RowBounds rowBounds = new RowBounds(start, page_listcnt);
+       return postDao.getSearchedPostList(rowBounds, searchType, searchText);
+   }
+   
+   public PageBean getSearchedPostPage(int currentPage, String searchType, String searchText) {
+       int contentCnt = postDao.getSearchedPostCnt(searchType, searchText);
+       PageBean pageBean = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
+       return pageBean;
+   }
+   
 }

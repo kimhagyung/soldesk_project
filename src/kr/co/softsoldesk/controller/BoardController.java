@@ -41,14 +41,23 @@ public class BoardController {
 	private ProUserBean loginProuserBean;
 
 	@GetMapping("/community")
-	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page) { 
+	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "searchType", defaultValue = "") String searchType,
+            @RequestParam(value = "searchText", defaultValue = "") String searchText) { 
 		
-		List<PostBean> postList = postService.getAllPostList(page);
-		
-		model.addAttribute("postList", postList);
-		
-		PageBean pageBean = postService.getPost(page);
-		model.addAttribute("pageBean", pageBean);
+		List<PostBean> postList;
+        PageBean pageBean;
+
+        if (!searchType.isEmpty() && !searchText.isEmpty()) {
+            postList = postService.getSearchedPostList(page, searchType, searchText);
+            pageBean = postService.getSearchedPostPage(page, searchType, searchText);
+        } else {
+            postList = postService.getAllPostList(page);
+            pageBean = postService.getPost(page);
+        }
+
+        model.addAttribute("postList", postList);
+        model.addAttribute("pageBean", pageBean);
 		
 		return "board/community";
 	}

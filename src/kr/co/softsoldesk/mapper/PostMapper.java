@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
@@ -89,6 +90,23 @@ public interface PostMapper {
 			+ "where b.board_id = c.board_id and b.board_id = #{board_id}")
 	int commentCntAtPost(int board_id);
 	
+	//------------------검색---------------------------------
 	
-	
+	@Select("SELECT b.board_id, b.user_id, b.pro_id, b.category, b.location, b.title, b.content, b.photos, b.viewCnt, b.board_date, NVL(c.commentCnt, 0) AS commentCnt " +
+	        "FROM board b " +
+	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
+	        "WHERE " +
+	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%')) " +
+	        "ORDER BY b.board_id DESC")
+	List<PostBean> getSearchedPostList(RowBounds rowBounds, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+	@Select("SELECT COUNT(*) FROM board b " +
+	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
+	        "WHERE " +
+	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%'))")
+	int getSearchedPostCnt(@Param("searchType") String searchType, @Param("searchText") String searchText);
+
+
 }
