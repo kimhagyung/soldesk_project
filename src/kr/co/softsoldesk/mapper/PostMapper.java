@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import kr.co.softsoldesk.beans.CommentBean;
 import kr.co.softsoldesk.beans.PostBean;
@@ -26,7 +27,7 @@ public interface PostMapper {
 			+ "group by board_id) c "
 			+ "where b.board_id = c.board_id(+) "
 			+ "order by b.board_id desc")
-	List<PostBean> getAllPostList();
+	List<PostBean> getAllPostList(RowBounds rowBounds);
 	
 	@Select("SELECT b.board_id, b.user_id, b.pro_id, u.user_name AS writer_name, pu.pro_name AS prowriter_name, b.title, b.content, b.category, b.location, "
 	         + " b.viewCnt, b.board_date, b.photos "
@@ -47,6 +48,9 @@ public interface PostMapper {
 	
 	@Update("update board set viewcnt = viewcnt+1 where board_id=#{board_id}")
 	void plusCnt(int board_id);
+	
+	@Select("select count(*) from board")
+	int getPostCnt();
 	
 	//----------------신고-----------------------------
 	
@@ -84,5 +88,7 @@ public interface PostMapper {
 	@Select("select count(*) from board b, comments c "
 			+ "where b.board_id = c.board_id and b.board_id = #{board_id}")
 	int commentCntAtPost(int board_id);
+	
+	
 	
 }

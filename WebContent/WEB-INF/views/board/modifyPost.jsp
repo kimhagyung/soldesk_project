@@ -96,7 +96,7 @@ $(function() {
 		right: 17.2%;
 		height: 5%;
 		background: #D9E8F5;
-		color: #6387A6;;
+		color: #6387A6;
 		border: none;
 		padding: 5px;
 		cursor: pointer;
@@ -230,9 +230,9 @@ $(function() {
 	 		
 			<br />
 		
-			<div class="commnutiy-complete">
+			<div class="commnutiy-complete" style="display: flex; float: right;">
+				<a href="${root }/board/detailCommunity?board_id=${board_id }" class="btn btn-info" style="margin-right: 8px; background-color: #fff; border: 1px solid #6387A6; color: #6387A6;">취소</a>
 				<form:button class="btn button-custom" style="color: white; float: right;">수정 완료</form:button>
-				<a href="${root }/board/detailCommunity?board_id=${board_id }" class="btn btn-info">취소</a>
 			</div>
 		</div>
 	</form:form>

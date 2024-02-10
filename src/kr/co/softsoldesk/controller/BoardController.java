@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.softsoldesk.beans.CommentBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReportBean;
@@ -39,15 +41,14 @@ public class BoardController {
 	private ProUserBean loginProuserBean;
 
 	@GetMapping("/community")
-	public String community(Model model) {  //@RequestParam("board_id") int board_id,
+	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page) { 
 		
-		List<PostBean> postList = postService.getAllPostList();
-		
-		//댓글 수
-		//int commentCnt = postService.commentCntAtPost(board_id);
+		List<PostBean> postList = postService.getAllPostList(page);
 		
 		model.addAttribute("postList", postList);
-		//model.addAttribute("commentCnt", commentCnt);
+		
+		PageBean pageBean = postService.getPost(page);
+		model.addAttribute("pageBean", pageBean);
 		
 		return "board/community";
 	}
@@ -78,10 +79,10 @@ public class BoardController {
 			else if(loginProuserBean.isProuserLogin() == true){ 
 				postService.addBoardPostInfo(boardPostBean, uploadFiles);
 		       } 
-		       System.out.println("유저: " + loginUserBean.isUserLogin());
-		       System.out.println("프로: " + loginProuserBean.isProuserLogin());
-		       System.out.println("user: " + boardPostBean.getUser_id());
-		       System.out.println("pro: " + boardPostBean.getPro_id());
+		       //System.out.println("유저: " + loginUserBean.isUserLogin());
+		       //System.out.println("프로: " + loginProuserBean.isProuserLogin());
+		       //System.out.println("user: " + boardPostBean.getUser_id());
+		       //System.out.println("pro: " + boardPostBean.getPro_id());
  
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -145,13 +146,18 @@ public class BoardController {
 		
 		PostBean tempPostBean = postService.getPostInfo(board_id);
 		
+		String contentWithPtags = tempPostBean.getContent();
+		String contentWithoutPtags = Jsoup.parse(contentWithPtags).text();
+		
 		modifyPostBean.setTitle(tempPostBean.getTitle());
-		modifyPostBean.setContent(tempPostBean.getContent());
+		modifyPostBean.setContent(contentWithoutPtags);
 		modifyPostBean.setCategory(tempPostBean.getCategory());
 		modifyPostBean.setLocation(tempPostBean.getLocation());
 		modifyPostBean.setPhotos(tempPostBean.getPhotos());
 		modifyPostBean.setBoard_id(tempPostBean.getBoard_id());
 		modifyPostBean.setPhotos(tempPostBean.getPhotos());
+		
+		System.out.println("글 수정 p태그: " + modifyPostBean.getContent());
 		
 		model.addAttribute("board_id", board_id);
 		model.addAttribute("locBtnText", tempPostBean.getLocation());

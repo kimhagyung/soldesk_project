@@ -244,6 +244,74 @@ $(document).ready(function() {
 			</li>
 		</ul>
 	</article>
+	
+	 <div class="d-none d-md-block">
+            <ul class="pagination justify-content-center">
+               
+               <!-- 이전 페이지가 1 이하이면 이전 페이지는 비활성화 -->
+               <c:choose>
+                  <c:when test="${pageBean.prevPage <= 0 }">
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">이전</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/board/community?page=${pageBean.prevPage}" 
+                        class="page-link">이전</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+               <c:forEach var="idx" begin="${pageBean.min }" end="${pageBean.max }">
+               <!-- model로 가져온 pageBean의 최소페이지부터 최대페이지까지 반복 -->
+                  <c:choose>
+                     <c:when test="${idx==pageBean.currentPage }">
+                        <li class="page-item active" >
+                        <!-- 현재페이지 활성화 -->
+                           <a href="${root }/board/community?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:when>
+                     <c:otherwise>
+                        <li class="page-item">
+                           <a href="${root }/board/community?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:otherwise>
+                  </c:choose>
+               </c:forEach>
+               
+               <c:choose>
+                  <c:when test="${pageBean.max >= pageBean.pageCnt }">
+                  <!-- 현재 페이지가 최대페이지이면 다음버튼 비활성화 -->
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">다음</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/board/community?page=${pageBean.nextPage}" 
+                        class="page-link">다음</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+            </ul>
+         </div>
+         
+         <div class="d-block d-md-none">
+            <ul class="pagination justify-content-center">
+               <li class="page-item">
+                  <a href="#" class="page-link">이전</a>
+               </li>
+               <li class="page-item">
+                  <a href="#" class="page-link">다음</a>
+               </li>
+            </ul>
+         </div>
 
 
 	<c:import url="/WEB-INF/views/include/footer.jsp" />

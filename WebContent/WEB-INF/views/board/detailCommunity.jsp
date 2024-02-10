@@ -128,15 +128,23 @@ $(document).ready(function() {
                         formattedDate = '방금 전';
                     }
 
-                    replyHtml +='<div style="color: gray; font-size:14px; margin-bottom: 10px;">인테리어 외 5개 서비스 고수</div></div></div>' + 
-                                '<button style="background-color: #6387A6; border:none; border-radius: 8px; color: #fff; height: 40px;">견적요청</button></div>'+
-                                '<div style="margin-left:53px; margin-bottom: 10px;" class="comment-content" id="commentContent_' +comment.comment_id + '">' + comment.comment_content + '</div>' + 
-                                '<div style="display:flex; flex-direction: row; justify-content:space-between; align-items:center;" ><div class="time" style="margin-left: 53px; color: gray;">' + formattedDate + '</div>'
+                    
+                   	if(comment.pro_id != null){
+                   		replyHtml += '<div style="color: gray; font-size:14px; margin-bottom: 10px;">일류</div></div></div>' +
+                   					 '<button style="background-color: #6387A6; border:none; border-radius: 8px; color: #fff; height: 40px;">견적요청</button></div>' +
+                   					'<div style="margin-left:53px; margin-bottom: 10px;" class="comment-content" id="commentContent_' +comment.comment_id + '">' + comment.comment_content + '</div>' + 
+                                    '<div style="display:flex; flex-direction: row; justify-content:space-between; align-items:center;" ><div class="time" style="margin-left: 53px; color: gray;">' + formattedDate + '</div>'
+                   	} else{
+                   		replyHtml += '<br><div style="margin-bottom: 10px;" class="comment-content" id="commentContent_' +comment.comment_id + '">' + comment.comment_content + '</div>' + 
+                        			 '<div style="display:flex; flex-direction: row; justify-content:space-between; align-items:center;" ><div class="time" style="color: gray;">' + formattedDate + '</div>'
+                   	}
+                   	
+                   	
                            
                     if(comment.comment_prowriter_name == null){
                          if(comment.user_id == ${loginUserBean.user_id}){
 
-						 	replyHtml += '<div style="display:flex; flex-direction: row">' +
+						 	replyHtml += '<div style="display:flex; flex-direction: row; height: 100%;">' +
                            			 	 '<button style="margin-right: 8px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
                            			 	 ')">수정</button>' + '<button style="border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" id="deleteBtn' + comment.comment_id +
                    					 	 '" onclick="deleteComment(' + comment.comment_id + ')"' + 
@@ -196,7 +204,7 @@ $(document).ready(function() {
         var currentContent = $("#commentContent_" + commentId).text();
 
         // 수정을 위한 input 태그로 교체
-        var inputElement = $('<input type="text" class="edit-comment-input" value="' + currentContent + '" style="margin-left: 53px;">');
+        var inputElement = $('<input type="text" class="edit-comment-input" value="' + currentContent + '">');
         $("#commentContent_" + commentId).replaceWith(inputElement);
 
         // 수정 완료 시 업데이트 처리
@@ -359,41 +367,36 @@ $(document).ready(function() {
 
 					</div>
 				</div>
-				<div class="writeTopSecond"
-					style="width: 100%; display: flex; justify-content: flex-end;">
-
-					<button class="pageBtn"
-						onclick="location.href='${root}/board/community'">목록</button>
-					<c:choose>
-						<c:when
-							test="${not empty loginUserBean && (loginUserBean.user_id == readPostBean.user_id || loginProuserBean.pro_id == readPostBean.pro_id)}">
-							<button class="pageBtn"
-								onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'"
-								style="margin-right: 8px;">수정</button>
-							<button class="pageBtn"
-								onclick="location.href='${root}/board/delete?board_id=${board_id}'"
-								style="margin-right: 8px;">삭제</button>
-						</c:when>
-						<c:otherwise>
-							<div>
-								<i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink"
-									role="button" data-bs-toggle="dropdown"></i>
-								<ul class="dropdown-menu"
-									aria-labelledby="navbarDropdownMenuLink">
-									<li>
-										<button type="button" class="btn btn-primary"
-											data-bs-toggle="modal" data-bs-target="#exampleModal">
-											게시글 신고</button>
-									</li>
-								</ul>
-							</div>
-						</c:otherwise>
-					</c:choose>
+				
+				
+					<div style="display: flex; justify-content: end; align-items: center;">
+    <button class="pageBtn" onclick="location.href='${root}/board/community'" style="margin-right: 8px;">목록</button>
+    
+    <c:choose>
+        <c:when test="${not empty loginUserBean && (loginUserBean.user_id == readPostBean.user_id || loginProuserBean.pro_id == readPostBean.pro_id)}">
+            <div>
+                <button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'">수정</button>
+                <button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'">삭제</button>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div>
+                <i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="width: 100%; border-radius: 0px; background-color: #6387A6; border: 1px solid #6387A6;" data-bs-target="#exampleModal">게시글 신고</button>
+                    </li>
+                </ul>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
 
 
 
 
-				</div>
+
+				
 			</div>
 			<hr />
 		</div>

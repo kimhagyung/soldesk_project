@@ -3,6 +3,7 @@ package kr.co.softsoldesk.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +24,8 @@ public class PostDao {
 		postMapper.addBoardPostInfo(boardPostBean);
 	}
 	
-	public List<PostBean> getAllPostList(){
-		return postMapper.getAllPostList();
+	public List<PostBean> getAllPostList(RowBounds rowBounds){
+		return postMapper.getAllPostList(rowBounds);
 	}
 	
 	public PostBean getPostInfo(int board_id) {
@@ -44,6 +45,10 @@ public class PostDao {
 	   {
 		 postMapper.plusCnt(board_id);
 	   }
+	 
+	 public int getPostCnt() {
+		 return postMapper.getPostCnt();
+	 }
 
 	 //--------------------신고-------------------------------
 	 

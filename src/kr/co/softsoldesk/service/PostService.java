@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.CommentBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReportBean;
@@ -29,6 +31,12 @@ public class PostService {
    
    @Value("${path.upload}")
    private String path_upload;
+   
+   @Value("${page.listcnt}")
+   private int page_listcnt;
+	
+   @Value("${page.paginationcnt}")
+   private int page_paginationcnt;
    
    @Autowired
    private PostDao postDao;
@@ -67,8 +75,12 @@ public class PostService {
        postDao.addBoardPostInfo(boardPostBean);
    }
    
-   public List<PostBean> getAllPostList(){
-	   return postDao.getAllPostList();
+   public List<PostBean> getAllPostList(int page){
+	   
+	   int start = (page - 1) * page_listcnt;
+	   RowBounds rowBounds = new RowBounds(start, page_listcnt);
+	   
+	   return postDao.getAllPostList(rowBounds);
    }
    
    public PostBean getPostInfo(int board_id) {
@@ -149,5 +161,16 @@ public class PostService {
    
    public int commentCntAtPost(int board_id) {
 	   return postDao.commentCntAtPost(board_id);
+   }
+   
+   //-------------페이징 처리---------------------
+   
+   public PageBean getPost(int currentPage) {
+	   
+	   int contentCnt = postDao.getPostCnt(); //게시글의 수 
+	   
+	   PageBean pageBean = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
+	   
+	   return pageBean;
    }
 }
