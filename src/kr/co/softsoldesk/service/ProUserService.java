@@ -4,14 +4,19 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
 @Service
+@PropertySource("/WEB-INF/properties/option.properties")
 public class ProUserService {
 
 	@Autowired
@@ -19,6 +24,12 @@ public class ProUserService {
 	
 	@Resource(name = "loginProuserBean")
 	private ProUserBean loginProuserBean;
+	
+	@Value("${page.listcnt}")
+	private int page_listcnt;
+	
+	@Value("${page.paginationcnt}")
+	private int page_paginationcnt;
 	
 	public boolean checkProuserEmailExist(String pro_email) {
 		System.out.println("ProUserService pro_email:"+pro_email);
@@ -58,9 +69,20 @@ public class ProUserService {
 	        return proUserDao.getSearchProUserByName(pro_name);
 	    }
 	
-	 public List<ProUserBean> getProUserByName() {
-		 return proUserDao.getProUserByName();
+	 public List<ProUserBean> getProUserByName(int page, int size) {
+
+		 int offset = (page - 1) * size;
+	        RowBounds rowBounds = new RowBounds(offset, size);
+	        return proUserDao.getProUserByName(rowBounds);
 	 }
+	 
+	 public PageBean getProCnt(int currentPage) { 
+			int content_cnt = proUserDao.getProCnt();
+			
+			PageBean pageBean = new PageBean(content_cnt, currentPage, page_listcnt, page_paginationcnt);
+			
+			return pageBean;
+		}
 	 
 	 public List<String> getProCategoryAndLocation(String selectedCategory,String active_location) {
 		 System.out.println("ProUserService-getProCategoryAndLocation 호출!");

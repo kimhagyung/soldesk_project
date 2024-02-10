@@ -24,7 +24,8 @@
 				$(this).text(truncatedText);
 			}
 		});
-	});
+		
+		 
 </script> 
 
 <script>
@@ -175,6 +176,9 @@ function sendToServerLocation(selectedLocation) {
         }
     });
 }
+
+
+
 </script> 
 
 <style>
@@ -215,23 +219,13 @@ function sendToServerLocation(selectedLocation) {
 		<div class="btn-catelocat mb-5">
 			<button type="button"
 				class="btn btn-outline-dark mt-4 btncommon categoryBtn"
-				data-bs-toggle="modal" data-bs-target="#exampleModal">
-				<c:if test="${not empty param.detail_category_name}">
-			        ${param.detail_category_name}
-			    </c:if>
-				<c:if test="${empty param.detail_category_name}">
-			        카테고리 ⋁
-			    </c:if>
+				data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+			        카테고리 ⋁ 
 			</button>
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">
-				<c:if test="${not empty param.location}">
-			        ${param.location}
-			    </c:if>
-				<c:if test="${empty param.location}">
-			        지역 ⋁
-			    </c:if>
+				data-bs-toggle="modal" data-bs-target="#locationModal"> 
+			        지역 ⋁ 
 			</button>
 		</div>
 		<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -385,8 +379,8 @@ function sendToServerLocation(selectedLocation) {
 								</div>
 							</div>
 						</c:forEach>
-					</c:when> <%-- 
-					<c:otherwise>
+					</c:when>  
+					 <c:when test="${empty param.detail_category_name or empty param.location}">
 						<c:forEach var="proname" items="${pro_names}">
 							<div class="card mb-3">
 								<div class="card-body row">
@@ -414,13 +408,61 @@ function sendToServerLocation(selectedLocation) {
 								</div>
 							</div>
 						</c:forEach>
-					</c:otherwise> --%>
+					</c:when>  
 				</c:choose> 
-				<div><!-- 여기에 출력 --></div>
+				<div> </div>
 			</div>
-		</div>
+			<!-- 페이징 처리 -->
 
-		<!--여기 -->
+		</div> 
+		<!-- 페이징 처리 -->
+		<div class="d-none d-md-block">
+			<ul class="pagination justify-content-center">
+				<c:choose>
+				<c:when test="${pageBean.prevPage <= 0 }">
+				<li class="page-item disabled">
+					<a href="#" class="page-link">이전</a>
+				</li>
+				</c:when>
+				<c:otherwise>
+				<li class="page-item">
+					<a href="${root }/search/findPro?page=${pageBean.prevPage}" class="page-link">이전</a>
+				</li>
+				</c:otherwise>
+				</c:choose>
+				
+				
+				<c:forEach var='idx' begin="${pageBean.min }" end='${pageBean.max }'>
+				<c:choose>
+				<c:when test="${idx == pageBean.currentPage }">
+				<li class="page-item active">
+					<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
+				</li>
+				</c:when>
+				<c:otherwise>
+				<li class="page-item">
+					<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
+				</li>
+				</c:otherwise>
+				</c:choose>
+				
+				</c:forEach>
+						
+				<c:choose>
+				<c:when test="${pageBean.max >= pageBean.pageCnt }">
+				<li class="page-item disabled">
+					<a href="#" class="page-link">다음</a>
+				</li>
+				</c:when>
+				<c:otherwise>
+				<li class="page-item">
+					<a href="${root }/search/findPro?page=${pageBean.nextPage}" class="page-link">다음</a>
+				</li>
+				</c:otherwise>
+				</c:choose>
+				
+			</ul>
+		</div>
 
 	</div>
 	<!--여기까지 본문 -->

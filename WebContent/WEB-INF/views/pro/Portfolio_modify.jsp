@@ -83,6 +83,7 @@ $(document).ready(function() {
         yearSelectElement.append(option);
     } 
 
+
     // 삭제 버튼 생성 함수
     function createDeleteButton(containerId, previewId) {
         var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
@@ -91,17 +92,6 @@ $(document).ready(function() {
         });
 
         return deleteButton;
-    }
-
-    // 이미지 업로드 버튼 생성 함수
-    function createUploadButton(containerId, previewId) {
-        var uploadButton = $('<div class="document-container">')
-            .append('<div id="' + previewId.substring(1) + '" class="d-none"></div>')
-            .append('<button class="btn document-upload-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2;">' +
-                '<i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>' +
-                '</button>')
-            .append('<input  type="file" class="document-fileInput" style="display: none;" accept="image/*" multiple>'); 
-        return uploadButton;
     }
 
     // 이미지 초기화 함수
@@ -114,60 +104,63 @@ $(document).ready(function() {
         documentContainer.append(newUploadButton);
     }
 
-    // 상세 이미지 선택 시 처리
-    $(document).on('change', '.document-fileInput', function() {
+    // 이미지 업로드 버튼 생성 함수
+    function createUploadButton(containerId, previewId) {
+        var uploadButton = $('<label for="representative-document-fileInput">')
+            .append('<div id="' + previewId.substring(1) + '" class="d-none"></div>')
+            .append('<button class="btn" id="representative-document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2;">' +
+                '<i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>' +
+                '</button>')
+            .append('<input  type="file" id="representative-document-fileInput" style="display: none;" accept="image/*" >');
+
+        return uploadButton;
+    }
+ 
+
+ // 상세 이미지 등록 처리
+    $('#document-btn').click(function() {
+        $('#document-fileInput').click();
+    });
+
+ // 상세 이미지 선택 시 처리
+    $('#document-fileInput').change(function() {
         var currentImageCount = $('.uploaded-document-image').length;
         if (currentImageCount >= 10) {
             alert('최대 10장까지만 첨부할 수 있습니다.');
             return;
         }
 
-        var files = this.files;
-        var documentContainer = $(this).closest('.document-container');
-
-        for (var i = 0; i < files.length; i++) {
+        // Multiple files handling
+        for (var i = 0; i < this.files.length; i++) {
             var reader = new FileReader();
-            reader.onload = function(e) {
-                var newImage = $('<img>').attr({
-                    src: e.target.result,
-                    alt: 'Uploaded Document',
-                    class: 'uploaded-document-image',
-                    style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
-                });
 
-                var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
+            reader.onload = (function(file) {
+                return function(e) {
+                    var newImage = $('<img>').attr({
+                        src: e.target.result,
+                        alt: 'Uploaded Document',
+                        class: 'uploaded-document-image',
+                        style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
+                    });
 
-                var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
+                    var documentContainer = $('#document-btn-container');
 
-                deleteButton.click(function() {
-                    imageContainer.remove();
-                });
+                    var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
 
-                imageContainer.append(deleteButton);
+                    var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
 
-                documentContainer.before(imageContainer);
-            };
+                    deleteButton.click(function() {
+                        imageContainer.remove();
+                    });
 
-            reader.readAsDataURL(files[i]);
+                    imageContainer.append(deleteButton);
+
+                    documentContainer.append(imageContainer);
+                };
+            })(this.files[i]);
+
+            reader.readAsDataURL(this.files[i]);
         }
-
-        // Reset file input to allow uploading same images again
-        resetImagePreview(documentContainer, '#document-fileInput', '#document-btn-container');
-    });
-
-    // 삭제 버튼 생성 함수
-    function createDeleteButton(containerId, previewId) {
-        var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
-        deleteButton.click(function() {
-            resetImagePreview(containerId, '#representative-document-fileInput', previewId);
-        });
-
-        return deleteButton;
-    }
-
-    // 초기 이미지 업로드 버튼 생성
-    var initialUploadButton = createUploadButton('#document-btn-container', '#document-btn-container');
-    $('#document-btn-container').append(initialUploadButton);
     });
 });
 
@@ -231,34 +224,14 @@ $(document).ready(function() {
 								<i class="bi bi-exclamation-circle" style="font-size: 14px;">&nbsp;이미지는
 									가로, 세로 600px 이상 1:1 비율로 권장합니다. (최대 10장)</i>
 							</div>
-							<div class="photo_review" style="padding-top: 22.5px;">
+							
+							<div class="photo_review" style="padding-top: 22.5px;"> 
 								<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
-									<div class="row">
-										<div class="col-2">
-										
-										<label  class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
-											<i class="bi bi-plus-circle upload-icon mt-5" style="color: #6387A6"></i>
-										</label>
-										<input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*"  /> 
-										</div>
-										<div class="col-4">
-										<%--
-										<c:if test="${PortfolioIdList.detailed_images != null}">
-										<c:forEach var="portfolio_img" items="${fn:split(PortfolioIdList.detailed_images, ',')}" varStatus="loop">
-											<c:if test="${loop.index == 0}"> 
-													<div class="col-2"> 
-				  										<img src="${root}/portfolio/${portfolio_img}" name="uploadFiles" class="feed-img delete" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
-													</div>
-												</c:if> 
-											</c:forEach>
-										</c:if>	  	
-									 --%>
-										</div>
-									</div>
-									
-								  	
-									
-									
+							    <label class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
+							        <i class="bi bi-plus-circle upload-icon" style="position: absolute; top: 110.5%; left: 32.5%; transform: translate(-50%, -50%); color: #6387A6"></i>
+							    </label>
+							    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" multiple="true" />
+							</div> 
 								</div>
 							</div>
 							<p></p>
@@ -325,7 +298,7 @@ $(document).ready(function() {
 														           // $("#modalSelectedLocation").val(selectedCity + '/' + selectedDistrict);
 														            $("#modalSelectedLocation").val(selectedDistrict);
 														            $("#locationModal").modal('hide');
-														            $(".locationBtn").text(selectedCity + '/' + selectedDistrict);
+														            $(".locationBtn").text(selectedDistrict);
 														        });
 														    });
 									                    </script>
@@ -399,8 +372,9 @@ $(document).ready(function() {
 								</div>
 							</div>
 						</div>
-					</div>
+						
 				</form:form>
+					</div>
 			</div>
 		</div>
 	</div>

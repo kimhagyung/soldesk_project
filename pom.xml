@@ -101,7 +101,11 @@
 		    <artifactId>javax.annotation-api</artifactId>
 		    <version>1.3.2</version>
 		</dependency> 
-		
+		<dependency>
+    		<groupId>org.jsoup</groupId>
+    		<artifactId>jsoup</artifactId>
+    		<version>1.14.3</version> <!-- 최신 버전 사용 가능 -->
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

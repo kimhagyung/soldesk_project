@@ -3,6 +3,7 @@ package kr.co.softsoldesk.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +39,14 @@ public class ProUserDao {
 		
 	} 
 	
-	public List<ProUserBean> getProUserByName() { 
-		return ProuserMapper.getProUserByName(); 
+	public List<ProUserBean> getProUserByName(RowBounds rowBounds) { 
+		return ProuserMapper.getProUserByName(rowBounds); 
 	} 
+
+
+	public int getProCnt() {
+		return ProuserMapper.getProCnt();
+	}
 	
 	public List<String> getselectedCategory(String selectedCategory) { 
 		return ProuserMapper.getselectedCategory(selectedCategory); 

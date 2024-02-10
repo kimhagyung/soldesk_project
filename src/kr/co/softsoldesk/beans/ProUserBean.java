@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class ProUserBean {
 	private int pro_id; 
 	private String pro_email;
-
+	private int reportCnt;
 	@Size(min = 2, max = 8)
 	private String pro_name;
 	
@@ -36,6 +36,18 @@ public class ProUserBean {
 	}
 	 
  
+
+	public int getReportCnt() {
+		return reportCnt;
+	}
+
+
+
+	public void setReportCnt(int reportCnt) {
+		this.reportCnt = reportCnt;
+	}
+
+
 
 	public String getPro_gender() {
 		return pro_gender;
@@ -101,7 +113,7 @@ public class ProUserBean {
     }
 
     public void setActive_detailcategory(String[] active_detailcategory) {
-    	
+    	 
             // 배열의 길이에 따라 각 변수에 값을 할당
             if (active_detailcategory[0]==null) {
             	 active_detailcategory1 = null;
@@ -116,7 +128,7 @@ public class ProUserBean {
             if (active_detailcategory[2]==null) {
             	 active_detailcategory3 = null;
             }
-            active_detailcategory3 = active_detailcategory[2];
+            active_detailcategory3 = active_detailcategory[2]; 
     	}
 	  
 	public String getActive_detailcategory1() {

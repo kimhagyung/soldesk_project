@@ -10,7 +10,8 @@
 <title>Insert title here</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="${root }/jquery/locdata.js"></script>
-<style>
+<style>  
+ 
 .Explanation {
 	color: #B5B5B5;
 	font-size: 16px;
@@ -109,19 +110,18 @@ $(document).ready(function() {
             .append('<button class="btn" id="representative-document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2;">' +
                 '<i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>' +
                 '</button>')
-            .append('<input  type="file" id="representative-document-fileInput" style="display: none;" accept="image/*">');
+            .append('<input  type="file" id="representative-document-fileInput" style="display: none;" accept="image/*" >');
 
         return uploadButton;
     }
  
 
-    // 상세 이미지 등록 처리
+ // 상세 이미지 등록 처리
     $('#document-btn').click(function() {
         $('#document-fileInput').click();
     });
 
-    
-    // 상세 이미지 선택 시 처리
+ // 상세 이미지 선택 시 처리
     $('#document-fileInput').change(function() {
         var currentImageCount = $('.uploaded-document-image').length;
         if (currentImageCount >= 10) {
@@ -129,31 +129,37 @@ $(document).ready(function() {
             return;
         }
 
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var newImage = $('<img>').attr({
-                src: e.target.result,
-                alt: 'Uploaded Document',
-                class: 'uploaded-document-image',
-                style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
-            });
+        // Multiple files handling
+        for (var i = 0; i < this.files.length; i++) {
+            var reader = new FileReader();
 
-            var documentContainer = $('#document-btn-container');
+            reader.onload = (function(file) {
+                return function(e) {
+                    var newImage = $('<img>').attr({
+                        src: e.target.result,
+                        alt: 'Uploaded Document',
+                        class: 'uploaded-document-image',
+                        style: 'width: 100px; height: 100px; border: 1px dashed #d2d2d2; border-radius: 10px; margin-right: 5px;'
+                    });
 
-            var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
+                    var documentContainer = $('#document-btn-container');
 
-            var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
+                    var imageContainer = $('<div>').css('display', 'inline-block').append(newImage);
 
-            deleteButton.click(function() {
-                imageContainer.remove();
-            });
+                    var deleteButton = $('<button>').addClass('btn delete-icon p-0 position-relative').html('<i class="bi bi-x-circle-fill" style="color: #CC0000; position: absolute; top:-55px; right: 0;"></i>');
 
-            imageContainer.append(deleteButton);
+                    deleteButton.click(function() {
+                        imageContainer.remove();
+                    });
 
-            documentContainer.append(imageContainer);
-        };
+                    imageContainer.append(deleteButton);
 
-        reader.readAsDataURL(this.files[0]);
+                    documentContainer.append(imageContainer);
+                };
+            })(this.files[i]);
+
+            reader.readAsDataURL(this.files[i]);
+        }
     });
 });
 
@@ -211,13 +217,15 @@ $(document).ready(function() {
 								<i class="bi bi-exclamation-circle" style="font-size: 14px;">&nbsp;이미지는
 									가로, 세로 600px 이상 1:1 비율로 권장합니다. (최대 10장)</i>
 							</div>
-							<div class="photo_review" style="padding-top: 22.5px;">
+							<div class="photo_review" style="padding-top: 22.5px;"> 
 								<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
-								    <label class="btn" id="document-btn" style="position: relative; width: 100px; height: 100px; border: 1px dashed #d2d2d2; display: flex; align-items: center; justify-content: center;">
-								        <i class="bi bi-plus-circle upload-icon" style="color: #6387A6; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
-								    </label>
-								    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" />
-								</div>
+							    <label class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
+							        <i class="bi bi-plus-circle upload-icon" style="position: absolute; top: 110.5%; left: 32.5%; transform: translate(-50%, -50%); color: #6387A6"></i>
+							    </label>
+							    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" multiple="true" />
+							</div>
+
+
 							</div>
 							<p></p>
 							<p></p>
@@ -326,17 +334,7 @@ $(document).ready(function() {
 													<form:input path="work_period"
 														class="form-control required"
 														placeholder="소요기간(ex.4개월, 1년반)" min="1" />
-												</div>
-												<!-- <div class="col-md-6">
-											<label for="durationUnit" class="form-label"
-												style="font-weight: bold;">&nbsp;</label> <select
-												class="form-control" id="durationUnit" required>
-												<option value="hours">시간</option>
-												<option value="days">일</option>
-												<option value="weeks">주</option>
-												<option value="months">개월</option>
-											</select>
-										</div> -->
+												</div> 
 											</div>
 										</div>
 

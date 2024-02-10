@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
 import kr.co.softsoldesk.service.ProUserService;
@@ -30,7 +31,8 @@ public class SearchController {
 	ProUserService proUserService;
 	 
 	@GetMapping("/findPro")
-	public String findPro(Model model) {
+	public String findPro(@RequestParam(defaultValue = "1") int page, 
+            @RequestParam(defaultValue = "10") int size,Model model) {
 	    
 	    ArrayList<List<DetailCategoryBean>> detailCategoryList = new ArrayList<>();
 	    ArrayList<String> service_Category_Name = new ArrayList<>();
@@ -42,12 +44,18 @@ public class SearchController {
 	        detailCategoryList.add(list1);
 	        service_Category_Name.add(categoryName);
 	    }
-	    model.addAttribute("detailCategoryList", detailCategoryList);
-	    model.addAttribute("service_category_name", service_Category_Name); 
-	     
+	    PageBean pageBean = proUserService.getProCnt(page);
+		model.addAttribute("pageBean", pageBean);
+		
+		model.addAttribute("page", page);
 	    
-	    List<ProUserBean> pro_names = proUserService.getProUserByName();
-	    model.addAttribute("pro_names",pro_names);
+	    model.addAttribute("detailCategoryList", detailCategoryList);
+	    model.addAttribute("service_category_name", service_Category_Name);  
+	     
+	    List<ProUserBean> pro_names = proUserService.getProUserByName(page, size);
+	    model.addAttribute("pro_names",pro_names); 
+	    model.addAttribute("currentPage", page);
+	    
 	    return "search/findPro";
 	}
 	
@@ -60,17 +68,5 @@ public class SearchController {
 		//List<String> activeProUser=proUserService.getProCategoryAndLocation(activeData); //전달받은 값  
 		System.out.println("유사한 고수 이름:"+search_proname);
 		return "search/findPro";
-	} 
-	
-	/*
-
-	@GetMapping("/getCategoryInfo") 
-	public String getCategoryInfo(@RequestParam("selectedCategory") String selectedCategory, Model model) {
-		System.out.println("SearchController-selectedCategory:"+selectedCategory);
-        List<String> proActive = proUserService.getProCategoryAndLocation(selectedCategory);
-        System.out.println("SearchController-proActive:"+proActive);
-        model.addAttribute("proActive",proActive); 
-        return "search/findPro";
-    } 
-    */
+	}  
 }

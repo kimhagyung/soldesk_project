@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import kr.co.softsoldesk.beans.ProUserBean;
 
@@ -15,7 +16,7 @@ public interface ProUserMapper {
 	@Select("select pro_name from pro_user where pro_email=#{pro_email}")
 	String checkProuserEmailExist(String pro_email);
 
-	@Insert("INSERT INTO pro_user (pro_id, pro_email, pro_name, pro_pwd, pro_gender, active_location, active_detailcategory1, active_detailcategory2, active_detailcategory3) VALUES (pro_seq.nextval, #{pro_email}, #{pro_name}, #{pro_pwd}, #{pro_gender}, #{active_location, jdbcType=VARCHAR}, #{active_detailcategory1}, #{active_detailcategory2, jdbcType=VARCHAR}, #{active_detailcategory3, jdbcType=VARCHAR})")
+	@Insert("INSERT INTO pro_user (pro_id, pro_email, pro_name, pro_pwd, pro_gender, active_location, active_detailcategory1, active_detailcategory2, active_detailcategory3,reportCnt) VALUES (pro_seq.nextval, #{pro_email}, #{pro_name}, #{pro_pwd}, #{pro_gender}, #{active_location, jdbcType=VARCHAR}, #{active_detailcategory1, jdbcType=VARCHAR}, #{active_detailcategory2, jdbcType=VARCHAR}, #{active_detailcategory3, jdbcType=VARCHAR},#{reportCnt})")
 	void addProuserInfo(ProUserBean joinProuserBean);
 
 	@Select("select * from pro_user where pro_email=#{pro_email} and pro_pwd=#{pro_pwd}")
@@ -25,8 +26,11 @@ public interface ProUserMapper {
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
 
 	@Select("select pro_name from pro_user")
-	List<ProUserBean> getProUserByName(); // 모든 pro_name조회
+	List<ProUserBean> getProUserByName(RowBounds rowBounds); // 모든 pro_name조회
  
+	@Select("select count(*) from pro_user")
+	int getProCnt();
+	
 	@Select("SELECT pro_name FROM pro_user " +
 			 "WHERE active_location = #{active_location, jdbcType=VARCHAR}")
 	List<String> getselectedLocation(@Param("active_location") String active_location);

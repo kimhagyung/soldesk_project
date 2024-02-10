@@ -8,6 +8,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,18 +26,20 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
-import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.PortFolioMapper;
+import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
+import kr.co.softsoldesk.service.PostService;
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
 import kr.co.softsoldesk.Inteceptor.TopMenuInteceptor;
@@ -72,6 +75,8 @@ public class ServletAppContext implements WebMvcConfigurer {
 	@Resource(name="loginProuserBean")
 	private ProUserBean loginProuserBean; 
 
+	@Autowired
+	private PostService postService;
 	/*
 	 * @Autowired private TopMenuService topMenuService;
 	 * 
@@ -123,7 +128,13 @@ public class ServletAppContext implements WebMvcConfigurer {
 		
 		return factoryBean;
 	}
-
+	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
+	public MapperFactoryBean<PostMapper> PostMapper(SqlSessionFactory factory) throws Exception{
+		
+		MapperFactoryBean<PostMapper> factoryBean = new MapperFactoryBean<PostMapper>(PostMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
 	@Bean
 	public MapperFactoryBean<ProUserMapper> getProUserMapper(SqlSessionFactory factory)throws Exception{
 		
@@ -163,6 +174,12 @@ public class ServletAppContext implements WebMvcConfigurer {
 		reg3.addPathPatterns("/common/AccountSetting");
 		
 		reg3.addPathPatterns("/pro/**"); 
+		
+		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
+		
+		InterceptorRegistration reg4 = registry.addInterceptor(checkWriterInterceptor);
+		
+		reg4.addPathPatterns("/board/modifyPost", "/board/delete");
 		
 	}
 	
