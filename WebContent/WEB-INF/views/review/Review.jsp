@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
@@ -11,12 +13,110 @@
 	<title>Review</title>
 	<script src="${root}/script/jquery-3.4.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+  
+<script type="text/javascript">
+  
+$(document).ready(function() {
+    
+    /* // 댓글 개수 조회 함수
+    function updateReviewCount() {
+        $.ajax({
+            url: '${root}/reviewsCnt',
+            type: 'GET',
+            data: { pro_id: ${pro_id} },
+            success: function(response) {
+                $("#commentCount").text(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    } */
 
-	<script>
-		$(function () {
-			
-		});
-	</script>
+    /* // 댓글 목록 조회 함수
+    function updateReviewList() {
+        $.ajax({
+            url: '${root}/reviews?pro_id=${pro_id}',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $("#replySection").empty(); 
+                $.each(response, function(index, review) {
+                    var replyHtml = '<div class="reviewItem" id="replySection" style="margin-bottom: 4%;">' +
+                                        '<div class="author" style="margin-bottom: 0.5%">' + review.writer_name + '</div>' +
+                                        '<div class="serviceScore" style="display:flex; justify-content: space-between;">' +
+                                        '<div><img src="../image/star-solid.svg" style="margin-top: -5px;" />' + 
+                                        '<strong>' + review.rating.toFixed(1) + '</strong></div>';
+                                        
+                    if (review.user_id === loginUserBean.user_id) {
+                        replyHtml += '<div>' +
+                                          '<button style="border: none; border-radius: 8px;" onclick="deleteReview(' + review.review_id + ')">삭제</button>' +
+                                          '</div></div><div class="reviewImg" style="margin-top: 5px; margin-bottom: 5px;">';
+                    }
+                    
+                    if (review.photos !== null) {
+                        var photoArray = review.photos.split(',');
+
+                        for (var i = 0; i < photoArray.length; i++) {
+                            var photoUrl = photoArray[i].trim(); // 각각의 사진 URL을 얻음
+
+                            // 동적으로 생성한 img 태그를 reviewImgHtml에 추가
+                            replyHtml += '<img src="' + photoUrl + '" style="width: 80px; height: 80px; border-radius: 8px; margin-right: 5px;">';
+                        }
+                    }
+
+                    replyHtml += '</div>' +
+                                 '<div class="reviewText">' + review.review_contents + '</div>' +
+                                 '<div class="date" style="color: #787878; font-size: 12px">' + review.review_date + '</div>' +
+                                 '</div>';
+
+                    $("#replySection").append(replyHtml); 
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    } */
+    
+    // 리뷰 삭제
+    function deleteReview(reviewId) {
+        var isConfirmed = confirm('정말로 이 댓글을 삭제하시겠습니까?');
+        
+        if (isConfirmed) {
+            $.ajax({
+                url: '${root}/deleteReview',
+                type: 'GET',
+                data: { review_id: reviewId },
+                success: function(response) {
+                    alert('댓글이 성공적으로 삭제되었습니다.');
+                    
+                    /* // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
+                    updateReviewList();
+                    //updateReviewCount(); */
+                    
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            });
+        }
+    }
+    
+    // 초기 로딩 시 댓글 개수와 목록 업데이트
+   // updateReviewCount();
+    //updateReviewList();
+    
+    window.deleteReview = deleteReview;
+    
+});
+</script>
+
+
+
+	  
 	<style>
 		.nav-link {
 			color: black;
@@ -297,9 +397,9 @@
 			<li class="nav-item">
 				<a class="nav-link" href="#scrollspyHeading2" style="color: black;">포트폴리오</a>
 			</li>
-			<li class="nav-item">
+			<!-- <li class="nav-item">
 				<a class="nav-link" href="#scrollspyHeading3" style="color: black;">사진 / 동영상</a>
-			</li>
+			</li> -->
 			<li class="nav-item">
 				<a class="nav-link" href="#scrollspyHeading4" style="color: black;">리뷰</a>
 			</li>
@@ -324,15 +424,14 @@
 							style="width: 125px; height: 125px; border-radius: 15px; border: 1px solid #F3F3F3; margin-right: 35px;">
 						<div class="">
 							<h1 class="nickname" style="font-size: 24px;"><strong>OOO</strong></h1>
-							<div class="category">
-								<div class="subcategory">반려동물 훈련</div>
-								<div style="display: flex; align-items: center;">
-									<i class="bi bi-geo-alt" style="font-size: 16px;"></i>
-									<div class="address" style="font-size: 14px;">서울 관악구 / 100km 이동 가능</div>
-								</div>
+							
+							<div class="subcategory">반려동물 훈련</div>
+							<div style="display: flex; align-items: center;">
+								<i class="bi bi-geo-alt" style="font-size: 16px;"></i>
+								<div class="address" style="font-size: 14px;">서울 관악구 / 100km 이동 가능</div>
 							</div>
-							<div class="introduce">숨고 전국 1위! 많이 찾아주시는데는 이유가 있습니다!<br>아이가 스스로 선택하는 교육 four command 상세
-								서비스를 읽어주세요!</div>
+							
+							<div class="introduce">자세한 사항은 상세 서비스를 읽어주세요!</div>
 						</div>
 					</div>
 					<div class="basicInfo">
@@ -344,7 +443,7 @@
 							<span style="font-size: 14px;">리뷰</span>
 							<div class="review_info">
 								<img src="../image/star-solid.svg" style="width: 20px; height: 20px; margin-top: -8px;">
-								<span style="font-size: 20px;"><strong>5.0</strong></span>
+								<span style="font-size: 20px;"><strong><fmt:formatNumber value="${reviewAvg}" pattern="#,##0.0" /></strong></span>
 							</div>
 						</div>
 						<div class="career_item">
@@ -352,7 +451,7 @@
 							<span style="font-size: 20px;"><strong>n년</strong></span>
 						</div>
 					</div>
-					<div class="addInfo">
+					<!-- <div class="addInfo">
 						<div style="font-size: 16px; margin-top: 20px; margin-bottom: 8px"><strong>추가 정보</strong></div>
 						<div class="businessSize">
 							<i class="bi bi-people" style="margin-right: 10px;"></i>
@@ -366,7 +465,7 @@
 							<i class="bi bi-credit-card-2-back" style="margin-right: 10px;"></i>
 							<div class="pay">계좌이체, 현금결제 가능</div>
 						</div>
-					</div>
+					</div> -->
 
 					<div class="serviceInfo" style="margin-top: 30px;">
 						<div style="font-size: 16px; margin-bottom: 8px"><strong>서비스 상세설명</strong></div>
@@ -579,14 +678,31 @@
 												<div style="display: flex; flex-direction: row;">
 													<div>
 														<ul class="stars" style="padding: 0px 0px; margin: 0px 0px;">
-															<img src="../image/star-solid.svg" />
-															<img src="../image/star-solid.svg" />
-															<img src="../image/star-solid.svg" />
-															<img src="../image/star-solid.svg" />
-															<img src="../image/star-solid.svg" />
+															<script>
+        var avgRating = ${reviewAvg};
+        var fullStars = Math.floor(avgRating);  // 소수점 이하 버린 별
+
+        // Full stars
+        for (var i = 0; i < fullStars; i++) {
+            document.write('<img src="../image/star-solid.svg" />');
+        }
+
+        // Determine the appropriate additional stars based on the decimal part
+        var decimalPart = avgRating % 1;
+        if (decimalPart >= 0.5) {
+            document.write('<img src="../image/star-half.png" style="width:18px; height: 16px;"/>');
+            fullStars++;  // 반개 별이 표시되었으므로 fullStars 증가
+        }
+
+        // Remaining empty stars
+        var emptyStars = 5 - fullStars;
+        for (var j = 0; j < emptyStars; j++) {
+            document.write('<img src="../image/star-solid-gray.svg" />');
+        }
+    </script>
 														</ul>
 													</div>
-													<div style="margin-top: 2px; color: #888888;">(127)</div>
+													<div style="margin-top: 2px; color: #888888;">(${reviewCnt })</div>
 												</div>
 											</div>
 
@@ -623,37 +739,53 @@
 					</div>
 					</p>
 
-					<div id="scrollspyHeading3" style="height: 3vh;"></div>
+					<!-- <div id="scrollspyHeading3" style="height: 3vh;"></div>
 					<h5 class="fw-bold" style="margin-bottom: 2.5%;">사진 / 동영상</h5>
 					<p style="margin-bottom: 2.5%;">
 						<img src="../image//1.png"
 							style="width: 120px; height: 120px; border-radius: 15px; margin-right: 10px;">
 						<img src="../image//2.png"
 							style="width: 120px; height: 120px; border-radius: 15px; margin-right: 10px;">
-					</p>
+					</p> -->
 
 					<div id="scrollspyHeading4" style="height: 3vh;"></div>
 					<h5 class="fw-bold" style="margin-bottom: 2.5%;"><strong>리뷰</strong></h5>
 					<p>
 					<div class="reviewSummary">
-						<div class="reviewScore" style="font-size: 40px; margin-right: 15px;"><strong>5.0</strong></div>
+						<div class="reviewScore" style="font-size: 40px; margin-right: 15px;"><strong><fmt:formatNumber value="${reviewAvg}" pattern="#,##0.0" /></strong></div>
 						<div class="reviewInfo" style="margin-top: 0.8%;">
 							<ul class="stars" style="padding: 0px 0px; margin: 0px 0px;">
+								<!-- <img src="../image/star-solid.svg" />
 								<img src="../image/star-solid.svg" />
 								<img src="../image/star-solid.svg" />
 								<img src="../image/star-solid.svg" />
-								<img src="../image/star-solid.svg" />
-								<img src="../image/star-solid.svg" />
+								<img src="../image/star-solid.svg" /> -->
+								<script>
+        var avgRating = ${reviewAvg};
+        var fullStars = Math.floor(avgRating);  // 소수점 이하 버린 별
+
+        // Full stars
+        for (var i = 0; i < fullStars; i++) {
+            document.write('<img src="../image/star-solid.svg" />');
+        }
+
+        // Determine the appropriate additional stars based on the decimal part
+        var decimalPart = avgRating % 1;
+        if (decimalPart >= 0.5) {
+            document.write('<img src="../image/star-half.png" style="width:18px; height: 16px;"/>');
+            fullStars++;  // 반개 별이 표시되었으므로 fullStars 증가
+        }
+
+        // Remaining empty stars
+        var emptyStars = 5 - fullStars;
+        for (var j = 0; j < emptyStars; j++) {
+            document.write('<img src="../image/star-solid-gray.svg" />');
+        }
+    </script>
 							</ul>
-							<div class="reviewCount" style="font-size: 14px">3개 리뷰</div>
+							<div class="reviewCount" id="commentCount" style="font-size: 14px">${reviewCnt }개 리뷰</div>
 						</div>
-					</div>
-					<hr style="border: 1px solid #E1E1E1;" />
-					<div class="reviewCondition">
-						<button class="photoReview" onclick="toggleBgcolor()">
-							<i class="bi bi-camera-fill" style="margin-right: 6%"></i> 사진 리뷰
-						</button>
-						<div class="dropdown">
+						<!-- <div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
 								aria-expanded="false" style="background-color: #fff; color: black; border: none;">
 								최신순
@@ -663,103 +795,60 @@
 								<li><a class="dropdown-item" href="#">별점 높은 순</a></li>
 								<li><a class="dropdown-item" href="#">별점 낮은 순</a></li>
 							</ul>
-						</div>
+						</div> -->
 					</div>
+					<hr style="border: 1px solid #E1E1E1;" />
 					</p>
 
 					<!-- 리뷰 컨테이너 -->
-					<div id="reviewContainer" style="margin-top: 4%">
+					<div id="reviewContainer">
 
 						<!-- 3개 리뷰 보임 -->
-						<div class="reviewItem" style="margin-bottom: 4%;">
-							<div class="author" style="margin-bottom: 0.5%">김**</div>
-							<div class="serviceScore">
-								바이올린
-								<img src="../image/star-solid.svg" style="margin-top: -5px;" />
-								<strong>5.0</strong>
-							</div>
-							<div class="reviewText">
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-							</div>
-							<div class="evaluation" style="margin-bottom: 0.5%; margin-top: 0.5%;">
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 비용이 합리적이에요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-							</div>
-							<div class="date" style="color: #787878; font-size: 12px">
-								2023. 11. 23
-							</div>
-						</div>
+						<c:forEach var="obj" items="${reviewList }">
+							<div class="reviewItem" id="replySection" style="margin-bottom: 4%;">
+								<div class="author" style="margin-bottom: 0.5%">${obj.writer_name }</div>
+								<div class="serviceScore" style="display:flex; justify-content: space-between;">
+									<div>
+										<img src="../image/star-solid.svg" style="margin-top: -5px;" />
+										<strong><fmt:formatNumber value="${obj.rating}" pattern="#,##0.0" /></strong>
+									</div>
 
-						<div class="reviewItem" style="margin-bottom: 4%;">
-							<div class="author" style="margin-bottom: 0.5%">김**</div>
-							<div class="serviceScore">
-								바이올린
-								<img src="../image/star-solid.svg" style="margin-top: -5px;" />
-								<strong>5.0</strong>
-							</div>
-							<div class="reviewText">
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-							</div>
-							<div class="evaluation" style="margin-bottom: 0.5%; margin-top: 0.5%;">
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 비용이 합리적이에요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-							</div>
-							<div class="date" style="color: #787878; font-size: 12px">
-								2023. 11. 23
-							</div>
-						</div>
+									<c:if test="${obj.user_id eq loginUserBean.user_id}">
+										<div>
+											<%-- <button style="border: none; border-radius: 8px;" onclick="editComment(${obj.review_id})">수정</button> --%>
+											<button style="border: none; border-radius: 8px;" onclick="deleteReview(${obj.review_id})">삭제</button>
+										</div>
+									</c:if>
 
-						<div class="reviewItem" style="margin-bottom: 4%;">
-							<div class="author" style="margin-bottom: 0.5%">김**</div>
-							<div class="serviceScore">
-								바이올린
-								<img src="../image/star-solid.svg" style="margin-top: -5px;" />
-								<strong>5.0</strong>
+								</div>
+								<div class="reviewImg" style="margin-top: 5px; margin-bottom: 5px;">
+									
+									<c:if test="${obj.photos != null}">
+									
+										<c:forEach var="photo" items="${fn:split(obj.photos, ',')}" varStatus="loop">
+											<img src="${root}/upload/${photo}" style="width: 80px; height: 80px; border-radius: 8px; margin-right: 5px;">
+    									</c:forEach>
+										
+									</c:if>
+									
+								</div>
+								<div class="reviewText">${obj.review_contents }</div>
+								<div class="date" style="color: #787878; font-size: 12px">
+									${obj.review_date }</div>
 							</div>
-							<div class="reviewText">
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-								좋아요좋아요좋아요좋아요좋아요좋아요좋아요
-							</div>
-							<div class="evaluation" style="margin-bottom: 0.5%; margin-top: 0.5%;">
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 비용이 합리적이에요 &nbsp;&nbsp;</div>
-								<div
-									style="background-color: #F2F2F2; color: #8C8C8C; border-radius: 3px; height: 3vh; width: max-content; margin-right: 1.5%; font-size: 12px;">
-									&nbsp;&nbsp; 친절해요 &nbsp;&nbsp;</div>
-							</div>
-							<div class="date" style="color: #787878; font-size: 12px">
-								2023. 11. 23
-							</div>
-						</div>
+						</c:forEach>
+
 
 
 					</div>
+					
+					
 
-					<!-- 더보기 버튼 -->
+					<!--
 					<button class="btn btn-primary mt-3 d-md-flex justify-content-md-center mx-auto" id="loadMore"
 						style="border: none; color: #6387A6; background-color: white;">
 						리뷰 더보기 <i class="bi bi-chevron-down"></i>
-					</button>
+					</button> -->
 
 				</div>
 
@@ -770,7 +859,7 @@
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 
 	<script>
-		$(document).ready(function () {
+	/* 	$(document).ready(function () {
 
 			$('#carouselExampleIndicators').carousel();
 
@@ -792,8 +881,11 @@
 			var defaultSelectedText = "최신순";
 
 			$('.btn-secondary').text(defaultSelectedText);
-			changeColor(document.querySelector('.dropdown-item:contains("' + defaultSelectedText + '")'));
-		});
+			changeColor($('.dropdown-item').filter(function () {
+			    return $(this).text() === defaultSelectedText;
+			}));
+
+		}); */
 
 		// 드롭다운 메뉴 아이템을 클릭했을 때 스크롤 이동 방지
 		$('.dropdown-menu a').on('click', function (e) {
@@ -818,11 +910,11 @@
 
 		function changeColor(element) {
 
-			document.querySelectorAll('.dropdown-item').forEach(function (item) {
-				item.classList.remove('active');
-			});
+			// 모든 드롭다운 아이템의 배경 색을 원래대로 초기화
+		    $('.dropdown-item').css('background-color', '#fff');
 
-			element.classList.add('active');
+		    // 선택된 드롭다운 아이템에 배경 색을 지정
+		    $(element).css('background-color', '#6387A6');
 		}
 
 		function toggleBgcolor() {

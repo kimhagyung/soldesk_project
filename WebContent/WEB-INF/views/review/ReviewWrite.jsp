@@ -89,6 +89,56 @@
 			padding: 0px 0px;
 		}
 		
+		.commnuity-select{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	
+	label.form-control.col-2.btn{
+		display: flex;
+    	align-items: center;
+    	justify-content: center;
+	}
+	
+	.col-1{
+		border: 1px solid #C2C2C2;
+    	border-radius: 10px;
+    	width: 60px !important; 
+    	height: 60px !important;
+    	display: flex;
+    	align-items: center;
+    	justify-content: center;
+    	margin-right: 15px;
+	}
+	
+	.selected-image {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.selected-image-item {
+		position: relative;
+		margin: 5px;
+		max-width: 60px;
+		max-height: 60px;
+		border-radius: 10px;
+	}
+
+	.remove-button {
+		position: absolute;
+		right: 17.2%;
+		height: 5%;
+		background: #D9E8F5;
+		color: #6387A6;;
+		border: none;
+		padding: 5px;
+		cursor: pointer;
+		width: 70px;
+    	border-radius: 8px;
+	}
+		
     </style>
     <script>
     $(function(){
@@ -111,169 +161,250 @@
                             <div class="service_name" style="font-size: 14px; color: #737373;">성인 심리상담</div>
                         </div>
                     </div>
-                    <!-- form:form태그 -->
-                    <form:form action='${root }/review_write_pro' method='post' modelAttribute="reviewWriteBean">
-                    	
-                    </form:form>
-                    <div class="provider_star_rate" style="width: 75%; padding-top: 45px;">
-                        <div class="star_rate_title" style="font-size: 16px;"><strong>일류님은 어떠셨나요?</strong></div>
-                        <div class="starrateExplain" style="color: #B5B5B5; font-size: 14px;">별점을 선택해주세요</div>
-                        <div class="stars">
-                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                            <button class="star"><img src="../image/star-solid-gray.svg" alt="Image 1"></button>
-                        </div>
-                        <div class="rateMessage" style="color: #B5B5B5;"></div>
-                    </div>
-                    <div class="review_survey" style="width: 75%; padding-top: 45px;">
-                        <div class="review_surveyTitle" style="font-size: 16px;"><strong>어떤 점이 좋았나요? (최대 3개)</strong></div>
-                        <div class="review_surveyExplain" style="color: #B5B5B5; font-size: 14px;">일류님을 가장 잘 설명하는 문장을 골라주세요</div>
-                        <div class="form-check" style="margin-top: 0.8%;">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                                친절해요
-                            </label>
-                        </div>
-                        <div class="form-check" >
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                                비용이 합리적이에요
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                                편안한 분위기에서 진행해주세요
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                                경험이 많아요
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                                만족스러워요
-                            </label>
-                        </div>
-                    </div>
-                    <div class="review_text" style="width: 75%; padding-top: 45px;">
-                        <div class="review_text_title" style="font-size: 16px;"><strong>솔직한 리뷰를 작성해주세요</strong></div>
-                        <div class="review_textExplain" style="color: #B5B5B5; font-size: 14px;">리뷰는 최소 10자 이상입니다</div>
-                        <textarea id="myTextarea" style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;" placeholder="서비스 시간, 달인 장점, 특징 등 구체적일수록 좋아요" oninput="countChars()" rows="5"></textarea>
-                        <div class="charCount" style="color: #B5B5B5; font-size: 14px;"><span id="charCount" style="color: #6387A6;">0&nbsp;</span>/300자</div>
-                    </div>
-                    <div class="photo_review" style="width: 75%; padding-top: 45px;">
-                        <div class="photo_reviewTitle" style="font-size: 16px;"><strong>서비스 사진을 올려주세요 (최대 5장)</strong></div>
-                        <div class="photo_reviewExplain" style="color: #B5B5B5; font-size: 14px;">서비스 전 / 후 사진이면 더욱 좋아요</div>
-                        <div id="btn-container" style="margin-top: 0.8%; margin-bottom: 40px;">
-                            <label for="fileInput">
-                                <button class="btn" id="btn">
-                                    <i class="bi bi-plus-circle upload-icon" style="color: #6387A6"></i>
-                                    <!-- <img id="uploaded-image" src="#"> -->
-                                </button>
-                            </label>
-                            <input type="file" id="fileInput" style="display: none;" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2 col-4 mx-auto" style="padding-bottom: 40px;">
-                        <button class="btn btn-primary" type="button" style="background-color: #B5B5B5; border: 1px solid #B5B5B5;">작성 완료</button>
-                    </div>
+                    <div style="width: 75%;">
+                    
+                    	<div class="provider_star_rate"
+								style="width: 75%; padding-top: 45px;">
+								<div class="star_rate_title" style="font-size: 16px;">
+									<strong>일류님은 어떠셨나요?</strong>
+								</div>
+								<div class="starrateExplain"
+									style="color: #B5B5B5; font-size: 14px;">별점을 선택해주세요</div>
+								<div class="stars">
+									<button class="star">
+										<img src="../image/star-solid-gray.svg" alt="Image 1">
+									</button>
+									<button class="star">
+										<img src="../image/star-solid-gray.svg" alt="Image 1">
+									</button>
+									<button class="star">
+										<img src="../image/star-solid-gray.svg" alt="Image 1">
+									</button>
+									<button class="star">
+										<img src="../image/star-solid-gray.svg" alt="Image 1">
+									</button>
+									<button class="star">
+										<img src="../image/star-solid-gray.svg" alt="Image 1">
+									</button>
+								</div>
+								<div class="rateMessage" style="color: #B5B5B5;"></div>
+								
+							</div>
+							
+						<form:form action="${root }/review/ReviewWrite_pro" method="post" modelAttribute="writeReviewBean" enctype="multipart/form-data">
+
+							<form:hidden path="rating" id="rating" />
+							<form:hidden path="pro_id" id="pro_id" name="pro_id" value="" /> <!-- url에서의 pro_id 저장 -->
+							
+							<div class="review_text" style="width: 100%; padding-top: 45px;">
+								<div class="review_text_title" style="font-size: 16px;">
+									<strong>솔직한 리뷰를 작성해주세요</strong>
+								</div>
+								<div class="review_textExplain"
+									style="color: #B5B5B5; font-size: 14px;">리뷰는 최소 10자 이상입니다</div>
+								<form:textarea path="review_contents" id="myTextarea"
+									style="border-radius: 10px; padding: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
+									placeholder="서비스 시간, 일류 장점, 특징 등 구체적일수록 좋아요"
+									oninput="countChars()" rows="5" />
+								<form:errors path="review_contents" style="color:red"/>
+								<div class="charCount" style="color: #B5B5B5; font-size: 14px;">
+									<span id="charCount" style="color: #6387A6;">0&nbsp;</span>/300자
+								</div>
+							</div>
+							<div class="photo_review" style="width: 75%; padding-top: 45px;">
+								<div class="photo_reviewTitle" style="font-size: 16px;">
+									<strong>서비스 사진을 올려주세요 (최대 5장)</strong>
+								</div>
+								<div class="photo_reviewExplain"
+									style="color: #B5B5B5; font-size: 14px;">서비스 전 / 후 사진이면
+									더욱 좋아요</div>
+								<div id="btn-container"
+									style="margin-top: 0.8%; margin-bottom: 40px;">
+									<!-- 사진 -->
+			<div class="commnuity-select">
+				<div class="col-1"> 
+					
+					<input type="file" class="form-control col-2" id="inputGroupFile04" name="uploadFiles" style="display: none;" accept="image/*" multiple="true"/>
+					
+					<form:label path="photos" for="inputGroupFile04" class="form-control col-2 btn"> 
+						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
+					</form:label>
+				</div>
+				
+				<div class="selected-image"></div>
+				
+			</div>
+									<!-- <label for="fileInput">
+										<div class="btn" id="btn">
+											<i class="bi bi-plus-circle upload-icon"
+												style="color: #6387A6"></i>
+											<img id="uploaded-image" src="#">
+										</div>
+									</label> 
+									<input type="file" id="fileInput" name="uploadFiles"
+										style="display: none;" accept="image/*" multiple="true" /> -->
+								</div>
+							</div>
+							<div class="d-grid gap-2 col-4 mx-auto"
+								style="padding-bottom: 40px;">
+								<form:button class="btn btn-primary" type="submit"
+									style="background-color: #6387A6; border: 1px solid #B5B5B5;">작성
+								완료</form:button>
+							</div>
+
+						</form:form>
+					</div>
                 </div>
             </div>
         </div>
    </div>
    <c:import url="/WEB-INF/views/include/footer.jsp" />
   
+  <script>
+  
+//URL에서 pro_id 값을 추출하여 폼에 설정하는 JavaScript 코드
+  window.onload = function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var proId = urlParams.get('pro_id');
+      
+      // pro_id 값을 폼의 hidden 필드에 설정
+      document.getElementById('pro_id').value = proId;
+  };
+  
+  $(function() {
+	    $('#inputGroupFile04').on('change', function (event) {
+	        const selectedImageDiv = $('.selected-image');
+
+	        // Count only images, not remove buttons
+	        if (selectedImageDiv.find('.selected-image-item:not(.remove-button)').length >= 5) {
+	            alert('최대 5개의 이미지까지만 선택할 수 있습니다.');
+	            return;
+	        }
+
+	        const files = event.target.files;
+
+	        for (const file of files) {
+	            const reader = new FileReader();
+
+	            reader.onload = function (e) {
+	                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
+	                selectedImageDiv.append(img);
+
+	                const removeButton = $('<button>').text('삭제').addClass('remove-button');
+	                removeButton.on('click', function () {
+	                    img.remove();
+	                    removeButton.remove();
+	                });
+
+	                img.after(removeButton);
+	            };
+
+	            reader.readAsDataURL(file);
+	        }
+	    });
+	});
+		
+  </script>
+  
    <script type="text/javascript">
-   document.addEventListener('DOMContentLoaded', function () {
-        const buttons = document.querySelectorAll('.star');
-        const messageDiv = document.querySelector('.rateMessage');
+				document.addEventListener('DOMContentLoaded', function() {
+					const buttons = document.querySelectorAll('.star');
+					const messageDiv = document.querySelector('.rateMessage');
+					const ratingField = document.getElementById('rating');
+					
+					buttons.forEach(function(button, index) {
+						button.addEventListener('click', function() {
+							for (let i = 0; i < buttons.length; i++) {
+								const img = buttons[i].querySelector('img');
+								if (i <= index) {
+									img.src = '../image/star-solid.svg'; //선택한 별까지 노란색으로 표시
+								} else {
+									img.src = '../image/star-solid-gray.svg'; //아닌 곳은 회색 별로 표시
+								}
+							}
+							
+							ratingField.value = index + 1;
+							console.log(ratingField.value);
 
-        buttons.forEach(function (button, index) {
-            button.addEventListener('click', function () {
-                for (let i = 0; i < buttons.length; i++) {
-                    const img = buttons[i].querySelector('img');
-                    if (i <= index) {
-                        img.src = '../image/star-solid.svg'; //선택한 별까지 노란색으로 표시
-                    } else {
-                        img.src = '../image/star-solid-gray.svg'; //아닌 곳은 회색 별로 표시
-                    }
-                }
+							//별점에 따라 메시지 달라짐
+							switch (index) {
+							case 0:
+								messageDiv.innerText = '아쉬워요'; //별 1개
+								break;
+							case 1:
+								messageDiv.innerText = '그저 그래요';
+								break;
+							case 2:
+								messageDiv.innerText = '괜찮았어요';
+								break;
+							case 3:
+								messageDiv.innerText = '좋았어요';
+								break;
+							case 4:
+								messageDiv.innerText = '최고예요'; //별 5개
+								break;
+							default:
+								messageDiv.innerText = '';
+								break;
+							}
+						});
+					});
+					
+					
+					
+				});
 
-                //별점에 따라 메시지 달라짐
-                switch (index) {
-                    case 0:
-                        messageDiv.innerText = '아쉬워요'; //별 1개
-                        break;
-                    case 1:
-                        messageDiv.innerText = '그저 그래요';
-                        break;
-                    case 2:
-                        messageDiv.innerText = '괜찮았어요';
-                        break;
-                    case 3:
-                        messageDiv.innerText = '좋았어요';
-                        break;
-                    case 4:
-                        messageDiv.innerText = '최고예요'; //별 5개
-                        break;
-                    default:
-                        messageDiv.innerText = '';
-                        break;
-                }
-            });
-        });
-    });
-   
-   document.getElementById('fileInput').addEventListener('change', function () {
-       // 이미지 개수를 확인
-       var currentImageCount = document.querySelectorAll('.uploaded-image').length;
+				document
+						.getElementById('fileInput').addEventListener(
+								'change',
+								function() {
+									// 이미지 개수를 확인
+									var currentImageCount = document
+											.querySelectorAll('.uploaded-image').length;
 
-       // 이미지가 5장 이상이면 추가로 이미지를 삽입하지 않음
-       if (currentImageCount >= 5) {
-           alert('최대 5장까지만 첨부할 수 있습니다.');
-           return;
-       }
+									// 이미지가 5장 이상이면 추가로 이미지를 삽입하지 않음
+									if (currentImageCount >= 5) {
+										alert('최대 5장까지만 첨부할 수 있습니다.');
+										return;
+									}
 
-       var reader = new FileReader();
-       reader.onload = function (e) {
-           // 새로운 이미지를 표시할 img 요소 생성
-           var newImage = document.createElement('img');
-           newImage.src = e.target.result;
-           newImage.alt = 'Uploaded Image';
-           newImage.className = 'uploaded-image';  // 클래스 추가
-           newImage.style.width = '90px';  
-           newImage.style.height = '90px'; 
-           newImage.style.borderRadius = '10px'; 
-           newImage.style.border = '1px solid #e1e1e1'; 
-           newImage.style.marginRight = '10px'; 
+									var reader = new FileReader();
+									reader.onload = function(e) {
+										// 새로운 이미지를 표시할 img 요소 생성
+										var newImage = document
+												.createElement('img');
+										newImage.src = e.target.result;
+										newImage.alt = 'Uploaded Image';
+										newImage.className = 'uploaded-image'; // 클래스 추가
+										newImage.style.width = '90px';
+										newImage.style.height = '90px';
+										newImage.style.borderRadius = '10px';
+										newImage.style.border = '1px solid #e1e1e1';
+										newImage.style.marginRight = '10px';
 
-           // 이미지를 표시할 컨테이너를 찾음
-           var imageContainer = document.getElementById('btn-container');
+										// 이미지를 표시할 컨테이너를 찾음
+										var imageContainer = document
+												.getElementById('btn-container');
 
-           // 새로운 이미지를 컨테이너에 추가
-           imageContainer.appendChild(newImage);
-       };
+										// 새로운 이미지를 컨테이너에 추가
+										imageContainer.appendChild(newImage);
+									};
 
-       reader.readAsDataURL(this.files[0]);
-   });
+									reader.readAsDataURL(this.files[0]);
+								});
 
-   document.getElementById('btn').addEventListener('click', function () {
-       document.getElementById('fileInput').click();
-   });
-   
-   //textarea 글자수 세기
-   function countChars() {
-       var textarea = document.getElementById('myTextarea');
-       var charCountSpan = document.getElementById('charCount');
-       var charCount = textarea.value.length;
-       charCountSpan.textContent = charCount;
-   }
-   </script>
+				document.getElementById('btn').addEventListener('click',
+						function() {
+							document.getElementById('fileInput').click();
+						});
+
+				//textarea 글자수 세기
+				function countChars() {
+					var textarea = document.getElementById('myTextarea');
+					var charCountSpan = document.getElementById('charCount');
+					var charCount = textarea.value.length;
+					charCountSpan.textContent = charCount;
+				}
+			</script>
 </body>
 </html>
