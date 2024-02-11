@@ -43,7 +43,9 @@ public class BoardController {
 	@GetMapping("/community")
 	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "searchType", defaultValue = "") String searchType,
-            @RequestParam(value = "searchText", defaultValue = "") String searchText) { 
+            @RequestParam(value = "searchText", defaultValue = "") String searchText,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            @RequestParam(value = "location", defaultValue = "") String location) { 
 		
 		List<PostBean> postList;
         PageBean pageBean;

@@ -93,4 +93,5 @@ public class PostDao {
 	 public int getSearchedPostCnt(String searchType, String searchText) {
 	        return postMapper.getSearchedPostCnt(searchType, searchText);
 	 }
+	 
 }

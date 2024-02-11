@@ -113,6 +113,8 @@ $(document).ready(function() {
     <select name="searchType" id="searchType" class="form-control mx-2">
         <option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
         <option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
+        <option value="category" <c:if test="${param.searchType == 'category'}">selected</c:if>>카테고리</option>
+        <option value="location" <c:if test="${param.searchType == 'location'}">selected</c:if>>지역</option>
     </select>
     <label for="searchText" class="mr-2">검색어:</label>
     <input type="text" name="searchText" id="searchText" class="form-control mx-2" value="${param.searchText}" />
@@ -120,13 +122,13 @@ $(document).ready(function() {
 </form>
 		
 		<div class="btn-catelocat">
-			<button type="button"
+<!-- 			<button type="button"
 				class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
 				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
 				<i class="bi bi-caret-down"></i></button>
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button>
+				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button> -->
 			<button type="button" class="btn button-custom mt-4 me-5"
 				onclick="location.href='${root}/board/post'" style="float: right; color: white;">
 				글쓰기 <img src="../image/pen2.png" style="width: 18px;">

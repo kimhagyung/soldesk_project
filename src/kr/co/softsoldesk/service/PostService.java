@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -187,5 +188,6 @@ public class PostService {
        PageBean pageBean = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
        return pageBean;
    }
+   
    
 }

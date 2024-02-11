@@ -97,7 +97,9 @@ public interface PostMapper {
 	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
 	        "WHERE " +
 	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
-	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%')) " +
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'category' and b.category like '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'location' and b.location like '%' || #{searchText} || '%')) " +
 	        "ORDER BY b.board_id DESC")
 	List<PostBean> getSearchedPostList(RowBounds rowBounds, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
@@ -105,8 +107,13 @@ public interface PostMapper {
 	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
 	        "WHERE " +
 	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
-	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%'))")
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'category' and b.category like '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'location' and b.location like '%' || #{searchText} || '%')) ")
 	int getSearchedPostCnt(@Param("searchType") String searchType, @Param("searchText") String searchText);
+	
+	
+	
 
 
 }
