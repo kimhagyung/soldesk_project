@@ -244,37 +244,106 @@ $(document).ready(function() {
 			</li>
 		</ul>
 	</article>
+	
+	<div class="d-none d-md-block">
+            <ul class="pagination justify-content-center">
+               
+               <!-- 이전 페이지가 1 이하이면 이전 페이지는 비활성화 -->
+               <c:choose>
+                  <c:when test="${pageBean.prevPage <= 0 }">
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">이전</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/board/community?page=${pageBean.prevPage}" 
+                        class="page-link">이전</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+               <c:forEach var="idx" begin="${pageBean.min }" end="${pageBean.max }">
+               <!-- model로 가져온 pageBean의 최소페이지부터 최대페이지까지 반복 -->
+                  <c:choose>
+                     <c:when test="${idx==pageBean.currentPage }">
+                        <li class="page-item active" >
+                        <!-- 현재페이지 활성화 -->
+                           <a href="${root }/board/community?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:when>
+                     <c:otherwise>
+                        <li class="page-item">
+                           <a href="${root }/board/community?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:otherwise>
+                  </c:choose>
+               </c:forEach>
+               
+               <c:choose>
+                  <c:when test="${pageBean.max >= pageBean.pageCnt }">
+                  <!-- 현재 페이지가 최대페이지이면 다음버튼 비활성화 -->
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">다음</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/board/community?page=${pageBean.nextPage}" 
+                        class="page-link">다음</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+            </ul>
+         </div>
+         
+         <div class="d-block d-md-none">
+            <ul class="pagination justify-content-center">
+               <li class="page-item">
+                  <a href="#" class="page-link">이전</a>
+               </li>
+               <li class="page-item">
+                  <a href="#" class="page-link">다음</a>
+               </li>
+            </ul>
+         </div>
 
 
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var timeElements = document.querySelectorAll('.time');
+document.addEventListener('DOMContentLoaded', function () {
+    var timeElements = document.querySelectorAll('.time');
 
-        timeElements.forEach(function (timeElement) {
-            var boardDate = moment(timeElement.textContent);
-            var now = moment(); // 현재 시간
-            var diffInMinutes = now.diff(boardDate, 'minutes');
-            var diffInHours = now.diff(boardDate, 'hours');
-			var diffInDays = now.diff(boardDate, 'days');
-			
-            var relativeTime;
-            if (diffInMinutes < 1) {
-                relativeTime = '방금 전';
-            } else if (diffInHours < 1) {
-                relativeTime = diffInMinutes + '분 전';
-            } else if (diffInHours < 24) {
-                relativeTime = diffInHours + '시간 전';
-            } else if (diffInDays < 7) {
-                relativeTime = diffInDays + '일 전';
-            } else {
-                relativeTime = boardDate.format('YYYY-MM-DD');
-            }
+    timeElements.forEach(function (timeElement) {
+        var boardDate = moment(timeElement.textContent, 'YYYY-MM-DD HH:mm:ss');
+        var now = moment(); // 현재 시간
+        var diffInMinutes = now.diff(boardDate, 'minutes');
+        var diffInHours = now.diff(boardDate, 'hours');
+        var diffInDays = now.diff(boardDate, 'days');
 
-            timeElement.textContent = relativeTime;
-        });
+        var relativeTime;
+        if (diffInMinutes < 1) {
+            relativeTime = '방금 전';
+        } else if (diffInHours < 1) {
+            relativeTime = diffInMinutes + '분 전';
+        } else if (diffInHours < 24) {
+            relativeTime = diffInHours + '시간 전';
+        } else if (diffInDays < 7) {
+            relativeTime = diffInDays + '일 전';
+        } else {
+            relativeTime = boardDate.format('YYYY-MM-DD');
+        }
+
+        timeElement.textContent = relativeTime;
     });
+});
+
 </script>
 
 </body>

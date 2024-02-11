@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.softsoldesk.beans.CalendarBean;
+import kr.co.softsoldesk.beans.CommentBean;
+import kr.co.softsoldesk.beans.PageBean;
+import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.CalendarService;
+import kr.co.softsoldesk.service.PostService;
+import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
 
 @Controller
@@ -33,12 +38,38 @@ public class CommonController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private ProUserService ProuserService;
 	
 	@Autowired
 	private CalendarService calendarService;
 	
+	@Autowired
+	private PostService postService;
+	
 	@GetMapping("/myPage")
-	public String mypage() { 
+	public String mypage(Model model) { 
+		
+		//userService.getLoginUserInfo(tempLoginUserBean);
+		//System.out.println("tempLoginUserBean: " + tempLoginUserBean.getUser_name());
+		//System.out.println("tempLoginUserBean: " + tempLoginUserBean.getUser_name());
+		if (loginUserBean.isUserLogin()) {
+	        // 일반 회원으로 로그인한 경우
+	      
+	        model.addAttribute("user_name", loginUserBean.getUser_name());
+	        model.addAttribute("user_email", loginUserBean.getUser_email());
+	        
+	        System.out.println("user_namegg: " + loginUserBean.getUser_name());
+	        System.out.println("user_emailgg: " + loginUserBean.getUser_email());
+	    } else if (loginProuserBean.isProuserLogin()) {
+	        model.addAttribute("pro_name", loginProuserBean.getPro_name());
+	        model.addAttribute("pro_email", loginProuserBean.getPro_email());
+	        System.out.println("proname: " + loginProuserBean.getPro_name());
+	    } else {
+	        // 로그인되지 않은 경우
+	        return "redirect:/user/not_login";
+	    }
 
 		return "common/myPage";
 	}
@@ -177,6 +208,66 @@ public class CommonController {
 		
 		return result;
 	}
+	
+	@GetMapping("/myPosts")
+	public String myPosts(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+		
+		if(loginUserBean.isUserLogin() == true) {
+			List<PostBean> getMyPosts = postService.getMyPosts(loginUserBean.getUser_id(), null, page);
+			model.addAttribute("getMyPosts", getMyPosts);
+			PageBean pageBean = postService.getMyPostsPage(page, loginUserBean.getUser_id(), null);
+			model.addAttribute("pageBean", pageBean);
+			
+		} else if(loginProuserBean.isProuserLogin() == true) {
+			List<PostBean> getMyPosts = postService.getMyPosts(null, loginProuserBean.getPro_id(), page);
+			model.addAttribute("getMyPosts", getMyPosts);
+			PageBean pageBean = postService.getMyPostsPage(page, null, loginProuserBean.getPro_id());
+			model.addAttribute("pageBean", pageBean);
+		}else {
+	        // 로그인되지 않은 경우
+	        return "redirect:/user/not_login";
+	    }
+		
+		return "common/myPosts";
+	}
+	
+	@GetMapping("/comment")
+	public String comment(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+		
+		if(loginUserBean.isUserLogin() == true) {
+			List<CommentBean> getMyComments = postService.getMyComment(loginUserBean.getUser_id(), null, page);
+			model.addAttribute("getMyComments", getMyComments);
+			PageBean pageBean = postService.getMyCommentPage(page, loginUserBean.getUser_id(), null);
+			model.addAttribute("pageBean", pageBean);
+			
+			 for (CommentBean comment : getMyComments) {
+			        //System.out.println("Comment ID: " + comment.getComments_id());
+			        System.out.println("Board ID: " + comment.getBoard_id());
+			        //System.out.println("User ID: " + comment.getUser_id());
+			        //System.out.println("Pro ID: " + comment.getPro_id());
+			        //System.out.println("Comment Content: " + comment.getCommentContent());
+			        //System.out.println("Comments Date: " + comment.getComments_date());
+			        System.out.println("title: " + comment.getTitle());
+			        System.out.println("------------------------------------");
+			    }
+		
+		} else if(loginProuserBean.isProuserLogin() == true) {
+			
+			List<CommentBean> getMyComments = postService.getMyComment(null, loginProuserBean.getPro_id(), page);
+			model.addAttribute("getMyComments", getMyComments);
+			PageBean pageBean = postService.getMyCommentPage(page, null, loginProuserBean.getPro_id());
+			model.addAttribute("pageBean", pageBean);
+			
+			System.out.println("page: " + pageBean.getMax());
+			
+		}else {
+	        // 로그인되지 않은 경우
+	        return "redirect:/user/not_login";
+	    }
+		
+		return "common/comment";
+	}
+	
 	
 	
 }

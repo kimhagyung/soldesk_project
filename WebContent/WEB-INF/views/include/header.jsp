@@ -185,6 +185,13 @@ function displayAlarms(alarms) {
 								href='${root}/board/community'>커뮤니티</a></li>
 							<li class="nav-item"><a class="nav-link"
 								href="${root}/search/findPro">일류찾기</a></li>
+								
+							<!-- 채팅 버튼 표시/숨김 -->
+                            <c:choose>
+                                <c:when test="${loginProuserBean.prouserLogin == true || loginUserBean.userLogin == true}">
+                                    <li class="nav-item"><a class="nav-link" href="${root}/ChattingList">채팅</a></li>
+                                </c:when>
+                            </c:choose>
 						</ul>
 
 
@@ -192,8 +199,7 @@ function displayAlarms(alarms) {
 						<form class="d-flex me-5 ms-auto" role="search">
 							<input class="form-control me-2" type="search"
 								placeholder="Search" aria-label="Search">
-							<button class="btn ms-2 button-custom" type="submit"
-								style="color: white;">Search</button>
+							
 						</form>
 
 						<c:choose>

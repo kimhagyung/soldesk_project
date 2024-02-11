@@ -38,6 +38,7 @@
 								<p>아이디 비밀번호를 확인해 주세요
 							</div>
 						</c:if>
+						
 						<form:form action="${root }/user/login_pro" method="post"
 							modelAttribute="tempLoginUserBean">
 							<div class="mb-3">
@@ -56,6 +57,7 @@
 							    <a href="${root}/user/join" class="btn button-custom">회원가입</a>
 							</div>
 						</form:form>
+						
 					</div>
 				</div>
 			</div>

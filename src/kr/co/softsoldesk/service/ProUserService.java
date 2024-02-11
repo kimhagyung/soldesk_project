@@ -41,6 +41,7 @@ public class ProUserService {
 		if(tempLoginProuserBean3 != null) {
 			loginProuserBean.setPro_id(tempLoginProuserBean3.getPro_id());
 			loginProuserBean.setPro_email(tempLoginProuserBean3.getPro_email());
+			loginProuserBean.setPro_name(tempLoginProuserBean3.getPro_name());
 			loginProuserBean.setPro_pwd(tempLoginProuserBean3.getPro_pwd());
 			loginProuserBean.setProuserLogin(true);
 		}

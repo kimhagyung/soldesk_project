@@ -103,7 +103,7 @@
 				</div>
 				<div class="chats"
 					style="border: 1px solid rgb(242, 242, 242); border-radius: 10px; margin-top: 2%;">
-					<button class="chat" style="width: 95%;" onclick="moveToChatting()">
+					<button class="chat" style="width: 95%;" onclick="location.href='${root}/chatting'">
 
 						<div class="provider_profile"
 							style="width: 100%; padding-top: 20px; margin-bottom: 16px;">

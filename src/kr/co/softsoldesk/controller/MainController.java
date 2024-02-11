@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
+import kr.co.softsoldesk.service.PostService;
 import kr.co.softsoldesk.service.ServiceCategoryService;
 
 @Controller
@@ -22,21 +24,21 @@ public class MainController {
 	
 	@Autowired
 	DetailCategoryService detailCategoryService;
+	
+	@Autowired
+	PostService postService;
 
 	@GetMapping("/index")
 	public String index(Model model) {
 
 		List<ServiceCategoryBean> categoryList = serviceCategoryService.getCategoryList();
-
 		model.addAttribute("categoryList", categoryList);
+		
+		List<PostBean> postList = postService.getAllPostList(0);
+		model.addAttribute("postList", postList);
 
-		return "index";
+		return "/index";
 	}
-
-	// @GetMapping("/index")
-	// public String main() {
-
-	// return "index"; }
 
 	@GetMapping("/detailCategory")
 	public String detailCategory(@RequestParam("service_category_id") int service_category_id, Model model) {

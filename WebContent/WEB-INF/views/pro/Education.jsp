@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!-- 루트경로, 프로젝트시작할 때  -->
 <!DOCTYPE html>
@@ -45,6 +46,35 @@
 	text-decoration: none;
 }
 
+/* .custom-file-upload {
+    border: 1px solid #d2d2d2;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #6387A6;
+    border-radius: 5px;
+}
+
+.custom-file-upload i {
+    margin-right: 5px;
+} */
+
+/* 파일 업로드 버튼에 적용할 스타일 */
+.custom-file-upload {
+    border: 1px solid #d2d2d2;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #6387A6;
+    border-radius: 5px;
+}
+
+.custom-file-upload i {
+    margin-right: 5px;
+}
+
 /*섹션 스타일*/
 .section-divider {
 	border-bottom: 1px solid #F2F2F2; /* 실선 스타일 및 색상 설정 */
@@ -68,168 +98,127 @@
 	<c:import url="/WEB-INF/views/include/header.jsp" />
 	<!-- 헤더 -->
 
-	<div class="container mt-5 mb-5">
-		<div class="row justify-content-center">
-			<div class="col-md-6 section-divider">
-				<div>
-					<h2>
-						<strong>학력</strong>
-					</h2>
+	<div class="container mt-5 mb-3 " style="width: 38%">
+		<div>
+			<h2>
+				<strong>학력</strong>
+			</h2>
+		</div>
+		<p></p>
+		<p></p>
+	</div>
+	
+	<form:form action="${root}/pro/Education_pro" method="post" modelAttribute="educationForm" enctype="multipart/form-data">
+
+        <div class="container mt-3 mb-5" style="width: 38%">
+            <div class="modal-body mx-auto">
+                <div class="row">
+					<div class="Explanation2">*필수 입력 항목입니다</div>
 				</div>
-				<div class="col Subtitle mt-4">
-					<strong>학력 0/10</strong>
+				
+				<div class="rounded-3 p-3 border" style="background-color: #D2D2D2; text-align: center;">
+					<i class="bi bi-exclamation-circle"> &nbsp;
+					<span style="font-size: 14px;"> 
+						개인 정보 노출 및 허위 정보를 기재할 경우, 아숨 이용이 제한될 수 있으며 사안에 따라 법적 책임을 물을 수 있습니다. 
+					</span></i>
 				</div>
-				<div class="col Explanation">이전 학력부터 순차적으로 작성해주세요</div>
-				<button type="button"
-					class="btn btn-primary d-flex align-items-center"
-					data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-					style="background-color: #ffffff; border-color: #85BCEB;">
-					<i class="bi bi-plus" style="color: #85BCEB; font-size: 24px;"></i>
-					<span class="AfterMD" style="font-size: 18px; color: #85BCEB;">추가하기</span>
-				</button>
-				<p></p>
-				<p></p>
-				<p></p>
-				<p></p>
+				
+				<form class="was-validated">
+				    <!-- 학교명 입력 -->
+				    <div class="mt-4">
+				        <label for="schoolName" class="form-label">학교명*</label> 
+				        <form:input path="school_name" class="form-control" id="school_name" placeholder="ex. 아숨대학교" required="required" />
+				        
+				        <div class="row">
+				            <div class="col-auto invalid-feedback">
+				                <form:errors path="school_name" cssClass="invalid-feedback" />
+				            </div>
+				            <div class="col text-end" style="color: #B5B5B5; font-size: 14px;">
+				                <span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/40자
+				            </div>
+				        </div>
+				    </div>
+				</form>
+				
+               <div class="mt-4">
+			        <label for="major" class="form-label">전공명*</label> 
+			        <form:input path="major_name" class="form-control" id="major_name" placeholder="ex. 경영학과" required="required" />
+			        <div class="row">
+			            <div class="col-auto invalid-feedback">
+			                <form:errors path="major_name" cssClass="invalid-feedback" />
+			            </div>
+			            <div class="col text-end" style="color: #B5B5B5; font-size: 14px;">
+			                <span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/20자
+			            </div>
+			        </div>
+			    </div>
+			    
+				
+				<div class="mt-4">
+			    <label for="admission_date">입학 연월*</label>
+			    <div class="row">
+			        <div class="col">
+			            <form:select path="admissionYear" class="form-select" aria-invalid="false" id="admissionYear" aria-required="true">
+			                <form:option value="" label="년" />
+			                <form:options items="${yearOptions}" />
+			            </form:select>
+			        </div>
+			        <div class="col">
+			            <form:select path="admissionMonth" class="form-select" aria-invalid="false" id="admissionMonth" aria-required="true">
+			                <form:option value="" label="월" />
+			                <form:options items="${monthOptions}" />
+			            </form:select>
+			        </div>
+			    </div>
 			</div>
-		</div>
-	</div>
 
-	<div class="container md-5">
-		<div class="justify-content-center">
-			<div class="col text-center Explanation">등록한 학력사항이 아직 없습니다.</div>
-			<div class="col">
-				<ul id="experienceList" class="list-unstyled">
-					<!-- 경력 리스트는 여기에 동적으로 추가될 것입니다. -->
-				</ul>
-			</div>
-		</div>
-	</div>
 
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<button type="button" class="btn btn-primary btn-lg"
-					style="width: 100%; background-color: #85BCEB; font-weight: bold; margin-top: 20px; border: none;"
-					onclick="redirectToExpertPage()">저장하기</button>
-			</div>
-		</div>
-	</div>
+			<div class="mt-4">
+		        <label for="graduation_date">졸업 연월*</label>
+		        <div class="row">
+		            <div class="col">
+		                <form:select path="graduationYear" class="form-select" aria-invalid="false" id="graduationYear" aria-required="true">
+						    <form:option value="" label="년" />
+						    <form:options items="${yearOptions}" />
+						</form:select>
 
-	<!-- 추가하기 Modal -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-		data-bs-keyboard="false" tabindex="-1"
-		aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<!--<div class="modal-header">-->
-				<div class="modal-body">
-					<div class="text-end">
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
+		            </div>
+		            <div class="col">
+		                <form:select path="graduationMonth" class="form-select" aria-invalid="false" id="graduationMonth" aria-required="true">
+						    <form:option value="" label="월" />
+						    <form:options items="${monthOptions}" />
+						</form:select>
+		            </div>
+		        </div>
+		    </div>
+		    
+		    <div class="mt-4">
+				<label for="validationTextarea" class="form-label">증빙 자료 첨부</label>
 					<div class="row">
-						<span class="col Subtitle2">학력</span>
-						<div class="Explanation2">*필수 입력 항목입니다</div>
-						<!--<div class="col text-end">
-				<button type="button" class="InvisibleButton AfterMD"></button></div>-->
-					</div>
-					<div class="rounded-3 p-3 border"
-						style="background-color: #D2D2D2; text-align: center;">
-						<i class="bi bi-exclamation-circle"> &nbsp;<span
-							style="font-size: 14px;"> 개인 정보 노출 및 허위 정보를 기재할 경우, 아숨 이용이
-								제한될 수 있으며 사안에 따라 법적 책임을 물을 수 있습니다. </span></i>
-					</div>
-					<form class="was-validated">
-						<!-- 경력 타이틀 입력 -->
-						<div class="mt-4">
-							<label for="validationTextarea" class="form-label">학교명*</label> <input
-								class="form-control" id="validationTextarea"
-								placeholder="ex. 아숨대학교" required></input>
-							<div class="row">
-								<div class="col-auto invalid-feedback">학교명을 입력해주세요.</div>
-								<div class="col text-end"
-									style="color: #B5B5B5; font-size: 14px;">
-									<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/40자
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="mt-4">
-						<label for="validationTextarea" class="form-label">전공명</label> <input
-							class="form-control" id="validationTextarea"
-							placeholder="ex. 경영학과" required></input>
-						<div class="row">
-							<div class="col-auto invalid-feedback">학교명을 입력해주세요.</div>
-							<div class="col text-end"
-								style="color: #B5B5B5; font-size: 14px;">
-								<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/20자
+						<div class="photo_review">
+							<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
+								
+								<input type="file" id="document-fileInput" style="display: none;" accept="image/*" name="eduUpload" multiple="true" />
+				                <form:label path="evidence_image" for="document-fileInput" class="custom-file-upload">
+				                    <i class="bi bi-plus-circle upload-icon" style="color: #6387A6; margin-left: 4px;"></i>
+				                </form:label>
+								
 							</div>
 						</div>
 					</div>
-					<div class="mt-4">
-						<label for="validationTextarea" class="form-label">입학 연월*</label>
-						<div class="row">
-							<div class="col">
-								<select name="startYear" class="form-select"
-									aria-invalid="false" id="startYear" aria-required="true">
-									<option disabled selected value="">년</option>
-								</select>
-							</div>
-							<div class="col">
-								<select name="startMonth" class="form-select"
-									aria-invalid="false" id="startMonth" aria-required="true">
-									<option disabled selected value="">월</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="mt-4">
-						<label for="validationTextarea" class="form-label">졸업 연월*</label>
-						<div class="row">
-							<div class="col">
-								<select name="endYear" class="form-select" aria-invalid="false"
-									id="endYear" aria-required="true">
-									<option disabled selected value="">년</option>
-								</select>
-							</div>
-							<div class="col">
-								<select name="endMonth" class="form-select" aria-invalid="false"
-									id="endMonth" aria-required="true">
-									<option disabled selected value="">월</option>
-								</select>
-							</div>
-						</div>
-					</div>
-
-					<div class="mt-4">
-						<label for="validationTextarea" class="form-label">증빙 자료
-							첨부</label>
-						<div class="row">
-							<div class="photo_review">
-								<div id="document-btn-container"
-									style="margin-top: 0.2%; margin-bottom: 20px;">
-									<label for="document-fileInput">
-										<button class="btn" id="document-btn"
-											style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
-											<i class="bi bi-plus-circle upload-icon"
-												style="color: #6387A6"></i>
-										</button>
-									</label> <input type="file" id="document-fileInput"
-										style="display: none;" accept="image/*">
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--<div class="modal-footer">-->
-
-				</div>
-				<div>
-					<button type="button" class="btn btn-primary"
-						style="width: 100%; background-color: #85BCEB; font-weight: bold; margin-top: 20px; border: none;">등록</button>
-				</div>
 			</div>
-		</div>
+                
+
+                <!-- 나머지 폼 필드들도 유사하게 추가 -->
+
+               
+          </div> 
+          <form:button type="submit" class="btn btn-primary " style="width: 100%; background-color: #85BCEB; font-weight: bold; margin-top: 20px; border: none;">
+                	저장
+             </form:button>
+      </div>
+  </form:form>
+	
 
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 
@@ -275,7 +264,7 @@
 		</script>
 
 
-		<script>
+		<!-- <script>
 			//연월 select bar
 			function initializeYearMonth(selectId, yearRange) {
 				var yearSelect = document.getElementById(selectId + 'Year');
@@ -307,13 +296,12 @@
 			// 문서 로드 시 시작 연월 초기화 함수 호출
 			document.addEventListener('DOMContentLoaded',
 					initializeStartYearMonth);
-		</script>
+		</script> -->
 
 
 		<!-- 증빙 자료 첨부 스크립트 -->
 		<script>
-			document
-					.getElementById('document-fileInput')
+			document.getElementById('document-fileInput')
 					.addEventListener(
 							'change',
 							function() {
@@ -352,17 +340,17 @@
 								reader.readAsDataURL(this.files[0]);
 							});
 
-			document.getElementById('document-btn').addEventListener('click',
+			/* document.getElementById('document-btn').addEventListener('click',
 					function() {
 						document.getElementById('document-fileInput').click();
-					});
+					}); */
 		</script>
 
 		<script>
 			// 고수 프로필로 이동하는 버튼<저장하기>
-			function redirectToExpertPage() {
-				window.location.href = 'expert.html';
-			}
+			//function redirectToExpertPage() {
+			//	window.location.href = 'expert.html';
+			//}
 		</script>
 
 

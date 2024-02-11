@@ -40,6 +40,7 @@ public class UserService {
 		
 		if(tempLoginUserBean2 != null) {
 			loginUserBean.setUser_id(tempLoginUserBean2.getUser_id());
+			loginUserBean.setUser_name(tempLoginUserBean2.getUser_name());
 			loginUserBean.setUser_email(tempLoginUserBean2.getUser_email());
 			loginUserBean.setUser_pwd(tempLoginUserBean2.getUser_pwd());
 			loginUserBean.setUserLogin(true);

@@ -28,6 +28,20 @@
 			}
 		});
 	}); 
+	
+	function formatDate() {
+	    var commentDateElements = document.querySelectorAll('.date');
+	    commentDateElements.forEach(function (element) {
+	        var originalDate = element.innerText;
+	        var formattedDate = originalDate.split(' ')[0]; // 시간 부분 제거
+	        element.innerText = formattedDate;
+	    });
+	}
+
+	// 호출
+	document.addEventListener('DOMContentLoaded', function () {
+	    formatDate();
+	});
 </script>
 <style>
 	#a_comment-board-title:hover {
@@ -53,226 +67,113 @@
 			    <a class="nav-link active" aria-current="page" href="myPosts.html">작성글</a>
 			  </li>
 			  <li class="nav-item" style="text-decoration: none;">
-			    <a class="nav-link" href="comment.html" style="color: black;">내가 작성한 댓글</a>
+			    <a class="nav-link" href="${root}/common/comment" style="color: black;">내가 작성한 댓글</a>
 			  </li>
 			</ul>
 
 			<!--본문-->
 			<div class="my_comment_list"  >
 				<ul class="list-group mt-3">
-					<li class="list-group-item">
+					<!-- 여기서부터 -->
+					<c:forEach var="obj" items="${getMyPosts }">
+						<li class="list-group-item">
 						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
+							<a id="comment-board-title" href="${root}/board/detailCommunity?board_id=${obj.board_id}"   
 								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
+								<span class="fw-bold">${obj.title }</span>
 							</a>
 						</div>
 
 						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.이게 내가 단 댓글입니다.</span>
+							<a href="${root}/board/detailCommunity?board_id=${obj.board_id}" style="color: gray; text-decoration: none;">
+								<span>${obj.content }</span>
 							</a>
 						</div>
 
 						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
+							<a href="${root}/board/detailCommunity?board_id=${obj.board_id}" style="color: gray; text-decoration: none;">
+								<span class="date">${obj.board_date }</span>
 							</a>
 						</div>
 					</li>
+					</c:forEach>
 					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
+					<!-- 여기까지? -->
 					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
 					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
-					
-					<li class="list-group-item mt-4">
-						<div class="communitytitle">
-							<a id="comment-board-title" href="comment2.html"
-								style="color: black; text-decoration: none;">
-								<span class="fw-bold">펭귄이랑 놀아주실 분 계신가요? 이건 글의 제목입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>이게 내가 단 댓글입니다.</span>
-							</a>
-						</div>
-
-						<div class="communitycomment mt-1">
-							<a href="comment2.html" style="color: gray; text-decoration: none;">
-								<span>2023.12.28</span>
-							</a>
-						</div>
-					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
+	
+	<div class="d-none d-md-block mt-5">
+            <ul class="pagination justify-content-center">
+               
+               <!-- 이전 페이지가 1 이하이면 이전 페이지는 비활성화 -->
+               <c:choose>
+                  <c:when test="${pageBean.prevPage <= 0 }">
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">이전</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/common/myPosts?page=${pageBean.prevPage}" 
+                        class="page-link">이전</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+               <c:forEach var="idx" begin="${pageBean.min }" end="${pageBean.max }">
+               <!-- model로 가져온 pageBean의 최소페이지부터 최대페이지까지 반복 -->
+                  <c:choose>
+                     <c:when test="${idx==pageBean.currentPage }">
+                        <li class="page-item active" >
+                        <!-- 현재페이지 활성화 -->
+                           <a href="${root }/common/myPosts?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:when>
+                     <c:otherwise>
+                        <li class="page-item">
+                           <a href="${root }/common/myPosts?page=${idx}" class="page-link">
+                              ${idx }
+                           </a>
+                        </li>
+                     </c:otherwise>
+                  </c:choose>
+               </c:forEach>
+               
+               <c:choose>
+                  <c:when test="${pageBean.max >= pageBean.pageCnt }">
+                  <!-- 현재 페이지가 최대페이지이면 다음버튼 비활성화 -->
+                     <li class="page-item disabled">
+                        <a href="#" class="page-link">다음</a>
+                     </li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="page-item">
+                        <a href="${root }/common/myPosts?page=${pageBean.nextPage}" 
+                        class="page-link">다음</a>
+                     </li>
+                  </c:otherwise>
+               </c:choose>
+               
+            </ul>
+         </div>
+         
+        <!--  <div class="d-block d-md-none">
+            <ul class="pagination justify-content-center">
+               <li class="page-item">
+                  <a href="#" class="page-link">이전</a>
+               </li>
+               <li class="page-item">
+                  <a href="#" class="page-link">다음</a>
+               </li>
+            </ul>
+         </div> -->
+	
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 
 </body>

@@ -1,40 +1,75 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath }"/>  <!-- 루트경로, 프로젝트시작할 때  -->     
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메인페이지</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var timeElements = document.querySelectorAll('.time');
 
-	<style>
-	  
-		#comments{
-			color: #878787;
-		}
-		
-		.carousel-control-prev-icon,
-		.carousel-control-next-icon {
-			background-color: gray;
-			/* 아이콘의 배경색을 검정색으로 변경 */
-			border-radius: 50%;
-			/* 동그라미 모양으로 만들기 */
-			width: 30px;
-			/* 동그라미의 너비 */
-			height: 30px;
-			/* 동그라미의 높이 */
-			display: flex;
-			align-items: center;
-			justify-content: center;
+    timeElements.forEach(function (timeElement) {
+        var boardDate = moment(timeElement.textContent, 'YYYY-MM-DD HH:mm:ss');
+        var now = moment(); // 현재 시간
+        var diffInMinutes = now.diff(boardDate, 'minutes');
+        var diffInHours = now.diff(boardDate, 'hours');
+        var diffInDays = now.diff(boardDate, 'days');
 
-		}	
-		 .hover-pointer:hover {
-		    cursor: pointer;
-		}
-	</style>
+        var relativeTime;
+        if (diffInMinutes < 1) {
+            relativeTime = '방금 전';
+        } else if (diffInHours < 1) {
+            relativeTime = diffInMinutes + '분 전';
+        } else if (diffInHours < 24) {
+            relativeTime = diffInHours + '시간 전';
+        } else if (diffInDays < 7) {
+            relativeTime = diffInDays + '일 전';
+        } else {
+            relativeTime = boardDate.format('YYYY-MM-DD');
+        }
+
+        timeElement.textContent = relativeTime;
+    });
+});
+</script>
+<style>
+#comments {
+   color: #878787;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+   background-color: gray;
+   /* 아이콘의 배경색을 검정색으로 변경 */
+   border-radius: 50%;
+   /* 동그라미 모양으로 만들기 */
+   width: 30px;
+   /* 동그라미의 너비 */
+   height: 30px;
+   /* 동그라미의 높이 */
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.hover-pointer:hover {
+   cursor: pointer;
+}
+
+.rounded-image {
+   width: 100px;
+   height: 90px;
+   margin-right: 30px;
+   border-radius: 10px; /* 원하는 정도의 각을 지정하세요 */
+}
+</style>
 </head>
 
 <body>	
@@ -113,92 +148,57 @@
 
 
 	
-	<div class="container mt-5 p-5"> <!--커뮤니티 부분-->
-		<div class="d-flex justify-content-between align-items-center">
-			<h2>
-				<strong>커뮤니티</strong>
-			</h2>
-			 <p><a href="${root}/board/community" class="link-underline-light">더보기</a></p>
-		</div>
-    	 
-	    <ul class="list-group">
-	        <li class="list-group-item d-flex align-items-center">
-	            <div class="hover-pointer">
-	                <img src="image/pic1.jpg" style="width: 100px; margin-right: 30px;" class="img-fluid" alt="펭귄사진">
-	            </div>
+	<div class="container mt-5 p-5">
+      <!--커뮤니티 부분-->
+      <div class="d-flex justify-content-between align-items-center">
+         <h2>
+            <strong>커뮤니티</strong>
+         </h2>
+         <p class = "mt-3">
+            <a href="${root}/board/community" class="link-underline-light">더보기</a>
+         </p>
+      </div>
+
+      <ul class="list-group">
+  
+      	<c:forEach var="post" items="${postList}" varStatus="loop">
+      		<!-- 최대 5개의 게시글만 표시 -->
+		    <c:if test="${loop.index < 5}">
+		    
+	         <li class="list-group-item d-flex align-items-center" onclick="location.href='${root}/board/detailCommunity?board_id=${post.board_id}'">
+	            <div class="hover-pointer"></div>
 	            <div class="hover-pointer" style="margin-top: 20px;">
-	                <span class="title ">펭귄사진 찍어주실 분 계시나여</span>
-	                <div style="margin-top: 10px;">
-						<i class="bi bi-chat-right-text"></i>
-	                    <span id="comments">14</span>
-	                </div>
+	               <span class="title ">${post.title }</span>
+	               <div style="display: flex; flex-direction: row; align-items: center; margin-top: 10px;">
+	               		<div style="margin-right: 15px;">
+	                  		<div class="f-color" style="color: gray;"><i class="bi bi-eye-fill"></i> &nbsp;${post.viewCnt }</div>
+	               		</div>
+	                	<div class="timeInfo">
+							<div class="f-color time" style="color: gray;">${post.board_date }</div>
+						</div>
+	               </div>
 	            </div>
+	   
 	            <div class="ms-auto">
-                <!-- 맨 오른쪽에 표시될 내용 -->
-	                <span>유뎅</span>
-	                <span>|</span>
-	                <span class="time" >15:00</span>
+	               <!-- 맨 오른쪽에 표시될 내용 -->
+	               <c:if test="${post.photos != null}">
+						<c:forEach var="photo" items="${fn:split(post.photos, ',')}" varStatus="loop">
+							<c:if test="${loop.index == 0}">
+								<img src="${root}/upload/${photo}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+							</c:if>
+						</c:forEach>
+					</c:if> 
 	            </div>
-	        </li>
-	        
-	       <li class="list-group-item d-flex align-items-center">
-	            <div class="hover-pointer">
-	                <img src="image/pic1.jpg" style="width: 100px; margin-right: 30px;" class="img-fluid" alt="펭귄사진">
-	            </div>
-	            <div class="hover-pointer" style="margin-top: 20px;">
-	                <span>펭귄사진 찍어주실 분 계시나여</span>
-	                <div style="margin-top: 10px;">
-	                   <i class="bi bi-chat-right-text"></i>
-	                   <span id="comments">14</span>
-	                </div>
-	            </div>
-	             <div class="ms-auto">
-                <!-- 맨 오른쪽에 표시될 내용 -->
-	                <span>유뎅</span>
-	                 <span >|</span>
-	                <span class="time" >15:00</span>
-	            </div>
-	        </li>
-	        
-	        <li class="list-group-item d-flex align-items-center">
-	            <div class="hover-pointer">
-	                <img src="image/pic1.jpg" style="width: 100px; margin-right: 30px;" class="img-fluid" alt="펭귄사진">
-	            </div>
-	            <div class="hover-pointer" style="margin-top: 20px;">
-	                <span >펭귄사진 찍어주실 분 계시나여</span>
-	                <div style="margin-top: 10px;">
-	                   <i class="bi bi-chat-right-text"></i>
-	                    <span id="comments">14</span>
-	                </div>
-	            </div>
-	             <div class="ms-auto">
-                <!-- 맨 오른쪽에 표시될 내용 -->
-	                <span >유뎅</span>
-	                <span >|</span>
-	                <span class="time" >15:00</span>
-	            </div>
-	        </li>
-	        
-	        <li class="list-group-item d-flex align-items-center">
-	            <div class="hover-pointer">
-	                <img src="image/pic1.jpg" style="width: 100px; margin-right: 30px;" class="img-fluid" alt="펭귄사진">
-	            </div>
-	            <div class="hover-pointer" style="margin-top: 20px;">
-	                <span>펭귄사진 찍어주실 분 계시나여</span>
-	                <div style="margin-top: 10px;">
-	                    <i class="bi bi-chat-right-text"></i>
-	                    <span id="comments">14</span>
-	                </div>
-	            </div>
-	             <div class="ms-auto">
-                <!-- 맨 오른쪽에 표시될 내용 -->
-	                <span >유뎅</span>
-	                 <span>|</span>
-	                <span class="time" >15:00</span>
-	            </div>
-	        </li>
-	     </ul>
-	</div>
+
+	         </li>
+	         
+		    </c:if>
+		</c:forEach>
+        
+      </ul>
+   </div>
+   
+ 
 	
 	   
 <c:import url="/WEB-INF/views/include/footer.jsp" />

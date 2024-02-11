@@ -38,8 +38,15 @@ public class PostBean {
     private int viewCnt;
     
     private String writer_name;
+    private String prowriter_name;
     
-    public List<MultipartFile> getUpload_photos() {
+    public String getProwriter_name() {
+		return prowriter_name;
+	}
+	public void setProwriter_name(String prowriter_name) {
+		this.prowriter_name = prowriter_name;
+	}
+	public List<MultipartFile> getUpload_photos() {
 		return upload_photos;
 	}
 	public void setUpload_photos(List<MultipartFile> upload_photos) {

@@ -1,27 +1,15 @@
-<<<<<<< HEAD
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>Soldesk_Project2_Unicode</groupId>
-	<artifactId>Soldesk_Project2_Unicode</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<properties>
-=======
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>soldesk_project</groupId>
-  <artifactId>soldesk_project</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <properties>
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
-		<javax.servlet-version>4.0.1</javax.servlet-version>
-		<javax.servlet.jsp-version>2.3.3</javax.servlet.jsp-version>
-		<jstl-version>1.2</jstl-version>
-		<org.springframework-version>5.2.8.RELEASE</org.springframework-version>
-	</properties>
+<modelVersion>4.0.0</modelVersion>
+<groupId>Soldesk_Project2_Unicode</groupId>
+<artifactId>Soldesk_Project2_Unicode</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+<packaging>war</packaging>
+<properties>
+<javax.servlet-version>4.0.1</javax.servlet-version>
+<javax.servlet.jsp-version>2.3.3</javax.servlet.jsp-version>
+<jstl-version>1.2</jstl-version>
+<org.springframework-version>5.2.8.RELEASE</org.springframework-version>
+</properties>
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -82,20 +70,19 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.5.Final</version>
 		</dependency>
-<<<<<<< HEAD
 
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		<dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.13.0</version> <!-- 최신 버전 사용 가능 -->
-    </dependency>
-=======
 		
+		<dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <version>2.13.0</version> <!-- 최신 버전 사용 가능 -->
+	    </dependency>
+	    
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -106,9 +93,15 @@
 		    <artifactId>javax.annotation-api</artifactId>
 		    <version>1.3.2</version>
 		</dependency>
-
 		
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.14.3</version>
+			<!--  최신 버전 사용 가능  -->
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

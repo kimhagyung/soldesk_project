@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
@@ -232,9 +233,6 @@
 			<div class="row">
 				<span class="col Subtitle">자격증 및 기타 서류 등록</span>
 				<div class="review_textExplain Explanation">자격증 및 기타 서류</div>
-				<!--<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD"></button>
-				</div>-->
 			</div>
 			<div class="rounded-3 p-3 border" style="background-color: #D2D2D2; text-align: center;">
 				<i class="bi bi-exclamation-circle">&nbsp;개인/민감 정보를 삭제 후 등록해야 하며, 허위정보에 대한 모든 책임은 본인에게 있습니다.</i>
@@ -310,12 +308,35 @@
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="redirectToCareerPage()">수정</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career'">등록</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@경력 페이지에서 값 받아오는 곳@</p>
-			<p></p>
+			
+			<c:forEach var="career" items="${careerList}">
+				<div class="content mt-3">
+					<div class="period mb-3">
+					 	총경력 ${career.total_experience_period  }년
+					</div>
+					<div class="row">
+						<div class="col career_title fw-bold"> 
+							${career.career_title } 
+						</div>
+						<div class="col text-end">
+							<a href="${root }/pro/career_modify?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px;"> 수정</a>
+							<a href="${root }/pro/career_delete?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>
+					</div>
+					
+					<div class="career_time" style="font-size: 13px;">
+						${career.startYear }년 ${career.startMonth }월 - ${career.endYear }년 ${career.endMonth }월
+					</div>
+					<div class="career_content" style="color: gray;">
+						${career.detailed_introduction }
+					</div>
+					<hr />
+				</div>
+			</c:forEach>
+			
 		</div>
 	</div>
 	
@@ -324,11 +345,41 @@
 			<div class="row">
 				<span class="col Subtitle">학력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToAcademicAbilityPage()">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Education'">등록하기</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@학력 페이지에서 값 받아오는 곳@</p>
+			
+			<div class="content mt-3 row">
+			    <c:forEach var="education" items="${educationList}">
+			        <div class="col-8 float">
+			            <div class="schoolname fw-bold mt-3">
+			                ${education.school_name}
+			            </div>
+			            <div class="school-time" style="font-size: 13px;">
+			                ${education.admissionYear}년 ${education.admissionMonth}월 - ${education.graduationYear}년 ${education.graduationMonth}월
+			            </div>
+			            <div class="schoolmajor" style="color: gray;">
+			                ${education.major_name}
+			            </div>
+			        </div>
+			        <div class="ms-auto col-4 text-center">
+			            <img src="${root}/eduUpload/${education.evidence_image}" class="feed-img" style="width: 80px; height: 80px; border-radius: 8px;" alt="이미지"/>
+			        </div>
+			        
+			        <div class="mt-2">
+		                <div class="col text-end">
+							<a href="${root }/pro/education_modify?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px;" class="me-2"> 수정</a>
+							<a href="${root }/pro/education_delete?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>
+		               
+		            </div>
+		            
+			        <hr />
+			    </c:forEach>
+			</div>
+			
+			
+			
 			<p></p>
 		</div>
 	</div>
@@ -338,7 +389,7 @@
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToPortfolioPage()">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/career'">등록하기</button>
 				</div>
 			</div>
 			<p></p>
@@ -479,8 +530,7 @@
             var maxLength = parseInt(document.getElementById('editTextArea1').getAttribute('maxlength'));
             if (editedText.length > maxLength) {
                 document.getElementById('editTextArea1').value = editedText.substring(0, maxLength);
-            }
-
+            } 
             countChars('editTextArea1', 'charCount1');
         });
 
@@ -601,22 +651,13 @@
     });
 </script>
 
-<script> // 경력 페이지로 이동하는 버튼
-  function redirectToCareerPage() {
-    window.location.href = 'Career.html';
-  }
-</script>
 
-<script> // 학력 페이지로 이동하는 버튼
-  function redirectToAcademicAbilityPage() {
-    window.location.href = 'AcademicAbility.html';
-  }
-</script>
+
 
 <script> // 포폴 페이지로 이동하는 버튼
-    function redirectToPortfolioPage() {
-     window.location.href = 'Portfolio.html';
-    }
+    //function redirectToPortfolioPage() {
+    // window.location.href = 'Portfolio.html';
+    //}
 </script>
 
 </body>

@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 		this.loginProuserBean = loginProuserBean;
 		
 	}
-
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -34,6 +34,5 @@ public class LoginInterceptor implements HandlerInterceptor{
 		//로그인 되어 있는 상태
 		return true;
 	}
-
 	
 }

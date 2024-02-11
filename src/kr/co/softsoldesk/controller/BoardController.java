@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.softsoldesk.beans.CommentBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.PostService;
 
@@ -36,13 +40,15 @@ public class BoardController {
 	private ProUserBean loginProuserBean;
 
 	@GetMapping("/community")
-	public String community(Model model) {
+	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page) { 
 		
-		List<PostBean> postList = postService.getAllPostList();
-		
-		
+		List<PostBean> postList = postService.getAllPostList(page);
 		
 		model.addAttribute("postList", postList);
+		
+		PageBean pageBean = postService.getPost(page);
+		model.addAttribute("pageBean", pageBean);
+		
 		return "board/community";
 	}
 	
@@ -86,7 +92,9 @@ public class BoardController {
 	}
 	
 	@GetMapping("/detailCommunity")
-	public String detailCommunity(@RequestParam("board_id") int board_id, Model model) {
+	public String detailCommunity(@RequestParam("board_id") int board_id, Model model,
+			@ModelAttribute("writeCommentBean") CommentBean writeCommentBean,
+			@ModelAttribute("writeReportBean") ReportBean writeReportBean) {
 		//1. 조회수 증가 +1
 		postService.plusCnt(board_id);
 		//2. 해당 게시글 정보 부르기 
@@ -94,28 +102,37 @@ public class BoardController {
 		 PostBean readPostBean = postService.getPostInfo(board_id);
 		 //System.out.println("다중 이미지: " + readPostBean.getPhotos());
 		 
-		if(loginUserBean.isUserLogin()) {
-			model.addAttribute("board_id", board_id);
-			model.addAttribute("user_id", loginUserBean.getUser_id());
-			model.addAttribute("readPostBean", readPostBean);
-		} else if(loginProuserBean.isProuserLogin()) {
-			 model.addAttribute("board_id", board_id);
-			model.addAttribute("pro_id", loginProuserBean.getPro_id());
-			model.addAttribute("readPostBean", readPostBean);
-		}
-		
-		 System.out.println("유저: " + loginUserBean.isUserLogin());
-	       System.out.println("프로: " + loginProuserBean.isProuserLogin());
-	       System.out.println("user: " + readPostBean.getUser_id());
-	       System.out.println("pro: " + readPostBean.getPro_id());
 		 
-		// model.addAttribute("loginUserBean", loginUserBean);
-	    // model.addAttribute("loginProuserBean", loginProuserBean);
-		
+			model.addAttribute("board_id", board_id);
+			
+			model.addAttribute("readPostBean", readPostBean);
+			model.addAttribute("writeReportBean", writeReportBean);
+			model.addAttribute("writeCommentBean", writeCommentBean);
+			
+			model.addAttribute("loginUserBean", loginUserBean);
+			model.addAttribute("loginProuserBean", loginProuserBean);
 
+		
+			//댓글 추가
+			List<CommentBean> comments = postService.getAllComments(board_id);
+			model.addAttribute("comments", comments);
+			
+			
+	       
 		
 		return "board/detailCommunity";
 	}
+	
+	@PostMapping("/detail_reportPro")
+	public String detail_reportPro(@ModelAttribute("writeReportBean") ReportBean writeReportBean) {
+		
+		System.out.println("dddddd"+writeReportBean.getReport_msg());
+		
+		postService.addReportInfo(writeReportBean);
+		
+		return "board/detail_reportPro_success";
+	}
+	
 	
 	@GetMapping("/not_writer")
 	public String not_writer() {
@@ -129,13 +146,18 @@ public class BoardController {
 		
 		PostBean tempPostBean = postService.getPostInfo(board_id);
 		
+		String contentWithPtags = tempPostBean.getContent();
+		String contentWithoutPtags = Jsoup.parse(contentWithPtags).text();
+		
 		modifyPostBean.setTitle(tempPostBean.getTitle());
-		modifyPostBean.setContent(tempPostBean.getContent());
+		modifyPostBean.setContent(contentWithoutPtags);
 		modifyPostBean.setCategory(tempPostBean.getCategory());
 		modifyPostBean.setLocation(tempPostBean.getLocation());
 		modifyPostBean.setPhotos(tempPostBean.getPhotos());
 		modifyPostBean.setBoard_id(tempPostBean.getBoard_id());
 		modifyPostBean.setPhotos(tempPostBean.getPhotos());
+		
+		System.out.println("글 수정 p태그: " + modifyPostBean.getContent());
 		
 		model.addAttribute("board_id", board_id);
 		model.addAttribute("locBtnText", tempPostBean.getLocation());

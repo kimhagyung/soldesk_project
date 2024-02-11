@@ -2,18 +2,252 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>상세 글 페이지</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script>
+
+$(document).ready(function() {
+    // 댓글 추가 함수
+    $("#submitReply").click(function() {
+        var replyText = $("#replyText").val();
+        if (replyText.trim() === '') {
+            alert('댓글을 입력해주세요.');
+            return;
+        }
+        $.ajax({
+            url: '${root}/comment',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                comment_content: replyText, 
+                board_id: ${board_id} 
+            }),
+            success: function(response) {
+                var replyHtml = '<div class="card mt-2"><div class="card-body">' +
+                                '<p class="card-text">' + response.comment_content + '</p>' +
+                                '</div></div>';
+                $("#replySection").append(replyHtml);
+                $("#replyText").val(''); 
+                alert('댓글이 성공적으로 추가되었습니다.'); 
+
+                // 댓글 개수 조회
+                updateCommentCount();
+                
+                // 댓글 목록 조회
+                updateReplyList();
+            },
+            error: function(error) {
+                console.log(error);
+                alert('댓글 추가에 실패했습니다.'); 
+            }
+        });
+    });
+
+    // 댓글 개수 조회 함수
+    function updateCommentCount() {
+    $.ajax({
+        url: '${root}/commentCnt',
+        type: 'GET',
+        data: { board_id: ${board_id} },
+        success: function(response) {
+            if (response === 0) {
+                $("#replySection").hide(); // 댓글이 없는 경우 댓글 영역 숨기기
+            } else {
+                $("#replySection").show(); // 댓글이 있는 경우 댓글 영역 보이기
+            }
+            $("#commentCount").text(response);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+
+    // 댓글 목록 조회 함수
+    function updateReplyList() {
+        $.ajax({
+            url: '${root}/comments?board_id=${board_id}',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $("#replySection").empty(); 
+                $.each(response, function(index, comment) {
+                    var replyHtml = '<hr><div style="margin-bottom: 20px;">' + 
+                                    '<div style="display:flex; flex-direction:row; justify-content: space-between; align-items:center;">' +
+                                    '<div style="display:flex; flex-direction: row;">' + 
+                                    '<div><img src="../image/profile.png" style="width: 45px; margin-right: 8px;"></div>' + 
+                                    '<div style="display:flex; flex-direction:column">';
+                    
+                    if(comment.user_id == null){
+                        replyHtml += '<div>' + comment.comment_prowriter_name + '</div>';
+                        
+                    } 
+                    
+                    if(comment.pro_id == null){
+                        replyHtml += '<div>' + comment.comment_writer_name + '</div>';
+                        
+                    }
+                    
+                    var date = new Date(comment.comment_date);
+                    var now = new Date();
+
+                    // 시간 차이 계산
+                    var timeDifference = now - date;
+
+                    // 밀리초(ms)를 분, 시간 등으로 변환
+                    var seconds = Math.floor(timeDifference / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    var days = Math.floor(hours / 24);
+
+                    var formattedDate;
+
+                    if (days > 7) {
+                        formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                    } else if (days > 0) {
+                        formattedDate = days + '일 전';
+                    } else if (hours > 0) {
+                        formattedDate = hours + '시간 전';
+                    } else if (minutes > 0) {
+                        formattedDate = minutes + '분 전';
+                    } else {
+                        formattedDate = '방금 전';
+                    }
+
+                    
+                   	if(comment.pro_id != null){
+                   		replyHtml += '<div style="color: gray; font-size:14px; margin-bottom: 10px;">일류</div></div></div>' +
+                   					 '<button style="background-color: #6387A6; border:none; border-radius: 8px; color: #fff; height: 40px;">견적요청</button></div>' +
+                   					'<div style="margin-left:53px; margin-bottom: 10px;" class="comment-content" id="commentContent_' +comment.comment_id + '">' + comment.comment_content + '</div>' + 
+                                    '<div style="display:flex; flex-direction: row; justify-content:space-between; align-items:center;" ><div class="time" style="margin-left: 53px; color: gray;">' + formattedDate + '</div>'
+                   	} else{
+                   		replyHtml += '<br><div style="margin-bottom: 10px;" class="comment-content" id="commentContent_' +comment.comment_id + '">' + comment.comment_content + '</div>' + 
+                        			 '<div style="display:flex; flex-direction: row; justify-content:space-between; align-items:center;" ><div class="time" style="color: gray;">' + formattedDate + '</div>'
+                   	}
+                   	
+                   	
+                           
+                   	if(comment.comment_prowriter_name == null){
+                        if(comment.user_id == ${loginUserBean.user_id}){
+						 	replyHtml += '<div style="display:flex; flex-direction: row; height: 100%;">' +
+                          			 	 '<button style="margin-right: 8px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
+                          			 	 ')">수정</button>' + '<button style="border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" id="deleteBtn' + comment.comment_id +
+                  					 	 '" onclick="deleteComment(' + comment.comment_id + ')"' + 
+                  					  	 '>삭제</button></div></div></div>';
+                        }
+                   }else if(comment.comment_writer_name == null){
+                   	if(comment.pro_id == ${loginProuserBean.pro_id}){
+                   		replyHtml += '<div style="display:flex; flex-direction: row">' +
+              			 '<button style="margin-right: 8px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
+              			 ')">수정</button>' + '<button style="border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" id="deleteBtn' + comment.comment_id +
+      					 '" onclick="deleteComment(' + comment.comment_id + ')"' + 
+      					 '>삭제</button></div></div></div>';
+                   	}
+                   } 
+      	
+
+          
+                                
+                    
+                    $("#replySection").append(replyHtml); 
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // 댓글 삭제 함수
+    function deleteComment(commentId) {
+        var isConfirmed = confirm('정말로 이 댓글을 삭제하시겠습니까?');
+
+        if (isConfirmed) {
+            $.ajax({
+                url: '${root}/deleteComment',
+                type: 'GET',
+                data: { comment_id: commentId },
+                success: function(response) {
+                    alert('댓글이 성공적으로 삭제되었습니다.');
+                    
+                    // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
+                    updateReplyList();
+                    updateCommentCount();
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            });
+        }
+    }
+
+    // 댓글 수정 함수
+    function editComment(commentId) {
+        // 댓글 내용 가져오기
+        var currentContent = $("#commentContent_" + commentId).text();
+
+        // 수정을 위한 input 태그로 교체
+        var inputElement = $('<input type="text" class="edit-comment-input" value="' + currentContent + '">');
+        $("#commentContent_" + commentId).replaceWith(inputElement);
+
+        // 수정 완료 시 업데이트 처리
+        inputElement.blur(function() {
+            var editedText = inputElement.val();
+            updateComment(commentId, editedText);
+        });
+
+        // 포커스 주기
+        inputElement.focus();
+    }
+
+    // 댓글 업데이트 함수
+    function updateComment(commentId, editedText) {
+        $.ajax({
+            url: '${root}/modifyComment',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                comment_id: commentId,
+                comment_content: editedText
+            }),
+            success: function(response) {
+                alert('댓글이 성공적으로 수정되었습니다.');
+                updateReplyList();
+            },
+            error: function(error) {
+                console.log(error);
+                alert('댓글 수정에 실패했습니다.');
+            }
+        });
+    }
+
+    // 초기 로딩 시 댓글 개수와 목록 업데이트
+    updateCommentCount();
+    updateReplyList();
+    
+    window.deleteComment = deleteComment;
+    window.editComment = editComment;
+});
+
+</script>
 <script>
 	$(function() {
-		
+
 		$(".co-comment").click(function() {
 			// 현재 클릭된 대댓글 부모 요소에 대해서만 가시성 토글
 			$(this).closest('.parent-comment').find('.sho-comm').toggle();
@@ -33,16 +267,16 @@
 }
 
 .pageBtn {
-	background-color: #fff; 
-	border: 1px solid #B8B2B2; 
-	border-radius: 8px; 
-	color: #B8B2B2; 
+	background-color: #fff;
+	border: 1px solid #B8B2B2;
+	border-radius: 8px;
+	color: #B8B2B2;
 	font-size: 14px;
 }
 </style>
 </head>
 <body>
-<c:import url="/WEB-INF/views/include/header.jsp" />
+	<c:import url="/WEB-INF/views/include/header.jsp" />
 	<div class="container mt-5" style="width: 60%;">
 		<div class="post-header mt-5">
 			<div class="category t-color">${readPostBean.category }</div>
@@ -51,188 +285,248 @@
 				<!-- 제목 -->
 			</div>
 			<div class="post-location t-color">${readPostBean.location }</div>
-			
+
 			<div class="writeTop">
 				<div class="writeTopfirst">
-					<div class="writer" style="display: flex; justify-content: space-between;">
-						<div style="display:flex; flex-direction: row;">
-							<img src="../image/profile.png" style="width: 45px; margin-right: 10px;">
-							<div class="writerInfo" style="display: flex; flex-direction: column">
-								<span>${readPostBean.writer_name }</span>
-								<div class="time">${readPostBean.board_date }</div>  <!-- 조회수도 같이 하기 --설에 -->
+					<div class="writer"
+						style="display: flex; justify-content: space-between;">
+						<div style="display: flex; flex-direction: row;">
+							<img src="../image/profile.png"
+								style="width: 45px; margin-right: 10px;">
+							<div class="writerInfo"
+								style="display: flex; flex-direction: column">
+								
+								<c:choose>
+	                               <c:when test="${not empty readPostBean.pro_id}">
+	                                   <span>${readPostBean.prowriter_name }</span>
+	                               </c:when>
+	                               
+	                               <c:otherwise>
+	                                   <span>${readPostBean.writer_name }</span>
+	                               </c:otherwise> 
+                           		</c:choose>
+								
+								<div class="time">${readPostBean.board_date }</div>
+								<!-- 조회수도 같이 하기 -->
 							</div>
 						</div>
-						<div>
-							<i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<li>
-									<a class="dropdown-item" type="button" class="btn btn-primary" data-bs-toggle="modal"
-										data-bs-target="#exampleModal">게시글 신고</a>
-							 	</li>
-							</ul>
-						</div>
-						
+
+
+						<!-- 신고모달 -->
+						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">신고하기</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form:form action="${root}/board/detail_reportPro" method="post" modelAttribute="writeReportBean"
+                id="reportForm">
+                <div class="modal-body">
+                    <form:hidden path="board_id" />
+                    <div class="singo form-floating">
+                        <form:textarea path="report_msg" class="form-control" placeholder="상세사유를 입력해 주세요"
+                            id="floatingTextarea2" style="height: 300px" oninput="validateTextarea()"></form:textarea>
+                        <div id="error-message" style="color: red;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <form:button type="submit" class="btn btn-primary" id="submitBtn" disabled="disabled">신고하기</form:button>
+                </div>
+            </form:form>
+
+            <script>
+                function validateTextarea() {
+                    var textareaValue = document.getElementById("floatingTextarea2").value;
+                    var submitBtn = document.getElementById("submitBtn");
+                    var errorMessage = document.getElementById("error-message");
+
+                    if (textareaValue.trim() === "") {
+                        submitBtn.disabled = true;
+                        errorMessage.innerHTML = "신고 사유를 입력해 주세요.";
+                    } else {
+                        submitBtn.disabled = false;
+                        errorMessage.innerHTML = "";
+                    }
+                }
+
+                document.getElementById("reportForm").addEventListener("submit", function (event) {
+                    validateTextarea();
+
+                    // 폼 제출 시에도 한번 더 검사
+                    if (document.getElementById("submitBtn").disabled) {
+                        event.preventDefault();
+                    } else {
+                        // 폼 제출이 성공하면 모달 닫기
+                        $('#exampleModal').modal('hide');
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+ 
+
+
+
+
 					</div>
-				</div> 
-				<div class="writeTopSecond" style="width: 100%; display:flex; justify-content: flex-end;">
-					
-					<c:if test="${loginUserBean.user_id == readPostBean.user_id }"> 
-						<button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'" style="margin-right: 8px";>수정</button>
-						<button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'" style="margin-right: 8px;">삭제</button>
-					</c:if>
-					
-					
-					<button class="pageBtn" onclick="location.href='${root}/board/community'">목록</button>
 				</div>
+				
+				
+					<div style="display: flex; justify-content: end; align-items: center;">
+    <button class="pageBtn" onclick="location.href='${root}/board/community'" style="margin-right: 8px;">목록</button>
+    
+    <c:choose>
+        <c:when test="${not empty loginUserBean && (loginUserBean.user_id == readPostBean.user_id || loginProuserBean.pro_id == readPostBean.pro_id)}">
+            <div>
+                <button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'">수정</button>
+                <button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'">삭제</button>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div>
+                <i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="width: 100%; border-radius: 0px; background-color: #6387A6; border: 1px solid #6387A6;" data-bs-target="#exampleModal">게시글 신고</button>
+                    </li>
+                </ul>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+
+
+
+
+				
 			</div>
-			<hr/>
+			<hr />
 		</div>
 		<div class="post-body-container">
 			<span>${readPostBean.content }</span>
-				<c:if test="${readPostBean.photos != null }">
-    				<div id="categoryphoto" class="carousel slide mt-4" style="width: 100%; margin: auto;">
-        			<!-- 캐러셀 부분-->
-        				<div class="carousel-inner">
-            				<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
-                				<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
-                    				<img src="${root }/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
-                				</div>
-            				</c:forEach>
-        				</div>
-        				<button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" type="button" data-bs-target="#categoryphoto" data-bs-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
-    				</div>
-				</c:if>
-			
-			</div>
-			<hr/>
-				
-		<div class="post-comment-count mt-4">
-			<i class="bi bi-chat-right-text"> 댓글 3</i>
+			<c:if test="${readPostBean.photos != null }">
+				<div id="categoryphoto" class="carousel mt-4"
+					style="width: 100%; margin: auto;">
+					<!-- 캐러셀 부분-->
+					<div class="carousel-inner">
+  						<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
+    						<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
+      							<img src="${root}/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
+    						</div>
+  						</c:forEach>
+					</div>
+
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#categoryphoto" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#categoryphoto" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</c:if>
+
 		</div>
+		<hr />
+
+
+		<div class="post-comment-count mt-4" style="display:flex; flex-direction: row; margin-rigth: 8px; align-items:center;">
+			<i class="bi bi-chat-right-text" style="margin-right: 4px;"></i>댓글&nbsp;<div id="commentCount"></div>
+		</div>
+
 		<!-- 댓글작성 -->
 		<div class="post-comments-container">
-			<div class="comment-input-box input-group mb-3 mt-4">
-				<input type="text" class="form-control" placeholder="댓글을 남겨주세요"
-					aria-label="Recipient's username" aria-describedby="button-addon2">
+
+
+			<div class="comment-input-box input-group mb-4 mt-4">
+				<input id="replyText" type="text" class="form-control" data-html-escape="false"
+					placeholder="댓글을 남겨주세요" aria-label="Recipient's username"
+					aria-describedby="button-addon2" />
 				<button class="btn btn-outline-secondary" type="button"
-					id="button-addon2">등록</button>
+					id="submitReply" disabled="disabled">등록</button>
 			</div>
 
 			<!-- 등록된 댓글1 -->
-			<ul class="post-comments list-group">
-				<li class="list-group-item">
-					<div class="row justify-content-between">
-						<div class="col-5">
-							<div class="row">
-								<div class="col-2">
-									<img src="../image/profile.png" style="width: 45px;">
-								</div>
-								<div class="col-10">
-									<span>으녕</span>
-									<p>
-										<span class="t-color">인테리어 외 5개 서비스 고수</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-5 ms-5">
-							<i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink"
-								role="button" data-bs-toggle="dropdown"></i>
-							<ul class="dropdown-menu"
-								aria-labelledby="navbarDropdownMenuLink">
-								<li><a class="dropdown-item" type="button"
-									class="btn btn-primary" data-bs-toggle="modal"
-									data-bs-target="#exampleModal">댓글신고</a></li>
-							</ul>
-
-							<!-- 신고모달 -->
-							<div class="modal fade" id="exampleModal" tabindex="-1"
-								aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h1 class="modal-title fs-5" id="exampleModalLabel">신고하기</h1>
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-
-											<div class="singo form-floating">
-												<textarea class="form-control" placeholder="상세사유를 입력해 주세요"
-													id="floatingTextarea2" style="height: 300px"></textarea>
-
-											</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal">취소</button>
-											<button type="button" class="btn btn-primary">신고하기</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<button class="btn button-custom ms-2 mt-1"
-								style="color: white; float: right;">견적요청</button>
-						</div>
-					</div>
-					<div class="comments ">
-						<div class="detail-comments mx-auto" style="width: 85%;">
-							<p>일단 대충 000만원 나오지 않을까 생각 듭니다 !해당 전문일류님과 연결되길바랍니다. 도배분야로 견적요청
-								넣어보세요!</p>
-						</div>
-						<div class="comment-action-group t-color">
-
-							<span>6시간전</span> &nbsp; 
-							<!-- <span class="parent-comment"> 
-								<span class="co-comment" style="cursor: pointer;">대댓글</span> 대댓글 클릭시 보이는 부분
-								
-									<input type="text" class="form-control" placeholder="댓글을 남겨주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-									<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
-								
-							</span> -->
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-	
-<c:import url="/WEB-INF/views/include/footer.jsp" />
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var timeElements = document.querySelectorAll('.time');
-
-        timeElements.forEach(function (timeElement) {
-            var boardDate = moment(timeElement.textContent);
-            var now = moment(); // 현재 시간
-            var diffInMinutes = now.diff(boardDate, 'minutes');
-            var diffInHours = now.diff(boardDate, 'hours');
-			var diffInDays = now.diff(boardDate, 'days');
+			<div class="reply-section">
+				<div id="replySection"></div>
+			</div>
 			
-            var relativeTime;
-            if (diffInMinutes < 1) {
-                relativeTime = '방금 전';
-            } else if (diffInHours < 1) {
-                relativeTime = diffInMinutes + '분 전';
-            } else if (diffInHours < 24) {
-                relativeTime = diffInHours + '시간 전';
-            } else if (diffInDays < 7) {
-                relativeTime = diffInDays + '일 전';
-            } else {
-                relativeTime = boardDate.format('YYYY-MM-DD');
-            }
+			<script>
+				$(document).ready(function() {
+					var button = $('#submitReply');
 
-            timeElement.textContent = relativeTime;
-        });
-    });
-</script>
+					// Disable the button initially
+					button.prop('disabled', true);
+
+					// Enable/disable button based on input content
+					$('#replyText').on('input', function() {
+						var isEmpty = $(this).val().trim() === '';
+						button.prop('disabled', isEmpty);
+
+						// Change button background color when active
+						if (!isEmpty) {
+							button.css('background-color', '#6387A6');
+							button.css('color', '#fff');
+						} else {
+							button.css('background-color', ''); // Reset to default color
+							button.css('color', '');
+						}
+					});
+				});
+			</script>
+
+		</div>
+
+
+
+
+
+	</div>
+
+
+
+
+
+	<c:import url="/WEB-INF/views/include/footer.jsp" />
+	
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var timeElements = document.querySelectorAll('.time');
+
+			timeElements.forEach(function(timeElement) {
+				var boardDate = moment(timeElement.textContent);
+				var now = moment(); // 현재 시간
+				var diffInMinutes = now.diff(boardDate, 'minutes');
+				var diffInHours = now.diff(boardDate, 'hours');
+				var diffInDays = now.diff(boardDate, 'days');
+
+				var relativeTime;
+				if (diffInMinutes < 1) {
+					relativeTime = '방금 전';
+				} else if (diffInHours < 1) {
+					relativeTime = diffInMinutes + '분 전';
+				} else if (diffInHours < 24) {
+					relativeTime = diffInHours + '시간 전';
+				} else if (diffInDays < 7) {
+					relativeTime = diffInDays + '일 전';
+				} else {
+					relativeTime = boardDate.format('YYYY-MM-DD');
+				}
+
+				timeElement.textContent = relativeTime;
+			});
+		});
+	</script>
 
 </body>
 </html>

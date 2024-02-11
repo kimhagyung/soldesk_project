@@ -26,11 +26,6 @@ public class SpringConfigClass implements WebApplicationInitializer{
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 
-<<<<<<< HEAD
-	
-=======
-  
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 		//web.xml<servlet>
 		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
 		servletAppContext.register(ServletAppContext.class);
@@ -44,10 +39,6 @@ public class SpringConfigClass implements WebApplicationInitializer{
 		AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
 		rootAppContext.register(RootAppContext.class);
 
-<<<<<<< HEAD
-		
-=======
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 		
 		ContextLoaderListener listener = new ContextLoaderListener(rootAppContext);
 		servletContext.addListener(listener);
@@ -58,15 +49,11 @@ public class SpringConfigClass implements WebApplicationInitializer{
 		
 		
 		filter.addMappingForServletNames(null, false, "dispatcher");
-		
-<<<<<<< HEAD
-=======
-		
-		
+
 		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(null, 52428800, 52428800, 0);
 		
 		servlet.setMultipartConfig(multipartConfigElement);
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
+
 	} 
 	
 }

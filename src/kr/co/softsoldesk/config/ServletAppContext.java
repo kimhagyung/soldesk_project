@@ -22,24 +22,22 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-<<<<<<< HEAD
+
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
-=======
 import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
+import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
-<<<<<<< HEAD
 import kr.co.softsoldesk.mapper.CalendarMapper;
+import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
+import kr.co.softsoldesk.mapper.EducationMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
-=======
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.PostService;
 
@@ -54,20 +52,18 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 	// 프로퍼티의 키를 활용해서 값 가져오기
 
-	// 프로퍼티의 키를 활용해서 값 가져오기
+	//프로퍼티의 키를 활용해서 값 가져오기
 	@Value("${db.classname}")
 	private String db_classname;
-
+	
 	@Value("${db.url}")
 	private String db_url;
-
+	
 	@Value("${db.username}")
 	private String db_username;
-
+	
 	@Value("${db.password}")
 	private String db_password;
-<<<<<<< HEAD
-=======
 	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean; 
@@ -77,13 +73,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 	
 	@Autowired
 	private PostService postService;
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
 
-	@Resource(name = "loginUserBean")
-	private UserBean loginUserBean;
-
-	@Resource(name = "loginProuserBean")
-	private ProUserBean loginProuserBean;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -122,15 +112,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factory;
 	}
 
-<<<<<<< HEAD
+
 	// 카테고리 mapper 등록
 	@Bean
-	public MapperFactoryBean<ServiceCategoryMapper> getServiceCategoryMapper(SqlSessionFactory factory)
-			throws Exception {
+	public MapperFactoryBean<ServiceCategoryMapper> getServiceCategoryMapper(SqlSessionFactory factory) throws Exception {
 
-		MapperFactoryBean<ServiceCategoryMapper> factoryBean = new MapperFactoryBean<ServiceCategoryMapper>(
-				ServiceCategoryMapper.class);
-=======
+		MapperFactoryBean<ServiceCategoryMapper> factoryBean = new MapperFactoryBean<ServiceCategoryMapper>(ServiceCategoryMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
 	
 	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
 	public MapperFactoryBean<PostMapper> PostMapper(SqlSessionFactory factory) throws Exception{
@@ -140,16 +132,6 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factoryBean;
 	}
 
-	@Bean
-	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory)throws Exception{
-		
-		MapperFactoryBean<UserMapper> factoryBean = new MapperFactoryBean<UserMapper>(UserMapper.class);
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
-
-		factoryBean.setSqlSessionFactory(factory);
-
-		return factoryBean;
-	}
 
 
 	@Bean
@@ -160,7 +142,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		return factoryBean;
 	}
-<<<<<<< HEAD
+
 
 	@Bean
 	public MapperFactoryBean<ProUserMapper> getProUserMapper(SqlSessionFactory factory) throws Exception {
@@ -169,30 +151,10 @@ public class ServletAppContext implements WebMvcConfigurer {
 		factoryBean.setSqlSessionFactory(factory);
 
 		return factoryBean;
-=======
-	
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-	
-		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
-		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
-		
-		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
-		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
-		
-		
-		reg1.addPathPatterns("/**");//모든 요청에서 동작
-		reg2.addPathPatterns("/**");//모든 요청에서 동작
-		
-		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
-		
-		InterceptorRegistration reg3 = registry.addInterceptor(checkWriterInterceptor);
-		
-		reg3.addPathPatterns("/board/modifyPost", "/board/delete");
-		
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
+
 	}
+	
+	
 
 	@Bean
 	public MapperFactoryBean<DetailCategoryMapper> getDetilCategoryMapper(SqlSessionFactory factory) throws Exception {
@@ -215,51 +177,55 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		return factoryBean;
 	}
+	
+	//경력
+	@Bean
+	public MapperFactoryBean<CareerMapper> getCareerMapper(SqlSessionFactory factory) throws Exception {
 
-	/*
-	 * @Bean public MapperFactoryBean<TopMenuMapper>
-	 * getTopMenuMapper(SqlSessionFactory factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<TopMenuMapper> factoryBean = new
-	 * MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
+		MapperFactoryBean<CareerMapper> factoryBean = new MapperFactoryBean<CareerMapper>(CareerMapper.class);
 
-	/*
-	 * @Bean public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory
-	 * factory) throws Exception {
-	 * 
-	 * MapperFactoryBean<UserMapper> factoryBean = new
-	 * MapperFactoryBean<UserMapper>(UserMapper.class);
-	 * 
-	 * factoryBean.setSqlSessionFactory(factory);
-	 * 
-	 * return factoryBean; }
-	 */
+		factoryBean.setSqlSessionFactory(factory);
 
-	// interceptor 등록하는 메소드
-	/*
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * 
-	 * //헤더 TopMenuInteceptor topMenuInterceptor = new
-	 * TopMenuInteceptor(topMenuService, loginUserBean); InterceptorRegistration
-	 * reg1 = registry.addInterceptor(topMenuInterceptor);
-	 * reg1.addPathPatterns("/**"); //모든 요청에서 동작
-	 * 
-	 * //로그인 권한? 로그인하지 않았을 경우 CheckLoginInterceptor checkLoginInterceptor = new
-	 * CheckLoginInterceptor(loginUserBean); InterceptorRegistration reg2 =
-	 * registry.addInterceptor(checkLoginInterceptor);
-	 * reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*"); // 수정페이지,
-	 * 로그아웃 페이지, 게시판 폴더의 페이지 요청시 인터셉터 reg2.excludePathPatterns("/board/main");
-	 * //excludePathPatterns: 게시판 폴더의 main은 예외
-	 * 
-	 * 
-	 * }
-	 */
+		return factoryBean;
+	}
+	
+	//학력
+	@Bean
+	public MapperFactoryBean<EducationMapper> getEducationMapper(SqlSessionFactory factory) throws Exception {
 
+		MapperFactoryBean<EducationMapper> factoryBean = new MapperFactoryBean<EducationMapper>(EducationMapper.class);
+
+		factoryBean.setSqlSessionFactory(factory);
+
+		return factoryBean;
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
+		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
+		
+		
+		reg1.addPathPatterns("/**");//모든 요청에서 동작
+		reg2.addPathPatterns("/**");//모든 요청에서 동작
+		
+		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
+		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean);
+		
+		InterceptorRegistration reg3 = registry.addInterceptor(checkWriterInterceptor);
+		InterceptorRegistration reg4 = registry.addInterceptor(loginInterceptor);
+		
+		reg3.addPathPatterns("/board/modifyPost", "/board/delete");
+		reg4.addPathPatterns("/common/calendar", "/common/myPage", "/common/myPosts", "/board/post", "/pro/*");
+		
+
+	}
+
+	
 	// 메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -275,36 +241,12 @@ public class ServletAppContext implements WebMvcConfigurer {
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
 	}
-<<<<<<< HEAD
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
 
-		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
-		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
-		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean);
-
-		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
-		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
-		InterceptorRegistration reg3 = registry.addInterceptor(loginInterceptor);
-
-		reg1.addPathPatterns("/**");// 모든 요청에서 동작
-		reg2.addPathPatterns("/**");// 모든 요청에서 동작
-		reg3.addPathPatterns("/common/calendar");
-
-	}
-
-	public StandardServletMultipartResolver multipartResolver() {
-
-		return new StandardServletMultipartResolver();
-	}
-
-=======
-	
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
 	}
 	
->>>>>>> c44038a57a7d27373a84f83e9fc1366ae7cc3a15
+
 }
