@@ -8,9 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
 
 public interface DetailCategoryMapper {
-
-	
-	
+ 
 	@Select("select service_category_name\r\n"
 			+ "from servicectg\r\n"
 			+ "where service_category_id  = #{service_category_id}")
@@ -33,5 +31,6 @@ public interface DetailCategoryMapper {
 			+ "              WHERE service_category_name LIKE '%' || #{searchKeyword} || '%'\r\n"      
 			+ "        )")  
     List<DetailCategoryBean> getAutocompleteSuggestions(@Param("searchKeyword") String searchKeyword);
+	
 	
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -116,6 +117,25 @@ public class PostService {
 	   postDao.plusCnt(board_id);
    }
    
+ //내가 쓴 글들
+   public List<PostBean> getMyPosts(Integer user_id, Integer pro_id, int page) {
+	   
+	   int start = (page - 1) * page_listcnt;
+	   RowBounds rowBounds = new RowBounds(start, page_listcnt);
+	   
+	   return postDao.getMyPosts(user_id, pro_id, rowBounds);
+   }
+   
+   //내가 쓴 글들 갯수
+   	public PageBean getMyPostsPage(int currentPage, Integer user_id, Integer pro_id) {
+	   
+	   int contentCnt = postDao.getMyPostsCnt(user_id, pro_id);
+	   
+	   PageBean pageBean2 = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
+	   
+	   return pageBean2;
+   }
+   
    //---------------------신고-------------------
    
    public void addReportInfo(ReportBean writeReportBean) {
@@ -173,4 +193,38 @@ public class PostService {
 	   
 	   return pageBean;
    }
+   
+   //----------------검색-----------------------------
+   
+   public List<PostBean> getSearchedPostList(int page, String searchType, String searchText) {
+       int start = (page - 1) * page_listcnt;
+       RowBounds rowBounds = new RowBounds(start, page_listcnt);
+       return postDao.getSearchedPostList(rowBounds, searchType, searchText);
+   }
+   
+   public PageBean getSearchedPostPage(int currentPage, String searchType, String searchText) {
+       int contentCnt = postDao.getSearchedPostCnt(searchType, searchText);
+       PageBean pageBean = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
+       return pageBean;
+   }
+   
+   //내가 쓴 댓글
+   public List<CommentBean> getMyComment(Integer user_id, Integer pro_id, int page) {
+	   
+	   int start = (page - 1) * page_listcnt;
+	   RowBounds rowBounds = new RowBounds(start, page_listcnt);
+	   
+	   return postDao.getMyComment(user_id, pro_id, rowBounds);
+   }
+   
+   //내가 쓴 댓글 갯수
+   public PageBean getMyCommentPage(int currentPage, Integer user_id, Integer pro_id) {
+	   
+	   int contentCnt = postDao.getMyPostsCnt(user_id, pro_id);
+	   PageBean pageBean3 = new PageBean(contentCnt, currentPage, page_listcnt, page_paginationcnt);
+	   
+	   return pageBean3;
+   }
+   
+   
 }

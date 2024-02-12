@@ -17,13 +17,24 @@ public interface ProUserMapper {
 	String checkProuserEmailExist(String pro_email);
 
 	@Insert("INSERT INTO pro_user (pro_id, pro_email, pro_name, pro_pwd, pro_gender, active_location, active_detailcategory1, active_detailcategory2, active_detailcategory3,reportCnt) VALUES (pro_seq.nextval, #{pro_email}, #{pro_name}, #{pro_pwd}, #{pro_gender}, #{active_location, jdbcType=VARCHAR}, #{active_detailcategory1, jdbcType=VARCHAR}, #{active_detailcategory2, jdbcType=VARCHAR}, #{active_detailcategory3, jdbcType=VARCHAR},#{reportCnt})")
-	void addProuserInfo(ProUserBean joinProuserBean);
-
+	void addProuserInfo(ProUserBean joinProuserBean); 
+	
 	@Select("select * from pro_user where pro_email=#{pro_email} and pro_pwd=#{pro_pwd}")
 	ProUserBean getLoginProuserInfo(ProUserBean tempLoginUserBean2);
 
+	
 	@Select("select pro_name from pro_user WHERE pro_name LIKE '%' || #{pro_name} || '%'")
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
+	
+	//
+	@Select("SELECT active_detailcategory1, active_detailcategory2, active_detailcategory3 " +
+            "FROM pro_user WHERE pro_name = #{proNames}")
+	List<ProUserBean> getDetailCategoriesByName(List<String> proNames);
+	//
+	@Select("SELECT pro_name FROM pro_user WHERE active_detailcategory1 LIKE '%' || #{active_detailcategory1} || '%' " +
+	        "OR active_detailcategory2 LIKE '%' || #{active_detailcategory2} || '%' " +
+	        "OR active_detailcategory3 LIKE '%' || #{active_detailcategory3} || '%'")
+	List<String> getRecoProUserByName(String reco);  //활동지역 고수 조회 
 
 	@Select("select pro_name from pro_user")
 	List<ProUserBean> getProUserByName(RowBounds rowBounds); // 모든 pro_name조회
@@ -55,4 +66,6 @@ public interface ProUserMapper {
 	
 	@Delete("delete from pro_user where pro_id=#{pro_id}")
 	int ProAccountResign(int pro_id);
+	
+	
 }

@@ -260,7 +260,7 @@
                         
                     }  else {
                         // 마지막 질문일 경우 특정 페이지로 이동
-                        window.location.href = '${root}'; 
+                        window.location.href = '${root}/received_quotation?reco=${param.detail_category_name}'; 
                     } 
                     updateProgressBar(); // 프로그레스바 업데이트
                 }else { 
@@ -282,7 +282,6 @@
                     $(this).parent().append(textarea);
                 }
             });
-
 
         });
  		</script>

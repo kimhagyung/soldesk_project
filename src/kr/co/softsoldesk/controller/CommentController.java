@@ -32,10 +32,14 @@ public class CommentController {
 	//댓글 작성
 	@PostMapping("/comment")
 	public CommentBean addComment(@RequestBody CommentBean writeCommentBean) {
-	
-		postService.addComment(writeCommentBean);
-		System.out.println("로그인 " + loginUserBean.getUser_name());
-		return writeCommentBean;
+		
+		 if(loginProuserBean.isProuserLogin() || loginUserBean.isUserLogin()) {
+		        postService.addComment(writeCommentBean);
+		        System.out.println("로그인 " + loginUserBean.getUser_name());
+		        return writeCommentBean;
+		    } else {
+		        return null;
+		    }
 	}
 	
 	//댓글 목록

@@ -33,10 +33,13 @@ import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.CalendarMapper;
+import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
+import kr.co.softsoldesk.mapper.EducationMapper;
 import kr.co.softsoldesk.mapper.PortFolioMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
+import kr.co.softsoldesk.mapper.ReviewMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.PostService;
@@ -172,14 +175,18 @@ public class ServletAppContext implements WebMvcConfigurer {
 		reg3.addPathPatterns("/common/myPage");
 		reg3.addPathPatterns("/common/AccountModify");
 		reg3.addPathPatterns("/common/AccountSetting");
+		reg3.addPathPatterns("/board/modifyPost");
+		reg3.addPathPatterns("/board/post");
+		reg3.addPathPatterns("/common/calendar", "/common/myPage", "/common/myPosts", "/board/post");
+		//reg2.excludePathPatterns("/board/main");
 		
 		reg3.addPathPatterns("/pro/**"); 
 		
 		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, postService);
 		
-		InterceptorRegistration reg4 = registry.addInterceptor(checkWriterInterceptor);
-		
+		InterceptorRegistration reg4 = registry.addInterceptor(checkWriterInterceptor); 
 		reg4.addPathPatterns("/board/modifyPost", "/board/delete");
+		
 		
 	}
 	
@@ -207,6 +214,15 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		return factoryBean;
 	}
+	
+	@Bean
+	public MapperFactoryBean<ReviewMapper> getReviewMapper(SqlSessionFactory factory)throws Exception{
+
+		MapperFactoryBean<ReviewMapper> factoryBean = new MapperFactoryBean<ReviewMapper>(ReviewMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+
+		return factoryBean;
+	}
 
 	//캘린더
 	@Bean
@@ -218,6 +234,28 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		return factoryBean;
 	} 
+	
+	//경력
+		@Bean
+		public MapperFactoryBean<CareerMapper> getCareerMapper(SqlSessionFactory factory) throws Exception {
+
+			MapperFactoryBean<CareerMapper> factoryBean = new MapperFactoryBean<CareerMapper>(CareerMapper.class);
+
+			factoryBean.setSqlSessionFactory(factory);
+
+			return factoryBean;
+		}
+		
+		//학력
+		@Bean
+		public MapperFactoryBean<EducationMapper> getEducationMapper(SqlSessionFactory factory) throws Exception {
+
+			MapperFactoryBean<EducationMapper> factoryBean = new MapperFactoryBean<EducationMapper>(EducationMapper.class);
+
+			factoryBean.setSqlSessionFactory(factory);
+
+			return factoryBean;
+		}
 	 
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 		@Bean

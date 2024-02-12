@@ -106,14 +106,29 @@ $(document).ready(function() {
 				<b>커뮤니티</b>
 			</h2>
 		</div>
+		
+		<!-- 검색 폼 -->
+<form action="${root}/board/community" method="get" class="form-inline justify-content-center mt-3">
+    <label for="searchType">검색 유형:</label>
+    <select name="searchType" id="searchType" class="form-control mx-2">
+        <option value="title" <c:if test="${param.searchType == 'title'}">selected</c:if>>제목</option>
+        <option value="content" <c:if test="${param.searchType == 'content'}">selected</c:if>>내용</option>
+        <option value="category" <c:if test="${param.searchType == 'category'}">selected</c:if>>카테고리</option>
+        <option value="location" <c:if test="${param.searchType == 'location'}">selected</c:if>>지역</option>
+    </select>
+    <label for="searchText" class="mr-2">검색어:</label>
+    <input type="text" name="searchText" id="searchText" class="form-control mx-2" value="${param.searchText}" />
+    <button type="submit" class="btn btn-primary">검색</button>
+</form>
+		
 		<div class="btn-catelocat">
-			<button type="button"
+<!-- 			<button type="button"
 				class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
 				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
 				<i class="bi bi-caret-down"></i></button>
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button>
+				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button> -->
 			<button type="button" class="btn button-custom mt-4 me-5"
 				onclick="location.href='${root}/board/post'" style="float: right; color: white;">
 				글쓰기 <img src="../image/pen2.png" style="width: 18px;">
@@ -207,7 +222,7 @@ $(document).ready(function() {
 										</div>
 										<div class="cardContent" style="display: flex; flex-direction: row; justify-content: space-between;">
 											<div>
-												<div class="title">${obj.title }</div>
+												<div class="title" style="text-align: left;">${obj.title }</div>
 												<div class="content">${obj.content }</div>
 											</div>
 											<div>
@@ -246,72 +261,73 @@ $(document).ready(function() {
 	</article>
 	
 	 <div class="d-none d-md-block">
-            <ul class="pagination justify-content-center">
-               
-               <!-- 이전 페이지가 1 이하이면 이전 페이지는 비활성화 -->
-               <c:choose>
-                  <c:when test="${pageBean.prevPage <= 0 }">
-                     <li class="page-item disabled">
-                        <a href="#" class="page-link">이전</a>
-                     </li>
-                  </c:when>
-                  <c:otherwise>
-                     <li class="page-item">
-                        <a href="${root }/board/community?page=${pageBean.prevPage}" 
-                        class="page-link">이전</a>
-                     </li>
-                  </c:otherwise>
-               </c:choose>
-               
-               <c:forEach var="idx" begin="${pageBean.min }" end="${pageBean.max }">
-               <!-- model로 가져온 pageBean의 최소페이지부터 최대페이지까지 반복 -->
-                  <c:choose>
-                     <c:when test="${idx==pageBean.currentPage }">
-                        <li class="page-item active" >
-                        <!-- 현재페이지 활성화 -->
-                           <a href="${root }/board/community?page=${idx}" class="page-link">
-                              ${idx }
-                           </a>
-                        </li>
-                     </c:when>
-                     <c:otherwise>
-                        <li class="page-item">
-                           <a href="${root }/board/community?page=${idx}" class="page-link">
-                              ${idx }
-                           </a>
-                        </li>
-                     </c:otherwise>
-                  </c:choose>
-               </c:forEach>
-               
-               <c:choose>
-                  <c:when test="${pageBean.max >= pageBean.pageCnt }">
-                  <!-- 현재 페이지가 최대페이지이면 다음버튼 비활성화 -->
-                     <li class="page-item disabled">
-                        <a href="#" class="page-link">다음</a>
-                     </li>
-                  </c:when>
-                  <c:otherwise>
-                     <li class="page-item">
-                        <a href="${root }/board/community?page=${pageBean.nextPage}" 
-                        class="page-link">다음</a>
-                     </li>
-                  </c:otherwise>
-               </c:choose>
-               
-            </ul>
-         </div>
-         
-         <div class="d-block d-md-none">
-            <ul class="pagination justify-content-center">
-               <li class="page-item">
-                  <a href="#" class="page-link">이전</a>
-               </li>
-               <li class="page-item">
-                  <a href="#" class="page-link">다음</a>
-               </li>
-            </ul>
-         </div>
+    <ul class="pagination justify-content-center">
+       
+       <!-- 이전 페이지가 1 이하이면 이전 페이지는 비활성화 -->
+       <c:choose>
+          <c:when test="${pageBean.prevPage <= 0 }">
+             <li class="page-item disabled">
+                <a href="#" class="page-link">이전</a>
+             </li>
+          </c:when>
+          <c:otherwise>
+             <li class="page-item">
+                <a href="${root }/board/community?page=${pageBean.prevPage}&searchType=${param.searchType}&searchText=${param.searchText}" 
+                class="page-link">이전</a>
+             </li>
+          </c:otherwise>
+       </c:choose>
+       
+       <c:forEach var="idx" begin="${pageBean.min }" end="${pageBean.max }">
+       <!-- model로 가져온 pageBean의 최소페이지부터 최대페이지까지 반복 -->
+          <c:choose>
+             <c:when test="${idx==pageBean.currentPage }">
+                <li class="page-item active" >
+                <!-- 현재페이지 활성화 -->
+                   <a href="${root }/board/community?page=${idx}&searchType=${param.searchType}&searchText=${param.searchText}" class="page-link">
+                      ${idx }
+                   </a>
+                </li>
+             </c:when>
+             <c:otherwise>
+                <li class="page-item">
+                   <a href="${root }/board/community?page=${idx}&searchType=${param.searchType}&searchText=${param.searchText}" class="page-link">
+                      ${idx }
+                   </a>
+                </li>
+             </c:otherwise>
+          </c:choose>
+       </c:forEach>
+       
+       <c:choose>
+          <c:when test="${pageBean.max >= pageBean.pageCnt }">
+          <!-- 현재 페이지가 최대페이지이면 다음버튼 비활성화 -->
+             <li class="page-item disabled">
+                <a href="#" class="page-link">다음</a>
+             </li>
+          </c:when>
+          <c:otherwise>
+             <li class="page-item">
+                <a href="${root }/board/community?page=${pageBean.nextPage}&searchType=${param.searchType}&searchText=${param.searchText}" 
+                class="page-link">다음</a>
+             </li>
+          </c:otherwise>
+       </c:choose>
+       
+    </ul>
+ </div>
+ 
+ <div class="d-block d-md-none">
+    <ul class="pagination justify-content-center">
+       <li class="page-item">
+          <a href="#" class="page-link">이전</a>
+       </li>
+       <li class="page-item">
+          <a href="#" class="page-link">다음</a>
+       </li>
+    </ul>
+ </div>
+
 
 
 	<c:import url="/WEB-INF/views/include/footer.jsp" />

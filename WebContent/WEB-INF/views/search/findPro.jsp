@@ -23,9 +23,8 @@
 				var truncatedText = text.substring(0, maxCharacters) + '...';
 				$(this).text(truncatedText);
 			}
-		});
-		
-		 
+		}); 
+	});
 </script> 
 
 <script>
@@ -380,89 +379,91 @@ function sendToServerLocation(selectedLocation) {
 							</div>
 						</c:forEach>
 					</c:when>  
-					 <c:when test="${empty param.detail_category_name or empty param.location}">
-						<c:forEach var="proname" items="${pro_names}">
-							<div class="card mb-3">
-								<div class="card-body row">
-									<div class="col-10">
-										<b style="font-size: 18px;">${proname.pro_name }</b>
-										<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
-											/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
-											‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
-											긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
-											참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
-											ZOOM으로 진행.</div>
-										<div class="star-review mt-1">
-											<i class="bi bi-star-fill star"></i> <span
-												class="review-count" style="font-size: 13px;">5.0(리뷰
-												수)</span>
-										</div> 
-										<div class="career mt-2 lig">
-											<span>경력 10년</span>
+					 <c:otherwise>
+						 <c:forEach var="proname" items="${pro_names}"  > 
+								<div class="card mb-3">
+									<div class="card-body row">
+										<div class="col-10">
+											<b style="font-size: 18px;">${proname.pro_name }</b>
+											<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
+												/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
+												‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
+												긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
+												참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
+												ZOOM으로 진행.</div>
+											<div class="star-review mt-1">
+												<i class="bi bi-star-fill star"></i> <span
+													class="review-count" style="font-size: 13px;">5.0(리뷰
+													수)</span>
+											</div> 
+											<div class="career mt-2 lig">
+												<span>경력 10년</span>
+											</div>
+										</div>
+	
+										<div class="col-2 text-center mt-4">
+											<img class="profileimage" src="../image/logo4.png">
 										</div>
 									</div>
-
-									<div class="col-2 text-center mt-4">
-										<img class="profileimage" src="../image/logo4.png">
-									</div>
-								</div>
-							</div>
+								</div> 
+								
 						</c:forEach>
-					</c:when>  
+						<!-- 페이징 처리 -->
+								<div class="d-none d-md-block">
+									<ul class="pagination justify-content-center">
+										<c:choose>
+										<c:when test="${pageBean.prevPage <= 0 }">
+										<li class="page-item disabled">
+											<a href="#" class="page-link">이전</a>
+										</li>
+										</c:when>
+										<c:otherwise>
+										<li class="page-item">
+											<a href="${root }/search/findPro?page=${pageBean.prevPage}" class="page-link">이전</a>
+										</li>
+										</c:otherwise>
+										</c:choose>
+										
+										
+										<c:forEach var='idx' begin="${pageBean.min }" end='${pageBean.max }'>
+										<c:choose>
+										<c:when test="${idx == pageBean.currentPage }">
+										<li class="page-item active">
+											<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
+										</li>
+										</c:when>
+										<c:otherwise>
+										<li class="page-item">
+											<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
+										</li>
+										</c:otherwise>
+										</c:choose>
+										
+										</c:forEach>
+												
+										<c:choose>
+										<c:when test="${pageBean.max >= pageBean.pageCnt }">
+										<li class="page-item disabled">
+											<a href="#" class="page-link">다음</a>
+										</li>
+										</c:when>
+										<c:otherwise>
+										<li class="page-item">
+											<a href="${root }/search/findPro?page=${pageBean.nextPage}" class="page-link">다음</a>
+										</li>
+										</c:otherwise>
+										</c:choose>
+										
+									</ul>
+								</div>
+					</c:otherwise>  
 				</c:choose> 
 				<div> </div>
 			</div>
 			<!-- 페이징 처리 -->
 
 		</div> 
-		<!-- 페이징 처리 -->
-		<div class="d-none d-md-block">
-			<ul class="pagination justify-content-center">
-				<c:choose>
-				<c:when test="${pageBean.prevPage <= 0 }">
-				<li class="page-item disabled">
-					<a href="#" class="page-link">이전</a>
-				</li>
-				</c:when>
-				<c:otherwise>
-				<li class="page-item">
-					<a href="${root }/search/findPro?page=${pageBean.prevPage}" class="page-link">이전</a>
-				</li>
-				</c:otherwise>
-				</c:choose>
-				
-				
-				<c:forEach var='idx' begin="${pageBean.min }" end='${pageBean.max }'>
-				<c:choose>
-				<c:when test="${idx == pageBean.currentPage }">
-				<li class="page-item active">
-					<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
-				</li>
-				</c:when>
-				<c:otherwise>
-				<li class="page-item">
-					<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
-				</li>
-				</c:otherwise>
-				</c:choose>
-				
-				</c:forEach>
-						
-				<c:choose>
-				<c:when test="${pageBean.max >= pageBean.pageCnt }">
-				<li class="page-item disabled">
-					<a href="#" class="page-link">다음</a>
-				</li>
-				</c:when>
-				<c:otherwise>
-				<li class="page-item">
-					<a href="${root }/search/findPro?page=${pageBean.nextPage}" class="page-link">다음</a>
-				</li>
-				</c:otherwise>
-				</c:choose>
-				
-			</ul>
-		</div>
+		
 
 	</div>
 	<!--여기까지 본문 -->

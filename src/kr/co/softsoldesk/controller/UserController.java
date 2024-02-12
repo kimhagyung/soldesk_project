@@ -186,6 +186,7 @@ public class UserController {
 			return "user/pro_join";
 		}
 		ProuserService.addProuserInfo(joinProuserBean);
+		
 		return "user/join_success";
 	}
 	

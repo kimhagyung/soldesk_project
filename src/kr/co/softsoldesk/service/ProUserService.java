@@ -1,5 +1,6 @@
 package kr.co.softsoldesk.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.ProUserBean;
-import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
 @Service
@@ -65,9 +65,20 @@ public class ProUserService {
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean3.getPro_pwd());
 	} 
 	
+	
 	 public List<String> getSearchProUserByName(String pro_name) {
 	        return proUserDao.getSearchProUserByName(pro_name);
+	    } 
+	 
+	 //
+	    public List<ProUserBean> getDetailCategoriesByName(String proNames) {
+	        List<String> proNamesList = Arrays.asList(proNames.split(","));
+	        return proUserDao.getDetailCategoriesByName(proNamesList);
 	    }
+	 //
+	 public List<String> getRecoProUserByName(String reco) {
+		 return proUserDao.getRecoProUserByName(reco);
+	 }
 	
 	 public List<ProUserBean> getProUserByName(int page, int size) {
 
@@ -119,6 +130,11 @@ public class ProUserService {
 	}
 	public int ProAccountResign(int pro_id) {
 		return proUserDao.ProAccountResign(pro_id);
+	}
+
+	public List<ProUserBean> getProCategoryname(List<String> pro_name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

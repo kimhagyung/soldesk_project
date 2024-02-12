@@ -39,108 +39,28 @@
 	<!--여기까지 네비부분-->
 	<!--본문-->
 	<div class="container mt-5 mb-5" style="width: 60%">
-		<h2><strong>받은 견적서</strong></h2>
+		<h2><strong>' 에서 활동하는 일류들</strong></h2>
 
 		<ul class="list-group list-group-flush mb-5 mt-5">
-			<li class="list-group-item">
-				<h4 class="mb-3">포토샵 레슨</h4>
-				<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-				<span>받은 견적</span> &nbsp;
-				<span style="color: #00CDFF;">4개</span> &nbsp;
-				<span style="color: lightgray;">3시간 전</span>
-				<div class="btns mt-3">
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6 fw-bold" style="cursor: pointer;">삭제하기</div>
-					<div class="col-6 fw-bold" style="color: #00CDFF; cursor: pointer;">채팅하기</div>
-				</div>
-			</li>
-			
-			<li class="list-group-item mt-5">
-				<h4 class="mb-3">포토샵 레슨</h4>
-				<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-				<span>받은 견적</span> &nbsp;
-				<span style="color: #00CDFF;">4개</span> &nbsp;
-				<span style="color: lightgray;">3시간 전</span>
-				<div class="btns mt-3">
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6 fw-bold">삭제하기</div>
-					<div class="col-6 fw-bold" style="color: #00CDFF;">채팅하기</div>
-				</div>
-			</li>
-			
-			<li class="list-group-item mt-5">
-				<h4 class="mb-3">포토샵 레슨</h4>
-				<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-				<span>받은 견적</span> &nbsp;
-				<span style="color: #00CDFF;">4개</span> &nbsp;
-				<span style="color: lightgray;">3시간 전</span>
-				<div class="btns mt-3">
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6 fw-bold">삭제하기</div>
-					<div class="col-6 fw-bold" style="color: #00CDFF;">채팅하기</div>
-				</div>
-			</li>
-			
-			<li class="list-group-item mt-5">
-				<h4 class="mb-3">포토샵 레슨</h4>
-				<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-				<span>받은 견적</span> &nbsp;
-				<span style="color: #00CDFF;">4개</span> &nbsp;
-				<span style="color: lightgray;">3시간 전</span>
-				<div class="btns mt-3">
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6 fw-bold">삭제하기</div>
-					<div class="col-6 fw-bold" style="color: #00CDFF;">채팅하기</div>
-				</div>
-			</li>
-			
-			<li class="list-group-item mt-5">
-				<h4 class="mb-3">포토샵 레슨</h4>
-				<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-				<span>받은 견적</span> &nbsp;
-				<span style="color: #00CDFF;">4개</span> &nbsp;
-				<span style="color: lightgray;">3시간 전</span>
-				<div class="btns mt-3">
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btnss">레슨</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6 fw-bold">삭제하기</div>
-					<div class="col-6 fw-bold" style="color: #00CDFF;">채팅하기</div>
-				</div>
-			</li>
+			<c:forEach var="obj" items=" ">
+				<li class="list-group-item">
+					<h4 class="mb-3"> }</h4>
+					<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
+					<span>받은 견적</span> &nbsp;
+					<span style="color: #00CDFF;">4개</span> &nbsp;
+					<span style="color: lightgray;">3시간 전</span>
+					<div class="btns mt-3">
+					<%-- 	<button class="btnss">${obj.active_detailcategory1 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btnss">${obj.active_detailcategory2 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btnss">${obj.active_detailcategory3 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 --%></div>
+					<hr>
+					<div class="row text-center">
+						<div class="col-6 fw-bold" style="cursor: pointer;">삭제하기</div>
+						<div class="col-6 fw-bold" style="color: #00CDFF; cursor: pointer;">채팅하기</div>
+					</div>
+				</li>
+			</c:forEach>
 		</ul>
 	</div>
 

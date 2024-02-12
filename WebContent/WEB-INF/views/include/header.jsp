@@ -124,6 +124,10 @@
     box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 
+.dropdown-toggle-noarrow::after {
+	display: none !important;
+}
+
 </style>
 <script>
 $(document).ready(function() {
@@ -236,6 +240,94 @@ $(document).ready(function() {
     }
 
 });
+
+//페이지 로딩 시 알람 목록 가져오기
+$(document).ready(function() {
+    loadAlarmsForAddedEvents();
+    
+	  // 알람 클릭 이벤트 핸들러
+	 //$("#calendarDropdown .dropdown-menu").on("click", ".dropdown-item", function() {
+	  //   console.log("알람이 클릭됐다!"); // 추가된 로그
+	
+	     // rounded-pill 클래스 제거
+	  //   $(".rounded-circle").removeClass("text-danger").hide();
+	
+	     // 글씨 색상을 노란색으로 변경
+	  //   $(this).css({
+	  //       "color": "yellow",
+	  //       "text-decoration": "line-through"
+	  //   });
+	
+	     // 캘린더로 이동
+	  //   window.location.href = "${root}/common/calendar";
+	// });
+});
+
+function loadAlarmsForAddedEvents() {
+    $.ajax({
+        type: "GET",
+        url: "/Soldesk_Project2_Unicode/common/calendar_alarm",
+        //data: {
+         //   userId: ${loginUserBean.user_id}
+        //},
+        success: function(alarms) {
+            displayAlarms(alarms);
+        },
+        error: function(error) {
+            console.error("Error loading alarms for added events:", error);
+        }
+    });
+}
+
+function displayAlarms(alarms) {
+    // 알람 목록을 드롭다운에 표시
+    var dropdown = $("#calendarDropdown .dropdown-menu");
+    dropdown.empty();
+ 	// 콘솔에 현재 로그인한 사용자의 ID 찍어보기
+    console.log("Current login user ID:", ${loginUserBean.isUserLogin()});
+    console.log("Current login user ProID:", ${loginProuserBean.isProuserLogin()});
+
+    if (alarms.length === 0) {
+        dropdown.append('<li><a class="dropdown-item">새로운 알림이 없습니다.</a></li>');
+        $(".rounded-circle").hide();
+    } else {
+        alarms.forEach(function(alarm) {
+            // 적절한 알람 메시지를 가져오는 로직으로 변경
+            var alarmText = "일정 : " + alarm.calendar_memo;
+            dropdown.append('<li><a class="dropdown-item" href="${root}/common/calendar">' + alarmText + '</a></li>');
+        });
+        // 알림이 있을 경우 알림 아이콘에 빨간 동그라미 표시
+        $(".rounded-circle").show();
+    }
+ 	// 평소에는 알림 아이콘 숨기기
+   // if (alarms.length === 0) {
+       
+    //}
+ 	
+ 	// 기존의 click 이벤트 핸들러를 off() 메서드를 사용하여 제거
+    dropdown.off('click', '.alarm-link');
+    // on 메서드를 사용하여 이벤트 핸들러 등록
+    dropdown.on('click', '.alarm-link', function () {
+        handleAlarmClick(this);
+    });
+
+    /* function handleAlarmClick(clickedElement) {
+        console.log("알람이 클릭됐다!"); // 추가된 로그
+        
+        // rounded-pill 클래스 제거
+        $(".rounded-circle").removeClass("text-danger").hide();
+        
+        // 글씨 색상을 노란색으로 변경
+        $(clickedElement).find("a").css({
+            "color": "yellow",
+            "text-decoration": "line-through"
+        });
+        
+        // 캘린더로 이동
+        window.location.href = $(clickedElement).attr("href");
+    } */
+}
+
 </script>
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
@@ -259,6 +351,13 @@ $(document).ready(function() {
 							<li class="nav-item">
 								<a class="nav-link" href="${root}/search/findPro">일류찾기</a>
 							</li> 
+							
+							<c:choose>
+                                <c:when test="${loginProuserBean.prouserLogin == true || loginUserBean.userLogin == true}">
+                                    <li class="nav-item"><a class="nav-link" href="${root}/ChattingList">채팅</a></li>
+                                </c:when>
+                            </c:choose>
+                            
 						</ul>
 						<!-- 검색 폼 -->
 						<form action="${root}/Questions" id="formID" method="get">
@@ -266,47 +365,107 @@ $(document).ready(function() {
 						</form>
 						<!-- 결과 받을 폼 -->
 						<div class="searchResults list-group" ></div>
-					<c:choose> 
-						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
-							<!-- 로그인 및 회원가입 버튼 -->
-								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+						
+					<c:choose>
+							<c:when
+								test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==false }">
+								<!-- 로그인 및 회원가입 버튼 -->
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
 									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
-								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
 									onclick="location.href='${root}/user/login'">회원로그인</button>
-								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
 									onclick="location.href='${root}/user/join'">회원가입</button>
-								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
 									onclick="location.href='${root}/user/pro_join'">일류가입</button>
 							</c:when>
-						<c:when test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
-								onclick="location.href='${root}/user/login'">회원로그인</button>
+							<c:when
+								test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
+									onclick="location.href='${root}/user/login'">회원로그인</button>
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
+									onclick="location.href='${root}/user/pro_logout'">로그아웃</button>
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/user/pro_logout'">로그아웃</button> 
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
-							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
-								<span
-									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-									<span class="visually-hidden">New alerts</span>
-								</span>
-							</i>
-						</c:when>
-						<c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									
+								<!-- 종 -->	
+								<div class="dropdown" id="notificationDropdown"> 
+									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										</span>
+									</i>
+									
+									<ul class="dropdown-menu">
+										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
+							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
+										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									</ul>
+								</div>
+								
+								<!-- 캘린더 -->
+								<div class="dropdown" id="calendarDropdown"> 
+									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										</span>
+									</i>
+									
+									<ul class="dropdown-menu">
+										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
+							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
+										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									</ul>
+								</div>
+								
+							</c:when>
+
+							<c:when
+								test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
 									onclick="location.href='${root}/user/pro_login'">일류로그인</button>
+								<button class="btn ms-2 button-custom" type="button"
+									style="color: white;"
+									onclick="location.href='${root}/user/logout'">로그아웃</button>
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
-									onclick="location.href='${root}/user/logout'">로그아웃</button> 
-							<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
-							<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative" style="font-size: 30px;">
-								<span
-									class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-									<span class="visually-hidden">New alerts</span>
-								</span>
-							</i>
-						</c:when> 
-					</c:choose>
+									
+								<!-- 종 -->
+								<div class="dropdown" id="notificationDropdown"> 
+									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style="display:none;"> 
+										</span>
+									</i>
+									
+									<ul class="dropdown-menu">
+										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
+							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
+										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									</ul>
+								</div>
+								
+								<!-- 캘린더 -->
+								<div class="dropdown" id="calendarDropdown"> 
+									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										</span>
+									</i>
+									
+									<ul class="dropdown-menu">
+										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
+							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
+										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									</ul>
+								</div>
+
+							</c:when>
+						</c:choose>
+						
 					</div>
 				</div>
 			</nav>

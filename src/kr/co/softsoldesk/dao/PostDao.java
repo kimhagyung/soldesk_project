@@ -3,6 +3,7 @@ package kr.co.softsoldesk.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,18 @@ public class PostDao {
 	 public int getPostCnt() {
 		 return postMapper.getPostCnt();
 	 }
+	 
+	 //내가 쓴 글
+	 public List<PostBean> getMyPosts(Integer user_id, Integer pro_id, RowBounds rowBounds) {
+		 
+		 return postMapper.getMyPosts(user_id, pro_id, rowBounds);
+	 }
+	 
+	 //내가 쓴 글들 갯수
+	 public int getMyPostsCnt(Integer user_id, Integer pro_id) {
+		 
+		return postMapper.getMyPostsCnt(user_id, pro_id);
+	 }
 
 	 //--------------------신고-------------------------------
 	 
@@ -81,6 +94,28 @@ public class PostDao {
 	 
 	 public int commentCntAtPost(int board_id) {
 		 return postMapper.commentCntAtPost(board_id);
+	 }
+	 
+	 //---------------------검색-----------------------------
+	 
+	 public List<PostBean> getSearchedPostList(RowBounds rowBounds, @Param("searchType") String searchType, @Param("searchText") String searchText){
+		 return postMapper.getSearchedPostList(rowBounds, searchType, searchText);
+	 }
+	 
+	 public int getSearchedPostCnt(String searchType, String searchText) {
+	        return postMapper.getSearchedPostCnt(searchType, searchText);
+	 }
+	 
+	//내가 쓴 댓글
+	 public List<CommentBean> getMyComment(Integer user_id, Integer pro_id, RowBounds rowBounds) {
+		 
+		 return postMapper.getMyComment(user_id, pro_id, rowBounds);
+	 }
+	 
+	 //내가 쓴 댓글 갯수
+	 int getMyCommentCnt(Integer user_id, Integer pro_id) {
+		 
+		 return postMapper.getMyCommentCnt(user_id, pro_id);
 	 }
 	 
 }

@@ -60,8 +60,7 @@ public class SearchController {
 	}
 	
 	@GetMapping("/searchProName")
-	public String searchProName(@RequestParam("searchInput") String searchInput,
-								Model model) {
+	public String searchProName(@RequestParam("searchInput") String searchInput,Model model) {
 		System.out.println("searchInput:"+searchInput); //받은 값  
 		List<String> search_proname = proUserService.getSearchProUserByName(searchInput);
 		model.addAttribute("search_proname",search_proname); //유사한 고수 이름  

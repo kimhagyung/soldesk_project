@@ -36,18 +36,23 @@ $(document).ready(function() {
                 board_id: ${board_id} 
             }),
             success: function(response) {
-                var replyHtml = '<div class="card mt-2"><div class="card-body">' +
-                                '<p class="card-text">' + response.comment_content + '</p>' +
-                                '</div></div>';
-                $("#replySection").append(replyHtml);
-                $("#replyText").val(''); 
-                alert('댓글이 성공적으로 추가되었습니다.'); 
+                if (response.comment_content==null) { 
+                    alert('로그인을 해주세요');
+                    window.location.href = '${root}/user/login';
+                } else {
+                    var replyHtml = '<div class="card mt-2"><div class="card-body">' +
+                                    '<p class="card-text">' + response.comment_content + '</p>' +
+                                    '</div></div>';
+                    $("#replySection").append(replyHtml);
+                    $("#replyText").val(''); 
+                    alert('댓글이 성공적으로 추가되었습니다.'); 
 
-                // 댓글 개수 조회
-                updateCommentCount();
-                
-                // 댓글 목록 조회
-                updateReplyList();
+                    // 댓글 개수 조회
+                    updateCommentCount();
+                    
+                    // 댓글 목록 조회
+                    updateReplyList();
+                }
             },
             error: function(error) {
                 console.log(error);

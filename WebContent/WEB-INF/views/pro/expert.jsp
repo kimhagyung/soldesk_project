@@ -314,12 +314,35 @@ $(document).ready(function() {
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career?id=${param.id }'">수정</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career'">등록</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@경력 페이지에서 값 받아오는 곳@</p>
-			<p></p>
+			
+			<c:forEach var="career" items="${careerList}">
+				<div class="content mt-3">
+					<div class="period mb-3">
+					 	총경력 ${career.total_experience_period  }년
+					</div>
+					<div class="row">
+						<div class="col career_title fw-bold"> 
+							${career.career_title } 
+						</div>
+						<div class="col text-end">
+							<a href="${root }/pro/career_modify?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px;"> 수정</a>
+							<a href="${root }/pro/career_delete?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>
+					</div>
+					
+					<div class="career_time" style="font-size: 13px;">
+						${career.startYear }년 ${career.startMonth }월 - ${career.endYear }년 ${career.endMonth }월
+					</div>
+					<div class="career_content" style="color: gray;">
+						${career.detailed_introduction }
+					</div>
+					<hr />
+				</div>
+			</c:forEach>
+			
 		</div>
 	</div>
 	
@@ -328,14 +351,41 @@ $(document).ready(function() {
 			<div class="row">
 				<span class="col Subtitle">학력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="redirectToAcademicAbilityPage()">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Education'">등록하기</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@학력 페이지에서 값 받아오는 곳@</p>
+			
+			<div class="content mt-3 row">
+			    <c:forEach var="education" items="${educationList}">
+			        <div class="col-8 float">
+			            <div class="schoolname fw-bold mt-3">
+			                ${education.school_name}
+			            </div>
+			            <div class="school-time" style="font-size: 13px;">
+			                ${education.admissionYear}년 ${education.admissionMonth}월 - ${education.graduationYear}년 ${education.graduationMonth}월
+			            </div>
+			            <div class="schoolmajor" style="color: gray;">
+			                ${education.major_name}
+			            </div>
+			        </div>
+			        <div class="ms-auto col-4 text-center">
+			            <img src="${root}/eduUpload/${education.evidence_image}" class="feed-img" style="width: 80px; height: 80px; border-radius: 8px;" alt="이미지"/>
+			        </div>
+			        
+			        <div class="mt-2">
+		                <div class="col text-end">
+							<a href="${root }/pro/education_modify?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px;" class="me-2"> 수정</a>
+							<a href="${root }/pro/education_delete?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>   
+		            </div>
+		            
+			        <hr />
+			    </c:forEach>
+			</div>
 			<p></p>
 		</div>
-	</div> 
+	</div>
+	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 12.포트폴리오 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">

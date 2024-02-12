@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.softsoldesk.beans.CommentBean;
 import kr.co.softsoldesk.beans.PageBean;
@@ -40,14 +41,25 @@ public class BoardController {
 	private ProUserBean loginProuserBean;
 
 	@GetMapping("/community")
-	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page) { 
+	public String community(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "searchType", defaultValue = "") String searchType,
+            @RequestParam(value = "searchText", defaultValue = "") String searchText,
+            @RequestParam(value = "category", defaultValue = "") String category,
+            @RequestParam(value = "location", defaultValue = "") String location) { 
 		
-		List<PostBean> postList = postService.getAllPostList(page);
-		
-		model.addAttribute("postList", postList);
-		
-		PageBean pageBean = postService.getPost(page);
-		model.addAttribute("pageBean", pageBean);
+		List<PostBean> postList;
+        PageBean pageBean;
+
+        if (!searchType.isEmpty() && !searchText.isEmpty()) {
+            postList = postService.getSearchedPostList(page, searchType, searchText);
+            pageBean = postService.getSearchedPostPage(page, searchType, searchText);
+        } else {
+            postList = postService.getAllPostList(page);
+            pageBean = postService.getPost(page);
+        }
+
+        model.addAttribute("postList", postList);
+        model.addAttribute("pageBean", pageBean);
 		
 		return "board/community";
 	}

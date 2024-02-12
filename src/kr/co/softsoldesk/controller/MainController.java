@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.QuestionBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
+import kr.co.softsoldesk.service.PostService;
 import kr.co.softsoldesk.service.ServiceCategoryService;
 
 @Controller
@@ -27,15 +29,20 @@ public class MainController {
 	//@Autowired
 	QuestionBean questionBean;
 	
+	@Autowired
+	PostService postService;
+	
 	
 	@GetMapping("/index")
 	public String index(Model model) {
 
 		List<ServiceCategoryBean> categoryList = serviceCategoryService.getCategoryList();
-
 		model.addAttribute("categoryList", categoryList);
+		
+		List<PostBean> postList = postService.getAllPostList(0);
+		model.addAttribute("postList", postList);
 
-		return "index";
+		return "/index";
 	}  
 	
 	 
@@ -62,7 +69,7 @@ public class MainController {
 	@GetMapping("/Questions")
 	public String Questions(Model model,@RequestParam("service_category_id") int service_category_id) {
 		
-		model.addAttribute("시험/자격증", questionBean.getCertifaction_exam());
+		model.addAttribute("자격증시험", questionBean.getCertifaction_exam());
 		model.addAttribute("인테리어", questionBean.getInterior()); 
 		model.addAttribute("가전제품", questionBean.getAppliance()); 
 		model.addAttribute("청소", questionBean.getCleaning()); 

@@ -37,7 +37,18 @@ public class ProUserDao {
 		
 		return ProuserMapper.getSearchProUserByName(pro_name);
 		
-	} 
+	}  
+	//
+	public List<ProUserBean> getDetailCategoriesByName(List<String> proNames) {
+        return ProuserMapper.getDetailCategoriesByName(proNames);
+    }
+	
+	//
+	public List<String> getRecoProUserByName(String reco) {
+		
+		return ProuserMapper.getRecoProUserByName(reco);
+		
+	}  
 	
 	public List<ProUserBean> getProUserByName(RowBounds rowBounds) { 
 		return ProuserMapper.getProUserByName(rowBounds); 
