@@ -28,12 +28,19 @@ public class QuestionsCotroller {
 	    for (String recoProUser : recoProUsers) {
 	        ProUserBean proUser = proUserService.getDetailCategoriesByName(recoProUser);
 	        proIds.add(Long.valueOf(proUser.getPro_id())); 
-
 		    System.out.println("proUser:"+proUser.getPro_id());
+		    
 	    }
 	    model.addAttribute("proIds", proIds);
 
-	   
+	    // 각 proId에 대한 카테고리 조회 및 모델에 추가
+	    for (Long proId : proIds) {
+	        ProUserBean categories = proUserService.getCategoriesByProId(proId); // proId에 해당하는 카테고리 조회
+	        //model.addAttribute("categories_" + proId, categories);
+	        System.out.println("categories:"+categories.getActive_detailcategory1());
+	        System.out.println("categories:"+categories.getActive_detailcategory2());
+	        System.out.println("categories:"+categories.getActive_detailcategory3());
+	    }
 
 	    return "received_quotation";
 	}

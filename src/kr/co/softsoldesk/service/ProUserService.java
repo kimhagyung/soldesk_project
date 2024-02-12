@@ -74,6 +74,11 @@ public class ProUserService {
 	    public ProUserBean getDetailCategoriesByName(String pro_name) { 
 	        return proUserDao.getDetailCategoriesByName(pro_name);
 	    }
+	    
+	    //
+	    public ProUserBean getCategoriesByProId(Long proId) { 
+	    	return proUserDao.getCategoriesByProId(proId);
+	    }
 	 //
 	 public List<String> getRecoProUserByName(String reco) {
 		 return proUserDao.getRecoProUserByName(reco);

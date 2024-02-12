@@ -28,8 +28,8 @@ public interface ProUserMapper {
 	
 	//2
 	
-	@Select("SELECT active_detailcategory1,active_detailcategory2,active_detailcategory3 FROM pro_user WHERE pro_name = #{pro_name}") 
-	ProUserBean getDetailCategoriesByName2(String pro_name);
+	@Select("SELECT active_detailcategory1,active_detailcategory2,active_detailcategory3 FROM pro_user WHERE pro_id = #{pro_id}") 
+	ProUserBean getCategoriesByProId(Long proId);
 	 
 	@Select("SELECT pro_id FROM pro_user WHERE pro_name = #{pro_name}") 
 	ProUserBean getDetailCategoriesByName(String pro_name); 

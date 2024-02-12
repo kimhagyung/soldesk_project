@@ -43,6 +43,10 @@ public class ProUserDao {
         return ProuserMapper.getDetailCategoriesByName(pro_name);
     }
 	
+	public ProUserBean getCategoriesByProId(Long proId) {
+		return ProuserMapper.getCategoriesByProId(proId);
+	}
+	
 	//
 	public List<String> getRecoProUserByName(String reco) {
 		
