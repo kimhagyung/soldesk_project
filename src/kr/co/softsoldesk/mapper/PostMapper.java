@@ -72,7 +72,8 @@ public interface PostMapper {
 			+ "LEFT JOIN users u ON c.user_id = u.user_id "
 			+ "LEFT JOIN pro_user p ON c.pro_id = p.pro_id "
 			+ "LEFT JOIN board b ON c.board_id = b.board_id "
-			+ "WHERE b.board_id = #{board_id}")
+			+ "WHERE b.board_id = #{board_id}"
+			+ "order by c.comment_id")
 	List<CommentBean> getAllComments(int board_id);
 	
 	@Select("select count(*) from comments where board_id = #{board_id}")
