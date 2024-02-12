@@ -20,15 +20,21 @@ public class QuestionsCotroller {
 	
 	@GetMapping("/received_quotation")
 	public String received_quotation(@RequestParam("reco") String reco, Model model) {
-	    String[] proNamesArray = proUserService.getRecoProUserByName(reco).toArray(new String[0]);
-	    String proNames = "'" + String.join("','", proNamesArray) + "'";
+	    List<String> recoProUsers = proUserService.getRecoProUserByName(reco);
+	    System.out.println("recoProUsers: " + recoProUsers);
+	    model.addAttribute("recoProUsers", recoProUsers);
 	    
-	    List<ProUserBean> detailCategories = proUserService.getDetailCategoriesByName(proNames);
-	    
-	    model.addAttribute("detailCategories", detailCategories);
-	    
-	    return "/received_quotation";
+	    List<Long> proIds = new ArrayList<>();
+	    for (String recoProUser : recoProUsers) {
+	        ProUserBean proUser = proUserService.getDetailCategoriesByName(recoProUser);
+	        proIds.add(Long.valueOf(proUser.getPro_id())); 
+
+		    System.out.println("proUser:"+proUser.getPro_id());
+	    }
+	    model.addAttribute("proIds", proIds);
+
+	   
+
+	    return "received_quotation";
 	}
-
-
 }

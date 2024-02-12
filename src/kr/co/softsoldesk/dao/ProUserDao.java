@@ -39,8 +39,8 @@ public class ProUserDao {
 		
 	}  
 	//
-	public List<ProUserBean> getDetailCategoriesByName(List<String> proNames) {
-        return ProuserMapper.getDetailCategoriesByName(proNames);
+	public ProUserBean getDetailCategoriesByName(String pro_name) {
+        return ProuserMapper.getDetailCategoriesByName(pro_name);
     }
 	
 	//

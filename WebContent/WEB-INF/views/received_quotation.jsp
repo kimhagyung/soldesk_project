@@ -39,27 +39,32 @@
 	<!--여기까지 네비부분-->
 	<!--본문-->
 	<div class="container mt-5 mb-5" style="width: 60%">
-		<h2><strong>' 에서 활동하는 일류들</strong></h2>
-
-		<ul class="list-group list-group-flush mb-5 mt-5">
-			<c:forEach var="obj" items=" ">
-				<li class="list-group-item">
-					<h4 class="mb-3"> }</h4>
-					<div class="fw-bold mb-3">서울 종로구 솔데스크</div>
-					<span>받은 견적</span> &nbsp;
-					<span style="color: #00CDFF;">4개</span> &nbsp;
-					<span style="color: lightgray;">3시간 전</span>
-					<div class="btns mt-3">
-					<%-- 	<button class="btnss">${obj.active_detailcategory1 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btnss">${obj.active_detailcategory2 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btnss">${obj.active_detailcategory3 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					 --%></div>
-					<hr>
-					<div class="row text-center">
-						<div class="col-6 fw-bold" style="cursor: pointer;">삭제하기</div>
-						<div class="col-6 fw-bold" style="color: #00CDFF; cursor: pointer;">채팅하기</div>
-					</div>
-				</li>
+		<h2><strong>${param.reco } 에서 활동하는 일류들</strong></h2>
+			<%-- <c:forEach var="obj" items="${proIds}" loop="i">
+			  <div>recoProUser: ${recoProUsers[i.index]}</div>
+			  <div>pro_id: ${proIds[i.index]}</div>
+			</c:forEach> --%>
+			
+					<ul class="list-group list-group-flush mb-5 mt-5">
+					<c:forEach var="obj" items="${recoProUsers}" varStatus="loop">
+			    <li class="list-group-item">
+			        <h4 class="mb-3"></h4>
+			        <div class="fw-bold mb-3">${obj}일류님</div>
+			        <span>받은 견적</span> &nbsp;
+			        <span style="color: #00CDFF;">4개</span> &nbsp;
+			        <span style="color: lightgray;">3시간 전</span>
+			        <div class="btns mt-3">
+			            <%--  <button class="btnss">${obj.active_detailcategory1 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            <button class="btnss">${obj.active_detailcategory2 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            <button class="btnss">${obj.active_detailcategory3 }</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			             --%>
+			        </div>
+			        <hr>
+			        <div class="row text-center">
+			            <div class="col-6 fw-bold" style="cursor: pointer;">삭제하기</div>
+			            <div class="col-6 fw-bold" style="color: #00CDFF; cursor: pointer;" onclick="location.href='${root}/chatting?pro_id=${proIds[loop.index]}'">채팅하기</div>
+			        </div>
+			    </li>
 			</c:forEach>
 		</ul>
 	</div>

@@ -71,9 +71,8 @@ public class ProUserService {
 	    } 
 	 
 	 //
-	    public List<ProUserBean> getDetailCategoriesByName(String proNames) {
-	        List<String> proNamesList = Arrays.asList(proNames.split(","));
-	        return proUserDao.getDetailCategoriesByName(proNamesList);
+	    public ProUserBean getDetailCategoriesByName(String pro_name) { 
+	        return proUserDao.getDetailCategoriesByName(pro_name);
 	    }
 	 //
 	 public List<String> getRecoProUserByName(String reco) {

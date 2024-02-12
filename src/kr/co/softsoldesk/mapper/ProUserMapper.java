@@ -26,16 +26,20 @@ public interface ProUserMapper {
 	@Select("select pro_name from pro_user WHERE pro_name LIKE '%' || #{pro_name} || '%'")
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
 	
-	//
-	@Select("SELECT active_detailcategory1, active_detailcategory2, active_detailcategory3 " +
-            "FROM pro_user WHERE pro_name = #{proNames}")
-	List<ProUserBean> getDetailCategoriesByName(List<String> proNames);
-	//
+	//2
+	
+	@Select("SELECT active_detailcategory1,active_detailcategory2,active_detailcategory3 FROM pro_user WHERE pro_name = #{pro_name}") 
+	ProUserBean getDetailCategoriesByName2(String pro_name);
+	 
+	@Select("SELECT pro_id FROM pro_user WHERE pro_name = #{pro_name}") 
+	ProUserBean getDetailCategoriesByName(String pro_name); 
+	//1
 	@Select("SELECT pro_name FROM pro_user WHERE active_detailcategory1 LIKE '%' || #{active_detailcategory1} || '%' " +
 	        "OR active_detailcategory2 LIKE '%' || #{active_detailcategory2} || '%' " +
 	        "OR active_detailcategory3 LIKE '%' || #{active_detailcategory3} || '%'")
 	List<String> getRecoProUserByName(String reco);  //활동지역 고수 조회 
 
+	
 	@Select("select pro_name from pro_user")
 	List<ProUserBean> getProUserByName(RowBounds rowBounds); // 모든 pro_name조회
  
