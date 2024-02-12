@@ -9,6 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메인페이지</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
 	<style>
 	  
@@ -201,6 +203,32 @@
 	
 	   
 <c:import url="/WEB-INF/views/include/footer.jsp" />
+
+<script>
+      var stompClient = null;
+      
+      function connect() {
+          var socket = new SockJS('/ws');
+          stompClient = Stomp.over(socket);
+      
+          stompClient.connect({}, function(frame) {
+              console.log('Connected: ' + frame);
+      
+              stompClient.subscribe('/topic/boardNotifications', function(notification) {
+                
+                  alert("게시글에 댓글이 달렸습니다.");
+                 
+              });
+          });
+      }
+      
+      
+      
+      // 페이지 로드 시 연결
+      window.onload = function() {
+          connect();
+      };
+      </script>
  	 
 </body>
 </html>

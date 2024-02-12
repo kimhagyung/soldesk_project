@@ -17,6 +17,9 @@
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
 <script>
 
 $(document).ready(function() {
@@ -37,17 +40,21 @@ $(document).ready(function() {
             }),
             success: function(response) {
                 var replyHtml = '<div class="card mt-2"><div class="card-body">' +
-                                '<p class="card-text">' + response.comment_content + '</p>' +
-                                '</div></div>';
+                '<p class="card-text">' + response.comment_content + '</p>' +
+                '</div></div>';
                 $("#replySection").append(replyHtml);
                 $("#replyText").val(''); 
                 alert('댓글이 성공적으로 추가되었습니다.'); 
-
-                // 댓글 개수 조회
+                
+             // 댓글 개수 조회
                 updateCommentCount();
                 
                 // 댓글 목록 조회
                 updateReplyList();
+                
+                sendNotification();
+
+                
             },
             error: function(error) {
                 console.log(error);
@@ -55,7 +62,8 @@ $(document).ready(function() {
             }
         });
     });
-
+    
+  
     // 댓글 개수 조회 함수
     function updateCommentCount() {
     $.ajax({
@@ -519,6 +527,41 @@ $(document).ready(function() {
 			});
 		});
 	</script>
+	
+	<script>
+
+
+	// 페이지 로드 시 WebSocket 연결을 초기화
+		function sendNotification() {
+		    if(stompClient) {
+		        stompClient.send("/app/board/newPost", {}, JSON.stringify({}));
+		    } else {
+		        console.log("WebSocket 연결이 없습니다.");
+		    }
+		}
+
+	</script>
+	
+	<script>
+      var stompClient = null;
+      
+      function connect() {
+          var socket = new SockJS('/ws');
+          stompClient = Stomp.over(socket);
+      
+          stompClient.connect({}, function(frame) {
+              console.log('Connected: ' + frame);
+      
+          });
+      }
+      
+      
+      
+      // 페이지 로드 시 연결
+      window.onload = function() {
+          connect();
+      };
+      </script>
 
 </body>
 </html>
