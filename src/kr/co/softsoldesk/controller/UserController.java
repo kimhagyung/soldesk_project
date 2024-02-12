@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.softsoldesk.Validator.ProUserValidator;
 import kr.co.softsoldesk.Validator.UserValidator;
 import kr.co.softsoldesk.beans.Category;
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.ProUserService;
@@ -41,6 +42,7 @@ public class UserController {
 
 	@Resource(name = "loginProuserBean")
 	private ProUserBean loginProuserBean;
+	  
 	 
 	@Autowired
 	private ProUserBean cateProuser;
@@ -165,6 +167,17 @@ public class UserController {
 			return "user/pro_join";
 		}
 		ProuserService.addProuserInfo(joinProuserBean);
+		/*
+		System.out.println("유저 컨트롤러에서 가입된 일류 아이디 :"+joinProuserBean.getPro_id()+1);
+		System.out.println("유저 컨트롤러에서 가입된 일류 이름 :"+joinProuserBean.getPro_name());
+		
+	    expertBean.setPro_id(joinProuserBean.getPro_id()+1); 
+	   
+	    // Add ProProfileInfo with pro_id
+		ExpertBean expertBean = new ExpertBean();
+	    ProuserService.addProProfileInfo(expertBean);
+	     */
+	    
 		return "user/join_success";
 	}
 	

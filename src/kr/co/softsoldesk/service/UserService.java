@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.UserDao;
 
@@ -31,7 +32,7 @@ public class UserService {
 	public void addUserInfo(UserBean joinUserBean) {
 		
 		userDao.addUserInfo(joinUserBean);
-	}
+	} 
 	
 	
 	public void getLoginUserInfo(UserBean tempLoginUserBean) {

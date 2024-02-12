@@ -80,7 +80,6 @@ html, body {
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 	<!--모달-->
-	<!--모달-->
 	<div id="customModal" title="일정추가"
 		style="display: none; width: auto; max-width: 100%;">
 		<form:form action="${root}/mypage/calendar_pro" method="post"
@@ -272,10 +271,12 @@ html, body {
 				                        // 이벤트가 전달되면 기존 이벤트 수정
 				                        saveEvent(start, end, allDay, jq("#eventTitle").val(), event);
 				                        sendUpdatedEventToServer(event);  // 수정된 이벤트 정보를 서버에 전송
+				                        location.reload();
 				                    } else {
 				                        // 이벤트가 전달되지 않으면 새 이벤트 추가
 				                        saveEvent(start, end, allDay, jq("#eventTitle").val());
 				                        sendSelectedDateToServer(start);  // 새로 추가된 이벤트 정보를 서버에 전송
+				                        location.reload();
 				                    }
 				                    jq(this).dialog("close");
 				                },
@@ -283,6 +284,7 @@ html, body {
 									removeEvent(event);  // 이벤트 삭제
 				                    sendDeletedEventToServer(event);  // 삭제된 이벤트 정보를 서버에 전송
 				                    jq(this).dialog("close");
+				                    location.reload();
 								},
 								"취소" : function() {
 									jq(this).dialog("close");
@@ -313,6 +315,7 @@ html, body {
 					calendar.unselect();
 				}
 			}
+			
 			function sendSelectedDateToServer(selectedDate) {
 
 				var formattedDate = formatDate(selectedDate);

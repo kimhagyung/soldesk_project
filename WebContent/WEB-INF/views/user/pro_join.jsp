@@ -149,7 +149,7 @@ function resetUserIdExist(){
 
 <body>
 	<c:import url="/WEB-INF/views/include/header.jsp" />
-
+	
 	<div class="w-75 mx-auto">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-md-5" style="width: 35%;">
@@ -159,7 +159,7 @@ function resetUserIdExist(){
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
 						<form:form action="${root }/user/join_Prouser" method="post"
 							modelAttribute="joinProuserBean">
-							<form:hidden path="ProuserEmailExist" />
+							<form:hidden path="ProuserEmailExist" /> 
 							 <div class="form-group mb-3">
 					        <form:label path="pro_name">이름</form:label>
 					        <form:input path="pro_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />

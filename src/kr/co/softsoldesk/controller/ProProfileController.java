@@ -14,15 +14,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.service.CareerService;
 import kr.co.softsoldesk.service.EducationService;
+import kr.co.softsoldesk.service.ProProfileService;
 
 @Controller
 @RequestMapping("/pro")
@@ -36,6 +40,9 @@ public class ProProfileController {
 	
 	@Autowired
 	private EducationService educationService;
+	
+	@Autowired
+	private ProProfileService proProfileService;
 	
 	@ModelAttribute("totalPeriodOptions")
 	public List<Integer> getTotalPeriodOptions() {
@@ -101,6 +108,35 @@ public class ProProfileController {
 		return "pro/expert";
 	}
 	
+	@PostMapping(value = "/expert_pro", consumes = "application/json")
+	@ResponseBody
+    public String expert_pro(@RequestBody ExpertBean writeExpertInfo, @RequestBody ExpertBean modifyIntroductionBean) {
+        
+		if(loginProuserBean.isProuserLogin()) {
+	        writeExpertInfo.setPro_id(loginProuserBean.getPro_id());
+
+	        // pro_detailed_introduction 값이 비어있는지 여부 확인
+	        if (writeExpertInfo.getPro_detailed_introduction() != null && !writeExpertInfo.getPro_detailed_introduction().isEmpty()) {
+	            // 값이 비어있지 않으면 업데이트
+	            proProfileService.modifyIntroduction(modifyIntroductionBean.getPro_detailed_introduction(), loginProuserBean.getPro_id());
+	        } else {
+	            // 값이 비어있으면 삽입
+	            proProfileService.addExpertInfo(writeExpertInfo);
+	        }
+	    }
+		
+        return "Saved successfully!";
+    }
+	
+	@PostMapping(value = "/expert_modify", consumes = "application/json")
+	@ResponseBody
+	public String expert_modify(@RequestBody ExpertBean modifyPriceBean) {
+		
+		proProfileService.modifyPrice(modifyPriceBean.getPrice(), loginProuserBean.getPro_id());
+		
+		return "updated successfully";
+	}
+	
 	private void extractYearAndMonth(CareerBean career) {
 	    // 시작 날짜 정보 가공
 	    if (career.getStart_date() != null) {
@@ -140,7 +176,7 @@ public class ProProfileController {
 	@GetMapping("/career")
 	public String career(Model model, @ModelAttribute("careerForm")CareerBean careerBean) {
 		
-	
+		
 		
 		return "pro/career";
 	}

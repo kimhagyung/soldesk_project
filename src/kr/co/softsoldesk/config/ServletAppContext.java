@@ -37,6 +37,7 @@ import kr.co.softsoldesk.mapper.EducationMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
+import kr.co.softsoldesk.mapper.ProProfileMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.PostService;
@@ -194,6 +195,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 	public MapperFactoryBean<EducationMapper> getEducationMapper(SqlSessionFactory factory) throws Exception {
 
 		MapperFactoryBean<EducationMapper> factoryBean = new MapperFactoryBean<EducationMapper>(EducationMapper.class);
+
+		factoryBean.setSqlSessionFactory(factory);
+
+		return factoryBean;
+	}
+	
+	//프로
+	@Bean
+	public MapperFactoryBean<ProProfileMapper> getProProfileMapper(SqlSessionFactory factory) throws Exception {
+
+		MapperFactoryBean<ProProfileMapper> factoryBean = new MapperFactoryBean<ProProfileMapper>(ProProfileMapper.class);
 
 		factoryBean.setSqlSessionFactory(factory);
 

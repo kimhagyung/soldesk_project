@@ -77,10 +77,103 @@
 
 
 <script>
-	$(function () {
-	// "header.html" 파일을 로드하여 .header 클래스를 가진 요소에 삽입
-	
-	})
+$(document).ready(function() {
+    // 저장 버튼 클릭 시
+    $("#saveBtn2").click(function() {
+        // 편집 중인 텍스트 내용을 가져오기
+        var detailText = $("#editTextArea2").val();
+
+        // Ajax를 사용하여 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "${root}/pro/expert_pro/",
+            contentType: "application/json",
+            data: JSON.stringify({ pro_detailed_introduction: detailText }), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 성공 시 서버 응답에 대한 처리
+                console.log(response);
+            },
+            error: function(error) {
+                // 오류 시 처리
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    // 저장 버튼 클릭 시
+    $("#saveBtn3").click(function () {
+        // 편집 중인 텍스트 내용을 가져오기
+        var editedPrice = $("#editTextArea3").val();
+
+        // Ajax를 사용하여 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "${root}/pro/expert_modify/",  // 수정이 필요한 엔드포인트로 변경
+            contentType: "application/json",
+            data: JSON.stringify({ price: editedPrice }),  // 데이터를 JSON 문자열로 변환
+            success: function (response) {
+                // 성공 시 서버 응답에 대한 처리
+                console.log(response);
+                // 수정된 내용을 화면에 업데이트
+                $("#priceContent").text(editedPrice);
+                // 편집 영역 감추기, 보여주기 등 필요한 로직 추가
+            },
+            error: function (error) {
+                // 오류 시 처리
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    // 페이지가 로드될 때 데이터를 가져오는 함수 호출
+
+function loadData() {
+    $.ajax({
+        url: '${root}/pro/expert/events', // 위에서 설정한 엔드포인트로 요청을 보냅니다.
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 성공적으로 데이터를 받아왔을 때의 처리
+            console.log('데이터:', data); // 데이터를 콘솔에 출력
+            
+         // pro_detailed_introduction 값을 콘솔에 출력
+             console.log('pro_detailed_introduction:', data[0].pro_detailed_introduction);
+            console.log('pro_id: ' + data[0].pro_id);
+
+            // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
+            // 활동 지역
+            $('#sample6_address').val(data.activity_region);
+            //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
+
+            // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
+
+            // 예시: 이동 가능 거리
+            $('.content').text(data.movable_distance);
+
+            // 자격증 및 기타 서류 등록 정보 - 여기에 자유롭게 추가
+
+            // 고수 서비스 상세설명
+          	$('#descriptionContent').html(data[0].pro_detailed_introduction);
+
+            // 가격
+            $('#priceContent').text(data[0].price);
+            
+           
+        },
+        error: function(err) {
+            console.error('데이터 로딩 중 오류 발생:', err);
+        }
+    });
+}
+    
+loadData();
+});
+
+
 </script>
 
 </head>
@@ -170,20 +263,6 @@
 		</div>
 	</div>
 	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 3.대표 서비스 -->
-		<div class="col-md-6 section-divider">
-			<div class="row">
-				<span class="col Subtitle">대표 서비스</span>
-				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD">등록하기</button>
-				</div>
-			</div>
-			<p></p>
-			<p class="content">웹 개발</p>
-			<p></p>
-		</div>
-	</div>
-	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 4.제공 서비스 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">
@@ -204,7 +283,7 @@
 	        <div class="row">
 	            <span class="col Subtitle">활동 지역</span>
 	            <div class="col text-end">
-	                <button type="button" class="InvisibleButton AfterMD" onclick="sample6_execDaumPostcode()">수정</button>
+	                <button type="button" class="InvisibleButton AfterMD" onclick="enableExecDaumPostcode()">수정</button>
 	            </div>
 	        </div>
 	        <p></p>
@@ -219,11 +298,12 @@
 			<div class="row">
 				<span class="col Subtitle">이동 가능 거리</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD">수정</button>
+					<!-- <button type="button" class="InvisibleButton AfterMD">수정</button> -->
 				</div>
 			</div>
 			<p></p>
-			<p class="content">지도API</p>
+			
+			<div id="map" style="height:300px;"></div>
 			<p></p>
 		</div>
 	</div>
@@ -262,7 +342,7 @@
 	        </div>
 	        <p></p>
 	        <div id="descriptionContainer2">
-	            <p class="content">저의 웹개발은 다낭에서부터 시작되었으며...</p>
+	            <p class="content" id="descriptionContent"></p>
 	        </div>
 	        <div id="editContainer2" class="d-none">
 	            <div class="d-flex justify-content-between">
@@ -278,30 +358,30 @@
 	</div>
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 9. 가격 -->
-    <div class="col-md-6 section-divider">
-        <div class="row">
-            <span class="col Subtitle">가격</span>
-            <div class="col text-end">
-                <button type="button" class="InvisibleButton AfterMD" id="editBtn3">수정</button>
-                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn3">저장</button>
-            </div>
-        </div>
-        <p></p>
-        <div id="descriptionContainer3">
-            <p class="content">웹 디자인 - 10만/&nbsp;프론트 코딩 - 20만/&nbsp;백엔드 코딩 - 30만/&nbsp;프로그래밍 상담 - 5만</p>
-        </div>
-        <div id="editContainer3" class="d-none">
-            <div class="d-flex justify-content-between">
-                <label class="AfterMD" for="editTextArea3">고수님의 서비스에 대한 합당한 가격을 적어주세요</label>
-                <div class="text-muted charCount" style="color: #B5B5B5; font-size: 14px;">
-                    <span id="charCount3" style="color: #85BCEB;">0&nbsp;</span>/100 자
-                </div>
-            </div>
-            <textarea class="form-control" maxlength="100" id="editTextArea3" rows="3" placeholder="고객이 알아야 할 가격 정책을 입력해 주세요	예) 예약금 10,000원, 환불정책 등"></textarea>
-        </div>
-        <p></p>
-    </div>
-</div>
+	    <div class="col-md-6 section-divider">
+	        <div class="row">
+	            <span class="col Subtitle">가격</span>
+	            <div class="col text-end">
+	                <button type="button" class="InvisibleButton AfterMD" id="editBtn3">수정</button>
+	                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn3">저장</button>
+	            </div>
+	        </div>
+	        <p></p>
+	        <div id="descriptionContainer3">
+	            <p id="priceContent" class="content"></p>
+	        </div>
+	        <div id="editContainer3" class="d-none">
+	            <div class="d-flex justify-content-between">
+	                <label class="AfterMD" for="editTextArea3">고수님의 서비스에 대한 합당한 가격을 적어주세요</label>
+	                <div class="text-muted charCount" style="color: #B5B5B5; font-size: 14px;">
+	                    <span id="charCount3" style="color: #85BCEB;">0&nbsp;</span>/100 자
+	                </div>
+	            </div>
+	            <textarea class="form-control" maxlength="100" id="editTextArea3" rows="3" placeholder="고객이 알아야 할 가격 정책을 입력해 주세요	예) 예약금 10,000원, 환불정책 등"></textarea>
+	        </div>
+	        <p></p>
+	    </div>
+	</div>
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 10.경력 -->
 		<div class="col-md-6 section-divider">
@@ -399,33 +479,8 @@
 		</div>
 	</div>
 	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 13.사진 및 동영상 -->
-	<div class="col-md-6 section-divider">
-			<div class="row">
-				<span class="col Subtitle">사진 및 동영상</span>
-				<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD">수정</button>
-				</div>
-			</div>
-			<p></p>
-			<p class="content">설명과 사진/영상 등록버튼</p>
-			<p></p>
-		</div>
-	</div>
 	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 14.리뷰 -->
-		<div class="col-md-6">
-			<div class="row">
-				<span class="col Subtitle">리뷰</span>
-				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD"></button>
-				</div>
-			</div>
-			<p></p>
-			<p class="content">리뷰 연동</p>
-			<p></p>
-		</div>
-	</div>
+	
 	
 
 <c:import url="/WEB-INF/views/include/footer.jsp" /> <!-- 푸터-->
