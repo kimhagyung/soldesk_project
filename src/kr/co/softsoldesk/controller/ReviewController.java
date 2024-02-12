@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.service.InterestService;
 import kr.co.softsoldesk.service.ReviewService;
 
 @Controller
@@ -25,7 +28,10 @@ import kr.co.softsoldesk.service.ReviewService;
 public class ReviewController {
 	
 	@Autowired
-	ReviewService reviewService;
+	private ReviewService reviewService;
+	
+	@Autowired
+	private InterestService interestService;
 	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean;
@@ -74,4 +80,14 @@ public class ReviewController {
 		
 		return "review/Review";
 	}
+	
+	@PostMapping("/toggleInterest")
+	@ResponseBody
+	public ResponseEntity<String> toggleInterest(
+            @RequestParam("pro_id") int pro_id) 
+	{
+        int user_id = loginUserBean.getUser_id();
+        interestService.toggleInterest(user_id, pro_id);
+        return ResponseEntity.ok("Liked toggled successfully");
+    }
 }

@@ -27,6 +27,7 @@ import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.mapper.InterestMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ReviewMapper;
@@ -146,6 +147,15 @@ public class ServletAppContext implements WebMvcConfigurer{
 	public MapperFactoryBean<ReviewMapper> getReviewMapper(SqlSessionFactory factory)throws Exception{
 		
 		MapperFactoryBean<ReviewMapper> factoryBean = new MapperFactoryBean<ReviewMapper>(ReviewMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<InterestMapper> getInterestMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<InterestMapper> factoryBean = new MapperFactoryBean<InterestMapper>(InterestMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		
 		return factoryBean;

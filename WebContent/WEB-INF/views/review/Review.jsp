@@ -380,6 +380,7 @@ $(document).ready(function() {
 			margin-right: 8px;
 			padding: 5px;
 		}
+		
 	</style>
 </head>
 
@@ -433,12 +434,25 @@ $(document).ready(function() {
 							
 							<div class="introduce">자세한 사항은 상세 서비스를 읽어주세요!</div>
 						</div>
+						<div class="btn_wrapper"
+							style="margin-left: auto; margin-bottom: auto;">
+							<button id="like-button" class="like-button"
+								style="border: none; background-color: #fff;"
+								onclick="toggleInterest()">
+								<i id="heartIcon" class="bi bi-heart"
+									style="font-size: 30px; margin-top: 15px; margin-right: 20px;"></i>
+							</button>
+							<button
+								style="background-color: #6387A6; border: #6387A6; border-radius: 10px; padding: 10px; color: #fff;">견적
+								요청</button>
+							<!-- 클릭 시 채팅화면으로 이동 -->
+						</div>
 					</div>
 					<div class="basicInfo">
-						<div class="employ_item">
+						<!-- <div class="employ_item">
 							<span style="font-size: 14px;">고용</span>
 							<span style="font-size: 20px;"><strong>n회</strong></span>
-						</div>
+						</div> -->
 						<div class="review_item">
 							<span style="font-size: 14px;">리뷰</span>
 							<div class="review_info">
@@ -842,7 +856,7 @@ $(document).ready(function() {
 
 					</div>
 					
-					
+					<button id="loadMoreButton">Load More</button>
 
 					<!--
 					<button class="btn btn-primary mt-3 d-md-flex justify-content-md-center mx-auto" id="loadMore"
@@ -859,6 +873,36 @@ $(document).ready(function() {
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 
 	<script>
+	
+	var page = 2; // 초기 페이지 값 설정
+    $(document).ready(function () {
+        $("#loadMoreButton").click(function () {
+            loadMoreReviews();
+        });
+    });
+
+    function loadMoreReviews() {
+        $.ajax({
+            type: "GET",
+            url: "/moreReviews", // ReviewController의 매핑 경로
+            data: { page: page, pageSize: 3 }, // 페이지 및 페이지 크기 전달
+            success: function (data) {
+                if (data.length > 0) {
+                    // 받아온 리뷰를 reviewContainer에 추가
+                    $("#reviewContainer").append(data);
+                    // 페이지 값 업데이트
+                    page++;
+                } else {
+                    // 불러올 리뷰가 없으면 "Load More" 버튼 숨기기
+                    $("#loadMoreButton").hide();
+                }
+            },
+            error: function () {
+                alert("Error loading reviews.");
+            }
+        });
+    }
+    
 	/* 	$(document).ready(function () {
 
 			$('#carouselExampleIndicators').carousel();
@@ -948,6 +992,41 @@ $(document).ready(function() {
 				}
 			}
 		}
+		
+		function toggleInterest() {
+		    var heartIcon = document.getElementById("heartIcon");
+
+		    // 현재 클래스를 확인하여 아이콘 변경
+		    if (heartIcon.classList.contains("bi-heart")) {
+		      heartIcon.classList.remove("bi-heart");
+		      heartIcon.classList.add("bi-heart-fill");
+		       heartIcon.style.color = "red";
+		       alert("일류를 찜 했습니다")
+		    } else {
+		      heartIcon.classList.remove("bi-heart-fill");
+		      heartIcon.classList.add("bi-heart");
+		      heartIcon.style.color = ""; // 스타일 초기화
+		      alert("찜을 취소했습니다")
+		    } 
+		    
+		    var pro_id = <%= request.getParameter("pro_id") %>;
+		    
+		    $.ajax({
+                type: "POST",
+                url: "toggleInterest",
+                data: {
+                	pro_id: pro_id
+                },
+                success: function (response) {
+                    if (response === "Liked toggled successfully") {
+                        $("#likeButton").toggleClass("liked");
+                    }
+                },
+                error: function (error) {
+                    console.error("Error toggling like: " + error);
+                }
+            });
+		  }
 
 
 
