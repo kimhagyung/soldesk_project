@@ -9,6 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chatting List</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+<script src="${root}/jquery/alarm.js"></script>
 <style>
 .account {
 	display: flex;
@@ -79,13 +82,27 @@
 	color: white !important;
 	outline: none;
 }
+
+.notification-badge {
+    position: relative;
+    top: 10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 24px; /* 너비를 조금 더 늘림 */
+    height: 24px; /* 높이를 조금 더 늘림 */
+    text-align: center;
+    line-height: 24px; /* 높이에 맞춰 line-height 조정 */
+    padding: 0; /* 패딩을 0으로 설정 */
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 내용이 원을 넘어갈 경우 숨김 처리 */
+}
+
+
 </style>
-<script>
-	$(function() {
-		$(".header").load("header.html");
-		$(".footer").load("footer.html");
-	});
-</script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />
@@ -127,48 +144,39 @@
 						</div>
 
 						<div class="chat_content">
-							<p style="font-size: 14px;">OOO 고객님, 안녕하세요. 예상 금액 보내드립니다.</p>
-							<span class="start-100  badge rounded-pill bg-danger"
-								style="height: 20px; width: 25px;"> 2<span
-								class="visually-hidden">unread messages</span>
-							</span>
+							 <div id="latestMessage" style="margin-top: 10px;"></div>
+							
+								<span id="notificationBadge" class="notification-badge" style="display:none;">0</span>
 						</div>
+						 <br /> 
 
-						<hr
-							style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
-
-						<div class="chatInfo" style="padding-bottom: 20px;">
-							<div class="cost">
-								<div class="krw" style="width: 110%;">
-									<div class="krwIcon"
-										style="border: 1px solid gray; border-radius: 5px; height: 20px; width: 20px; margin-right: 3.5%; font-size: 14px;">₩</div>
-									<div style="font-size: 14px;">시간 당 30,000원</div>
-								</div>
-							</div>
-							<div class="date" style="font-size: 14px; color: #B5B5B5;">
-								2023. 11. 23</div>
+						<hr style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
+						
+						<div class="chatInfo" style="position: relative; padding-bottom: 20px;">
+						    <div class="date" style="position: absolute; right: 0; top: 0; font-size: 14px; color: #B5B5B5;">
+						        2023. 11. 23
+						    </div>
 						</div>
 					</button>
 				</div>
-
+				
 				<div class="chats"
 					style="border: 1px solid rgb(242, 242, 242); border-radius: 10px; margin-top: 2%;">
-					<button class="chat" style="width: 95%;">
+					<button class="chat" style="width: 95%;" onclick="moveToChatting()">
 
 						<div class="provider_profile"
 							style="width: 100%; padding-top: 20px; margin-bottom: 16px;">
 							<div class="provider_profileInfo">
 								<img
-									src="https://contents.kyobobook.co.kr/sih/fit-in/280x0/dtl/author/1000992601.jpg"
+									src="https://www.sisajournal.com/news/photo/202107/220071_128201_620.jpg"
 									style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 6%">
 								<div class="profileInfo" style="margin-top: 2.5%;">
 									<div class="provider_name"
 										style="font-size: 16px; width: max-content;">
-										<strong>최태성 일류님</strong>
+										<strong>지은영 일류님</strong>
 									</div>
 									<div class="service_name"
-										style="font-size: 14px; width: max-content; color: #737373;">한국사능력시험
-										준비</div>
+										style="font-size: 14px; width: max-content; color: #737373;">스포츠지도사준비</div>
 								</div>
 							</div>
 							<!-- <div class="form-check">
@@ -178,48 +186,39 @@
 						</div>
 
 						<div class="chat_content">
-							<p style="font-size: 14px;">OOO 고객님, 안녕하세요. 예상 금액 보내드립니다.</p>
-							<span class="start-100  badge rounded-pill bg-danger"
-								style="height: 20px; width: 25px;"> 2<span
-								class="visually-hidden">unread messages</span>
-							</span>
+							 <div id="latestMessage" style="margin-top: 10px;"></div>
+							
+								<span id="notificationBadge" class="notification-badge" style="display:none;">0</span>
 						</div>
+						 <br /> 
 
-						<hr
-							style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
-
-						<div class="chatInfo" style="padding-bottom: 20px;">
-							<div class="cost">
-								<div class="krw" style="width: 110%;">
-									<div class="krwIcon"
-										style="border: 1px solid gray; border-radius: 5px; height: 20px; width: 20px; margin-right: 3.5%; font-size: 14px;">₩</div>
-									<div style="font-size: 14px;">시간 당 30,000원</div>
-								</div>
-							</div>
-							<div class="date" style="font-size: 14px; color: #B5B5B5;">
-								2023. 11. 23</div>
+						<hr style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
+						
+						<div class="chatInfo" style="position: relative; padding-bottom: 20px;">
+						    <div class="date" style="position: absolute; right: 0; top: 0; font-size: 14px; color: #B5B5B5;">
+						        2023. 11. 23
+						    </div>
 						</div>
 					</button>
 				</div>
-
+				
 				<div class="chats"
 					style="border: 1px solid rgb(242, 242, 242); border-radius: 10px; margin-top: 2%;">
-					<button class="chat" style="width: 95%;">
+					<button class="chat" style="width: 95%;" onclick="moveToChatting()">
 
 						<div class="provider_profile"
 							style="width: 100%; padding-top: 20px; margin-bottom: 16px;">
 							<div class="provider_profileInfo">
 								<img
-									src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2021/02/urbanbrush-20210203212519588818.jpg"
+									src="https://www.sisajournal.com/news/photo/202107/220071_128201_620.jpg"
 									style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 6%">
 								<div class="profileInfo" style="margin-top: 2.5%;">
 									<div class="provider_name"
 										style="font-size: 16px; width: max-content;">
-										<strong>한정호 일류님</strong>
+										<strong>김하경 일류님</strong>
 									</div>
 									<div class="service_name"
-										style="font-size: 14px; width: max-content; color: #737373;">정보처리
-										기사 준비</div>
+										style="font-size: 14px; width: max-content; color: #737373;">스포츠지도사준비</div>
 								</div>
 							</div>
 							<!-- <div class="form-check">
@@ -229,29 +228,23 @@
 						</div>
 
 						<div class="chat_content">
-							<p style="font-size: 14px;">OOO 고객님, 안녕하세요. 예상 금액 보내드립니다.</p>
-							<span class="start-100  badge rounded-pill bg-danger"
-								style="height: 20px; width: 25px;"> 2<span
-								class="visually-hidden">unread messages</span>
-							</span>
+							 <div id="latestMessage" style="margin-top: 10px;"></div>
+							
+								<span id="notificationBadge" class="notification-badge" style="display:none;">0</span>
 						</div>
+						 <br /> 
 
-						<hr
-							style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
-
-						<div class="chatInfo" style="padding-bottom: 20px;">
-							<div class="cost">
-								<div class="krw" style="width: 110%;">
-									<div class="krwIcon"
-										style="border: 1px solid gray; border-radius: 5px; height: 20px; width: 20px; margin-right: 3.5%; font-size: 14px;">₩</div>
-									<div style="font-size: 14px;">시간 당 30,000원</div>
-								</div>
-							</div>
-							<div class="date" style="font-size: 14px; color: #B5B5B5;">
-								2023. 11. 23</div>
+						<hr style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
+						
+						<div class="chatInfo" style="position: relative; padding-bottom: 20px;">
+						    <div class="date" style="position: absolute; right: 0; top: 0; font-size: 14px; color: #B5B5B5;">
+						        2023. 11. 23
+						    </div>
 						</div>
 					</button>
 				</div>
+
+				
 
 			</div>
 		</div>
@@ -263,10 +256,56 @@
 		}
 
 		function moveToChatting() {
-			window.location.href = '${root}/Chatting.html';
+			window.location.href = '${root}/chatting';
 		}
 	</script>
-
+	
+	<!-- <script>
+		var stompClient = null;
+		
+		function connect() {
+		    var socket = new SockJS('/ws');
+		    stompClient = Stomp.over(socket);
+		
+		    stompClient.connect({}, function(frame) {
+		        console.log('Connected: ' + frame);
+		
+		        // /topic/notifications 주제 구독
+		        stompClient.subscribe('/topic/notifications', function(notification) {
+		            // 알림 뱃지 표시
+		            showNotificationBadge();
+		            //alert("새로운 알림 : " + notification.body);
+		            showLatestMessage(notification.body);
+		        });
+		    });
+		}
+	
+		function showNotificationBadge() {
+		    var notificationBadge = document.getElementById('notificationBadge');
+		    if (notificationBadge) {
+		        var currentCount = parseInt(notificationBadge.innerText) || 0;
+		        notificationBadge.innerText = currentCount + 1; // 새 메시지 수 증가
+		        notificationBadge.style.display = 'inline'; // 뱃지 표시
+		    }
+		}
+		
+		function showLatestMessage(message) {
+		    var latestMessageElement = document.getElementById('latestMessage');
+		    if (latestMessageElement) {
+		        // 메시지 길이가 20글자 이상이면 앞의 20글자만 표시하고 "..." 추가
+		        var displayText = message.length > 20 ? message.substring(0, 20) + "..." : message;
+		        latestMessageElement.innerText = displayText; // displayText 변수를 사용하여 화면에 표시
+		    }
+		}
+		
+		
+		
+		// 페이지 로드 시 연결
+		window.onload = function() {
+		    connect();
+		};
+		</script>
+ -->
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>
