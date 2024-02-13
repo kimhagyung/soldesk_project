@@ -86,13 +86,13 @@ public class CareerBean {
 		this.start_date = start_date;
 	}
 	
-	public void updateStartDate() {
+	/*public void updateStartDate() {
         // 연도와 월 정보를 이용하여 Date 객체 생성
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, startYear);
         calendar.set(Calendar.MONTH, startMonth - 1); // Calendar의 월은 0부터 시작하므로 -1 처리
         this.start_date = calendar.getTime();
-    }
+    }*/
 
 	public Integer getEndYear() {
 		return endYear;
@@ -118,7 +118,7 @@ public class CareerBean {
 		this.end_date = end_date;
 	}
 	
-	public void updateEndDate() {
+	/*public void updateEndDate() {
 	    if (endYear != null && endMonth != null) {
 	        Calendar calendar = Calendar.getInstance();
 	        calendar.set(Calendar.YEAR, endYear);
@@ -128,7 +128,7 @@ public class CareerBean {
 	        // 값이 설정되지 않은 경우 예외 처리 또는 로깅 등을 수행
 	        throw new IllegalArgumentException("endYear 또는 endMonth가 설정되지 않았습니다.");
 	    }
-	}
+	}*/
  
 
 }

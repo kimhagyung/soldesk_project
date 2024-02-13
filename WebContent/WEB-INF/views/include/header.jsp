@@ -227,9 +227,8 @@ function displayAlarms(alarms) {
 								<button class="btn ms-2 button-custom" type="button"
 									style="color: white;"
 									onclick="location.href='${root}/user/pro_logout'">로그아웃</button>
-								<button class="btn ms-2 button-custom" type="button"
-									style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 									
 								<!-- 종 -->	
 								<div class="dropdown" id="notificationDropdown"> 
@@ -269,9 +268,8 @@ function displayAlarms(alarms) {
 								<button class="btn ms-2 button-custom" type="button"
 									style="color: white;"
 									onclick="location.href='${root}/user/logout'">로그아웃</button>
-								<button class="btn ms-2 button-custom" type="button"
-									style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
 									
 								<!-- 종 -->
 								<div class="dropdown" id="notificationDropdown"> 
@@ -303,13 +301,12 @@ function displayAlarms(alarms) {
 
 							</c:when>
 						</c:choose>
-
+						
 					</div>
 				</div>
 			</nav>
 		</div>
 	</div>
-
 </body>
 
 </html>

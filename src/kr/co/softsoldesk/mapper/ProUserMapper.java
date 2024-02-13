@@ -1,8 +1,10 @@
 package kr.co.softsoldesk.mapper;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean; 
@@ -26,5 +28,23 @@ public interface ProUserMapper {
 	@Select("select pro_id, pro_email, pro_name, pro_pwd, gender, active_location, active_detailcategory1, active_detailcategory2, active_detailcategory3  from pro_user where pro_email=#{pro_email} and pro_pwd=#{pro_pwd}")
 	ProUserBean getLoginProuserInfo(ProUserBean tempLoginUserBean2);
 	
+	//사용자 이름 가져오기(일류 프로필)
+	   @Select("select pro_name \r\n"
+	         + "from pro_user\r\n"
+	         + "where pro_id = #{pro_id}")
+	   String getProUserName(int pro_id);
+	   
+	//활동 지역 가져오기(일류 프로필)
+	   @Select("select active_location \r\n"
+		         + "from pro_user\r\n"
+		         + "where pro_id = #{pro_id}")
+		   String getActive_location(int pro_id);
+	   
+	   @Update("UPDATE pro_user\r\n"
+		         + "SET active_location = #{active_location, jdbcType=VARCHAR}\r\n"
+		         + "WHERE pro_id = #{pro_id}")
+		  void modifyActive_location(@Param("active_location") String active_location, @Param("pro_id") int pro_id);
+
+
 
 }

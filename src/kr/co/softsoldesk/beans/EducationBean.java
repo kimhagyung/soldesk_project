@@ -109,7 +109,7 @@ public class EducationBean {
 		this.graduation_date = graduation_date;
 	}
 	
-	public void updateAdmissionDate() {
+	/*public void updateAdmissionDate() {
         // 연도와 월 정보를 이용하여 Date 객체 생성
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, admissionYear);
@@ -123,7 +123,7 @@ public class EducationBean {
         calendar.set(Calendar.YEAR, graduationYear);
         calendar.set(Calendar.MONTH, graduationMonth - 1); // Calendar의 월은 0부터 시작하므로 -1 처리
         this.graduation_date = calendar.getTime();
-    }
+    }*/
 	
 	
 

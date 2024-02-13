@@ -71,6 +71,15 @@ public class ProUserService {
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean3.getPro_pwd());
 	} 
 	
+	public String getProUserName(int pro_id) {
+	      
+	      return proUserDao.getProUserName(pro_id);
+	   }
+	
+	public void modifyActive_location(String active_location, int pro_id) {
+	      
+	      proUserDao.modifyActive_location(active_location, pro_id);
+	   }
 	
 	 
 }

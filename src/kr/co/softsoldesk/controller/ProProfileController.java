@@ -83,24 +83,24 @@ public class ProProfileController {
       
       if(loginProuserBean.isProuserLogin() == true) {
          
-         List<CareerBean> careerList = careerService.getCareerList(loginProuserBean.getPro_id());
-         List<EducationBean> educationList = educationService.getEducationList(loginProuserBean.getPro_id());
+         //List<CareerBean> careerList = careerService.getCareerList(loginProuserBean.getPro_id());
+         //List<EducationBean> educationList = educationService.getEducationList(loginProuserBean.getPro_id());
          
-         //String pro_name=proUserService.getProUserName(id);
-         //System.out.println("pro_name"+pro_name);
-         careerList.forEach(this::extractYearAndMonth);
-         educationList.forEach(this::extractYearAndMonth2);
-         //System.out.println("ppppppppppppppppppppppppp:"+pro_name);
-         //model.addAttribute("pro_name", pro_name);
-           model.addAttribute("careerList", careerList);
+         String pro_name=proUserService.getProUserName(id);
+         System.out.println("pro_name"+pro_name);
+         //careerList.forEach(this::extractYearAndMonth);
+         //educationList.forEach(this::extractYearAndMonth2);
+         System.out.println("ppppppppppppppppppppppppp:"+pro_name);
+         model.addAttribute("pro_name", pro_name);
+          // model.addAttribute("careerList", careerList);
            model.addAttribute("proUserId", loginProuserBean.getPro_id());
            
            
-           model.addAttribute("educationList", educationList);
+           //model.addAttribute("educationList", educationList);
            //model.addAttribute("proUserId", loginProuserBean.getPro_id());
          
          
-              for (EducationBean education : educationList) 
+             /* for (EducationBean education : educationList) 
               { 
                  System.out.println("학교: " + education.getSchool_name()); 
                  System.out.println("학과: " + education.getMajor_name()); 
@@ -110,7 +110,7 @@ public class ProProfileController {
                  System.out.println("login: " + education.getPro_id()); 
                  System.out.println("----------"); 
                  
-              }
+              }*/
       }
 
    
@@ -169,15 +169,26 @@ public class ProProfileController {
       
       proProfileService.modifyPrice(modifyPriceBean.getPrice(), loginProuserBean.getPro_id());
       
-      return "updated successfully";
+      return "updated money successfully";
    }
    
+   //활동 지역 수정
+   @PostMapping(value = "/expert_modify2", consumes = "application/json")
+   @ResponseBody
+   public String expert_modify(@RequestBody ProUserBean modifyActive_locationBean) {
+      
+      proUserService.modifyActive_location(modifyActive_locationBean.getActive_location(), loginProuserBean.getPro_id());
+      
+      return "updated location successfully";
+   }
+   
+   /*
    //아숨 활동명
    @PostMapping(value = "/expert_modifyName", consumes = "application/json")
    @ResponseBody
    public String expert_modifyName(@RequestBody ProUserBean modifyProUserBean) {
        System.out.println("수정된 활동명: " + modifyProUserBean.getPro_name());
-       //proUserService.modifyProName(modifyProUserBean.getPro_name(), modifyProUserBean.getPro_id());
+       proUserService.modifyProName(modifyProUserBean.getPro_name(), modifyProUserBean.getPro_id());
        return "update name successfully";
    }
    
@@ -347,4 +358,5 @@ public class ProProfileController {
       
       return "/pro/career_delete";
    }
+   */
 }

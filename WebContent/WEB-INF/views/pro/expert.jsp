@@ -125,6 +125,59 @@ $(document).ready(function() {
     });
 });
 
+//가격
+$(document).ready(function () {
+    // 저장 버튼 클릭 시
+    $("#saveBtn3").click(function () {
+        // 편집 중인 텍스트 내용을 가져오기
+        var editedPrice = $("#editTextArea3").val();
+
+        // Ajax를 사용하여 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "${root}/pro/expert_modify/",  // 수정이 필요한 엔드포인트로 변경
+            contentType: "application/json",
+            data: JSON.stringify({ price: editedPrice }),  // 데이터를 JSON 문자열로 변환
+            success: function (response) {
+                // 성공 시 서버 응답에 대한 처리
+                console.log(response);
+                // 수정된 내용을 화면에 업데이트
+                $("#priceContent").text(editedPrice);
+                // 편집 영역 감추기, 보여주기 등 필요한 로직 추가
+            },
+            error: function (error) {
+                // 오류 시 처리
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+//활동 지역
+$(document).ready(function () {
+//저장 버튼 클릭 시
+	$("#saveBtn5").click(function() {
+	    // 활동 지역 정보 가져오기
+	    var selectedLocation = $("#locationContent").val();
+	
+	    // AJAX 요청을 사용하여 서버로 데이터 전송
+	    $.ajax({
+	        type: "POST",
+	        url: "${root}/pro/expert_modify2/",
+	        contentType: "application/json",
+	        data: JSON.stringify({ active_location: selectedLocation, pro_id:"${param.id}" }),
+	        success: function(response) {
+	            // 성공 시 서버 응답 처리
+	            console.log(response);
+	        },
+	        error: function(error) {
+	            // 오류 시 처리
+	            console.error("오류:", error);
+	        }
+	    });
+	});
+});
+
 $(document).ready(function() {
     // 페이지가 로드될 때 데이터를 가져오는 함수 호출
 
@@ -143,7 +196,8 @@ function loadData() {
 
             // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
             // 활동 지역
-            //$('#sample6_address').val(data.activity_region);
+            $('#active_locationContent').text(data[0].active_location);
+            //$('#sample6_address').val(data.active_location);
             //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
 
             // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
@@ -169,7 +223,6 @@ function loadData() {
     
 loadData();
 });
-
 
 </script>
 
@@ -331,8 +384,59 @@ loadData();
 				</div>
 			</div>
 		</div>
+		
+		<div class="container mt-3 d-flex justify-content-center">	<!-- 5.활동 지역 -->
+		    <div class="col-md-6 section-divider">
+		        <div class="row">
+		            <span class="col Subtitle">활동 지역</span>
+		            <div class="col text-end">
+		                <button type="button" class="InvisibleButton AfterMD" id="editBtn5">수정</button>
+	                	<button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn5">저장</button>
+		            </div>
+		        </div>
+		        <p></p>
+		        <p id="locationContent">지역이 저장될 위치</p>
+		        <p></p>
+		    </div>
+		</div>
+		
+		<!-- 지역 모달 -->
+		<div class="modal fade" id="locationModal" tabindex="-1"
+			aria-labelledby="locationModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="accordion" id="categoryAccordion">
+							<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+							<script>
+								$.each(cityDatas, function(city, districts) {
+									document.write('<div class="accordion-item">');
+									document.write('<h2 class="accordion-header">');
+									document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '">' + city + '</button>');
+									document.write('</h2>');
+									document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+									document.write('<ul class="list-group">');
+								$.each(districts, function(index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action selected">' + district + '</button>');
+									});
+									document.write('</ul></div></div>');
+								});
+							</script>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 7.자격증 및 기타 서류 등록 -->
+		<div class="container mt-3 d-flex justify-content-center"> <!-- 7.자격증 및 기타 서류 등록 -->
 	       <div class="col-md-6 section-divider">
 			<div class="row">
 				<span class="col Subtitle">자격증 및 기타 서류 등록</span>
@@ -702,8 +806,60 @@ function removeService(button) {
 }
 
 </script>
+
+<script> // 5. 활동 지역
+$(function () {
+    // 수정 버튼 클릭 시 처리
+    $("#editBtn5").click(function () {
+        // 수정 버튼 클릭 시 처리
+        $(this).addClass("d-none");
+        $("#saveBtn5").removeClass("d-none");
+        // 수정 모드일 때 입력창 나타남
+        $("#locationModal").modal('show');
+    });
+
+    // 저장 버튼 클릭 시 처리
+    $("#saveBtn5").click(function () {
+        // 저장 버튼 클릭 시 처리
+        $("#editBtn5").removeClass("d-none");
+        $(this).addClass("d-none");
+        // 저장 모드일 때 입력창 사라짐
+        $("#locationContent").show();
+        // 여기서 저장된 내용을 서버로 전송하는 코드를 추가해야 합니다.
+    });
+
+    // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
+    $(".list-group-item").click(function () {
+        // 모든 항목에서 "selected" 클래스 제거
+        $(".list-group-item").removeClass("selected");
+
+        // 클릭된 항목에 "selected" 클래스 추가
+        $(this).addClass("selected");
+    });
+
+    // selectLocationBtn 버튼에 대한 클릭 이벤트 핸들러 추가
+    $("#selectLocationBtn").click(function () {
+        // 선택된 리스트 항목의 텍스트 내용 가져오기
+        var selectedLocation = $(".list-group-item.selected").text();
+
+        // 활동 지역이 선택되었는지 확인
+        if (selectedLocation) {
+            console.log('선택된 활동 지역:', selectedLocation);
+            // 모달 닫기
+            $("#locationModal").modal('hide');
+
+            // 선택된 활동 지역을 페이지에 표시
+            $("#locationContent").text(selectedLocation);
+        } else {
+            console.log('활동 지역을 선택하세요.');
+        }
+    });
+});
+
+</script>
+
     
-<script> // 5. 고수 서비스 상세설명
+<script> // 6. 고수 서비스 상세설명
     // textarea 글자수 세기
     function countChars(textAreaId, charCountId) {
         var textarea = document.getElementById(textAreaId);
