@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>     
-<c:set var="root" value="${pageContext.request.contextPath }"/> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>   
+<c:set var="root" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,66 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<script>
+	$(function() {
+		
+		// 비밀번호 일치 여부 확인
+		$('#password, #confirmPassword').on('keyup', function() {
+			var password = $('#password').val();
+			var confirmPassword = $('#confirmPassword').val();
+			var message = $('#message');
+
+			// 사용자가 입력한 password 값이 비어있거나 confirmPassword 값이 비어있으면 메시지를 표시하지 않음
+			if (!password || !confirmPassword) {
+				message.html('');
+				return;
+			}
+
+			if (password === confirmPassword) {
+				message.html('비밀번호가 일치합니다.').css('color', 'green');
+			} else {
+				message.html('비밀번호가 일치하지 않습니다.').css('color', 'red');
+			}
+		});
+		
+		// 폼 제출 시 필드가 비어있는지 확인
+        $('form').on('submit', function(event) {
+            var valid = true;
+            
+            // 각 필드를 확인하고 비어있으면 메시지 표시
+            if ($('#username').val() === '') {
+                $('#username').next('.invalid-feedback').html('사용자 이름을 입력하세요.').show();
+                valid = false;
+            } else {
+                $('#username').next('.invalid-feedback').hide();
+            }
+
+            if ($('#email').val() === '') {
+                $('#email').next('.invalid-feedback').html('이메일 주소를 입력하세요.').show();
+                valid = false;
+            } else {
+                $('#email').next('.invalid-feedback').hide();
+            }
+
+            if ($('#password').val() === '') {
+                $('#password').next('.invalid-feedback').html('비밀번호를 입력하세요.').show();
+                valid = false;
+            } else {
+                $('#password').next('.invalid-feedback').hide();
+            }
+
+            if ($('#confirmPassword').val() === '') {
+                $('#confirmPassword').next('.invalid-feedback').html('비밀번호를 입력하세요.').show();
+                valid = false;
+            } else {
+                $('#confirmPassword').next('.invalid-feedback').hide();
+            }
+
+            return valid;
+        });
+    });
+</script>
 
 <script> 
 $(function() { 
@@ -48,6 +108,7 @@ function checkPasswordMatch() {
 </script>
 <script>
 function checkUserEmailExist(){
+	
 	var user_email = $("#user_email").val()
 	console.log("user_email",user_email);
 	if(user_email.length == 0){
@@ -78,6 +139,7 @@ function resetUserIdExist(){
 
 </script>
 
+
 <style>
 #username, #email, #password, #confirmPassword {
 	font-size: 18px;
@@ -92,7 +154,7 @@ body, div, span, h5, button, h2, p {
 }
 </style>
 </head>
- 
+
 <body>
     <c:import url="/WEB-INF/views/include/header.jsp" />
 
@@ -125,7 +187,7 @@ body, div, span, h5, button, h2, p {
                             </div>
                             <div class="mb-3">
                                 <form:label path="user_pwd">비밀번호</form:label>
-								<form:password path="user_pwd" autocomplete="new-password" class="form-control" id="password" onkeyup="checkPasswordMatch()"/>
+								<form:password path="user_pwd" class="form-control" id="password" onkeyup="checkPasswordMatch()"/>
 							</div>
                             <div class="mb-3">
                                 <form:label path="confirmPassword">비밀번호 확인</form:label>
@@ -149,3 +211,4 @@ body, div, span, h5, button, h2, p {
 
 
 </html>
+

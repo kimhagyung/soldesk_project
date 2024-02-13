@@ -43,20 +43,41 @@
 										<img src="../image/logo4.png" style="height: 100px; width: 80px;" />
 									</div>
 									<div class="col-7 mt-3">
-										<b>이름</b>
-										<p><a>이메일</a></p>
+									
+									<c:choose>
+										<c:when
+											test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+											
+											<b>${loginUserBean.user_name }</b>
+											<br>
+											<p><a>${loginUserBean.user_email} </a></p>
+										
+										</c:when>
+										
+										<c:when
+											test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
+											
+											<b>${loginProuserBean.pro_name }</b>
+											<br>
+											<p><a>${loginProuserBean.pro_email} </a>
+										</c:when>
+										
+									</c:choose>
+									
 									</div>
 								</div>
 							</div>
 							<div class="col-4 ms-5  mt-3 text-end">
-							 <c:choose>
-                               <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
-                                    <button class="btn button-custom " onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
-                                </c:when>
-                             </c:choose> 
-								<button class="btn button-custom account"
-								onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
+								<c:choose>
+                                    <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
+                                            <button class="btn button-custom " onclick="location.href='${root}/pro/expert'">상세프로필</button>
+                                    </c:when>
+                                </c:choose>
+								<button class="btn button-custom account">계정설정</button>
 							</div>
+							
+							 
+	 
 						</div>
 		  </li>
 		  
@@ -71,36 +92,22 @@
 		  <li class="list-group-item mt-3">
 			  <h4><b>커뮤니티</b></h4>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="myPosts.html">작성글/댓글</a>
+				  <a class="move" href="${root}/common/myPosts">작성글/댓글</a>
 				  
 			  </div>
 		  </li>
 		  
-		  <li class="list-group-item mt-3">
-			  <h4><b>견적서</b></h4>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="received_quotation.html">받은 견적서</a>
-			  </div>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="completion.html">완료 견적서</a>
-			  </div>
-		  </li>
 		  
 		  <li class="list-group-item mt-3">
 			  <h4><b>일정</b></h4>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="calender2.html">캘린더</a>
-				  
+				  <a class="move" href="${root}/common/calendar">캘린더</a>
 			  </div>
 			  
 		  </li>
 		  
 		  <li class="list-group-item mt-3">
 			  <h4><b>설정</b></h4>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="#">알림</a>
-				  
-			  </div>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
 				  <a class="move" href="block.html">차단목록</a>
 			  </div>
@@ -113,6 +120,11 @@
 	<!--여기까지 본문 -->
 	<!--푸터-->
 <c:import url="/WEB-INF/views/include/footer.jsp" />
-	 
+		
+	<script>
+		  $(".account").click(function() {
+                window.location.href = 'AccountSetting.html';
+            });
+	</script>	
 	</body>
 </html>

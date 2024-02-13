@@ -19,8 +19,29 @@ public class CalendarDAO {
 		calendarMapper.addCalendarInfo(writeCalendarBean);
 	}
 	
-	public List<CalendarBean> getCalendarList() {
+	public List<CalendarBean> getCalendarList(Integer user_id, Integer pro_id) {
 		
-		return calendarMapper.getCalendarList();
+		return calendarMapper.getCalendarList(user_id, pro_id);
 	}
+	
+	public void modifyCalendar(CalendarBean modifyCalendarBean) {
+		
+		calendarMapper.modifyCalendar(modifyCalendarBean);
+	}
+	
+	public CalendarBean getCalendarContent(int calendar_Id) {
+		
+		return calendarMapper.getCalendarContent(calendar_Id);
+	}
+	
+	public void delecteCalendar(int calendar_Id) {
+		
+		calendarMapper.delecteCalendar(calendar_Id);
+	}
+	
+	public List<CalendarBean> getAlarmList(Integer user_id, Integer pro_id) {
+		
+		return calendarMapper.getAlarmList(user_id, pro_id);
+	}
+	
 }

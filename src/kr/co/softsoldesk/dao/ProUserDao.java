@@ -1,13 +1,10 @@
 package kr.co.softsoldesk.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
-import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 
 @Repository
@@ -21,6 +18,11 @@ public class ProUserDao {
 		return ProuserMapper.checkProuserEmailExist(pro_email);
 	}
 	
+/*
+	public void addProProfileInfo(ExpertBean expertBean) { 
+		ProuserMapper.addProProfileInfo(expertBean);
+	}
+	*/
 	public void addProuserInfo(ProUserBean joinProuserBean) {
 		
 		ProuserMapper.addProuserInfo(joinProuserBean);
@@ -32,34 +34,4 @@ public class ProUserDao {
 	
 	} 
 	
-	public List<String> getSearchProUserByName(String pro_name) {
-		
-		return ProuserMapper.getSearchProUserByName(pro_name);
-		
-	} 
-	
-	public List<ProUserBean> getProUserByName() { 
-		return ProuserMapper.getProUserByName(); 
-	} 
-	
-	public List<String> getselectedCategory(String selectedCategory) { 
-		return ProuserMapper.getselectedCategory(selectedCategory); 
-	} 
-
-	public List<String> getselectedLocation(String active_location) { 
-		return ProuserMapper.getselectedLocation(active_location); 
-	} 
-	
-	public List<String> getProCategoryAndLocation(String selectedCategory,String active_location) { 
-		return ProuserMapper.getProCategoryAndLocation(selectedCategory,active_location); 
-	} 
-	 
-	public void ProupdateAccountUser(ProUserBean ProAccountModifyCom){
-		
-		ProuserMapper.ProupdateAccountUser(ProAccountModifyCom);
-	}
-	
-	public int ProAccountResign(int pro_id) {
-		return ProuserMapper.ProAccountResign(pro_id);
-	} 
 }

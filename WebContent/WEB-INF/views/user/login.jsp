@@ -1,19 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
+<script src="script/jquery-3.4.1.min.js"></script>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-
-<script>
-	$(function() {
-
-	});
-</script>
 
 <style>
 .card-body {
@@ -24,9 +19,11 @@
 	font-size: 18px;
 }
 </style>
+
 </head>
 <body>
-	<c:import url="/WEB-INF/views/include/header.jsp" />
+
+<c:import url="/WEB-INF/views/include/header.jsp" />
 
 	<div class="container mt-5 mb-5">
 		<div class="row justify-content-center">
@@ -34,12 +31,14 @@
 				<h2 class="card-title text-center mb-5 mt-5 fw-bold">로그인</h2>
 				<div class="card">
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
+						
 						<c:if test="${fail==true }">
 							<div class="alter alter-danger">
 								<h3>로그인 실패</h3>
 								<p>아이디 비밀번호를 확인해 주세요
 							</div>
 						</c:if>
+						
 						<form:form action="${root }/user/login_pro" method="post"
 							modelAttribute="tempLoginUserBean">
 							<div class="mb-3">
@@ -58,13 +57,16 @@
 							    <a href="${root}/user/join" class="btn button-custom">회원가입</a>
 							</div>
 						</form:form>
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<c:import url="/WEB-INF/views/include/footer.jsp" />
+
+<c:import url="/WEB-INF/views/include/footer.jsp" />
+
 
 </body>
 </html>

@@ -5,7 +5,6 @@ public class ServiceCategoryBean {
 	
 	private int service_category_id;
     private String service_category_name;
- 
     
 	public int getService_category_id() {
 		return service_category_id;

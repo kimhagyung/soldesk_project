@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="${root}/script/jquery-3.4.1.min.js"></script> 
- 
+<script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script src="${root}/jquery/location2.js"></script>
 <script>
  
  $(function() {
@@ -29,7 +29,7 @@
 			message.html('비밀번호가 일치하지 않습니다.').css('color', 'red');
 		}
 	});
-
+});
 //카테고리 선택 최대 3개  
     var maxCheckboxes = 3;
 
@@ -46,7 +46,6 @@
 
         console.log('Selected values:', selectedValues);
     }); 
- });
  $(function() {
 	  // 시/도와 군/구 데이터
 	    var cityData = {
@@ -114,25 +113,20 @@ function checkProuserEmailExist(){
 	}//이메일을 입력하지 않았을 때
 	
 	$.ajax({
-	    url: '${root}/user/checkProuserEmailExist/' + encodeURIComponent(pro_email),
-	    type: 'get',
-	    dataType: 'text',
-	    success: function (result) {
-	        if (result.trim() == 'true') {
-	            alert('사용할 수 있는 이메일입니다');
-	            $("#ProuserEmailExist").val('true');
-	        } else if (result.trim() == 'false') {
-	            alert('사용할 수 없는 이메일입니다');
-	            $("#ProuserEmailExist").val('false');
-	        } else {
-	            alert('서버에서 올바른 응답을 받지 못했습니다');
-	        }
-	    },
-	    error: function () {
-	        alert('서버 통신 중 오류가 발생했습니다');
-	    }
-	});
-}
+		url: '${root}/user/checkProuserEmailExist/' + encodeURIComponent(pro_email),
+		type : 'get',
+		dataType : 'text',
+		success: function(result){
+			if(result.trim()=='true'){
+				alert('사용할 수 있는 이메일입니다')
+				$("#ProuserEmailExist").val('true')
+			}else if(result.trim()=='false'){
+				alert('사용할 수 없는 이메일입니다')
+				$("#ProuserEmailExist").val('false')
+			}
+		}
+	})
+} 
 function resetUserIdExist(){
 	
 	$("#ProuserEmailExist").val('false')
@@ -142,152 +136,153 @@ function resetUserIdExist(){
 </script>
 
 
-
 <style>
 #username, #email, #password, #confirmPassword {
-   font-size: 18px;
+	font-size: 18px;
 }
 
 .card-body {
-   background-color: #C6D7E0;
+	background-color: #C6D7E0;
 }
-
-
 </style>
 </head>
 
 <body>
-   <c:import url="/WEB-INF/views/include/header.jsp" />
-
-   <div class="w-75 mx-auto">
-      <div class="row justify-content-center mx-auto">
-         <div class="col-md-5" style="width: 35%;">
-            <h2 class="card-title text-center mb-5 mt-5 fw-bold">아숨에 오신 것을
-               환영합니다!</h2>
-            <div class="card">
-               <div class="card-body" style="padding: 30px; font-size: 20px;">
-                  <form:form action="${root }/user/join_Prouser" method="post"
-                     modelAttribute="joinProuserBean">
-                     <form:hidden path="ProuserEmailExist" />
-                      <div class="form-group mb-3">
-                       <form:label path="pro_name">이름</form:label>
-                       <form:input path="pro_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
-                       <form:errors path="pro_name" style="color:red" />
-                   </div>
-                   
-                      <div class="mb-3 form-group">
-                          <form:label path="pro_email">이메일</form:label>
-                          <div class="input-group">
-                              <form:input type="email" path="pro_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
-                              <div class="input-group-append">
-                                  <button type="button" class="btn button-custom" onclick='checkProuserEmailExist()'>중복확인</button>
-                              </div>
-                          </div>
-                          <form:errors path="pro_email" style="color:red" />
-                      </div> 
-                      <div class="form-group mb-3">
-                          <form:label path="pro_pwd">비밀번호</form:label>
-                          <form:password path="pro_pwd" autocomplete="new-password" class="form-control" id="password" />
-                          <form:errors path="pro_pwd" style="color:red" />
-                      </div>
-                      
-                      <div class="form-group mb-3">
-                          <form:label path="confirmPassword">비밀번호 확인</form:label>
-                          <form:password path="confirmPassword" class="form-control" id="confirmPassword" />
-                          <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
-                      </div>
-                     <!-- 추가된 부분 비밀번호 메시지-->
-                     <div id="message"></div>
-                     <!-- "남, 여" 라디오 버튼 부분 추가 -->
-                     <div class="form-group mb-3 qjdiflqjdi">
-                        <label for="male" class="form-label">성별</label>
-                        <div class="form-check">
-                           <form:radiobutton path="pro_gender" class="form-check-input"
-                              id="male" value="남" checked="true" />
-                           <form:label path="pro_gender" class="form-check-label" for="male">남</form:label>
-                        </div>
-                        <div class="form-check">
-                           <form:radiobutton path="pro_gender" class="form-check-input"
-                              id="female" value="여" />
-                           <form:label path="pro_gender" class="form-check-label" for="female">여</form:label>
-                        </div>
-                     </div>
-                     
-                     <div class="mt-3">
-                        <label for="servicecategory" class="form-label"> 활동 분야를
-                           선택해주세요</label>
-                     </div> 
-                     <div class="accordion" id="category">
-					    <div class="accordion-item"> 
-					        <c:forEach var="category" items="${service_category_name}" varStatus="loop" >
-					            <h2 class="accordion-header"> 
-					                <button class="accordion-button" type="button"
-					                        data-bs-toggle="collapse" data-bs-target="#${category}" >
-					                    ${category} 
-					                </button>
-					            </h2>
-					            <div id="${category}" class="accordion-collapse collapse "
-					                 data-bs-parent="#category">
-					                <div class="accordion-body ">
-					                    <ul class="list-group">
-					                        <c:forEach var="detailCategory" items="${detailCategoryList[loop.index]}">
-					                            <li class="list-group-item">
-					                                <form:checkbox path="active_detailcategory" class="form-check-input me-1 activeSel"  value="${detailCategory.detail_category_name}" id="${detailCategory.detail_category_name}"/>
-					                                <form:label path="active_detailcategory" class="form-check-label stretched-link" for="${detailCategory.detail_category_name}">${detailCategory.detail_category_name}</form:label>
-					                            </li> <!--야호-->
-					                        </c:forEach>
-					                    </ul>
-					                </div> 
-					            </div>
-					        </c:forEach>
+	<c:import url="/WEB-INF/views/include/header.jsp" />
+	
+	<div class="w-75 mx-auto">
+		<div class="row justify-content-center mx-auto">
+			<div class="col-md-5" style="width: 35%;">
+				<h2 class="card-title text-center mb-5 mt-5 fw-bold">아숨에 오신 것을
+					환영합니다!</h2>
+				<div class="card">
+					<div class="card-body" style="padding: 30px; font-size: 20px;">
+						<form:form action="${root }/user/join_Prouser" method="post"
+							modelAttribute="joinProuserBean">
+							<form:hidden path="ProuserEmailExist" /> 
+							 <div class="form-group mb-3">
+					        <form:label path="pro_name">이름</form:label>
+					        <form:input path="pro_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
+					        <form:errors path="pro_name" style="color:red" />
 					    </div>
-					</div> 
-                     <div class="container mt-4">
-                        <label for="locationselect" class="form-label">활동 지역를
-                           선택해주세요</label>
-                        <div class="form-group">
-                           <label for="selectProvince">시/도</label>
-                           <select class="form-control" id="selectProvince">
-                              <!-- 시/도 목록 -->
-                              <option value="seoul" selected>서울</option>
-                              <option value="busan">부산</option>
-                              <option value="incheon">인천</option>
-                              <option value="daejun">대전</option>
-                              <option value="daegu">대구</option>
-                              <option value="ulsan">울산</option>
-                              <option value="kwangju">광주</option>
-                              <option value="jeju">제주</option>
-                              <option value="sejong">세종</option>
-                              <option value="Gyeonggi_do">경기</option>
-                              <option value="Gangwon">강원</option>
-                              <option value="Chungcheongbuk">충북</option>
-                              <option value="Chungcheongnam">충남</option>
-                              <option value="Gyeongsangbuk">경북</option>
-                              <option value="Gyeongsangnam">경남</option>
-                              <option value="Jeollabuk">전북</option>
-                              <option value="Jeollanam">전남</option>
-                           </select>
-                        </div>
-                        <div class="form-group">
-                           <form:label path="active_location" for="selectCity">군/구</form:label>
-                           <form:select path="active_location" class="form-control"
-                              id="selectCity">
-                              <!-- 선택한 시/도에 따른 군/구 목록은 JavaScript로 동적으로 추가됩니다. -->
-                           </form:select>
-                        </div>
-                     </div> 
-                     <div class=" form-group d-grid gap-2 mt-5">
-                        <form:button type="submit" class="btn button-custom py-2 fs-5"
-                           id="joinButton" style="color: white;">가입하기</form:button>
-                     </div>
-                  </form:form>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+					    
+						    <div class="mb-3 form-group">
+						        <form:label path="pro_email">이메일</form:label>
+						        <div class="input-group">
+						            <form:input type="email" path="pro_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
+						            <div class="input-group-append">
+						                <button type="button" class="btn button-custom" onclick='checkProuserEmailExist()'>중복확인</button>
+						            </div>
+						        </div>
+						        <form:errors path="pro_email" style="color:red" />
+						    </div>
+						    
+						    <div class="form-group mb-3">
+						        <form:label path="pro_pwd">비밀번호</form:label>
+						        <form:password path="pro_pwd" class="form-control" id="password" />
+						        <form:errors path="pro_pwd" style="color:red" />
+						    </div>
+						    
+						    <div class="form-group mb-3">
+						        <form:label path="confirmPassword">비밀번호 확인</form:label>
+						        <form:password path="confirmPassword" class="form-control" id="confirmPassword" />
+						        <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+						    </div>
+							<!-- 추가된 부분 비밀번호 메시지-->
+							<div id="message"></div>
+							<!-- "남, 여" 라디오 버튼 부분 추가 -->
+							<div class="form-group mb-3">
+								<label for="male" class="form-label">성별</label>
+								<div class="form-check">
+									<form:radiobutton path="gender" class="form-check-input"
+										id="male" value="남" checked="true" />
+									<form:label path="gender" class="form-check-label" for="male">남</form:label>
+								</div>
+								<div class="form-check">
+									<form:radiobutton path="gender" class="form-check-input"
+										id="female" value="여" />
+									<form:label path="gender" class="form-check-label" for="female">여</form:label>
+								</div>
+							</div>
+							
+							<div class="mt-3">
+								<label for="servicecategory" class="form-label"> 활동 분야를
+									선택해주세요</label>
+							</div>
+							<div class=" form-group accordion" id="category">
+								<c:forEach var="category" items="${categories}" varStatus="idx">
+									<div class='accordion-item'>
+										<h2 class='accordion-header'>
+										    <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#${category.id}' aria-expanded='false' aria-controls='${category.id}'>${category.title}
+										    </button>
+										</h2>
+										<div id='<c:out value="${category.id}" />'
+											class=' form-group accordion-collapse collapse'
+											data-bs-parent='#category'>
+											<div class='accordion-body'>
+												<ul class='list-group'>
+													<c:forEach var="item" items="${category.items}"
+														varStatus="itemIdx">
+														<li class='list-group-item activeSel'>
+															<form:checkbox path="active_detailcategory" class='form-check-input me-1 activeSel' value="${item}" id="${item}_1" />
+															<form:label path="active_detailcategory" class='form-check-label stretched-link activeSel' for="${item}_1">${item.replace('_', ' ')}</form:label>
+														</li>
+													</c:forEach>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
 
-   <c:import url="/WEB-INF/views/include/footer.jsp" />
+
+							<div class="container mt-4">
+								<label for="locationselect" class="form-label">활동 지역를
+									선택해주세요</label>
+								<div class="form-group">
+									<label for="selectProvince">시/도</label>
+									<select class="form-control" id="selectProvince">
+										<!-- 시/도 목록 -->
+										<option value="seoul" selected>서울</option>
+										<option value="busan">부산</option>
+										<option value="incheon">인천</option>
+										<option value="daejun">대전</option>
+										<option value="daegu">대구</option>
+										<option value="ulsan">울산</option>
+										<option value="kwangju">광주</option>
+										<option value="jeju">제주</option>
+										<option value="sejong">세종</option>
+										<option value="Gyeonggi_do">경기</option>
+										<option value="Gangwon">강원</option>
+										<option value="Chungcheongbuk">충북</option>
+										<option value="Chungcheongnam">충남</option>
+										<option value="Gyeongsangbuk">경북</option>
+										<option value="Gyeongsangnam">경남</option>
+										<option value="Jeollabuk">전북</option>
+										<option value="Jeollanam">전남</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<form:label path="active_location" for="selectCity">군/구</form:label>
+									<form:select path="active_location" class="form-control"
+										id="selectCity">
+										<!-- 선택한 시/도에 따른 군/구 목록은 JavaScript로 동적으로 추가됩니다. -->
+									</form:select>
+								</div>
+							</div> 
+							<div class="form-group d-grid gap-2 mt-5">
+								<form:button type="submit" class="btn button-custom py-2 fs-5"
+									id="joinButton" style="color: white;">가입하기</form:button>
+							</div>
+						</form:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 </body>
 

@@ -17,7 +17,8 @@ public class ServiceCategoryService {
 	public List<ServiceCategoryBean> getCategoryList() {
 		
 		List<ServiceCategoryBean> categoryList = serviceCategoryDAO.getCategoryList();
- 
+		
+		
 		return categoryList;
 	}
 }

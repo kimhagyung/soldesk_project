@@ -11,7 +11,7 @@ import kr.co.softsoldesk.beans.UserBean;
 
 @Configuration
 public class RootAppContext {
-	
+
 	//유저 로그인 
 	@Bean("loginUserBean") 
 	@SessionScope
@@ -25,4 +25,5 @@ public class RootAppContext {
 	public ProUserBean ProUserBean() { 
 		return new ProUserBean();
 	}
+
 }

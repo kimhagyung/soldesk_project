@@ -1,22 +1,19 @@
 package kr.co.softsoldesk.beans;
 
 public class ExpertBean {
+
 	
-	private int pro_profile_id; // 고수 프로필 ID
-	private int pro_id; // 고수 ID (외래키)
-	private String pro_profile_image; // 고수 프로필 이미지
-	private int profile_completion; // 프로필 진행도
-	private int review_rating; // 리뷰 평점
-	private int review_count; // 리뷰 수
-	private int completion_count; // 고용 수
-	private String pro_name; // 활동명
-	private String activity_region; // 활동 지역
-	private int movable_distance; // 이동 가능 거리
-	private String certification_documents_images; // 자격증, 서류 이미지
-	private String pro_detailed_introduction; // 고수 서비스 상세 설명
-	private String price; // 가격
-	
-	
+	private int pro_profile_id;
+    private int pro_id;
+    private String pro_profile_image;
+    private int profile_completion;
+    private int review_rating;
+    private String activity_region;
+    private int movable_distance;
+    private String certification_documents_images;
+    private String pro_detailed_introduction;
+    private String price;
+    
 	public int getPro_profile_id() {
 		return pro_profile_id;
 	}
@@ -46,24 +43,6 @@ public class ExpertBean {
 	}
 	public void setReview_rating(int review_rating) {
 		this.review_rating = review_rating;
-	}
-	public int getReview_count() {
-		return review_count;
-	}
-	public void setReview_count(int review_count) {
-		this.review_count = review_count;
-	}
-	public int getCompletion_count() {
-		return completion_count;
-	}
-	public void setCompletion_count(int completion_count) {
-		this.completion_count = completion_count;
-	}
-	public String getPro_name() {
-		return pro_name;
-	}
-	public void setPro_name(String pro_name) {
-		this.pro_name = pro_name;
 	}
 	public String getActivity_region() {
 		return activity_region;
@@ -95,7 +74,6 @@ public class ExpertBean {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	
-	
-
+    
+    
 }

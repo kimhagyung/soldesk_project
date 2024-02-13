@@ -1,7 +1,7 @@
 package kr.co.softsoldesk.controller;
- 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.softsoldesk.Validator.ProUserValidator;
 import kr.co.softsoldesk.Validator.UserValidator;
-import kr.co.softsoldesk.beans.DetailCategoryBean;
-import kr.co.softsoldesk.beans.ProUserBean; 
+import kr.co.softsoldesk.beans.Category;
+import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
-import kr.co.softsoldesk.service.DetailCategoryService;
 import kr.co.softsoldesk.service.ProUserService;
-import kr.co.softsoldesk.service.ServiceCategoryService;
 import kr.co.softsoldesk.service.UserService;
 
 @Controller
@@ -43,11 +43,10 @@ public class UserController {
 	@Resource(name = "loginProuserBean")
 	private ProUserBean loginProuserBean;
 	  
+	 
 	@Autowired
-	ServiceCategoryService serviceCategoryService;
-	
-	@Autowired
-	DetailCategoryService detailCategoryService;
+	private ProUserBean cateProuser;
+
 	//일반 회원 로그인
 	@GetMapping("/login")
 	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
@@ -58,29 +57,26 @@ public class UserController {
 		
 		return "user/login";
 	}
+	
 	@PostMapping("/login_pro")
 	public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, 
 							BindingResult result) {
 		
 		if(result.hasErrors()) {
+		
 			return "user/login";
 		}
- 		try {
 		userService.getLoginUserInfo(tempLoginUserBean);
-		System.out.println("userController-getUser_name:"+tempLoginUserBean.getUser_name());
+		System.out.println("userBeanController:"+tempLoginUserBean.getUser_name());
+		System.out.println("loginUserBean : "+loginUserBean.getUser_name());
 		if(loginUserBean.isUserLogin() == true) {
 			
 			return "user/login_succes";
 			
 		}else {
+			
 			return "user/login_fail";
 		}
-		}catch (NullPointerException e) {
-	        e.printStackTrace();
-	        // NullPointerException이 발생하면 로그인 실패로 처리
-	        return "user/login_fail";
-	    }
-	    
 	}
 	
 	//고수 로그인
@@ -90,6 +86,7 @@ public class UserController {
 						Model model) {
 		
 		model.addAttribute("fail", fail);
+		
 		return "user/pro_login";
 	}
 	
@@ -101,23 +98,17 @@ public class UserController {
 		
 			return "user/pro_login";
 		}
-		try {
-			ProuserService.getLoginProuserInfo(tempLoginUserBean2);
-			System.out.println("userBeanController:"+tempLoginUserBean2.getPro_name()); 
-			System.out.println("loginUserBean : "+loginProuserBean.getPro_name());
-			if(loginProuserBean.isProuserLogin() == true) {
-				
-				return "user/login_succes";
-				
-			}else {
-				
-				return "user/pro_login_fail";
-			}
-		}catch (NullPointerException e) {
-	        e.printStackTrace();
-	        // NullPointerException이 발생하면 로그인 실패로 처리
-	        return "user/pro_login_fail";
-	    }
+		ProuserService.getLoginProuserInfo(tempLoginUserBean2);
+		System.out.println("userBeanController_pro:"+tempLoginUserBean2.getPro_name()); 
+		System.out.println("loginUserBean_pro : "+loginProuserBean.getPro_name());
+		if(loginProuserBean.isProuserLogin() == true) {
+			
+			return "user/login_succes";
+			
+		}else {
+			
+			return "user/pro_login_fail";
+		}
 	}
 	
 	
@@ -159,23 +150,13 @@ public class UserController {
 		return "user/join_success";
 	}
 
-	
 	//일류가입
 	@GetMapping("/pro_join")
 	public String pro_join(@ModelAttribute("joinProuserBean") ProUserBean joinProuserBean,
 						   Model model) {
-		 ArrayList<List<DetailCategoryBean>> detailCategoryList = new ArrayList<>();
-		    ArrayList<String> service_Category_Name = new ArrayList<>();
-		    
-		    for (int i = 1; i <= 8; i++) {
-		        List<DetailCategoryBean> list1 = detailCategoryService.getDetailCategoryList(i);
-		        String categoryName = detailCategoryService.getServiceCategoryName(i); 
-		        detailCategoryList.add(list1);
-		        service_Category_Name.add(categoryName);
-		    }
-		    model.addAttribute("detailCategoryList", detailCategoryList);
-		    model.addAttribute("service_category_name", service_Category_Name); 
+		//List<Category> categories = getCategoryList();
 		
+	    model.addAttribute("categories", cateProuser.getCategoryList()); 
 		return "user/pro_join";
 	}
 	
@@ -186,16 +167,44 @@ public class UserController {
 			return "user/pro_join";
 		}
 		ProuserService.addProuserInfo(joinProuserBean);
+		/*
+		System.out.println("유저 컨트롤러에서 가입된 일류 아이디 :"+joinProuserBean.getPro_id()+1);
+		System.out.println("유저 컨트롤러에서 가입된 일류 이름 :"+joinProuserBean.getPro_name());
+		
+	    expertBean.setPro_id(joinProuserBean.getPro_id()+1); 
+	   
+	    // Add ProProfileInfo with pro_id
+		ExpertBean expertBean = new ExpertBean();
+	    ProuserService.addProProfileInfo(expertBean);
+	     */
+	    
 		return "user/join_success";
 	}
 	
- 
+	
+	
+	@GetMapping("/AccountSetting")
+	public String AccountSetting() {
+		
+		return "user/AccountSetting";
+	}
+	
+	@GetMapping("/AccountModify")
+	public String AccountModify() {
+		
+		return "user/AccountModify";
+	}
+
+/*
 	@InitBinder
 	public void initBinder(WebDataBinder blinder) { 
 		 
-		UserValidator validator1 = new UserValidator(); 
-		blinder.addValidators(validator1); 
+		UserValidator validator1 = new UserValidator();
+		ProUserValidator validator2 = new ProUserValidator();
+		blinder.addValidators(validator1);
+		blinder.addValidators(validator2);
+		 
+		 
 	} 
-	 
-
+*/
 }

@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
@@ -75,23 +77,100 @@
     .btn.btn-outline-primary.categoryBtn {
     display: none;
 } 
-
 	
 </style>
 <!-- style="background-color: palegreen" -->
 
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
-
 <script src="${root}/jquery/locdata.js"></script> <!-- 카테고리.js 불러오기 -->
-
-<%-- <script src="${root}/jquery/expert_script.js"></script> --%> <!-- 고수프로필.js 불러오기 -->
 
 
 <script>
-	$(function () {
-	// "header.html" 파일을 로드하여 .header 클래스를 가진 요소에 삽입
-	
-	})
+//상세설명 수정과 삽입....
+$(document).ready(function() {
+    // 수정 버튼 클릭 시
+    $("#editBtn2").click(function() {
+       
+        // 이전에 저장된 상세설명 가져오기
+        var savedDetailText = $("#descriptionContent").text();
+        
+     // 콘솔에 출력
+        console.log("이전에 저장된 상세설명:", savedDetailText);
+     
+        $("#editTextArea2").val(savedDetailText);
+    });
+
+    // 저장 버튼 클릭 시
+    $("#saveBtn2").click(function() {
+        // 편집 중인 텍스트 내용 가져오기
+        var detailText = $("#editTextArea2").val();
+        
+        
+
+        // Ajax를 사용하여 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "${root}/pro/expert_introductionModify/",
+            contentType: "application/json",
+            data: JSON.stringify({ pro_detailed_introduction: detailText }), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 성공 시 서버 응답에 대한 처리
+                console.log(response);
+            },
+            error: function(error) {
+                // 오류 시 처리
+                console.error("오류:", error);
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    // 페이지가 로드될 때 데이터를 가져오는 함수 호출
+
+function loadData() {
+    $.ajax({
+        url: '${root}/pro/expert/events', // 위에서 설정한 엔드포인트로 요청을 보냅니다.
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 성공적으로 데이터를 받아왔을 때의 처리
+            console.log('데이터:', data); // 데이터를 콘솔에 출력
+            
+         // pro_detailed_introduction 값을 콘솔에 출력
+             console.log('pro_detailed_introduction:', data[0].pro_detailed_introduction);
+            console.log('pro_id: ' + data[0].pro_id);
+
+            // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
+            // 활동 지역
+            //$('#sample6_address').val(data.activity_region);
+            //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
+
+            // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
+
+            // 예시: 이동 가능 거리
+            $('.content').text(data.movable_distance);
+
+            // 자격증 및 기타 서류 등록 정보 - 여기에 자유롭게 추가
+
+            // 고수 서비스 상세설명
+          	$('#descriptionContent').html(data[0].pro_detailed_introduction);
+
+            // 가격
+            $('#priceContent').text(data[0].price);
+            
+           
+        },
+        error: function(err) {
+            console.error('데이터 로딩 중 오류 발생:', err);
+        }
+    });
+}
+    
+loadData();
+});
+
+
 </script>
 
 </head>
@@ -185,8 +264,6 @@
 		</div>
 	</div>
 	
-	<!-- 3.대표 서비스(였던것) -->
-	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 4.제공 서비스 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">
@@ -255,45 +332,11 @@
 			</div>
 		</div>
 	
-	<div class="container mt-3 d-flex justify-content-center">
-	    <!-- 5.활동 지역 -->
-	    <div class="col-md-6 section-divider">
-	        <div class="row">
-	            <span class="col Subtitle">활동 지역</span>
-	            <div class="col text-end">
-	                <button type="button" class="InvisibleButton AfterMD" onclick="enableExecDaumPostcode()">수정</button>
-	            </div>
-	        </div>
-	        <p></p>
-	        <input type="text" id="sample6_address" placeholder="주소" style="border: none; cursor: default; outline: none; width: 400px;" readonly><br>
-	        <input type="text" id="sample6_extraAddress" placeholder="참고항목" style="border: none; cursor: default; outline: none; width: 400px;" readonly>
-	        <p></p>
-	    </div>
-	</div>
-
-	<div class="container mt-3 d-flex justify-content-center"> <!-- 6.이동 가능 거리 -->
-		<div class="col-md-6 section-divider">
-			<div class="row">
-				<span class="col Subtitle">이동 가능 거리</span>
-				<div class="col text-end">
-					<!-- <button type="button" class="InvisibleButton AfterMD">수정</button> -->
-				</div>
-			</div>
-			<p></p>
-			
-			<div id="map" style="height:300px;"></div>
-			<p></p>
-		</div>
-	</div>
-	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 7.자격증 및 기타 서류 등록 -->
 	       <div class="col-md-6 section-divider">
 			<div class="row">
 				<span class="col Subtitle">자격증 및 기타 서류 등록</span>
 				<div class="review_textExplain Explanation">자격증 및 기타 서류</div>
-				<!--<div class="col text-end">
-					<button type="button" class="InvisibleButton AfterMD"></button>
-				</div>-->
 			</div>
 			<div class="rounded-3 p-3 border" style="background-color: #D2D2D2; text-align: center;">
 				<i class="bi bi-exclamation-circle">&nbsp;개인/민감 정보를 삭제 후 등록해야 하며, 허위정보에 대한 모든 책임은 본인에게 있습니다.</i>
@@ -323,7 +366,7 @@
 	        </div>
 	        <p></p>
 	        <div id="descriptionContainer2">
-	            <p class="content">저의 웹개발은 다낭에서부터 시작되었으며...</p>
+	            <p class="content" id="descriptionContent"></p>
 	        </div>
 	        <div id="editContainer2" class="d-none">
 	            <div class="d-flex justify-content-between">
@@ -339,42 +382,65 @@
 	</div>
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 9. 가격 -->
-    <div class="col-md-6 section-divider">
-        <div class="row">
-            <span class="col Subtitle">가격</span>
-            <div class="col text-end">
-                <button type="button" class="InvisibleButton AfterMD" id="editBtn3">수정</button>
-                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn3">저장</button>
-            </div>
-        </div>
-        <p></p>
-        <div id="descriptionContainer3">
-            <p class="content">웹 디자인 - 10만/&nbsp;프론트 코딩 - 20만/&nbsp;백엔드 코딩 - 30만/&nbsp;프로그래밍 상담 - 5만</p>
-        </div>
-        <div id="editContainer3" class="d-none">
-            <div class="d-flex justify-content-between">
-                <label class="AfterMD" for="editTextArea3">고수님의 서비스에 대한 합당한 가격을 적어주세요</label>
-                <div class="text-muted charCount" style="color: #B5B5B5; font-size: 14px;">
-                    <span id="charCount3" style="color: #85BCEB;">0&nbsp;</span>/100 자
-                </div>
-            </div>
-            <textarea class="form-control" maxlength="100" id="editTextArea3" rows="3" placeholder="고객이 알아야 할 가격 정책을 입력해 주세요	예) 예약금 10,000원, 환불정책 등"></textarea>
-        </div>
-        <p></p>
-    </div>
-</div>
+	    <div class="col-md-6 section-divider">
+	        <div class="row">
+	            <span class="col Subtitle">가격</span>
+	            <div class="col text-end">
+	                <button type="button" class="InvisibleButton AfterMD" id="editBtn3">수정</button>
+	                <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn3">저장</button>
+	            </div>
+	        </div>
+	        <p></p>
+	        <div id="descriptionContainer3">
+	            <p id="priceContent" class="content"></p>
+	        </div>
+	        <div id="editContainer3" class="d-none">
+	            <div class="d-flex justify-content-between">
+	                <label class="AfterMD" for="editTextArea3">고수님의 서비스에 대한 합당한 가격을 적어주세요</label>
+	                <div class="text-muted charCount" style="color: #B5B5B5; font-size: 14px;">
+	                    <span id="charCount3" style="color: #85BCEB;">0&nbsp;</span>/100 자
+	                </div>
+	            </div>
+	            <textarea class="form-control" maxlength="100" id="editTextArea3" rows="3" placeholder="고객이 알아야 할 가격 정책을 입력해 주세요	예) 예약금 10,000원, 환불정책 등"></textarea>
+	        </div>
+	        <p></p>
+	    </div>
+	</div>
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 10.경력 -->
 		<div class="col-md-6 section-divider">
 			<div class="row">
 				<span class="col Subtitle">경력</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/career'">등록하기</button>
+					<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/career'">등록</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@경력 페이지에서 값 받아오는 곳@</p>
-			<p></p>
+			
+			<c:forEach var="career" items="${careerList}">
+				<div class="content mt-3">
+					<div class="period mb-3">
+					 	총경력 ${career.total_experience_period  }년
+					</div>
+					<div class="row">
+						<div class="col career_title fw-bold"> 
+							${career.career_title } 
+						</div>
+						<div class="col text-end">
+							<a href="${root }/pro/career_modify?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px;"> 수정</a>
+							<a href="${root }/pro/career_delete?career_id=${career.career_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>
+					</div>
+					
+					<div class="career_time" style="font-size: 13px;">
+						${career.startYear }년 ${career.startMonth }월 - ${career.endYear }년 ${career.endMonth }월
+					</div>
+					<div class="career_content" style="color: gray;">
+						${career.detailed_introduction }
+					</div>
+					<hr />
+				</div>
+			</c:forEach>
+			
 		</div>
 	</div>
 	
@@ -386,8 +452,38 @@
 					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Education'">등록하기</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">@학력 페이지에서 값 받아오는 곳@</p>
+			
+			<div class="content mt-3 row">
+			    <c:forEach var="education" items="${educationList}">
+			        <div class="col-8 float">
+			            <div class="schoolname fw-bold mt-3">
+			                ${education.school_name}
+			            </div>
+			            <div class="school-time" style="font-size: 13px;">
+			                ${education.admissionYear}년 ${education.admissionMonth}월 - ${education.graduationYear}년 ${education.graduationMonth}월
+			            </div>
+			            <div class="schoolmajor" style="color: gray;">
+			                ${education.major_name}
+			            </div>
+			        </div>
+			        <div class="ms-auto col-4 text-center">
+			            <img src="${root}/eduUpload/${education.evidence_image}" class="feed-img" style="width: 80px; height: 80px; border-radius: 8px;" alt="이미지"/>
+			        </div>
+			        
+			        <div class="mt-2">
+		                <div class="col text-end">
+							<a href="${root }/pro/education_modify?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px;" class="me-2"> 수정</a>
+							<a href="${root }/pro/education_delete?education_id=${education.education_id}" style="text-decoration: none; font-size: 13px; color: red;"> 삭제</a>
+						</div>
+		               
+		            </div>
+		            
+			        <hr />
+			    </c:forEach>
+			</div>
+			
+			
+			
 			<p></p>
 		</div>
 	</div>
@@ -397,14 +493,17 @@
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Portfolio'">등록하기</button>
+					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/career'">등록하기</button>
 				</div>
 			</div>
 			<p></p>
 			<p class="content">설명과 포트폴리오 등록버튼</p>
+			<h5 class="content">@이동할 포폴 페이지 제작@</h5>
 			<p></p>
 		</div>
 	</div>
+	
+	
 	
 	
 
@@ -434,14 +533,7 @@
 
 <!--도로주소명API-->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<!--이동가능거리API-->
-<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f1d1be7f35b4c48c6c89640c05aaae"></script> -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5f1d1be7f35b4c48c6c89640c05aaae&libraries=services"></script>
-<script type="text/javascript" src="${root}/jquery/address.js"></script>
-
-
-<!--  -->
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 	
@@ -517,8 +609,7 @@
             var maxLength = parseInt(document.getElementById('editTextArea1').getAttribute('maxlength'));
             if (editedText.length > maxLength) {
                 document.getElementById('editTextArea1').value = editedText.substring(0, maxLength);
-            }
-
+            } 
             countChars('editTextArea1', 'charCount1');
         });
 
@@ -534,8 +625,6 @@
             });
         });
 </script>
-
-
 
 <script> // 4. 제공 서비스
 $(function () {
@@ -719,130 +808,12 @@ function removeService(button) {
 </script>
 
 
-<script > // address.js
-var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
-var mapOption = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 초기 중심좌표
-    level: 6 // 지도의 확대 레벨
-};
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption);
-var marker; // 마커 변수 선언
-var circle; // 원 변수 선언
 
-var circle = new kakao.maps.Circle({
-    center: new kakao.maps.LatLng(33.450701, 126.570667),  // 원의 중심좌표입니다 
-    radius: 1000, // 미터 단위의 원의 반지름입니다 
-    strokeWeight: 1, // 선의 두께입니다 
-    strokeColor: '#75B8FA', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'dashed', // 선의 스타일입니다
-    fillColor: '#CFE7FF', // 채우기 색깔입니다
-    fillOpacity: 0.7  // 채우기 불투명도입니다   
-});
-
-	// 마커를 생성하고 지도에 표시합니다
-marker = new kakao.maps.Marker({
-    map: map,
-    position: circle.getPosition()
-});
-
-// 지도에 원을 표시합니다 
-circle.setMap(map);
-
-// 실행 가능 여부를 나타내는 변수
-var execDaumPostcodeEnabled = false;
-
-// 우편번호 검색 함수
-function sample6_execDaumPostcode() {
-    if (execDaumPostcodeEnabled) {
-        new daum.Postcode({
-            oncomplete: function (data) {
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
-
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                } else {
-                    addr = data.jibunAddress;
-                }
-
-                if (data.userSelectedType === 'R') {
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    document.getElementById("sample6_extraAddress").value = extraAddr;
-
-                    // 기존 마커와 원을 지우기
-                    if (marker) {
-                        marker.setMap(null);
-                    }
-
-                    if (circle) {
-                        circle.setMap(null);
-                    }
-
-                    // 주소를 입력받아 지도를 업데이트하는 함수 호출
-                    updateMapWithAddress(addr);
-                } else {
-                    document.getElementById("sample6_extraAddress").value = '';
-                }
-
-                // 주소 값을 설정하고 입력 필드에 포커스
-                document.getElementById('sample6_address').value = addr;
-                document.getElementById('sample6_address').focus();
-            }
-        }).open();
-    }
-}
-
-// 입력된 주소로 지도를 업데이트하는 함수
-function updateMapWithAddress(address) {
-    // 주소를 좌표로 변환
-    var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-            // 지도의 중심과 마커 위치를 업데이트
-            map.setCenter(coords);
-
-            // 새로운 마커 생성 및 지도에 추가
-            marker = new kakao.maps.Marker({
-                map: map,
-                position: coords
-            });
-
-            // 새로운 원 생성 및 지도에 추가
-            circle = new kakao.maps.Circle({
-                center: coords,
-                radius: 1000,
-                strokeWeight: 1,
-                strokeColor: '#75B8FA',
-                strokeOpacity: 1,
-                strokeStyle: 'dashed',
-                fillColor: '#CFE7FF',
-                fillOpacity: 0.5
-            });
-
-            circle.setMap(map);
-        }
-    });
-}
-
-// 수정 버튼을 누를 때 실행 가능 여부를 설정하는 함수
-function enableExecDaumPostcode() {
-    execDaumPostcodeEnabled = true;
-    sample6_execDaumPostcode();
-}
-
-// 초기화 함수 호출
-sample6_execDaumPostcode();
-
+<script> // 포폴 페이지로 이동하는 버튼
+    //function redirectToPortfolioPage() {
+    // window.location.href = 'Portfolio.html';
+    //}
 </script>
 
 </body>

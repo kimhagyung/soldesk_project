@@ -2,7 +2,6 @@ package kr.co.softsoldesk.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,12 +31,4 @@ public class DetailCategoryDAO {
 		
 		return detailCategoryMapper.getServiceCategoryName(service_category_id);
 	}
-	
-	 
-	
-	 // 자동완성 메서드
-    public List<DetailCategoryBean> getAutocompleteSuggestions(String searchKeyword) {
-        return detailCategoryMapper.getAutocompleteSuggestions(searchKeyword);
-    }
-	
 }
