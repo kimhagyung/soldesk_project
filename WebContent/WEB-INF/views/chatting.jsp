@@ -160,16 +160,30 @@ textarea {
 	outline: none;
 }
 </style>
-
-<script>
-	var $j = jQuery.noConflict();
-	$j(document).ready(function() {
-		$j(".header").load("header.html");
-	});
-</script>
+ 
 
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />
+
+<%--  <c:forEach var="obj" items="${paramValues.selectedAnswers}"  varStatus="loop">
+	<c:forEach var="questionEntry" items="${requestScope[param.s]}" >
+	    <h2>${questionEntry.key}</h2>
+	    <ul> 
+	        <li>${obj}</li>
+	    </ul>
+	</c:forEach> 
+</c:forEach>  --%>
+
+	    <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop" >
+	    
+	<c:forEach var="obj" items="${paramValues.selectedAnswers}" >
+	        <h2>${questionEntry.key}</h2> 
+	            <ul> 
+	                <li>${obj[loop.index]}</li>
+	            </ul> 
+	    </c:forEach> 
+	</c:forEach>
+
 	<div class="container mt-5" style="height: 76vh;">
 		<div class="row justify-content-center" style="height: 76vh;">
 			<div class="col-md-10">
@@ -568,7 +582,7 @@ textarea {
 		}
 
 		// 드롭다운 메뉴 아이템을 클릭했을 때 스크롤 이동 방지
-		$j('.dropdown-menu a').on('click', function(e) {
+		$('.dropdown-menu a').on('click', function(e) {
 
 			e.preventDefault(); //기본 이벤트 막기
 			var selectedText = $(this).text();
@@ -577,29 +591,29 @@ textarea {
 			changeColor(this);
 		});
 
-		$j(document).ready(function() {
-			$j('#requestBtn').click(function(e) {
+		$(document).ready(function() {
+			$('#requestBtn').click(function(e) {
 				e.preventDefault();
-				$j('#exampleModal1').modal("show");
+				$('#exampleModal1').modal("show");
 			});
 
-			$j('#declareBtn').click(function(e) {
+			$('#declareBtn').click(function(e) {
 				e.preventDefault();
-				$j('#exampleModal2').modal("show");
+				$('#exampleModal2').modal("show");
 			});
 
-			$j('#blockBtn').click(function(e) {
+			$('#blockBtn').click(function(e) {
 				e.preventDefault();
-				$j('#exampleModal3').modal("show");
+				$('#exampleModal3').modal("show");
 			});
 
-			$j('#roomoutBtn').click(function(e) {
+			$('#roomoutBtn').click(function(e) {
 				e.preventDefault();
-				$j('#exampleModal4').modal("show");
+				$('#exampleModal4').modal("show");
 			});
 
-			$j('#reportButtonCancel').click(function() {
-				$j('#exampleModal4').modal('hide');
+			$('#reportButtonCancel').click(function() {
+				$('#exampleModal4').modal('hide');
 			});
 		});
 

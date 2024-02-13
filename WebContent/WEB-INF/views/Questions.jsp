@@ -216,26 +216,30 @@
             //questions.css('margin-top', '90px');
             var answersContainer = $(".firstanswer");
             /* 확인버튼을 누르면 */
+            
+            // 선택된 값들을 저장할 배열
+			var selectedAnswers = [];
+            
             $(document).on('click', '.submitbtn', function () {
                 var selectedAnswer = $("input[name='answer']:checked").val();
 
-                console.log("선택한 값", selectedAnswer);
-
+                console.log("사용자가선택한 값", selectedAnswer); 
                 if (selectedAnswer) {
                     var questionForm = questions.eq(currentQuestionIndex);
-                    var answerForm = $("<div class='answer-form answerform'></div>");
-                 	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
- 
-                 	
+                    var answerForm = $("<div class='answer-form answerform'></div>"); 
+                    // 선택된 값들을 배열에 추가 
                  	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
                     //answerForm.html("<div class='user-message message'>" + selectedAnswer + "</div>").hide();
                     // 만약 "기타"를 선택한 경우 textarea 값을 가져와서 추가
-                    if (selectedAnswer === "기타") {
+                    if (selectedAnswer === "기타" ) {
                         var textareaValue = questionForm.find('.user-textarea').val();
                         console.log("작성한 글",textareaValue);
                         questionForm.append(answerForm);
                         answerForm.append(textareaValue);
+                        selectedAnswers.push(textareaValue);
                     } else {
+                    	 // 선택한 대답을 추가
+                        selectedAnswers.push(selectedAnswer);
                         // 선택한 대답을 추가
                     	questionForm.append(answerForm);
                     	answerForm.append(selectedAnswer);
@@ -259,14 +263,30 @@
                         }, 400); 
                         
                     }  else {
+                    	  // 마지막 질문인 경우 선택된 값들을 파라미터에 추가하여 URL 생성
+                        //selectedAnswers.push(selectedAnswer); // 선택된 값 배열에 추가
+
+                        // 선택된 값들을 URL의 쿼리 문자열로 변환
+                        var queryString = '';
+                        for (var i = 0; i < selectedAnswers.length; i++) {
+                            if (queryString !== '') {
+                                queryString += '&';
+                            }
+                            queryString += 'selectedAnswers=' + encodeURIComponent(selectedAnswers[i]);
+                        }
+
+                        // 새로운 URL 생성
+                        var selected = queryString;
+ 
                         // 마지막 질문일 경우 특정 페이지로 이동
-                        window.location.href = '${root}/received_quotation?reco=${param.detail_category_name}'; 
+                        window.location.href = '${root}/received_quotation?s=${param.service_category_id}&reco=${param.detail_category_name}&'+selected; 
                     } 
                     updateProgressBar(); // 프로그레스바 업데이트
                 }else { 
                     alert("값을 선택해 주세요");
                 }
             });
+            
             // 라디오 버튼이 변경될 때 이벤트 리스너 추가
             $('.radio-input').on('change', function () {
                 var selectedValue = $(this).val();

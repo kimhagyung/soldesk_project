@@ -38,6 +38,22 @@ public class ProUserDao {
 		return ProuserMapper.getSearchProUserByName(pro_name);
 		
 	}  
+	
+	public String getCategory1(Long pro_id) {
+	      
+	      return ProuserMapper.getCategory1(pro_id);
+	   }
+	   
+	public String getCategory2(Long pro_id) {
+	      
+	      return ProuserMapper.getCategory2(pro_id);
+	   }
+
+	public String getCategory3(Long pro_id) {
+	   
+	   return ProuserMapper.getCategory3(pro_id);
+	}
+	
 	//
 	public ProUserBean getDetailCategoriesByName(String pro_name) {
         return ProuserMapper.getDetailCategoriesByName(pro_name);

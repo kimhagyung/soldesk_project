@@ -379,7 +379,7 @@ function sendToServerLocation(selectedLocation) {
 							</div>
 						</c:forEach>
 					</c:when>  
-					 <c:otherwise>
+					 <%-- <c:otherwise>
 						 <c:forEach var="proname" items="${pro_names}"  > 
 								<div class="card mb-3">
 									<div class="card-body row">
@@ -456,7 +456,7 @@ function sendToServerLocation(selectedLocation) {
 										
 									</ul>
 								</div>
-					</c:otherwise>  
+					</c:otherwise>   --%>
 				</c:choose> 
 				<div> </div>
 			</div>

@@ -71,19 +71,32 @@ public class ProUserService {
 	    } 
 	 
 	 //
-	    public ProUserBean getDetailCategoriesByName(String pro_name) { 
-	        return proUserDao.getDetailCategoriesByName(pro_name);
-	    }
-	    
-	    //
-	    public ProUserBean getCategoriesByProId(Long proId) { 
-	    	return proUserDao.getCategoriesByProId(proId);
-	    }
+    public ProUserBean getDetailCategoriesByName(String pro_name) { 
+        return proUserDao.getDetailCategoriesByName(pro_name);
+    }
+    
+    //
+    public ProUserBean getCategoriesByProId(Long proId) { 
+    	return proUserDao.getCategoriesByProId(proId);
+    }
 	 //
 	 public List<String> getRecoProUserByName(String reco) {
 		 return proUserDao.getRecoProUserByName(reco);
 	 }
-	
+	 public String getCategory1(Long pro_id) {
+	      
+	      return proUserDao.getCategory1(pro_id);
+	   }
+	   
+	public String getCategory2(Long pro_id) {
+	      
+	      return proUserDao.getCategory2(pro_id);
+	   }
+
+	public String getCategory3(Long pro_id) {
+	   
+	   return proUserDao.getCategory3(pro_id);
+	}
 	 public List<ProUserBean> getProUserByName(int page, int size) {
 
 		 int offset = (page - 1) * size;

@@ -26,9 +26,18 @@ public interface ProUserMapper {
 	@Select("select pro_name from pro_user WHERE pro_name LIKE '%' || #{pro_name} || '%'")
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
 	
-	//2
+	//카
+	@Select("select active_detailcategory1 from pro_user where pro_id = #{pro_id}")
+	   String getCategory1(Long pro_id);
+	//테
+	   @Select("select active_detailcategory2 from pro_user where pro_id = #{pro_id}")
+	   String getCategory2(Long pro_id);
+	//고
+	   @Select("select active_detailcategory3 from pro_user where pro_id = #{pro_id}")
+	   String getCategory3(Long pro_id);
 	
-	@Select("SELECT active_detailcategory1,active_detailcategory2,active_detailcategory3 FROM pro_user WHERE pro_id = #{pro_id}") 
+	//2
+	@Select("SELECT * FROM pro_user WHERE pro_id = #{pro_id}") 
 	ProUserBean getCategoriesByProId(Long proId);
 	 
 	@Select("SELECT pro_id FROM pro_user WHERE pro_name = #{pro_name}") 
