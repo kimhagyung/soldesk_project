@@ -20,6 +20,14 @@
 	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 	crossorigin="anonymous"></script>
 	
+	
+	 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery CDN 추가 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 부트스트랩 JavaScript 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
@@ -79,8 +87,8 @@
 	 .searchResults{
 		position: absolute;
 		top: 57%; 
-		left: 45.3%; 
-		width: 22.2%; 
+		left: 34.3%; 
+		width: 26.2%; 
 	    background-color: white;
 	     border: 1px solid #ccc; 
 	     max-height: 200px; overflow-y: auto; 
@@ -361,7 +369,7 @@ function displayAlarms(alarms) {
 						</ul>
 						<!-- 검색 폼 -->
 						<form action="${root}/Questions" id="formID" method="get">
-						    <input class="form-control me-5 inputResult" id="searchKeyword" placeholder="Search" autocomplete='off' />
+						    <input class="form-control me-5 inputResult" id="searchKeyword" placeholder="원하는 서비스를 검색하세요!" autocomplete='off' />
 						</form>
 						<!-- 결과 받을 폼 -->
 						<div class="searchResults list-group" ></div>
@@ -395,13 +403,13 @@ function displayAlarms(alarms) {
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 									
 								<!-- 종 -->	
-								<div class="dropdown" id="notificationDropdown"> 
+								<div class="dropdown ms-2" id="notificationDropdown"> 
 									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
 										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
 										</span>
 									</i>
 									
-									<ul class="dropdown-menu">
+									<ul class="dropdown-menu ">
 										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
 							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
 										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
@@ -409,7 +417,7 @@ function displayAlarms(alarms) {
 								</div>
 								
 								<!-- 캘린더 -->
-								<div class="dropdown" id="calendarDropdown"> 
+								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
 										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
 										</span>
@@ -436,7 +444,7 @@ function displayAlarms(alarms) {
 									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
 									
 								<!-- 종 -->
-								<div class="dropdown" id="notificationDropdown"> 
+								<div class="dropdown ms-3" id="notificationDropdown"> 
 									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
 										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style="display:none;"> 
 										</span>

@@ -107,26 +107,9 @@ function checkPasswordMatch() {
 <c:import url="/WEB-INF/views/include/header.jsp" />
 	<div class="container mt-5 mb-5">
 		<div class="row justify-content-center">
-			<div class="col-md-6">
+			<div class="col-md-6 mt-5" >
 				<div class="account">
 					<strong>계정 설정</strong>
-				</div>
-				<!-- 프로필이미지 수정 공간 -->
-				<div class="profileContainer">
-					<!-- 프로필 이미지 가운데 배치 위한 -->
-					<div class="profilecontainer"
-						style="margin-top: 8%; margin-bottom: 8%;">
-						<img class="uploaded-image" id="uploaded-image"
-							src="../image/1.png" alt="이미지1"
-							style="width: 100px; height: 100px; border-radius: 50%; position: relative; border: 1px solid #F3F3F3;">
-						<button class="btn" id="btn" style="border: 1px solid #F3F3F3;">
-							<i class="bi bi-camera"
-								style="width: 32px; height: 32px; border-radius: 50%; position: absolute; bottom: 0; right: 0; padding-left: 2px; padding-top: 2px;"></i>
-							<!-- <img class="image2" src="../image/2.png" alt="이미지2" > -->
-						</button>
-						<input type="file" name="myfile" id="myfile" accept="image/*"
-							style="display: none;" />
-					</div>
 				</div> 
 		<c:choose> 
 			<c:when test="${loginUserBean.userLogin ==true }">

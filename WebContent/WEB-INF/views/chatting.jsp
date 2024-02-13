@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
@@ -9,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chatting</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<!-- Bootstrap JavaScript 파일 로드 -->
+
 </head>
 <style>
 body {
@@ -158,33 +160,70 @@ textarea {
 	border-color: #6387A6 !important;
 	color: white !important;
 	outline: none;
-}
+} 
 </style>
  
+<script>
+    $(document).ready(function() {
+        // Close modal when close button is clicked
+        $(".modal .close").click(function() {
+            $("#myModal").modal("hide");
+        });
 
+        // Close modal when backdrop is clicked
+        $("#myModal").on("hidden.bs.modal", function() {
+            $("#myModal").modal("hide");
+        });
+    });
+</script>
 <body>
-<c:import url="/WEB-INF/views/include/header.jsp" />
+ <c:import url="/WEB-INF/views/include/header.jsp" />
 
-<%--  <c:forEach var="obj" items="${paramValues.selectedAnswers}"  varStatus="loop">
-	<c:forEach var="questionEntry" items="${requestScope[param.s]}" >
-	    <h2>${questionEntry.key}</h2>
-	    <ul> 
-	        <li>${obj}</li>
-	    </ul>
-	</c:forEach> 
-</c:forEach>  --%>
+<%
+	String selectedAnswersParam = request.getParameter("selectedAnswers");
+    String[] selectedAnswersArray = selectedAnswersParam.split(",");
+    request.setAttribute("selectedAnswersArray", selectedAnswersArray);
+ // 콘솔에 출력
+   /*  for (String answer : selectedAnswersArray) {
+      	out.println(answer+"/");
+    } */
+%>  
+<!-- Button to trigger the modal -->
+<button type="button" class="btn button-custom" data-toggle="modal" data-target="#myModal">
+    보기
+</button>
 
-	    <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop" >
-	    
-	<c:forEach var="obj" items="${paramValues.selectedAnswers}" >
-	        <h2>${questionEntry.key}</h2> 
-	            <ul> 
-	                <li>${obj[loop.index]}</li>
-	            </ul> 
-	    </c:forEach> 
-	</c:forEach>
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">견적요청서</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div> 
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop">
+                    <h3>${questionEntry.key}</h3>
+                    <c:set var="index" value="${loop.index - 1}" />
+                    <c:set var="answers" value="${selectedAnswersArray[index]}" />
+                    <ul>
+                        <c:forEach var="answer" items="${answers}">
+                            <li>${answer}</li>
+                        </c:forEach>
+                    </ul>
+                </c:forEach>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+            </div> 
+        </div>
+    </div>
+</div>
 
-	<div class="container mt-5" style="height: 76vh;">
+<div class="container mt-5" style="height: 76vh;">
 		<div class="row justify-content-center" style="height: 76vh;">
 			<div class="col-md-10">
 				<div class="chatTitle">

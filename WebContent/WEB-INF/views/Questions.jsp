@@ -231,7 +231,7 @@
                  	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
                     //answerForm.html("<div class='user-message message'>" + selectedAnswer + "</div>").hide();
                     // 만약 "기타"를 선택한 경우 textarea 값을 가져와서 추가
-                    if (selectedAnswer === "기타" ) {
+                    if (selectedAnswer === "기타" || selectedAnswer==="작성") {
                         var textareaValue = questionForm.find('.user-textarea').val();
                         console.log("작성한 글",textareaValue);
                         questionForm.append(answerForm);
@@ -279,7 +279,7 @@
                         var selected = queryString;
  
                         // 마지막 질문일 경우 특정 페이지로 이동
-                        window.location.href = '${root}/received_quotation?s=${param.service_category_id}&reco=${param.detail_category_name}&'+selected; 
+                        window.location.href = '${root}/received_quotation?s=${param.service_category_id}&reco=${param.detail_category_name}&select='+selected; 
                     } 
                     updateProgressBar(); // 프로그레스바 업데이트
                 }else { 
@@ -295,7 +295,7 @@
                 // 이전에 생성된 textarea가 있다면 숨기기
                 $('.user-textarea').hide();
 
-                if (selectedValue === "기타") {
+                if (selectedValue === "기타" || selectedValue==="작성") {
                     // "기타"를 선택한 경우 textarea 추가
                     var textarea = $("<textarea class='user-textarea' style='width:100%'></textarea>");
                     // 현재 라디오 버튼 바로 다음에 textarea를 추가

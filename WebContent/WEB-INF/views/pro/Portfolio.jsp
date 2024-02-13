@@ -288,8 +288,8 @@ $(document).ready(function() {
 														
 														            console.log('선택한 위치:', selectedCity, selectedDistrict);
 														
-														           // $("#modalSelectedLocation").val(selectedCity + '/' + selectedDistrict);
-														            $("#modalSelectedLocation").val(selectedDistrict);
+														           	$("#modalSelectedLocation").val(selectedCity + '/' + selectedDistrict);
+														            //$("#modalSelectedLocation").val(selectedDistrict);
 														            $("#locationModal").modal('hide');
 														            $(".locationBtn").text(selectedCity + '/' + selectedDistrict);
 														        });

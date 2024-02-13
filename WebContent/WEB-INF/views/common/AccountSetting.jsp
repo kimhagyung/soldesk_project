@@ -9,28 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Account Setting</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script>
-	/*  
-	function AccountSecession(){
-		var pro_id = ${param.id}
-		console.log("pro_id",pro_id);
  
-		$.ajax({
-			url: '${root}/common/ProAccountSecession/' + encodeURIComponent(user_email),
-			type : 'get',
-			dataType : 'text',
-			success: function(result){
-				if(result.trim()=='true'){
-					alert('사용할 수 있는 이메일입니다')
-					$("#userEmailExist").val('true')
-				}else if(result.trim()=='false'){
-					alert('사용할 수 없는 이메일입니다')
-					$("#userEmailExist").val('false')
-				}
-			}
-		})
-	} */
-</script>
 <style>
 .img-fluid {
 	border-radius: 50%;
@@ -83,14 +62,10 @@
 	<c:import url="/WEB-INF/views/include/header.jsp" />
 	<div class="container mt-5 mb-5">
 		<div class="row justify-content-center">
-			<div class="col-md-6">
+			<div class="col-md-6 mt-5">
 				<div class="account">
 					<strong>계정 설정</strong>
-				</div>
-				<div class="profileImg">
-					<img src="../image/1.png" class="img-fluid" alt="프로필 이미지"
-						style="width: 100px; height: 100px; margin-top: 8%; margin-bottom: 8%;">
-				</div>
+				</div> 
 				<c:choose>
 					<c:when test="${loginUserBean.userLogin ==true }">
 						<div class="">
