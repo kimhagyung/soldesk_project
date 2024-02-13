@@ -83,9 +83,8 @@ public class QuestionsCotroller {
 	
 	
 	 @GetMapping("/chatting")
-	 public String chatting(
-	         Model model,
-	         @RequestParam("pro_id") int proId, // 프로의 ID를 요청 파라미터로 받음
+	 public String chatting(Model model, 
+			 @RequestParam("pro_id") int proId, // 프로의 ID를 요청 파라미터로 받음
 	         @RequestParam("s") int serviceCategoryId) {
 	     
 	     int userId; // 사용자 ID 초기화
