@@ -84,20 +84,7 @@ public class ProUserDao {
 		
 		ProuserMapper.ProupdateAccountUser(ProAccountModifyCom);
 	}
-	public String getCategory11(int pro_id) {
-		
-		return ProuserMapper.getCategory11(pro_id);
-	}
 	
-	public String getCategory22(int pro_id) {
-			
-			return ProuserMapper.getCategory22(pro_id);
-		}
-	
-	public String getCategory33(int pro_id) {
-		
-		return ProuserMapper.getCategory33(pro_id);
-	}
 	public int ProAccountResign(int pro_id) {
 		return ProuserMapper.ProAccountResign(pro_id);
 	} 
@@ -112,8 +99,24 @@ public class ProUserDao {
 		
 		return ProuserMapper.getProUserName(pro_id);
 	}
-	
+	public ProUserBean getDetailCategoriesByName(String pro_name) { 
+        return ProuserMapper.getDetailCategoriesByName(pro_name);
+    }
 	//사용자 이름 수정
+	public String getCategory11(int pro_id) {
+		
+		return ProuserMapper.getCategory11(pro_id);
+	}
+	
+	public String getCategory22(int pro_id) {
+			
+			return ProuserMapper.getCategory22(pro_id);
+		}
+	
+	public String getCategory33(int pro_id) {
+		
+		return ProuserMapper.getCategory33(pro_id);
+	}
 	public void modifyProName(String pro_name, int pro_id) {
 		
 		ProuserMapper.modifyProName(pro_name, pro_id);

@@ -228,7 +228,7 @@ $(document).ready(function() {
 							<div class="photo_review" style="padding-top: 22.5px;"> 
 								<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
 							    <label class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
-							        <i class="bi bi-plus-circle upload-icon" style="position: absolute; top: 110.5%; left: 32.5%; transform: translate(-50%, -50%); color: #6387A6"></i>
+							        <i class="bi bi-plus-circle upload-icon" style="position: absolute; top:40%; left:11.5%; transform: translate(-50%, -50%); color: #6387A6"></i>
 							    </label>
 							    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" multiple="true" />
 							</div> 
