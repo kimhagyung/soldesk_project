@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="root" value="${pageContext.request.contextPath }"/>  <!-- 루트경로, 프로젝트시작할 때  -->     
+<c:set var="root" value="${pageContext.request.contextPath }"/> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,26 +71,26 @@ document.addEventListener('DOMContentLoaded', function () {
 <c:import url="/WEB-INF/views/include/header.jsp" />
 
 	<div id="categoryphoto" class="carousel slide" style="width: 100%; margin: auto;"> <!-- 캐러셀 부분--> 
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="image/test5.png" class="d-block w-100" style="height: 500px;" alt="pic">
-			</div>
-			<div class="carousel-item">
-				<img src="image/2.png" class="d-block w-100" style="height: 500px;" alt="pic1">
-			</div>
-			<div class="carousel-item">
-				<img src="image/It.png" class="d-block w-100" style="height: 500px;" alt="p">
-			</div>
-		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#categoryphoto" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Next</span>
-		</button>
-	</div>
+      <div class="carousel-inner">
+         <div class="carousel-item active">
+            <img src="image/test5.png" class="d-block w-100" style="height: 500px;" alt="pic">
+         </div>
+         <div class="carousel-item">
+            <img src="image/2.png" class="d-block w-100" style="height: 500px;" alt="pic1">
+         </div>
+         <div class="carousel-item">
+            <img src="image/It.png" class="d-block w-100" style="height: 500px;" alt="p">
+         </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#categoryphoto" data-bs-slide="prev">
+         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#categoryphoto" data-bs-slide="next">
+         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Next</span>
+      </button>
+   </div>
   
 
 	<div class="container d-flex justify-content-center mb-3"> <!-- 카테고리 부분 -->
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			<button type="button"  onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[0].service_category_id }'"
 				class="license list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">
 				<img src="image/study.png" alt="과외 이미지" class="img-fluid" style="width: 50%;">
-				<span class="ms-2  text-center mt-2 fw-bold">시험/자격증</span>
+				<span class="ms-2 text-center mt-2 fw-bold">시험/자격증</span>
 			</button>
 			<button type="button" onclick="location.href='${root}/detailCategory?service_category_id=${categoryList[1].service_category_id }'"
 				class="list-group-item list-group-item-action d-flex flex-column align-items-center justify-content-center border-0 mr-3">

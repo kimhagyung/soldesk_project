@@ -31,8 +31,7 @@ public class UserService {
 		
 		userDao.addUserInfo(joinUserBean);
 	}
-	
-	
+	 
 	public void getLoginUserInfo(UserBean tempLoginUserBean) {
 		
 		UserBean tempLoginUserBean2 = userDao.getLoginUserInfo(tempLoginUserBean);

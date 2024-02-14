@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.softsoldesk.Validator.UserValidator;
+import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.ProUserBean; 
 import kr.co.softsoldesk.beans.UserBean;
@@ -42,7 +43,8 @@ public class UserController {
 
 	@Resource(name = "loginProuserBean")
 	private ProUserBean loginProuserBean;
-	  
+	
+	
 	@Autowired
 	ServiceCategoryService serviceCategoryService;
 	
@@ -119,7 +121,6 @@ public class UserController {
 	        return "user/pro_login_fail";
 	    }
 	}
-	
 	
 	@GetMapping("/not_login")
 	public String not_login() {

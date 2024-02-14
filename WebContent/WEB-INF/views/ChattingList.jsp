@@ -80,12 +80,6 @@
 	outline: none;
 }
 </style>
-<script>
-	$(function() {
-		$(".header").load("header.html");
-		$(".footer").load("footer.html");
-	});
-</script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/include/header.jsp" />

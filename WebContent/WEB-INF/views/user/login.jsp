@@ -9,12 +9,6 @@
 
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 
-<script>
-	$(function() {
-
-	});
-</script>
-
 <style>
 .card-body {
 	background-color: #C6D7E0;

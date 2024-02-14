@@ -30,8 +30,11 @@ import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
+import kr.co.softsoldesk.Interceptor.TopMenuInterceptor3;
+import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.mapper.AdminMapper;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
@@ -77,7 +80,9 @@ public class ServletAppContext implements WebMvcConfigurer {
 	
 	@Resource(name="loginProuserBean")
 	private ProUserBean loginProuserBean; 
-
+	
+	@Resource(name="AdminloginBean")
+	private AdminBean AdminloginBean;
 	@Autowired
 	private PostService postService;
 	/*
@@ -163,14 +168,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 	
 		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
 		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
-		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean);
+		TopMenuInterceptor3 topMenuInterceptor3 = new TopMenuInterceptor3(AdminloginBean);
+		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean,AdminloginBean);
 
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
 		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
+		InterceptorRegistration reg5 = registry.addInterceptor(topMenuInterceptor3);
 		InterceptorRegistration reg3 = registry.addInterceptor(loginInterceptor);
 
 		reg1.addPathPatterns("/**");// 모든 요청에서 동작
 		reg2.addPathPatterns("/**");// 모든 요청에서 동작
+		reg5.addPathPatterns("/**");// 모든 요청에서 동작
 		//reg3.addPathPatterns("/common/calendar");
 		reg3.addPathPatterns("/common/myPage");
 		reg3.addPathPatterns("/common/AccountModify");
@@ -232,6 +240,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		factoryBean.setSqlSessionFactory(factory);
 
+		return factoryBean;
+	} 
+	
+	//관리자
+	@Bean
+	public MapperFactoryBean<AdminMapper> getAdminMapper(SqlSessionFactory factory) throws Exception {
+		
+		MapperFactoryBean<AdminMapper> factoryBean = new MapperFactoryBean<AdminMapper>(AdminMapper.class);
+		
+		factoryBean.setSqlSessionFactory(factory);
+		
 		return factoryBean;
 	} 
 	
