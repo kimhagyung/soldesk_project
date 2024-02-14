@@ -19,6 +19,14 @@ public class ReviewBean {
     
     private String writer_name;
     
+    private String category;
+    
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public String getWriter_name() {
 		return writer_name;
 	}

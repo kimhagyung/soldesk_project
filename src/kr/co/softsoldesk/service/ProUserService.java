@@ -158,16 +158,7 @@ public class ProUserService {
 		public void modifyProName(String pro_name, int pro_id) {
 			
 			proUserDao.modifyProName(pro_name, pro_id);
-		}
-		//public List<Map<String, String>> getCategoryList(int pro_id) {
-			
-			//return proUserDao.getCategoryList(pro_id);
-		//}
-		
-		//public ProUserBean getCategoryList(int pro_id) {
-			
-		//	return proUserDao.getCategoryList(pro_id);
-		//}
+		} 
 		
 		public String getCategory11(int pro_id) {
 			

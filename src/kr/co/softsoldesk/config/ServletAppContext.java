@@ -39,6 +39,7 @@ import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.EducationMapper;
+import kr.co.softsoldesk.mapper.InterestMapper;
 import kr.co.softsoldesk.mapper.PortFolioMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProProfileMapper;
@@ -158,6 +159,15 @@ public class ServletAppContext implements WebMvcConfigurer {
 	public MapperFactoryBean<PortFolioMapper> getPortFolioMapper(SqlSessionFactory factory)throws Exception{
 		
 		MapperFactoryBean<PortFolioMapper> factoryBean = new MapperFactoryBean<PortFolioMapper>(PortFolioMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	//찜한일류
+	@Bean
+	public MapperFactoryBean<InterestMapper> getInterestMapper(SqlSessionFactory factory)throws Exception{
+		
+		MapperFactoryBean<InterestMapper> factoryBean = new MapperFactoryBean<InterestMapper>(InterestMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		
 		return factoryBean;

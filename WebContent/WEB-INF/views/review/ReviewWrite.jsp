@@ -138,6 +138,16 @@
 		width: 70px;
     	border-radius: 8px;
 	}
+	
+	span.col-2 {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #B5B5B5;
+    border-radius: 8px;
+    margin-right: 7.5px;
+}
 		
     </style>
     <script>
@@ -146,6 +156,20 @@
        $(".footer").load("footer.html");
     });
   </script>
+  
+  <script>
+		var categoryData = {
+		   자격증시험: ['스포츠지도사 준비', '한국어능력시험 준비', '한국사능력시험 준비', '정보처리기사 준비', '컴퓨터활용능력 준비'],
+		   인테리어: ['가구리폼', '욕실/화장실 리모델링', '도배시공', '주방 리모델링', '조명 인테리어'],
+		   가전제품: ['전자제품 수리', '컴퓨터 수리', '비데 렌탈/구입/청소', '에어컨 설치 및 수리', '냉장고 설치 및 수리'],
+		   청소: ['에어컨 청소', '바퀴벌레 퇴치', '가구 청소', '계단/화장실 청소', '화재 복구/청소'],
+		   번역: ['한문 번역', '영어 번역', '독일어 번역', '일본어/일어 번역', '베트남어 번역'],
+		   문서: ['문서/글 작성', 'PPT 제작', '자막 제작', '사업계획서 제작', '데이터 복구'],
+		   개발외주: ['웹 개발', '게임 개발', 'iOS 개발', 'QA 테스트', 'ERP 개발'],
+		   반려동물: ['반려견 산책', '반려동물 미용', '반려동물 수제간식 만들기', '반려동물 훈련', '반려동물 장례'],
+		};
+</script>
+  
 </head>
 <body style="background-color: #FAFAFA;">
 <c:import url="/WEB-INF/views/include/header.jsp" />
@@ -158,10 +182,89 @@
                         <img src="../image/1.png" style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 1.5%"/>
                         <div class="profileInfo" style="margin-top: 0.6%;">
                             <div class="provider_name" style="font-size: 16px;"><strong>심리상담사 OOO</strong></div>
-                            <div class="service_name" style="font-size: 14px; color: #737373;">성인 심리상담</div>
+                            <div class="service_name" style="font-size: 14px; color: #737373;">일류</div>
                         </div>
                     </div>
                     <div style="width: 75%;">
+                    
+                    	<div class="provider_serviceKind"
+								style="width: 75%; padding-top: 45px;">
+								<div class="star_rate_title" style="font-size: 16px;">
+									<strong>어떤 서비스를 받으셨나요?</strong>
+								</div>
+								<div class="serviceExplain"
+									style="color: #B5B5B5; font-size: 14px;">카테고리를 선택해주세요</div>
+								
+								<!-- 카테고리 모달 -->
+							<div class="postInfo">
+								<span class="col-2 mt-2">
+									<button class="btn button categoryBtn" data-bs-toggle="modal"
+										data-bs-target="#exampleModal" aria-controls="category">
+										카테고리 <i class="bi bi-caret-down"></i>
+									</button>
+								</span>
+
+							</div>
+							
+							<!-- 카테고리 클릭하면 보이는 모달창 -->
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-scrollable">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리
+												선택</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="accordion">
+												<!-- 아래 스크립트를 body 내부에 추가하세요 -->
+												<script>
+							// 선택된 데이터를 사용하여 출력하는 부분
+							$.each(categoryData, function (city, districts) {
+								document.write('<div class="accordion-item">');
+								document.write('<h2 class="accordion-header">');
+								document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '" aria-expanded="false" aria-controls="' + city + '">');
+								document.write(city);
+								document.write('</button></h2>');
+								document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#category">');
+								document.write('<ul class="list-group">');
+									
+								$.each(districts, function (index, district) {
+									document.write('<button type="button" class="list-group-item list-group-item-action ctgBtn" data-district="' + district + '">' + district + '</button>');
+								});
+								document.write('</ul></div></div>');
+							}); 
+							
+						    $(".ctgBtn").click(function () {
+						        $(".ctgBtn").removeClass("selected");
+						        $(this).addClass("selected");
+
+						        var selectedCategory = $(this).data("district");
+
+						        console.log('선택한 카테고리:', selectedCategory);
+
+						        // 폼이나 필요한 곳에 값 설정
+						        document.getElementById("modalSelectedCategory").value = selectedCategory;
+
+						        // 모달 닫기
+						        $("#exampleModal").modal('hide');
+						        $(".categoryBtn").text(selectedCategory);
+						        
+						        
+						 
+						    });
+						</script>
+											</div>
+										</div>
+										<div class="modal-footer" style="border: none; height: 30px;">
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
                     
                     	<div class="provider_star_rate"
 								style="width: 75%; padding-top: 45px;">
@@ -192,7 +295,8 @@
 							</div>
 							
 						<form:form action="${root }/review/ReviewWrite_pro" method="post" modelAttribute="writeReviewBean" enctype="multipart/form-data">
-
+							
+							<form:hidden path="category" id="modalSelectedCategory" name="selectedCategory" value=""/>
 							<form:hidden path="rating" id="rating" />
 							<form:hidden path="pro_id" id="pro_id" name="pro_id" value="" /> <!-- url에서의 pro_id 저장 -->
 							
@@ -290,13 +394,13 @@
 	                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
 	                selectedImageDiv.append(img);
 
-	                const removeButton = $('<button>').text('삭제').addClass('remove-button');
+	               /*  const removeButton = $('<button>').text('삭제').addClass('remove-button');
 	                removeButton.on('click', function () {
 	                    img.remove();
 	                    removeButton.remove();
 	                });
 
-	                img.after(removeButton);
+	                img.after(removeButton); */
 	            };
 
 	            reader.readAsDataURL(file);
