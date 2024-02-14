@@ -124,6 +124,59 @@ $(document).ready(function() {
     });
 });
 
+//가격
+$(document).ready(function () {
+    // 저장 버튼 클릭 시
+    $("#saveBtn3").click(function () {
+        // 편집 중인 텍스트 내용을 가져오기
+        var editedPrice = $("#editTextArea3").val();
+
+        // Ajax를 사용하여 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "${root}/pro/expert_modify/",  // 수정이 필요한 엔드포인트로 변경
+            contentType: "application/json",
+            data: JSON.stringify({ price: editedPrice }),  // 데이터를 JSON 문자열로 변환
+            success: function (response) {
+                // 성공 시 서버 응답에 대한 처리
+                console.log(response);
+                // 수정된 내용을 화면에 업데이트
+                $("#priceContent").text(editedPrice);
+                // 편집 영역 감추기, 보여주기 등 필요한 로직 추가
+            },
+            error: function (error) {
+                // 오류 시 처리
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+//활동 지역
+$(document).ready(function () {
+//저장 버튼 클릭 시
+	$("#saveBtn5").click(function() {
+	    // 활동 지역 정보 가져오기
+	    var selectedLocation = $("#locationContent").val();
+	
+	    // AJAX 요청을 사용하여 서버로 데이터 전송
+	    $.ajax({
+	        type: "POST",
+	        url: "${root}/pro/expert_modify2/",
+	        contentType: "application/json",
+	        data: JSON.stringify({ active_location: selectedLocation, pro_id:"${param.id}" }),
+	        success: function(response) {
+	            // 성공 시 서버 응답 처리
+	            console.log(response);
+	        },
+	        error: function(error) {
+	            // 오류 시 처리
+	            console.error("오류:", error);
+	        }
+	    });
+	});
+});
+
 $(document).ready(function() {
     // 페이지가 로드될 때 데이터를 가져오는 함수 호출
 
@@ -142,8 +195,8 @@ function loadData() {
 
             // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
             // 활동 지역
-            $('#regionContent').text(data[0].activity_region);
-            //$('#sample6_address').val(data.activity_region);
+            $('#active_locationContent').text(data[0].active_location);
+            //$('#sample6_address').val(data.active_location);
             //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
 
             // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
@@ -169,7 +222,6 @@ function loadData() {
     
 loadData();
 });
-
 
 </script>
 
@@ -256,7 +308,7 @@ loadData();
 		            </div>
 		        </div>
 		        <p></p>
-		        <p id="locationContent">지역이 저장될 위치</p>
+		        <p id="locationContent"></p>
 		        <p></p>
 		    </div>
 		</div>

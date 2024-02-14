@@ -153,12 +153,12 @@ $(document).ready(function () {
     });
 });
 
-//활동 지역
+//활동 지역(head쪽 script)
 $(document).ready(function () {
 //저장 버튼 클릭 시
 	$("#saveBtn5").click(function() {
 	    // 활동 지역 정보 가져오기
-	    var selectedLocation = $("#locationContent").val();
+	    var selectedLocation = $("#locationContent").text();
 	
 	    // AJAX 요청을 사용하여 서버로 데이터 전송
 	    $.ajax({
@@ -196,10 +196,13 @@ function loadData() {
 
             // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
             // 활동 지역
-            $('#active_locationContent').text(data[0].active_location);
+            $('#locationContent').text(data[0].active_location);
             //$('#sample6_address').val(data.active_location);
             //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
-
+			
+            // 진행도
+			var progress = data[0].profile_completion;
+			$('.progress-bar').css('width', progress + '%');
             // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
 
             // 예시: 이동 가능 거리
@@ -395,7 +398,7 @@ loadData();
 		            </div>
 		        </div>
 		        <p></p>
-		        <p id="locationContent">지역이 저장될 위치</p>
+		        <p id="locationContent">${location }</p>
 		        <p></p>
 		    </div>
 		</div>
@@ -825,7 +828,6 @@ $(function () {
         $(this).addClass("d-none");
         // 저장 모드일 때 입력창 사라짐
         $("#locationContent").show();
-        // 여기서 저장된 내용을 서버로 전송하는 코드를 추가해야 합니다.
     });
 
     // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
@@ -963,14 +965,6 @@ $(function () {
     });
 </script>
 
-
-
-
-<script> // 포폴 페이지로 이동하는 버튼
-    //function redirectToPortfolioPage() {
-    // window.location.href = 'Portfolio.html';
-    //}
-</script>
 
 </body>
 </html>

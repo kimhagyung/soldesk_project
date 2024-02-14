@@ -95,6 +95,9 @@ public class ProProfileController {
           // model.addAttribute("careerList", careerList);
            model.addAttribute("proUserId", loginProuserBean.getPro_id());
            
+           String location = proUserService.getActive_location(loginProuserBean.getPro_id());
+           
+           model.addAttribute("location", location);
            
            //model.addAttribute("educationList", educationList);
            //model.addAttribute("proUserId", loginProuserBean.getPro_id());
@@ -175,7 +178,7 @@ public class ProProfileController {
    //활동 지역 수정
    @PostMapping(value = "/expert_modify2", consumes = "application/json")
    @ResponseBody
-   public String expert_modify(@RequestBody ProUserBean modifyActive_locationBean) {
+   public String expert_modify2(@RequestBody ProUserBean modifyActive_locationBean) {
       
       proUserService.modifyActive_location(modifyActive_locationBean.getActive_location(), loginProuserBean.getPro_id());
       

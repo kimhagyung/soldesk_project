@@ -76,6 +76,11 @@ public class ProUserService {
 	      return proUserDao.getProUserName(pro_id);
 	   }
 	
+	public String getActive_location(int pro_id) {//!!!
+	      
+	      return proUserDao.getActive_location(pro_id);
+	   }
+	
 	public void modifyActive_location(String active_location, int pro_id) {
 	      
 	      proUserDao.modifyActive_location(active_location, pro_id);

@@ -39,6 +39,12 @@ public class ProUserDao {
 	      return ProuserMapper.getProUserName(pro_id);
 	   }
 	
+	//!!!
+	public String getActive_location(int pro_id) {
+	      
+	      return ProuserMapper.getActive_location(pro_id);
+	   }
+	
 	public void modifyActive_location(String active_location, int pro_id) {
 	      
 		ProuserMapper.modifyActive_location(active_location, pro_id);
