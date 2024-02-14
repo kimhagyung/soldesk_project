@@ -1,6 +1,6 @@
 package kr.co.softsoldesk.controller;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.co.softsoldesk.beans.ChatroomBean;
+import kr.co.softsoldesk.beans.ChatRoomBean;
+import kr.co.softsoldesk.beans.ChatRoomSelect;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.QuestionBean;
 import kr.co.softsoldesk.beans.UserBean;
@@ -23,10 +24,10 @@ public class QuestionsCotroller {
 	ProUserService proUserService;
 	
 	QuestionBean questionBean;
-	
-	@Autowired
+	  
+	@Autowired 
     private UserBean loginUserBean;
-
+      
     @Autowired
     private ProUserBean loginProuserBean;
     
@@ -75,17 +76,31 @@ public class QuestionsCotroller {
 	    return "received_quotation";
 	}
 	
-	 @GetMapping("/ChattingList")
-	    public String chattingList(Model model) { 
-	        return "ChattingList";
+	@GetMapping("/ChattingList")
+	public String chattingList(Model model) {
+	    // 로그인한 사용자의 ID 가져오기
+	    int userId;
+	    if (loginUserBean.isUserLogin()) {
+	        userId = loginUserBean.getUser_id();
+	    } else if (loginProuserBean.isProuserLogin()) {
+	        userId = loginProuserBean.getPro_id();
+	    } else {
+	        // 로그인하지 않은 경우 처리, 예: 로그인 페이지로 리다이렉트
+	        return "redirect:/index";
 	    }
+
+	    List<ChatRoomSelect> chatrooms = chatService.findChatroomsWithProNameByUserId(userId);
+	    model.addAttribute("chatrooms", chatrooms);
+	    return "ChattingList";
+	}
 	  
-	
-	
+	 
+	/* @RequestParam("s") int serviceCategoryId */
 	 @GetMapping("/chatting")
 	 public String chatting(Model model, 
-			 @RequestParam("pro_id") int proId, // 프로의 ID를 요청 파라미터로 받음
-	         @RequestParam("s") int serviceCategoryId) {
+			 @RequestParam("pro_id") int proId,
+			 @RequestParam(value = "s", required = false) Integer serviceCategoryId// 프로의 ID를 요청 파라미터로 받음
+	         ) {
 	     
 	     int userId; // 사용자 ID 초기화
 	     if (loginUserBean.isUserLogin()) {
@@ -94,14 +109,22 @@ public class QuestionsCotroller {
 	         userId = loginProuserBean.getPro_id(); // 전문가로 로그인한 경우
 	     } else {
 	         // 로그인하지 않은 경우, 로그인 페이지로 리다이렉트하거나 오류 메시지 표시
-	         return "redirect:/login"; // 예시: 로그인 페이지 경로로 리다이렉트
+	         return "redirect:/index"; // 예시: 로그인 페이지 경로로 리다이렉트
 	     }
 
-	     // 채팅방 생성
-	     ChatroomBean chatroom = new ChatroomBean();
-	     chatroom.setPro_id(proId); // 프로의 ID 설정
-	     chatroom.setUser_id(userId); // 사용자의 ID 설정
-	     chatService.createChatroom(chatroom); // 채팅방 생성 서비스 호출
+	  // 채팅방 생성 또는 기존 채팅방 조회
+	     Integer existingRoomId = chatService.findChatroomIdByProIdAndUserId(proId, userId);
+	     if (existingRoomId == null) {
+	         // 새 채팅방 생성
+	         ChatRoomBean chatroom = new ChatRoomBean();
+	         chatroom.setPro_id(proId);
+	         chatroom.setUser_id(userId);
+	         chatService.createChatroom(chatroom);
+	         model.addAttribute("roomId", chatroom.getRoom_id()); // 새로 생성된 채팅방 ID
+	     } else {
+	         // 기존 채팅방 ID 사용
+	         model.addAttribute("roomId", existingRoomId);
+	     }
 	     
 	     
 	      model.addAttribute("currentUserId", userId); 
@@ -113,6 +136,9 @@ public class QuestionsCotroller {
 	      model.addAttribute("6", questionBean.getDevelopment()); //문서
 	      model.addAttribute("7", questionBean.getDocument()); //개발외주
 	      model.addAttribute("8", questionBean.getPet()); //반려동
+	      
+	      
+	      
 
 	     return "chatting";
 	 }

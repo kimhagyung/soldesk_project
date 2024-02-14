@@ -18,7 +18,7 @@
 body {
    height: 100%;
 }
-
+ 
 .chatTitle {
    display: flex;
    justify-content: space-between;
@@ -531,15 +531,27 @@ textarea {
          console.log('Selected file:', file);
       }
 
-      function moveToChattingList() {
-         window.location.href = '${root}/ChattingList.html';
+      function moveToChatting(proId, serviceCategoryId) {
+          if (!proId) {
+              alert("pro_id가 제공되지 않았습니다.");
+              return; // pro_id가 없으면 함수 실행을 중지
+          }
+          var url = `${root}/chatting?pro_id=${proId}`;
+          if (serviceCategoryId !== undefined && serviceCategoryId !== null) {
+              url += `&s=${serviceCategoryId}`;
+          }
+          window.location.href = url;
       }
+     
+      
    </script>
    
    <script>
        var stompClient = null;
        var CURRENT_USER_ID = '${currentUserId}'; 
        var USER_TYPE = '${userType}'; // 사용자 유형 받기
+       var roomId = '${roomId}';
+       console.log("현재 채팅방 ID: ", roomId);
        
        function connect() {
           var socket = new SockJS('/ws');
