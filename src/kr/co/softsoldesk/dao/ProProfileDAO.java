@@ -46,4 +46,17 @@ public class ProProfileDAO {
    public String getImageInfo(int pro_id) {
       return proProfileMapper.getImageInfo(pro_id);
    }
+   
+   //프로필 이미지
+   public ExpertBean getProfileInfo(int pro_id) {
+	      return proProfileMapper.getProfileInfo(pro_id);
+	   }
+	   
+	   public void modifyProfileImg(ExpertBean profileImgExpertBean) {
+	      proProfileMapper.modifyProfileImg(profileImgExpertBean);
+	   }
+	   
+	   public String getProfileImgInfo(int pro_id) {
+	      return proProfileMapper.getProfileImgInfo(pro_id);
+	   }
 }

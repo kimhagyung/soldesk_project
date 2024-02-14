@@ -263,26 +263,120 @@ $(document).ready(function() {
             }
         });
     });
-});
-
+});  
+ 
 //4. 카테고리 수정...
+
+ $(function () {
+        var maxServices = 4; // 최대 추가 가능한 서비스 개수
+
+        // selectCategoryBtn 버튼에 대한 클릭 이벤트 핸들러 추가
+        $("#selectCategoryBtn").click(function () {
+            // 현재 추가된 서비스의 개수 확인
+            var currentServices = $(".list-group-provided-services li").length;
+
+            // 최대 서비스 개수보다 적은 경우에만 추가 로직 수행
+            if (currentServices < maxServices) {
+                var selectedCategory = $(".list-group-item.selected").text();
+
+                if (selectedCategory) {
+                    console.log('선택된 카테고리:', selectedCategory);
+                    $("#exampleModal").modal('hide');
+
+                    var newItem = $("<li class='list-group-item d-flex justify-content-between align-items-center' id='providedServiceItem'>" + selectedCategory + "<button class='btn btn-sm btn-secondary ml-auto' onclick='removeService(this)' style='display: inline-block;'>삭제</button></li>");
+
+                    newItem.find("button").click(function () {
+                        newItem.remove();
+                    });
+
+                    $(".list-group-provided-services").append(newItem);
+                } else {
+                    console.log('카테고리를 선택하세요.');
+                }
+            } else {
+                alert('서비스는 최대 ' + (maxServices-1) + '개까지만 추가할 수 있습니다.');
+            }
+        });
+
+        // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
+        $(".list-group-item").click(function () {
+            // 모든 항목에서 "selected" 클래스 제거
+            $(".list-group-item").removeClass("selected");
+
+            // 클릭된 항목에 "selected" 클래스 추가
+            $(this).addClass("selected");
+        });
+
+        // 수정 버튼 클릭 시 처리
+        $("#editBtn4").click(function () {
+            // 수정 버튼 클릭 시 처리
+            $(this).addClass("d-none");
+            $("#saveBtn4").removeClass("d-none");
+            $(".deleteBtn").addClass("d-none");
+            // 수정 모드일 때 입력창 나타남
+            $(".list-group-provided-services .btn-secondary").attr("disabled", false).show();
+            // 서비스 추가 버튼 나타남
+            $(".list-group-item .categoryBtn").show();
+        });
+
+        // 저장 버튼 클릭 시 처리
+        $("#saveBtn4").click(function () {
+            // 저장 버튼 클릭 시 처리
+            $("#editBtn4").removeClass("d-none");
+            $(this).addClass("d-none");
+            $(".deleteBtn").removeClass("d-none");
+            // 저장 모드일 때 입력창 사라짐
+            $(".list-group-provided-services .btn-secondary").attr("disabled", true).hide();
+            // 서비스 추가 버튼 사라짐
+            $(".list-group-item .categoryBtn").hide();
+        });
+
+        // 서비스 삭제 버튼 클릭 시 처리
+        $(".deleteBtn").click(function () {
+        	
+            $(this).closest("li").remove();
+        });
+    });
+
+    // 제공 서비스 섹션에서 삭제 버튼 클릭 시 해당 li 제거
+    //function removeService(button) {
+    //    $(button).closest("li").remove();
+    //}
+    
+    
+ // 선택된 값이 클릭되었을 때 호출되는 함수
+  var active_detailcategory1, active_detailcategory2, active_detailcategory3;
+   function selectCategory(selectedValue) {
+       // 변수에 값이 할당되어 있지 않으면 할당
+       if (!active_detailcategory1) {
+       	active_detailcategory1 = selectedValue;
+       } else if (!active_detailcategory2) {
+       	active_detailcategory2 = selectedValue;
+       } else if (!active_detailcategory3) {
+       	active_detailcategory3 = selectedValue;
+       }
+
+   }
  $(document).ready(function () {
+	 
     $("#saveBtn4").click(function () {
         // 콘솔에 선택된 카테고리 목록 출력
-        console.log("선택된 카테고리 목록:", selectedCategories);
+        console.log("선택된 카테고리1:", active_detailcategory1);
+        console.log("선택된 카테고리2:", active_detailcategory2);
+        console.log("선택된 카테고리3:", active_detailcategory3);
 
         // 기존 카테고리 정보 가져오기
-        var cate1 = "${cate1}";  // 기존의 카테고리 정보를 서버에서 받아오는 방식으로 수정
-        var cate2 = "${cate2}";
-        var cate3 = "${cate3}";
+        //var cate1 = "${cate1}";  // 기존의 카테고리 정보를 서버에서 받아오는 방식으로 수정
+        //var cate2 = "${cate2}";
+        //var cate3 = "${cate3}";
         
-        console.log("가져온 카테고리들들들:", cate1, cate2, cate3);
+        //console.log("가져온 카테고리들들들:", cate1, cate2, cate3);
 
         // JSON 형식으로 변환
         var jsonData = JSON.stringify({
-            active_detailcategory1: selectedCategories[0] || cate1,
-            active_detailcategory2: selectedCategories[1] || cate2,
-            active_detailcategory3: selectedCategories[2] || cate3,
+            active_detailcategory1: active_detailcategory1,
+            active_detailcategory2: active_detailcategory2,
+            active_detailcategory3: active_detailcategory3,   
             pro_id: "${param.id}"
         });
 
@@ -303,9 +397,10 @@ $(document).ready(function() {
         });
 
         // 선택된 카테고리 배열 초기화
-        selectedCategories = [];
+       // selectedCategories = [];
     });
-});
+}); 
+ 
     
     
 //카테고리 삭제 버튼....
@@ -423,6 +518,78 @@ function handleRemoveBtn3(categoryId, buttonElement) {
     });
 }
 
+//활동 지역(head쪽 script)
+$(document).ready(function () {
+//저장 버튼 클릭 시
+   $("#saveBtn5").click(function() {
+       // 활동 지역 정보 가져오기
+       var selectedLocation = $("#locationContent").text();
+   
+       // AJAX 요청을 사용하여 서버로 데이터 전송
+       $.ajax({
+           type: "POST",
+           url: "${root}/pro/expert_modify2/",
+           contentType: "application/json",
+           data: JSON.stringify({ active_location: selectedLocation, pro_id:"${param.id}" }),
+           success: function(response) {
+               // 성공 시 서버 응답 처리
+               console.log(response);
+           },
+           error: function(error) {
+               // 오류 시 처리
+               console.error("오류:", error);
+           }
+       });
+   });
+});
+
+//일류 지역 수정.....
+$(document).ready(function() {
+    // 페이지가 로드될 때 데이터를 가져오는 함수 호출
+
+function loadData() {
+    $.ajax({
+        url: '${root}/pro/expert/events', // 위에서 설정한 엔드포인트로 요청을 보냅니다.
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 성공적으로 데이터를 받아왔을 때의 처리
+            console.log('데이터:', data); // 데이터를 콘솔에 출력
+            
+         // pro_detailed_introduction 값을 콘솔에 출력
+             console.log('pro_detailed_introduction:', data[0].pro_detailed_introduction);
+            console.log('pro_id: ' + data[0].pro_id);
+
+            // 여기서 data를 사용하여 각 부분에 데이터를 채웁니다.
+            // 활동 지역
+            $('#locationContent').text(data[0].active_location);
+            //$('#sample6_address').val(data.active_location);
+            //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
+
+            // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
+
+            // 예시: 이동 가능 거리
+            $('.content').text(data.movable_distance);
+
+            // 자격증 및 기타 서류 등록 정보 - 여기에 자유롭게 추가
+
+            // 고수 서비스 상세설명
+             $('#descriptionContent').html(data[0].pro_detailed_introduction);
+
+            // 가격
+            $('#priceContent').text(data[0].price);
+            
+           
+        },
+        error: function(err) {
+            console.error('데이터 로딩 중 오류 발생:', err);
+        }
+    });
+}
+    
+loadData();
+});
+
 
 $(document).ready(function() {
     // 페이지가 로드될 때 데이터를 가져오는 함수 호출
@@ -480,15 +647,15 @@ loadData();
     <div class="container mt-5"> <!-- 0.완성도 -->
         <div class="row justify-content-center">
             <div class="col-md-6 section-divider">
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-2 Subtitle">완성도</div>
     				<div class="col-md-10" style="font-size: 20px; font-weight: bold; color: #85BCEB; ">15%</div>
-				</div>
+				</div> -->
 				<div class="row">
-	                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0"
+	               <!--  <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0"
 	                     aria-valuemin="0" aria-valuemax="100" style="padding: 0;">
 	                    <div class="progress-bar" style="width: 15%; border-radius: 10px; background-color: #85BCEB;"></div>
-	                </div>
+	                </div> -->
 	            </div>
 	            <p></p>
 	            <p></p>
@@ -501,16 +668,35 @@ loadData();
 	    <div class="col-md-6">
 	        <div class="row">
 	            <div class="col-md-4">
-	                <div class="profilecontainer" style="margin-top: 8%; margin-bottom: 8%; position: relative;">
-	                    <img class="uploaded-image" id="profile-image" src="../image/1.png" alt="프로필 이미지"
-	                        style="width: 200px; height: 200px; border-radius: 30px; position: relative; border: 1px solid #F3F3F3;">
-	                    <button id="profile-btn"
-	                        style=" width: 40px; height: 40px; border: 1px solid #F3F3F3; position: absolute;
-	                        bottom: 0; right: 0; border-top-left-radius: 20px; border-bottom-right-radius: 20px;background-color: #d2d2d2; padding: 5px;">
-	                        <i class="bi bi-camera fs-5"></i>
-	                    </button>
-	                    <input type="file" name="profile-myfile" id="profile-myfile" accept="image/*" style="display: none;" />
-	                </div>
+	                <form:form action="${root }/pro/profileImg_pro" method="post" modelAttribute="profileImgExpertBean" enctype="multipart/form-data">
+                  <form:hidden path="pro_id" />
+                  <div class="profilecontainer"
+                     style="margin-top: 8%; margin-bottom: 8%; position: relative;">
+                     
+                     <c:choose>
+                        <c:when test="${profileImgInfo == null }">
+                           <img class="uploaded-image" id="profile-image"
+                              src="../image/user-solid.svg" alt="프로필 이미지"
+                              style="width: 200px; height: 200px; border-radius: 30px; position: relative; border: 1px solid #F3F3F3; padding: 15px;3">
+                        </c:when>
+                        <c:otherwise>
+                           <img class="uploaded-image" id="profile-image"
+                              src="${root }/upload/${profileImgInfo}" alt="프로필 이미지"
+                              style="width: 200px; height: 200px; border-radius: 30px; position: relative; border: 1px solid #F3F3F3;">
+                        </c:otherwise>
+                     </c:choose>
+                     
+                     
+                     <form:hidden path="certification_documents_images" />
+                     <label id="profile-btn" for="certification_documents_images"
+                        style="width: 40px; height: 40px; border: 1px solid #F3F3F3; position: absolute; bottom: 0; right: 0; border-top-left-radius: 20px; border-bottom-right-radius: 20px; background-color: #d2d2d2; padding: 5px;">
+                        <i class="bi bi-camera fs-5"></i>
+                     </label>
+                     <form:input path="upload_file" type="file" name="profile-myfile"
+                        id="profile-myfile" accept="image/*" style="display: none;" />
+                  </div>
+                  <form:button class="ms-4 btn btn-light">프로필 이미지 수정</form:button>
+               </form:form>
 	            </div>
 	            <div class="col-md">
 					<span class="col" style=" font-size: 36px; font-weight: bold; color: #3E3E3E; text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -618,37 +804,22 @@ loadData();
 					</div>
 					<div class="modal-body">
 						<div class="accordion" id="categoryAccordion">
-							 <script>
-                        var selectedCategories = []; // 선택된 카테고리를 담을 배열
+					<script> 
+					    $.each(categoryData, function(cate, districts) {
+					        document.write('<div class="accordion-item">');
+					        document.write('<h2 class="accordion-header">');
+					        document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + cate + '">' + cate + '</button>');
+					        document.write('</h2>');
+					        document.write('<div id="' + cate + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+					        document.write('<ul class="list-group">');
+					        $.each(districts, function(index, district) {
+					        	document.write('<button type="button" class="list-group-item list-group-item-action selectedd" onclick="selectCategory(\'' + district + '\')">' + district + '</button>');
+					        });
+					        document.write('</ul></div></div>');
+					    });
+					 
+					</script>
 
-                        $.each(categoryData, function(cate, districts) {
-                            document.write('<div class="accordion-item">');
-                            document.write('<h2 class="accordion-header">');
-                            document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + cate + '">'+ cate + '</button>');
-                            document.write('</h2>');
-                            document.write('<div id="' + cate + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
-                            document.write('<ul class="list-group">');
-                            $.each(districts, function(index, district) {
-                                document.write('<button type="button" class="list-group-item list-group-item-action" onclick="selectCategory(this)">'+ district + '</button>');
-                            });
-                            document.write('</ul></div></div>');
-                        });
-
-                        function selectCategory(button) {
-                            var categoryName = $(button).text().trim();
-                            if (selectedCategories.includes(categoryName)) {
-                                // 이미 선택된 경우 해제
-                                selectedCategories = selectedCategories.filter(function (category) {
-                                    return category !== categoryName;
-                                });
-                            } else {
-                                // 선택되지 않은 경우 추가
-                                selectedCategories.push(categoryName);
-                            }
-
-                            console.log("선택된 카테고리:", selectedCategories);
-                        }
-                    </script>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -659,21 +830,56 @@ loadData();
 			</div>
 		</div>
 	
-	<div class="container mt-3 d-flex justify-content-center">
-	    <!-- 5.활동 지역 -->
-	    <div class="col-md-6 section-divider">
-	        <div class="row">
-	            <span class="col Subtitle">활동 지역</span>
-	            <div class="col text-end">
-	                <button type="button" class="InvisibleButton AfterMD" onclick="enableExecDaumPostcode()">수정</button>
-	            </div>
-	        </div>
-	        <p></p>
-	        <input type="text" id="sample6_address" placeholder="주소" style="border: none; cursor: default; outline: none; width: 400px;" readonly><br>
-	        <input type="text" id="sample6_extraAddress" placeholder="참고항목" style="border: none; cursor: default; outline: none; width: 400px;" readonly>
-	        <p></p>
-	    </div>
-	</div>
+	<div class="container mt-3 d-flex justify-content-center">   <!-- 5.활동 지역 -->
+          <div class="col-md-6 section-divider">
+              <div class="row">
+                  <span class="col Subtitle">활동 지역</span>
+                  <div class="col text-end">
+                      <button type="button" class="InvisibleButton AfterMD" id="editBtn5">수정</button>
+                      <button type="button" class="d-none InvisibleButton BeforeMD" id="saveBtn5">저장</button>
+                  </div>
+              </div>
+              <p></p>
+              <p id="locationContent">${location }</p>
+              <p></p>
+          </div>
+      </div>
+      
+      <!-- 지역 모달 -->
+      <div class="modal fade" id="locationModal" tabindex="-1"
+         aria-labelledby="locationModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="locationModalLabel">지역 선택</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="accordion" id="categoryAccordion">
+                     <!-- 아래 스크립트를 body 내부에 추가하세요 -->
+                     <script>
+                        $.each(cityDatas, function(city, districts) {
+                           document.write('<div class="accordion-item">');
+                           document.write('<h2 class="accordion-header">');
+                           document.write('<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + city + '">' + city + '</button>');
+                           document.write('</h2>');
+                           document.write('<div id="' + city + '" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">');
+                           document.write('<ul class="list-group">');
+                        $.each(districts, function(index, district) {
+                           document.write('<button type="button" class="list-group-item list-group-item-action selected">' + district + '</button>');
+                           });
+                           document.write('</ul></div></div>');
+                        });
+                     </script>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                  <button type="button" class="btn btn-primary" id="selectLocationBtn">선택</button>
+               </div>
+            </div>
+         </div>
+      </div>
 
 	
 	<div class="container mt-3 d-flex justify-content-center"> <!-- 7.자격증 및 기타 서류 등록 -->
@@ -871,12 +1077,41 @@ loadData();
 			<div class="row">
 				<span class="col Subtitle">포트폴리오</span>
 				<div class="col text-end">
-					<button type="button" class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/career'">등록하기</button>
+					<button class="InvisibleButton BeforeMD" onclick="location.href='${root}/pro/Portfolio?id=${param.id }'">등록하기</button>
 				</div>
 			</div>
-			<p></p>
-			<p class="content">설명과 포트폴리오 등록버튼</p>
-			<h5 class="content">@이동할 포폴 페이지 제작@</h5>
+			<p></p> 
+			<c:forEach var="obj" items="${portfoliList }">
+			
+				<hr>
+				<div class="portfolio-feed" style="cursor:pointer ;" >
+					<div class="row">
+						<div class="col-10"> 
+							<div class="col">
+								<div class="row-3">
+									서비스 종류:${obj.service_type } 
+								</div>
+								<div class="row-3">
+									제목: ${obj.portfolio_title }  
+								</div>
+								<div class="row-3 detailed-content">
+									상세 내용:${obj.detailed_introduction }
+								</div>
+							</div> 
+						</div>
+						  <c:if test="${obj.detailed_images != null}">
+							<c:forEach var="portfolio_img" items="${fn:split(obj.detailed_images, ',')}" varStatus="loop">
+								<c:if test="${loop.index == 0}"> 
+									<div class="col-2"> 
+  										<img src="${root}/portfolio/${portfolio_img}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+									</div>
+								</c:if> 
+							</c:forEach>
+						</c:if>	  		
+						<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/Portfolio_modify?portfolio_id=${obj.portfolio_id }'">수정</button>
+					</div>
+				</div> 
+			</c:forEach>
 			<p></p>
 		</div>
 	</div>
@@ -892,9 +1127,9 @@ loadData();
 
 <!-- 프로필 섹션 스크립트 -->
 <script>
-    window.onload = function () {
+    /* window.onload = function () {
         document.getElementById('profile-image').src = '../image/1.png';
-    };
+    }; */
 
     document.getElementById('profile-btn').addEventListener('click', function () {
         document.getElementById('profile-myfile').click();
@@ -1003,81 +1238,57 @@ $(function() {
 </script>
 
 <script> //제공 서비스
-    $(function () {
-        var maxServices = 4; // 최대 추가 가능한 서비스 개수
+   
+</script>
 
-        // selectCategoryBtn 버튼에 대한 클릭 이벤트 핸들러 추가
-        $("#selectCategoryBtn").click(function () {
-            // 현재 추가된 서비스의 개수 확인
-            var currentServices = $(".list-group-provided-services li").length;
-
-            // 최대 서비스 개수보다 적은 경우에만 추가 로직 수행
-            if (currentServices < maxServices) {
-                var selectedCategory = $(".list-group-item.selected").text();
-
-                if (selectedCategory) {
-                    console.log('선택된 카테고리:', selectedCategory);
-                    $("#exampleModal").modal('hide');
-
-                    var newItem = $("<li class='list-group-item d-flex justify-content-between align-items-center' id='providedServiceItem'>" + selectedCategory + "<button class='btn btn-sm btn-secondary ml-auto' onclick='removeService(this)' style='display: inline-block;'>삭제</button></li>");
-
-                    newItem.find("button").click(function () {
-                        newItem.remove();
-                    });
-
-                    $(".list-group-provided-services").append(newItem);
-                } else {
-                    console.log('카테고리를 선택하세요.');
-                }
-            } else {
-                alert('서비스는 최대 ' + (maxServices-1) + '개까지만 추가할 수 있습니다.');
-            }
-        });
-
-        // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
-        $(".list-group-item").click(function () {
-            // 모든 항목에서 "selected" 클래스 제거
-            $(".list-group-item").removeClass("selected");
-
-            // 클릭된 항목에 "selected" 클래스 추가
-            $(this).addClass("selected");
-        });
-
+<script> // 활동 지역(아래쪽 script)
+$(function () {
+    // 수정 버튼 클릭 시 처리
+    $("#editBtn5").click(function () {
         // 수정 버튼 클릭 시 처리
-        $("#editBtn4").click(function () {
-            // 수정 버튼 클릭 시 처리
-            $(this).addClass("d-none");
-            $("#saveBtn4").removeClass("d-none");
-            $(".deleteBtn").addClass("d-none");
-            // 수정 모드일 때 입력창 나타남
-            $(".list-group-provided-services .btn-secondary").attr("disabled", false).show();
-            // 서비스 추가 버튼 나타남
-            $(".list-group-item .categoryBtn").show();
-        });
-
-        // 저장 버튼 클릭 시 처리
-        $("#saveBtn4").click(function () {
-            // 저장 버튼 클릭 시 처리
-            $("#editBtn4").removeClass("d-none");
-            $(this).addClass("d-none");
-            $(".deleteBtn").removeClass("d-none");
-            // 저장 모드일 때 입력창 사라짐
-            $(".list-group-provided-services .btn-secondary").attr("disabled", true).hide();
-            // 서비스 추가 버튼 사라짐
-            $(".list-group-item .categoryBtn").hide();
-        });
-
-        // 서비스 삭제 버튼 클릭 시 처리
-        $(".deleteBtn").click(function () {
-        	
-            $(this).closest("li").remove();
-        });
+        $(this).addClass("d-none");
+        $("#saveBtn5").removeClass("d-none");
+        // 수정 모드일 때 입력창 나타남
+        $("#locationModal").modal('show');
     });
 
-    // 제공 서비스 섹션에서 삭제 버튼 클릭 시 해당 li 제거
-    //function removeService(button) {
-    //    $(button).closest("li").remove();
-    //}
+    // 저장 버튼 클릭 시 처리
+    $("#saveBtn5").click(function () {
+        // 저장 버튼 클릭 시 처리
+        $("#editBtn5").removeClass("d-none");
+        $(this).addClass("d-none");
+        // 저장 모드일 때 입력창 사라짐
+        $("#locationContent").show();
+    });
+
+    // list-group 아이템에 대한 클릭 이벤트 핸들러 추가하여 "selected" 클래스를 토글함
+    $(".list-group-item").click(function () {
+        // 모든 항목에서 "selected" 클래스 제거
+        $(".list-group-item").removeClass("selected");
+
+        // 클릭된 항목에 "selected" 클래스 추가
+        $(this).addClass("selected");
+    });
+
+    // selectLocationBtn 버튼에 대한 클릭 이벤트 핸들러 추가
+    $("#selectLocationBtn").click(function () {
+        // 선택된 리스트 항목의 텍스트 내용 가져오기
+        var selectedLocation = $(".list-group-item.selected").text();
+
+        // 활동 지역이 선택되었는지 확인
+        if (selectedLocation) {
+            console.log('선택된 활동 지역:', selectedLocation);
+            // 모달 닫기
+            $("#locationModal").modal('hide');
+
+            // 선택된 활동 지역을 페이지에 표시
+            $("#locationContent").text(selectedLocation);
+        } else {
+            console.log('활동 지역을 선택하세요.');
+        }
+    });
+});
+
 </script>
     
 <script> // 5. 고수 서비스 상세설명

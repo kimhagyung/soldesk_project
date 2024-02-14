@@ -67,8 +67,46 @@ public class ProProfileService {
          proProfileDao.modifyImg(fileNames, pro_id);
 	   }
 	   
-	   public String getImageInfo(int pro_id) {
-	      return proProfileDao.getImageInfo(pro_id);
+   public String getImageInfo(int pro_id) {
+      return proProfileDao.getImageInfo(pro_id);
+   }
+   
+   //프로필 이미지
+   public ExpertBean getProfileInfo(int pro_id) {
+	      return proProfileDao.getProfileInfo(pro_id);
+	   }
+	   
+	   
+	private String saveUploadFile(MultipartFile upload_file) {
+	      
+	      String file_name = FilenameUtils.getBaseName(upload_file.getOriginalFilename()) + "." + 
+	            FilenameUtils.getExtension(upload_file.getOriginalFilename());
+	      
+	      
+	      try {
+	         upload_file.transferTo(new File(path_upload + "/" + file_name));
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      
+	      return file_name;
+	   }
+	   
+	   public void modifyProfileImg(ExpertBean profileImgExpertBean) {
+	      MultipartFile upload_file = profileImgExpertBean.getUpload_file();
+	      
+	      if(upload_file.getSize() > 0) {
+	         String file_name = saveUploadFile(upload_file);
+	         profileImgExpertBean.setCertification_documents_images(file_name);
+	         
+	      }
+	      
+	      proProfileDao.modifyProfileImg(profileImgExpertBean);
+	      
+	   }
+	   
+	   public String getProfileImgInfo(int pro_id) {
+	      return proProfileDao.getProfileImgInfo(pro_id);
 	   }
 	
 	

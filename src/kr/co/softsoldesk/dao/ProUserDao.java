@@ -70,9 +70,19 @@ public class ProUserDao {
 	}
 	
 	//카테고리 수정
-	public void modifyCategory(CateProuserBean modifyCategoryBean) {
+	public void modifyCategory(String active_detailcategory1,int pro_id) {
 		
-		ProuserMapper.modifyCategory(modifyCategoryBean);
+		ProuserMapper.modifyCategory(active_detailcategory1,pro_id);
+	}
+	
+	public void modifyCategory2(String active_detailcategory2,int pro_id) {
+		
+		ProuserMapper.modifyCategory2(active_detailcategory2,pro_id);
+	}
+	
+	public void modifyCategory3(String active_detailcategory3,int pro_id) {
+		
+		ProuserMapper.modifyCategory3(active_detailcategory3,pro_id);
 	}
 	
 	//카테고리 삭제
@@ -90,4 +100,18 @@ public class ProUserDao {
 		
 		ProuserMapper.deleteCategory3(pro_id);
 	}
+	
+	//일류 지역
+	//ProUserDao
+   public String getActive_location(int pro_id) {
+         
+         return ProuserMapper.getActive_location(pro_id);
+    }
+   
+   public void modifyActive_location(String active_location, int pro_id) {
+         
+      ProuserMapper.modifyActive_location(active_location, pro_id);
+   }
+   
+   
 }

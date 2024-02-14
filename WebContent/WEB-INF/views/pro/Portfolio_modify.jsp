@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -10,8 +11,7 @@
 <title>Insert title here</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="${root }/jquery/locdata.js"></script>
-<style>  
- 
+<style>
 .Explanation {
 	color: #B5B5B5;
 	font-size: 16px;
@@ -82,6 +82,7 @@ $(document).ready(function() {
         var option = $('<option>').attr('value', year).text(year);
         yearSelectElement.append(option);
     } 
+
 
     // 삭제 버튼 생성 함수
     function createDeleteButton(containerId, previewId) {
@@ -182,15 +183,15 @@ $(document).ready(function() {
 					<strong>필수 정보*</strong>
 				</div>
 
-				<form:form action="${root}/pro/ProPortfolio" method="post" modelAttribute="Proportfolio_pro" enctype="multipart/form-data">
-					
+				<form:form action="${root}/pro/ModifyProPortfolio" method="post" modelAttribute="ProportfolioModify" enctype="multipart/form-data">
+					<form:hidden path="portfolio_id"/>
 					<div class=form-container><!--enctype="multipart/form-data"  -->
 						<div class="mt-4">
 							<form:label path="service_type" class="form-label"
 								style="font-weight: bold;">서비스 종류</form:label>
 							<form:input path="service_type" autocomplete="off"
 								class="form-control required service"
-								placeholder="서비스한 활동명을 입력해 주세요" />
+								placeholder="서비스한 활동명을 입력해 주세요" value="${PortfolioIdList.service_type }" />
 							<div class="row">
 								<div class="col text-end"
 									style="color: #B5B5B5; font-size: 14px;">
@@ -205,7 +206,13 @@ $(document).ready(function() {
 								<form:label path="portfolio_title" class="form-label"
 									style="font-weight: bold;">포트폴리오 제목</form:label>
 								<form:input path="portfolio_title" autocomplete="off"
-									class="form-control" placeholder="포트폴리오 제목을 입력해주세요." /> 
+									class="form-control" placeholder="포트폴리오 제목을 입력해주세요." value="${PortfolioIdList.portfolio_title }" />
+								<!-- <div class="row">
+								<div class="col text-end"
+									style="color: #B5B5B5; font-size: 14px;">
+									<span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/30자
+								</div>
+							</div> -->
 							</div>
 						</div>
 
@@ -217,15 +224,15 @@ $(document).ready(function() {
 								<i class="bi bi-exclamation-circle" style="font-size: 14px;">&nbsp;이미지는
 									가로, 세로 600px 이상 1:1 비율로 권장합니다. (최대 10장)</i>
 							</div>
+							
 							<div class="photo_review" style="padding-top: 22.5px;"> 
 								<div id="document-btn-container" style="margin-top: 0.2%; margin-bottom: 20px;">
 							    <label class="btn" id="document-btn" style="width: 100px; height: 100px; border: 1px dashed #d2d2d2; margin-right: 5px;">
 							        <i class="bi bi-plus-circle upload-icon" style="position: absolute; top: 110.5%; left: 32.5%; transform: translate(-50%, -50%); color: #6387A6"></i>
 							    </label>
 							    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" multiple="true" />
-							</div>
-
-
+							</div> 
+								</div>
 							</div>
 							<p></p>
 							<p></p>
@@ -244,7 +251,7 @@ $(document).ready(function() {
 											<div class="text-decoration-none locationBtn" data-bs-toggle="modal"
 												data-bs-target="#locationModal"
 												style="width: 100%; padding: 0; border: none; position: relative; color: black;">
-												<input class="form-control w-100"
+												<input class="form-control w-100" value="${PortfolioIdList.location_info }"
 													placeholder="시/군/구를 선택해주세요."/>
 											</div>
 										</div>
@@ -288,10 +295,10 @@ $(document).ready(function() {
 														
 														            console.log('선택한 위치:', selectedCity, selectedDistrict);
 														
-														           	$("#modalSelectedLocation").val(selectedCity + '/' + selectedDistrict);
-														            //$("#modalSelectedLocation").val(selectedDistrict);
+														           // $("#modalSelectedLocation").val(selectedCity + '/' + selectedDistrict);
+														            $("#modalSelectedLocation").val(selectedDistrict);
 														            $("#locationModal").modal('hide');
-														            $(".locationBtn").text(selectedCity + '/' + selectedDistrict);
+														            $(".locationBtn").text(selectedDistrict);
 														        });
 														    });
 									                    </script>
@@ -313,7 +320,7 @@ $(document).ready(function() {
 									<div class="mt-4">
 										<form:label path="final_amount" class="form-label"
 											style="font-weight: bold;">최종 금액</form:label>
-										<form:input path="final_amount" class="form-control"
+										<form:input path="final_amount" class="form-control" value="${PortfolioIdList.final_amount }"
 											placeholder="최종 금액을 입력해주세요." />
 									</div>
 
@@ -321,7 +328,7 @@ $(document).ready(function() {
 										<div class="col-md-6 mt-4" style="margin-right: 0;">
 											<form:label path="work_year" class="form-label"
 												style="font-weight: bold;">작업 연도</form:label>
-											<form:select path="work_year" class="form-control required"
+											<form:select path="work_year" class="form-control required" value="${PortfolioIdList.work_year }"
 												id="yearSelect">
 												<!-- 연도 선택 스크립트 -->
 											</form:select>
@@ -332,25 +339,21 @@ $(document).ready(function() {
 													<form:label path="work_period" class="form-label"
 														style="font-weight: bold;">작업 소요기간</form:label>
 													<form:input path="work_period"
-														class="form-control required"
+														class="form-control required" value="${PortfolioIdList.work_period }"
 														placeholder="소요기간(ex.4개월, 1년반)" min="1" />
-												</div> 
+												</div>
 											</div>
-										</div>
-
-
-
-									</div>
-
+										</div> 
+									</div> 
 									<div class="mt-4">
 										<form:label path="detailed_introduction" class="form-label"
 											style="font-weight: bold;">상세 설명</form:label>
 										<div class="review_text">
-											<form:textarea path="detailed_introduction"
-												class="form-control myTextarea"
-												style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
-												placeholder="해당 경력에 대한 상세한 설명을 작성해 주세요."
-												oninput="countChars()" rows="5"></form:textarea>
+											<textarea name="detailed_introduction"
+											    class="form-control myTextarea"
+											    style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
+											    placeholder="해당 경력에 대한 상세한 설명을 작성해 주세요."
+											    rows="5">${PortfolioIdList.detailed_introduction}</textarea>
 											<div class="col text-end"
 												style="color: #B5B5B5; font-size: 14px;">
 												<span id="descriptionCharCount" style="color: #85BCEB;">0&nbsp;</span>/100자
@@ -369,8 +372,9 @@ $(document).ready(function() {
 								</div>
 							</div>
 						</div>
-					</div>
+						
 				</form:form>
+					</div>
 			</div>
 		</div>
 	</div>

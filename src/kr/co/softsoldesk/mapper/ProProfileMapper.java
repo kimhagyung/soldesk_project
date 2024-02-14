@@ -42,5 +42,19 @@ public interface ProProfileMapper {
    @Select("select pro_profile_image from pro_profile "
          + "where pro_id = #{pro_id}")
    String getImageInfo(int pro_id);
+   
+   //프로필 이미지
+   @Select("select * from pro_profile "
+	         + "where pro_id = #{pro_id}")
+   ExpertBean getProfileInfo(int pro_id);
+   
+   @Update("update pro_profile "
+         + "set certification_documents_images = #{certification_documents_images, jdbcType=VARCHAR} "
+         + "where pro_id = #{pro_id}")
+   void modifyProfileImg(ExpertBean profileImgExpertBean);
+   
+   @Select("select certification_documents_images from pro_profile "
+         + "where pro_id = #{pro_id}")
+   String getProfileImgInfo(int pro_id);
 	
 }

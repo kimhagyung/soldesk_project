@@ -7,10 +7,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +26,11 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.CateProuserBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.service.CareerService;
 import kr.co.softsoldesk.service.EducationService;
+import kr.co.softsoldesk.service.PortfolioService;
 import kr.co.softsoldesk.service.ProProfileService;
 import kr.co.softsoldesk.service.ProUserService;
 
@@ -48,6 +52,9 @@ public class ProProfileController {
 	
 	@Autowired
 	private ProUserService proUserService;
+	
+	@Autowired
+	private PortfolioService portfolioService;
 	
 	@ModelAttribute("totalPeriodOptions")
 	public List<Integer> getTotalPeriodOptions() {
@@ -79,21 +86,34 @@ public class ProProfileController {
 
 
 	@GetMapping("/expert")
-	public String expert(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean, Model model, @RequestParam("id") int id) {
+	public String expert(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean, Model model, @RequestParam("id") int id,
+						@ModelAttribute("profileImgExpertBean") ExpertBean profileImgExpertBean, @RequestParam("id") int pro_id) {
 		
 		if(loginProuserBean.isProuserLogin() == true) {
 			
+			//경력
 			List<CareerBean> careerList = careerService.getCareerList(loginProuserBean.getPro_id());
+			
+			//학력
 			List<EducationBean> educationList = educationService.getEducationList(loginProuserBean.getPro_id());
 			
+			//포트폴리오
+			List<PortFolioBean> portfoliList=portfolioService.getPortfolioList(id);
+			
+			//숨고 활동명
 			String pro_name=proUserService.getProUserName(id);
 			//System.out.println("pro_name"+pro_name);
+			
+			//커리어, 학력 년,월
 			careerList.forEach(this::extractYearAndMonth);
 			educationList.forEach(this::extractYearAndMonth2);
+			
 			//System.out.println("ppppp:"+pro_name);
 			model.addAttribute("pro_name", pro_name);
 	        model.addAttribute("careerList", careerList);
 	        model.addAttribute("proUserId", loginProuserBean.getPro_id());
+	        
+	        model.addAttribute("portfoliList",portfoliList);
 	        
 	        //ProUserBean category = proUserService.getCategoryList(loginProuserBean.getPro_id());
 
@@ -103,6 +123,7 @@ public class ProProfileController {
 	     //System.out.println("active_detailcategory3: " + category.getActive_detailcategory3());
 	     //System.out.println("------------------------");
 	        
+	        //카테고리 
 	        String cate1 = proUserService.getCategory1(id);
 	       // System.out.println("cate1 : " + cate1);
 	        
@@ -124,11 +145,32 @@ public class ProProfileController {
 	        //Integer proId = Integer.parseInt(id);
 	        imageExpertBean.setPro_id(id);
 
-	        String imageInfo = proProfileService.getImageInfo(id);
+	        //자격증 이미지
+	        imageExpertBean.setPro_id(pro_id);
+	        profileImgExpertBean.setPro_id(pro_id);
+	        
+	        String imageInfo = proProfileService.getImageInfo(pro_id);
 	        
 	        model.addAttribute("imageInfo", imageInfo);
-	      
-			
+	        model.addAttribute("profileImgExpertBean", profileImgExpertBean);
+	        model.addAttribute("pro_id", pro_id);
+	        
+	        ExpertBean tempExpertBean = proProfileService.getProfileInfo(pro_id);
+	        //tempExpertBean.setCertification_documents_images("dd");
+	        
+	        //profileImgExpertBean.setCertification_documents_images(tempExpertBean.getCertification_documents_images());
+	       
+	        
+	        String profileImgInfo = proProfileService.getProfileImgInfo(pro_id);
+	        model.addAttribute("profileImgInfo", profileImgInfo);
+	        
+	        //일류 지역
+	        String location = proUserService.getActive_location(loginProuserBean.getPro_id());
+	           
+	         model.addAttribute("location", location);
+	        
+	        
+
 	        	//for (EducationBean education : educationList) 
 	        	//{ 
 	        	//	System.out.println("학교: " + education.getSchool_name()); 
@@ -229,14 +271,22 @@ public class ProProfileController {
 	   // modifyCategoryBean.setActive_detailcategory1(active_detailcategory1 != null ? active_detailcategory1 : cate1);
 	   // modifyCategoryBean.setActive_detailcategory2(active_detailcategory2 != null ? active_detailcategory2 : cate2);
 	    //modifyCategoryBean.setActive_detailcategory3(active_detailcategory3 != null ? active_detailcategory3 : cate3);
+		 
+	    if (modifyCategoryBean.getActive_detailcategory1() != null && !modifyCategoryBean.getActive_detailcategory1().isEmpty()) {
+	        proUserService.modifyCategory(modifyCategoryBean.getActive_detailcategory1(),modifyCategoryBean.getPro_id());
+	    }
 
-	    proUserService.modifyCategory(modifyCategoryBean);
+	    if (modifyCategoryBean.getActive_detailcategory2() != null && !modifyCategoryBean.getActive_detailcategory2().isEmpty()) {
+	        proUserService.modifyCategory2(modifyCategoryBean.getActive_detailcategory2(),modifyCategoryBean.getPro_id());
+	    }
 
+	    if (modifyCategoryBean.getActive_detailcategory3() != null && !modifyCategoryBean.getActive_detailcategory3().isEmpty()) {
+	        proUserService.modifyCategory3(modifyCategoryBean.getActive_detailcategory3(),modifyCategoryBean.getPro_id());
+	    }
 	    System.out.println("카테고리 수정: " +
 	            modifyCategoryBean.getActive_detailcategory1() + ", " +
 	            modifyCategoryBean.getActive_detailcategory2() + ", " +
 	            modifyCategoryBean.getActive_detailcategory3());
-
 	    return "update category success";
 	}
 	
@@ -286,21 +336,42 @@ public class ProProfileController {
 		return "delete category333 success";
 	}
 	
-	//자격증 이미지
-	@PostMapping("/image_pro")
-    public String image_pro(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean,
-         @ModelAttribute("pro_profile_image") String pro_profile_image,
-         @ModelAttribute("pro_id") int pro_id,
-                     @RequestParam("uploadFiles") List<MultipartFile> uploadFiles, Model model) {
+	//일류 지역
+   @PostMapping(value = "/expert_modify2", consumes = "application/json")
+   @ResponseBody
+   public String expert_modify2(@RequestBody ProUserBean modifyActive_locationBean) {
       
+      proUserService.modifyActive_location(modifyActive_locationBean.getActive_location(), loginProuserBean.getPro_id());
+      
+      return "updated location successfully";
+   }
+	
+	//자격증 이미지
+   @PostMapping("/image_pro")
+   public String image_pro(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean,
+         @RequestParam("pro_id") int pro_id,
+                     @RequestParam("uploadFiles") List<MultipartFile> uploadFiles, Model model) {
+      //System.out.println("자격증 사진드으으을: "+imageExpertBean.getPro_profile_image());
+      String pro_profile_image = imageExpertBean.getPro_profile_image();
       proProfileService.modifyImg(pro_profile_image, pro_id, uploadFiles);
       
       String imageInfo = proProfileService.getImageInfo(pro_id);
        model.addAttribute("imageInfo", imageInfo);
        
       return "redirect:/pro/expert?id=" + pro_id;
-    }
+   }
+   
+   @PostMapping("/profileImg_pro")
+   public String profileImg_pro(@ModelAttribute("profileImgExpertBean") ExpertBean profileImgExpertBean) {
+   
+      
+      int pro_id = profileImgExpertBean.getPro_id();
+      System.out.println(pro_id);
+      proProfileService.modifyProfileImg(profileImgExpertBean);
+      return "redirect:/pro/expert?id=" + pro_id;
+   }
 	
+    //년, 월
 	private void extractYearAndMonth(CareerBean career) {
 	    // 시작 날짜 정보 가공
 	    if (career.getStart_date() != null) {
@@ -466,5 +537,66 @@ public class ProProfileController {
 		educationService.deleteEducation(education_id);
 		
 		return "/pro/career_delete";
+	}
+	
+	//--------------------------------------------------------------------------포트폴리오
+	
+	@GetMapping("/Portfolio")
+    public String Portfolio(@ModelAttribute("Proportfolio_pro") PortFolioBean Proportfolio_pro, 
+    										Model model) {
+    	//model.addAttribute("ProPortpolio_pro",ProPortpolio_pro);
+    	
+    	 
+    	model.addAttribute("Proportfolio_pro", Proportfolio_pro);
+    	
+        //return "pro/Portfolio";
+    	return "pro/Portfolio";
+    } 
+    
+    
+    @PostMapping("/ProPortfolio")
+    public String ProPortfolio(@ModelAttribute("Proportfolio_pro") PortFolioBean Proportfolio_pro, Model model
+    		,@RequestParam("uploadFiles") List<MultipartFile> uploadFiles) {
+     
+    	  	portfolioService.addProPortfolioInfo(Proportfolio_pro, uploadFiles);
+		   model.addAttribute("Proportfolio_pro", Proportfolio_pro);
+    	
+    	return "pro/portfolio_success";
+    }
+    
+    
+    @GetMapping("/Portfolio_modify")
+	public String Portfolio_modify(@RequestParam("portfolio_id") int portfolio_id, @ModelAttribute("ProportfolioModify") PortFolioBean ProportfolioModify,
+							Model model) {
+		
+    	PortFolioBean PortfolioIdList = portfolioService.getPortfolioIdList(portfolio_id);
+
+    	System.out.println("PortfolioIdList.getDetailed_introduction: "+PortfolioIdList.getDetailed_introduction() );
+    	System.out.println("PortfolioIdList.getDetailed_images: "+PortfolioIdList.getDetailed_images() );
+    	System.out.println("PortfolioIdList.getLocation_info: "+PortfolioIdList.getLocation_info() );
+    	
+		model.addAttribute("PortfolioIdList",PortfolioIdList);
+		
+		return "pro/Portfolio_modify";
+		
+	}
+    
+	@PostMapping("/ModifyProPortfolio")
+	public String ModifyProPortfolio(@Valid @ModelAttribute("ProportfolioModify") PortFolioBean ProportfolioModify,
+								@RequestParam("uploadFiles") List<MultipartFile> uploadFiles,
+								 BindingResult result) {
+		
+		if(result.hasErrors()) {
+			return "pro/Portfolio_modify";
+		}
+		
+		try { 
+			portfolioService.modifyPortfolioInfo(ProportfolioModify, uploadFiles);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		
+		return "pro/ModifyProPortfolio_success";
 	}
 }

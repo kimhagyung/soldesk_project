@@ -1,5 +1,7 @@
 package kr.co.softsoldesk.beans;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ExpertBean {
 
 	
@@ -13,6 +15,15 @@ public class ExpertBean {
     private String certification_documents_images;
     private String pro_detailed_introduction;
     private String price;
+    private MultipartFile upload_file;
+
+    public MultipartFile getUpload_file() {
+       return upload_file;
+    }
+
+    public void setUpload_file(MultipartFile upload_file) {
+       this.upload_file = upload_file;
+    }
     
 	public int getPro_profile_id() {
 		return pro_profile_id;
