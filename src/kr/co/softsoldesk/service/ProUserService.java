@@ -1,6 +1,5 @@
 package kr.co.softsoldesk.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -43,9 +42,8 @@ public class ProUserService {
 	}
 	
 	public void addProuserInfo(ProUserBean joinProuserBean) {
-		 
-		proUserDao.addProuserInfo(joinProuserBean);
-	} 
+	    proUserDao.addProuserInfo(joinProuserBean);
+	}
 	
 
 	public void getLoginProuserInfo(ProUserBean tempLoginUserBean2) {
@@ -68,13 +66,15 @@ public class ProUserService {
 	
 	 public List<String> getSearchProUserByName(String pro_name) {
 	        return proUserDao.getSearchProUserByName(pro_name);
-	    } 
-	 
+	    }  
 	 //
     public ProUserBean getDetailCategoriesByName(String pro_name) { 
         return proUserDao.getDetailCategoriesByName(pro_name);
     }
-    
+    public String getProUserName(int pro_id) {
+		
+		return proUserDao.getProUserName(pro_id);
+	}
     //
     public ProUserBean getCategoriesByProId(Long proId) { 
     	return proUserDao.getCategoriesByProId(proId);
@@ -153,5 +153,79 @@ public class ProUserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//이름 수정
+		public void modifyProName(String pro_name, int pro_id) {
+			
+			proUserDao.modifyProName(pro_name, pro_id);
+		}
+		//public List<Map<String, String>> getCategoryList(int pro_id) {
+			
+			//return proUserDao.getCategoryList(pro_id);
+		//}
+		
+		//public ProUserBean getCategoryList(int pro_id) {
+			
+		//	return proUserDao.getCategoryList(pro_id);
+		//}
+		
+		public String getCategory11(int pro_id) {
+			
+			return proUserDao.getCategory11(pro_id);
+		}
+		
+		public String getCategory22(int pro_id) {
+				
+				return proUserDao.getCategory22(pro_id);
+			}
+		
+		public String getCategory33(int pro_id) {
+			
+			return proUserDao.getCategory33(pro_id);
+		}
+		
+		//카테고리 수정
+		public void modifyCategory(String active_detailcategory1,int pro_id) {
+			
+			proUserDao.modifyCategory(active_detailcategory1,pro_id);
+		}
+		
+		public void modifyCategory2(String active_detailcategory2,int pro_id) {
+			
+			proUserDao.modifyCategory2(active_detailcategory2,pro_id);
+		}
+		
+		public void modifyCategory3(String active_detailcategory3,int pro_id) {
+			
+			proUserDao.modifyCategory3(active_detailcategory3,pro_id);
+		}
+		
+		//카테고리 삭제
+		public void deleteCategory1(int pro_id) {
+			
+			proUserDao.deleteCategory1(pro_id);
+		}
+		
+		public void deleteCategory2(int pro_id) {
+				
+			proUserDao.deleteCategory2(pro_id);
+		}
+		
+		public void deleteCategory3(int pro_id) {
+			
+			proUserDao.deleteCategory3(pro_id);
+		}
+		
+		//일류 지역
+		//ProUserService
+	   public String getActive_location(int pro_id) {
+	         
+	         return proUserDao.getActive_location(pro_id);
+	      }
+	   
+	   public void modifyActive_location(String active_location, int pro_id) {
+	         
+	         proUserDao.modifyActive_location(active_location, pro_id);
+	      }
 }
 

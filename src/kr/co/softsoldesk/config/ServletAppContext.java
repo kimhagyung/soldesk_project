@@ -41,6 +41,7 @@ import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.EducationMapper;
 import kr.co.softsoldesk.mapper.PortFolioMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
+import kr.co.softsoldesk.mapper.ProProfileMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper;
 import kr.co.softsoldesk.mapper.ReviewMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
@@ -275,7 +276,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 			return factoryBean;
 		}
-	 
+		//프로
+		@Bean
+		public MapperFactoryBean<ProProfileMapper> getProProfileMapper(SqlSessionFactory factory) throws Exception {
+
+			MapperFactoryBean<ProProfileMapper> factoryBean = new MapperFactoryBean<ProProfileMapper>(ProProfileMapper.class);
+
+			factoryBean.setSqlSessionFactory(factory);
+
+			return factoryBean;
+		}
+		
 	//메시지와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리
 		@Bean
 		public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {

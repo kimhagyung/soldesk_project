@@ -108,8 +108,8 @@
 		<p></p>
 	</div>
 	
-	<form:form action="${root}/pro/Education_pro" method="post" modelAttribute="educationForm" enctype="multipart/form-data">
-
+	<form:form action="${root}/pro/Education_pro?id=${param.id }" method="post" modelAttribute="educationForm" enctype="multipart/form-data">
+	<%-- <form:hidden path="pro_id"/> --%>
         <div class="container mt-3 mb-5" style="width: 38%">
             <div class="modal-body mx-auto">
                 <div class="row">
