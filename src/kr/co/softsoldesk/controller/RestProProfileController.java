@@ -29,18 +29,18 @@ public class RestProProfileController {
 	    List<ExpertBean> expertInfoList = proProfileService.getExpertInfoList(loginProuserBean.getPro_id());
 
 	    // 가져온 값들을 출력
-	    for (ExpertBean expertBean : expertInfoList) {
-	        System.out.println("pro_id: " + expertBean.getPro_id());
-	        System.out.println("pro_detailed_introduction: " + expertBean.getPro_detailed_introduction());
-	        System.out.println("activity_region: " + expertBean.getActivity_region());
-	        System.out.println("certification_documents_images: " + expertBean.getCertification_documents_images());
-	        System.out.println("movable_distance: " + expertBean.getMovable_distance());
-	        System.out.println("price: " + expertBean.getPrice());
+	    //for (ExpertBean expertBean : expertInfoList) {
+	     //   System.out.println("pro_id: " + expertBean.getPro_id());
+	     //   System.out.println("pro_detailed_introduction: " + expertBean.getPro_detailed_introduction());
+	    //    System.out.println("activity_region: " + expertBean.getActivity_region());
+	    //    System.out.println("certification_documents_images: " + expertBean.getCertification_documents_images());
+	    //    System.out.println("movable_distance: " + expertBean.getMovable_distance());
+	    //    System.out.println("price: " + expertBean.getPrice());
 	        // 필요한 다른 속성들도 위와 같이 출력
 
 	        // 빈 줄로 구분
-	        System.out.println();
-	    }
+	   //     System.out.println();
+	   // }
 
 	    return expertInfoList;
 	}

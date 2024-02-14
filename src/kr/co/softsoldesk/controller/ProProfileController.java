@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.CareerBean;
+import kr.co.softsoldesk.beans.CateProuserBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.service.CareerService;
 import kr.co.softsoldesk.service.EducationService;
 import kr.co.softsoldesk.service.ProProfileService;
+import kr.co.softsoldesk.service.ProUserService;
 
 @Controller
 @RequestMapping("/pro")
@@ -43,6 +45,9 @@ public class ProProfileController {
 	
 	@Autowired
 	private ProProfileService proProfileService;
+	
+	@Autowired
+	private ProUserService proUserService;
 	
 	@ModelAttribute("totalPeriodOptions")
 	public List<Integer> getTotalPeriodOptions() {
@@ -74,60 +79,119 @@ public class ProProfileController {
 
 
 	@GetMapping("/expert")
-	public String expert(Model model) {
+	public String expert(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean, Model model, @RequestParam("id") int id) {
 		
 		if(loginProuserBean.isProuserLogin() == true) {
 			
 			List<CareerBean> careerList = careerService.getCareerList(loginProuserBean.getPro_id());
 			List<EducationBean> educationList = educationService.getEducationList(loginProuserBean.getPro_id());
-					
+			
+			String pro_name=proUserService.getProUserName(id);
+			//System.out.println("pro_name"+pro_name);
 			careerList.forEach(this::extractYearAndMonth);
 			educationList.forEach(this::extractYearAndMonth2);
-			
+			//System.out.println("ppppp:"+pro_name);
+			model.addAttribute("pro_name", pro_name);
 	        model.addAttribute("careerList", careerList);
 	        model.addAttribute("proUserId", loginProuserBean.getPro_id());
 	        
+	        //ProUserBean category = proUserService.getCategoryList(loginProuserBean.getPro_id());
+
+	     // 결과 출력
+	     //System.out.println("active_detailcategory1: " + category.getActive_detailcategory1());
+	     //System.out.println("active_detailcategory2: " + category.getActive_detailcategory2());
+	     //System.out.println("active_detailcategory3: " + category.getActive_detailcategory3());
+	     //System.out.println("------------------------");
+	        
+	        String cate1 = proUserService.getCategory1(id);
+	       // System.out.println("cate1 : " + cate1);
+	        
+	        String cate2 = proUserService.getCategory2(id);
+	        //System.out.println("cate2 : " + cate2);
+	        
+	        String cate3 = proUserService.getCategory3(id);
+	        //System.out.println("cate3 : " + cate3);
+	        
+	        model.addAttribute("cate1", cate1);
+	        model.addAttribute("cate2", cate2);
+	        model.addAttribute("cate3", cate3);
+	        
+	      
+
 	        model.addAttribute("educationList", educationList);
 	        //model.addAttribute("proUserId", loginProuserBean.getPro_id());
+	        
+	        //Integer proId = Integer.parseInt(id);
+	        imageExpertBean.setPro_id(id);
+
+	        String imageInfo = proProfileService.getImageInfo(id);
+	        
+	        model.addAttribute("imageInfo", imageInfo);
+	      
 			
-			
-	        	for (EducationBean education : educationList) 
-	        	{ 
-	        		System.out.println("학교: " + education.getSchool_name()); 
-	        		System.out.println("학과: " + education.getMajor_name()); 
-	        		System.out.println("시작 날짜: " + education.getAdmissionYear() + "년" + education.getAdmissionMonth()+ "월"); 
-	        		System.out.println("종료 날짜: " + education.getGraduationYear() + "년" + education.getGraduationMonth() + "월"); 
-	        		System.out.println("설명: " + education.getEvidence_image()); 
-	        		System.out.println("login: " + education.getPro_id()); 
-	        		System.out.println("----------"); 
+	        	//for (EducationBean education : educationList) 
+	        	//{ 
+	        	//	System.out.println("학교: " + education.getSchool_name()); 
+	        	//	System.out.println("학과: " + education.getMajor_name()); 
+	        	//	System.out.println("시작 날짜: " + education.getAdmissionYear() + "년" + education.getAdmissionMonth()+ "월"); 
+	        	//	System.out.println("종료 날짜: " + education.getGraduationYear() + "년" + education.getGraduationMonth() + "월"); 
+	        	//	System.out.println("설명: " + education.getEvidence_image()); 
+	        	//	System.out.println("login: " + education.getPro_id()); 
+	        	//	System.out.println("----------"); 
 	        		
-	        	}
+	        	//}
 		}
 
 	
 		return "pro/expert";
 	}
 	
-	@PostMapping(value = "/expert_pro", consumes = "application/json")
-	@ResponseBody
-    public String expert_pro(@RequestBody ExpertBean writeExpertInfo, @RequestBody ExpertBean modifyIntroductionBean) {
-        
-		if(loginProuserBean.isProuserLogin()) {
-	        writeExpertInfo.setPro_id(loginProuserBean.getPro_id());
-
-	        // pro_detailed_introduction 값이 비어있는지 여부 확인
-	        if (writeExpertInfo.getPro_detailed_introduction() != null && !writeExpertInfo.getPro_detailed_introduction().isEmpty()) {
-	            // 값이 비어있지 않으면 업데이트
-	            proProfileService.modifyIntroduction(modifyIntroductionBean.getPro_detailed_introduction(), loginProuserBean.getPro_id());
-	        } else {
-	            // 값이 비어있으면 삽입
-	            proProfileService.addExpertInfo(writeExpertInfo);
-	        }
-	    }
-		
-        return "Saved successfully!";
-    }
+	/*
+	 * @PostMapping(value = "/expert_pro", consumes = "application/json")
+	 * 
+	 * @ResponseBody public String expert_pro(@RequestBody ExpertBean
+	 * writeExpertInfo) {
+	 * 
+	 * if(loginProuserBean.isProuserLogin()==true) {
+	 * 
+	 * writeExpertInfo.setPro_id(loginProuserBean.getPro_id()); }
+	 * 
+	 * proProfileService.addExpertInfo(writeExpertInfo);
+	 * 
+	 * return "Saved successfully!"; }
+	 */
 	
+	@PostMapping(value = "/expert_introductionModify", consumes = "application/json")
+	@ResponseBody
+	public String expert_introductionModify(@RequestBody ExpertBean expertBean) {
+	    int proIdFromClient = loginProuserBean.getPro_id();
+
+	    // 해당 pro_id에 대한 레코드가 이미 존재하는지 여부 확인
+	    boolean recordExists = proProfileService.expertIntroductionExists(proIdFromClient);
+	    
+	    System.out.println("exist: " + recordExists);
+
+	    // 이미 존재하는 경우 수정, 그렇지 않으면 삽입
+	    if (recordExists) {
+	        // 이미 레코드가 존재하면 업데이트 수행
+	        proProfileService.modifyIntroduction(expertBean.getPro_detailed_introduction(), loginProuserBean.getPro_id());
+	        
+	        
+	    } else {
+	        // 레코드가 없으면 삽입 수행
+	    	
+	    	 if(loginProuserBean.isProuserLogin()==true) {
+	    		
+	    		 expertBean.setPro_id(loginProuserBean.getPro_id());
+	    	}
+	        proProfileService.addExpertInfo(expertBean);
+	        System.out.println("save");
+	    }
+	    
+	    return "updated successfully!";
+	}
+	
+	//가격 수정
 	@PostMapping(value = "/expert_modify", consumes = "application/json")
 	@ResponseBody
 	public String expert_modify(@RequestBody ExpertBean modifyPriceBean) {
@@ -136,6 +200,106 @@ public class ProProfileController {
 		
 		return "updated successfully";
 	}
+	
+	//아숨 활동명
+	@PostMapping(value = "/expert_modifyName", consumes = "application/json")
+	@ResponseBody
+	public String expert_modifyName(@RequestBody ProUserBean modifyProUserBean) {
+	    //System.out.println("수정된 활동명: " + modifyProUserBean.getPro_name());
+	    proUserService.modifyProName(modifyProUserBean.getPro_name(), modifyProUserBean.getPro_id());
+	    return "update name successfully";
+	}
+	
+	//제공 서비스
+	@PostMapping(value = "/expert_modifyCategory", consumes = "application/json")
+	@ResponseBody
+	public String expert_modifyCategory(@RequestBody CateProuserBean modifyCategoryBean) {
+		
+		// 클라이언트에서 전송한 선택된 카테고리 정보
+	    //String active_detailcategory1 = modifyCategoryBean.getActive_detailcategory1();
+	    //String active_detailcategory2 = modifyCategoryBean.getActive_detailcategory2();
+	    //String active_detailcategory3 = modifyCategoryBean.getActive_detailcategory3();
+
+	    // 기존에 저장되어 있던 카테고리 정보
+	    //String cate1 = proUserService.getCategory1(loginProuserBean.getPro_id());
+	    //String cate2 = proUserService.getCategory2(loginProuserBean.getPro_id());
+	    //String cate3 = proUserService.getCategory3(loginProuserBean.getPro_id());
+
+	    // 선택된 카테고리가 null이 아니면 업데이트, null이면 이전 값 그대로 사용
+	   // modifyCategoryBean.setActive_detailcategory1(active_detailcategory1 != null ? active_detailcategory1 : cate1);
+	   // modifyCategoryBean.setActive_detailcategory2(active_detailcategory2 != null ? active_detailcategory2 : cate2);
+	    //modifyCategoryBean.setActive_detailcategory3(active_detailcategory3 != null ? active_detailcategory3 : cate3);
+
+	    proUserService.modifyCategory(modifyCategoryBean);
+
+	    System.out.println("카테고리 수정: " +
+	            modifyCategoryBean.getActive_detailcategory1() + ", " +
+	            modifyCategoryBean.getActive_detailcategory2() + ", " +
+	            modifyCategoryBean.getActive_detailcategory3());
+
+	    return "update category success";
+	}
+	
+	//제공 서비스 삭제
+	@PostMapping(value = "/expert_remove_category1", consumes = "application/json")
+	@ResponseBody
+	public String expert_remove_category1(@RequestBody ProUserBean deleteCategoryBean1) {
+		
+		proUserService.deleteCategory1(loginProuserBean.getPro_id());
+		//proUserService.deleteCategory2(loginProuserBean.getPro_id());
+		//proUserService.deleteCategory3(loginProuserBean.getPro_id());
+		
+		System.out.println("삭제 후 11: " + deleteCategoryBean1.getActive_detailcategory1());
+		//System.out.println("삭제 후 22: " + deleteCategoryBean.getActive_detailcategory2());
+		//System.out.println("삭제 후 33: " + deleteCategoryBean.getActive_detailcategory3());
+		
+		return "delete category111 success";
+	}
+	
+	@PostMapping(value = "/expert_remove_category2", consumes = "application/json")
+	@ResponseBody
+	public String expert_remove_category2(@RequestBody ProUserBean deleteCategoryBean2) {
+		
+		//proUserService.deleteCategory1(loginProuserBean.getPro_id());
+		proUserService.deleteCategory2(loginProuserBean.getPro_id());
+		//proUserService.deleteCategory3(loginProuserBean.getPro_id());
+		
+		//System.out.println("삭제 후 11: " + deleteCategoryBean.getActive_detailcategory1());
+		System.out.println("삭제 후 22: " + deleteCategoryBean2.getActive_detailcategory2());
+		//System.out.println("삭제 후 33: " + deleteCategoryBean.getActive_detailcategory3());
+		
+		return "delete category222 success";
+	}
+	
+	@PostMapping(value = "/expert_remove_category3", consumes = "application/json")
+	@ResponseBody
+	public String expert_remove_category3(@RequestBody ProUserBean deleteCategoryBean3) {
+		
+		//proUserService.deleteCategory1(loginProuserBean.getPro_id());
+		//proUserService.deleteCategory2(loginProuserBean.getPro_id());
+		proUserService.deleteCategory3(loginProuserBean.getPro_id());
+		
+		//System.out.println("삭제 후 11: " + deleteCategoryBean.getActive_detailcategory1());
+		//System.out.println("삭제 후 22: " + deleteCategoryBean.getActive_detailcategory2());
+		System.out.println("삭제 후 33: " + deleteCategoryBean3.getActive_detailcategory3());
+		
+		return "delete category333 success";
+	}
+	
+	//자격증 이미지
+	@PostMapping("/image_pro")
+    public String image_pro(@ModelAttribute("imageExpertBean") ExpertBean imageExpertBean,
+         @ModelAttribute("pro_profile_image") String pro_profile_image,
+         @ModelAttribute("pro_id") int pro_id,
+                     @RequestParam("uploadFiles") List<MultipartFile> uploadFiles, Model model) {
+      
+      proProfileService.modifyImg(pro_profile_image, pro_id, uploadFiles);
+      
+      String imageInfo = proProfileService.getImageInfo(pro_id);
+       model.addAttribute("imageInfo", imageInfo);
+       
+      return "redirect:/pro/expert?id=" + pro_id;
+    }
 	
 	private void extractYearAndMonth(CareerBean career) {
 	    // 시작 날짜 정보 가공

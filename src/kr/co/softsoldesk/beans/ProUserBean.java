@@ -107,8 +107,12 @@ public class ProUserBean {
 		public String[] getActive_detailcategory() {
 	        return active_detailcategory;
 	    }
+		
+		//public String[] getActive_detailcategory() {
+	    //    return new String[]{active_detailcategory1, active_detailcategory2, active_detailcategory3};
+	    //}
 
-		public void setActive_detailcategory(String[] active_detailcategory) {
+		 public void setActive_detailcategory(String[] active_detailcategory) {
 	          if (active_detailcategory != null) {
 	               // 배열의 길이에 따라 각 변수에 값을 할당
 	               if (active_detailcategory[0]==null) {
@@ -126,7 +130,21 @@ public class ProUserBean {
 	               }
 	               active_detailcategory3 = active_detailcategory[2];
 	          }
-	       }
+	       } 
+		
+		/* public void setActive_detailcategory(String[] active_detailcategory) {
+	        if (active_detailcategory != null && active_detailcategory.length >= 3) {
+	            this.active_detailcategory1 = active_detailcategory[0];
+	            this.active_detailcategory2 = active_detailcategory[1];
+	            this.active_detailcategory3 = active_detailcategory[2];
+	        } else {
+	            // 배열이 null이거나 길이가 3보다 작으면 초기화
+	            this.active_detailcategory1 = "";
+	            this.active_detailcategory2 = "";
+	            this.active_detailcategory3 = "";
+	        }
+	    } */
+		
 	public String getActive_detailcategory1() {
 			return active_detailcategory1;
 		}
@@ -166,5 +184,6 @@ public class ProUserBean {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	} 
+	
 	
 }

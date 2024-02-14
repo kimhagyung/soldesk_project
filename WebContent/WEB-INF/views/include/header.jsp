@@ -25,50 +25,111 @@
 </head>
 
 <style>
-@font-face {
-	font-family: 'GmarketSansMedium';
-	src:
-		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
+	@font-face {
+		font-family: 'GmarketSansMedium';
+		src:
+			url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	body,
+	div,
+	span,
+	h5,
+	button,
+	h2,
+	ul,
+	li,
+	a {
+		font-family: 'GmarketSansMedium' !important;
+
+	}
+
+
+	.button-custom {
+		background-color: #6387A6;
+		/* 사용자 정의 배경색을 지정 */
+		color: white;
+	}
+
+	.button-custom:hover {
+		background-color: #88a2bf;
+		/* 마우스를 올렸을 때 좀 더 밝은 색상으로 변경 */
+		color: white;
+	}
+
+	.list-group-item {
+		border: none;
+		/* 모든 테두리를 제거 */
+		border-bottom: 1px solid #dee2e6;
+		/* 아래 선만 지정 */
+	}
+
+	.logo {
+		width: 80px;
+		height: 110px;
+
+	}
+
+	.navbar-custom {
+		background-color: #D9E8F5;
+	}
+	 
+	 .searchResults{
+		position: absolute;
+		top: 57%; 
+		left: 45.3%; 
+		width: 22.2%; 
+	    background-color: white;
+	     border: 1px solid #ccc; 
+	     max-height: 200px; overflow-y: auto; 
+	     display: none; 
+	     z-index: 100;
+	     
+	 }  
+	 <style>
+#username, #email, #password, #confirmPassword {
+   font-size: 18px;
+}
+/*
+.card-body {
+   background-color: #C6D7E0;
+}
+*/
+.accordion-item:last-of-type .accordion-button.collapsed {
+    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
+    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
+    background: yellow;
 }
 
-body, div, span, h5, button, h2, ul, li, a {
-	font-family: 'GmarketSansMedium' !important;
+
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: var(--bs-accordion-btn-focus-border-color);
+    outline: 0;
+    box-shadow: white;
 }
 
-.button-custom {
-	background-color: #6387A6;
-	/* 사용자 정의 배경색을 지정 */
-	color: white;
+.accordion-item:last-of-type .accordion-button.collapsed {
+    border-bottom-right-radius: var(--bs-accordion-inner-border-radius);
+    border-bottom-left-radius: var(--bs-accordion-inner-border-radius);
+    background: white;
 }
 
-.button-custom:hover {
-	background-color: #88a2bf;
-	/* 마우스를 올렸을 때 좀 더 밝은 색상으로 변경 */
-	color: white;
-}
-
-.list-group-item {
-	border: none;
-	/* 모든 테두리를 제거 */
-	border-bottom: 1px solid #dee2e6;
-	/* 아래 선만 지정 */
-}
-
-.logo {
-	width: 80px;
-	height: 110px;
-}
-
-.navbar-custom {
-	background-color: #D9E8F5;
+.accordion-button:not(.collapsed) {
+    color: var(--bs-accordion-active-color);
+    background-color: white;
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 
 .dropdown-toggle-noarrow::after {
 	display: none !important;
 }
+
+
+
 </style>
 
 <script>
@@ -227,9 +288,8 @@ function displayAlarms(alarms) {
 								<button class="btn ms-2 button-custom" type="button"
 									style="color: white;"
 									onclick="location.href='${root}/user/pro_logout'">로그아웃</button>
-								<button class="btn ms-2 button-custom" type="button"
-									style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 									
 								<!-- 종 -->	
 								<div class="dropdown" id="notificationDropdown"> 
@@ -269,9 +329,8 @@ function displayAlarms(alarms) {
 								<button class="btn ms-2 button-custom" type="button"
 									style="color: white;"
 									onclick="location.href='${root}/user/logout'">로그아웃</button>
-								<button class="btn ms-2 button-custom" type="button"
-									style="color: white;"
-									onclick="location.href='${root}/common/myPage'">마이프로필</button>
+								<button class="btn ms-2 button-custom" type="button" style="color: white;"
+									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
 									
 								<!-- 종 -->
 								<div class="dropdown" id="notificationDropdown"> 

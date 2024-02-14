@@ -4,5 +4,5 @@
 <c:set var="root" value="${pageContext.request.contextPath }/"/>
 <script>
 	alert('삭제되었습니다')
-	location.href='${root}pro/expert'
+	location.href='${root}pro/expert?id=${loginProuserBean.getPro_id()}'
 </script>

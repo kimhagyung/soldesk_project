@@ -1,10 +1,11 @@
 package kr.co.softsoldesk.mapper;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
-import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.CateProuserBean;
 import kr.co.softsoldesk.beans.ProUserBean; 
 
 public interface ProUserMapper {
@@ -26,5 +27,57 @@ public interface ProUserMapper {
 	@Select("select pro_id, pro_email, pro_name, pro_pwd, gender, active_location, active_detailcategory1, active_detailcategory2, active_detailcategory3  from pro_user where pro_email=#{pro_email} and pro_pwd=#{pro_pwd}")
 	ProUserBean getLoginProuserInfo(ProUserBean tempLoginUserBean2);
 	
+	//사용자 이름 가져오기(일류 프로필)
+	@Select("select pro_name \r\n"
+			+ "from pro_user\r\n"
+			+ "where pro_id = #{pro_id}")
+	String getProUserName(int pro_id);
+	
+	// 사용자 이름 수정
+	@Update("UPDATE pro_user\r\n"
+	        + "SET pro_name = #{pro_name} \r\n"
+	        + "WHERE pro_id = #{pro_id}")
+	void modifyProName(@Param("pro_name") String pro_name, @Param("pro_id") int pro_id);
 
+	
+	//@Select("select active_detailcategory1, active_detailcategory2, active_detailcategory3 from pro_user where pro_id=#{id}")
+	//List<Map<String, String>> getCategoryList(int id);
+	
+	//@Select("select active_detailcategory1, active_detailcategory2, active_detailcategory3 from pro_user where pro_id=#{pro_id}")
+	//ProUserBean getCategoryList(int pro_id);
+	
+	//카테고리 가져오기
+	@Select("select active_detailcategory1 from pro_user where pro_id = #{pro_id}")
+	String getCategory1(int pro_id);
+	
+	@Select("select active_detailcategory2 from pro_user where pro_id = #{pro_id}")
+	String getCategory2(int pro_id);
+	
+	@Select("select active_detailcategory3 from pro_user where pro_id = #{pro_id}")
+	String getCategory3(int pro_id);
+	
+	//카테고리 수정
+	@Update("UPDATE pro_user\r\n"
+			+ "SET \r\n"
+			+ "    active_detailcategory1 = #{active_detailcategory1, jdbcType=VARCHAR},\r\n"
+			+ "    active_detailcategory2 = #{active_detailcategory2, jdbcType=VARCHAR},\r\n"
+			+ "    active_detailcategory3 = #{active_detailcategory3, jdbcType=VARCHAR}\r\n"
+			+ "WHERE pro_id = #{pro_id}")
+	void modifyCategory(CateProuserBean modifyCategoryBean1);
+	
+	@Update("update pro_user\r\n"
+			+ "set active_detailcategory1 = null\r\n"
+			+ "where pro_id = #{pro_id}")
+	void deleteCategory1(int pro_id);
+	
+	@Update("update pro_user\r\n"
+			+ "set active_detailcategory2 = null\r\n"
+			+ "where pro_id = #{pro_id}")
+	void deleteCategory2(int pro_id);
+	
+	@Update("update pro_user\r\n"
+			+ "set active_detailcategory3 = null\r\n"
+			+ "where pro_id = #{pro_id}")
+	void deleteCategory3(int pro_id);
+	
 }

@@ -24,6 +24,10 @@ public class ProProfileDAO {
 		proProfileMapper.modifyIntroduction(pro_detailed_introduction, pro_id);
 	}
 	
+	public int countExpertIntroductionByProId(int pro_id) {
+		return proProfileMapper.countExpertIntroductionByProId(pro_id);
+	}
+	
 	public List<ExpertBean> getExpertInfoList(int pro_id) {
 		
 		return proProfileMapper.getExpertInfoList(pro_id);
@@ -33,4 +37,13 @@ public class ProProfileDAO {
 		
 		proProfileMapper.modifyPrice(price, pro_id);
 	}
+	
+	//자격증 이미지
+	public void modifyImg(String pro_profile_image, Integer pro_id) {
+      proProfileMapper.modifyImg(pro_profile_image, pro_id);
+   }
+   
+   public String getImageInfo(int pro_id) {
+      return proProfileMapper.getImageInfo(pro_id);
+   }
 }

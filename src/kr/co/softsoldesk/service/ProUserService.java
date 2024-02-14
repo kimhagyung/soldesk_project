@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.CateProuserBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
@@ -72,6 +72,61 @@ public class ProUserService {
 	} 
 	
 	
-	 
+	public String getProUserName(int pro_id) {
+		
+		return proUserDao.getProUserName(pro_id);
+	}
+	
+	//이름 수정
+	public void modifyProName(String pro_name, int pro_id) {
+		
+		proUserDao.modifyProName(pro_name, pro_id);
+	}
+	//public List<Map<String, String>> getCategoryList(int pro_id) {
+		
+		//return proUserDao.getCategoryList(pro_id);
+	//}
+	
+	//public ProUserBean getCategoryList(int pro_id) {
+		
+	//	return proUserDao.getCategoryList(pro_id);
+	//}
+	
+	public String getCategory1(int pro_id) {
+		
+		return proUserDao.getCategory1(pro_id);
+	}
+	
+	public String getCategory2(int pro_id) {
+			
+			return proUserDao.getCategory2(pro_id);
+		}
+	
+	public String getCategory3(int pro_id) {
+		
+		return proUserDao.getCategory3(pro_id);
+	}
+	
+	//카테고리 수정
+	public void modifyCategory(CateProuserBean modifyCategoryBean) {
+		
+		proUserDao.modifyCategory(modifyCategoryBean); 
+	}
+	
+	//카테고리 삭제
+	public void deleteCategory1(int pro_id) {
+		
+		proUserDao.deleteCategory1(pro_id);
+	}
+	
+	public void deleteCategory2(int pro_id) {
+			
+		proUserDao.deleteCategory2(pro_id);
+	}
+	
+	public void deleteCategory3(int pro_id) {
+		
+		proUserDao.deleteCategory3(pro_id);
+	}
 }
 
