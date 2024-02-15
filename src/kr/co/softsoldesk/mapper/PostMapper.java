@@ -22,21 +22,24 @@ public interface PostMapper {
 			+ "values(board_seq.nextval, #{user_id, jdbcType=INTEGER, javaType=Integer}, #{pro_id, jdbcType=INTEGER, javaType=Integer}, #{title}, #{content}, #{category}, #{location}, #{photos, jdbcType=VARCHAR}, #{ReportedPostSt}, sysdate, #{viewCnt})")
 	void addBoardPostInfo(PostBean boardPostBean);
 	
-	@Select("select board_id, user_id, pro_id, category, location, title, content, photos, viewCnt, board_date " //댓글 수
-			+ "from board "
-			+ "order by board_date desc")
+	@Select("select b.board_id, b.user_id, b.pro_id, b.category, b.location, b.title, b.content, b.photos, b.viewCnt, b.board_date, NVL(c.commentCnt,0) as commentCnt "
+			+ "from board b, "
+			+ "(select board_id, count(*) as commentCnt from comments "
+			+ "group by board_id) c "
+			+ "where b.board_id = c.board_id(+) "
+			+ "order by b.board_id desc")
 	List<PostBean> getAllPostList(RowBounds rowBounds);
 	
-	@Select("SELECT b.board_id, b.user_id, b.pro_id, u.user_name AS writer_name, pu.pro_name AS prowriter_name, b.title, b.content, b.category, b.location, \r\n"
-			+ " b.viewCnt, b.board_date, b.photos\r\n"
-			+ "FROM board b\r\n"
-			+ "LEFT JOIN users u ON b.user_id = u.user_id\r\n"
-			+ "LEFT JOIN pro_user pu ON b.pro_id = pu.pro_id\r\n"
-			+ "WHERE b.board_id = #{b.board_id}")
+	@Select("SELECT b.board_id, b.user_id, b.pro_id, u.user_name AS writer_name, pu.pro_name AS prowriter_name, b.title, b.content, b.category, b.location, "
+	         + " b.viewCnt, b.board_date, b.photos "
+	         + "FROM board b "
+	         + "LEFT JOIN users u ON b.user_id = u.user_id "
+	         + "LEFT JOIN pro_user pu ON b.pro_id = pu.pro_id "
+	         + "WHERE b.board_id = #{b.board_id}")
 	PostBean getPostInfo(int board_id);
 	
 	@Update("update board "
-			+ "set title=#{title}, content=#{content}, category=#{category}, location=#{location}, photos=#{photos, jdbcType=VARCHAR} " // 사진 추가
+			+ "set title=#{title}, content=#{content}, category=#{category}, location=#{location}, photos=#{photos, jdbcType=VARCHAR} " 
 			+ "where board_id = #{board_id}")
 	void modifyPostInfo(PostBean modifyPostBean);
 	
@@ -46,7 +49,6 @@ public interface PostMapper {
 	
 	@Update("update board set viewcnt = viewcnt+1 where board_id=#{board_id}")
 	void plusCnt(int board_id);
-
 	
 	@Select("select count(*) from board")
 	int getPostCnt();
@@ -60,6 +62,7 @@ public interface PostMapper {
 			+ "from board\r\n"
 			+ "where (user_id = #{user_id, jdbcType=INTEGER} or pro_id = #{pro_id, jdbcType=INTEGER})")
 	int getMyPostsCnt(@Param("user_id") Integer user_id, @Param("pro_id") Integer pro_id);
+		
 	
 	//----------------신고-----------------------------
 	
@@ -98,6 +101,28 @@ public interface PostMapper {
 			+ "where b.board_id = c.board_id and b.board_id = #{board_id}")
 	int commentCntAtPost(int board_id);
 	
+	//------------------검색---------------------------------
+	
+	@Select("SELECT b.board_id, b.user_id, b.pro_id, b.category, b.location, b.title, b.content, b.photos, b.viewCnt, b.board_date, NVL(c.commentCnt, 0) AS commentCnt " +
+	        "FROM board b " +
+	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
+	        "WHERE " +
+	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'category' and b.category like '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'location' and b.location like '%' || #{searchText} || '%')) " +
+	        "ORDER BY b.board_id DESC")
+	List<PostBean> getSearchedPostList(RowBounds rowBounds, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+	@Select("SELECT COUNT(*) FROM board b " +
+	        "LEFT JOIN (SELECT board_id, COUNT(*) AS commentCnt FROM comments GROUP BY board_id) c ON b.board_id = c.board_id " +
+	        "WHERE " +
+	        "(#{searchType} IS NULL OR (#{searchType} = 'title' AND b.title LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'content' AND b.content LIKE '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'category' and b.category like '%' || #{searchText} || '%') OR " +
+	        "(#{searchType} = 'location' and b.location like '%' || #{searchText} || '%')) ")
+	int getSearchedPostCnt(@Param("searchType") String searchType, @Param("searchText") String searchText);
+	
 	//내가 쓴 댓글
 	@Select("SELECT c.comment_id, c.board_id, c.user_id, c.pro_id, c.comment_content, c.comment_date,\r\n"
 			+ "       b.title as board_title\r\n"
@@ -113,4 +138,6 @@ public interface PostMapper {
 			+ "where (user_id = #{user_id, jdbcType=INTEGER} or pro_id = #{pro_id, jdbcType=INTEGER})")
 	int getMyCommentCnt(@Param("user_id") Integer user_id, @Param("pro_id") Integer pro_id);
 	
+
+
 }

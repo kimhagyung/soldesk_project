@@ -22,23 +22,21 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
-import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
+import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
-import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.mapper.AdminMapper;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.EducationMapper;
-import kr.co.softsoldesk.mapper.ProUserMapper;
-import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.PostMapper;
 import kr.co.softsoldesk.mapper.ProProfileMapper;
-import kr.co.softsoldesk.mapper.ProUserMapper; 
+import kr.co.softsoldesk.mapper.ProUserMapper;
+import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.PostService;
 
@@ -113,7 +111,16 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factory;
 	}
 
-
+	//관리자
+		@Bean
+		public MapperFactoryBean<AdminMapper> getAdminMapper(SqlSessionFactory factory) throws Exception {
+			
+			MapperFactoryBean<AdminMapper> factoryBean = new MapperFactoryBean<AdminMapper>(AdminMapper.class);
+			
+			factoryBean.setSqlSessionFactory(factory);
+			
+			return factoryBean;
+		} 
 	// 카테고리 mapper 등록
 	@Bean
 	public MapperFactoryBean<ServiceCategoryMapper> getServiceCategoryMapper(SqlSessionFactory factory) throws Exception {

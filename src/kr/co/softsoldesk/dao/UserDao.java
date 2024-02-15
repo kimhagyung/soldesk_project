@@ -3,7 +3,6 @@ package kr.co.softsoldesk.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.UserMapper;
 
@@ -23,11 +22,14 @@ public class UserDao {
 		userMapper.addUserInfo(joinUserBean);
 	}
 	
-	
-	
 	public UserBean getLoginUserInfo(UserBean tempLoginUserBean) {
 		
 		return userMapper.getLoginUserInfo(tempLoginUserBean);
+	}
+	
+	public void updateAccountUser(UserBean userBean)  {
+		
+		userMapper.updateAccountUser(userBean);
 	}
 	
 	 

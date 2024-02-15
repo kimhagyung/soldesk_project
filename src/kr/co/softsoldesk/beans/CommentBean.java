@@ -90,19 +90,6 @@ public class CommentBean {
 	public void setComment_writer_name(String comment_writer_name) {
 		this.comment_writer_name = comment_writer_name;
 	}
+	 
 	
-	//내가 단 댓글, 제목 가져오기
-	private String title;
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	
-    
-    
 }

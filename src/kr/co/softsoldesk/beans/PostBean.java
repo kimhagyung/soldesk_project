@@ -37,16 +37,17 @@ public class PostBean {
     
     private int viewCnt;
     
-    private String writer_name;
-    private String prowriter_name;
+    private int commentCnt;
     
-    public String getProwriter_name() {
-		return prowriter_name;
+    public int getCommentCnt() {
+		return commentCnt;
 	}
-	public void setProwriter_name(String prowriter_name) {
-		this.prowriter_name = prowriter_name;
+	public void setCommentCnt(int commentCnt) {
+		this.commentCnt = commentCnt;
 	}
-	public List<MultipartFile> getUpload_photos() {
+	private String writer_name;
+    
+    public List<MultipartFile> getUpload_photos() {
 		return upload_photos;
 	}
 	public void setUpload_photos(List<MultipartFile> upload_photos) {

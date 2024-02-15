@@ -200,9 +200,9 @@ function loadData() {
             //$('#sample6_address').val(data.active_location);
             //$('#sample6_extraAddress').val(data.activityArea.extraAddress);
 			
-            // 진행도
+            // 진행도!!!!!!!!!!!!!!!(실패)
 			var progress = data[0].profile_completion;
-			$('.progress-bar').css('width', progress + '%');
+            $('.progress-bar').css('width', progress + '%');
             // 나머지 부분들도 유사한 방식으로 데이터를 채워 넣어주면 됩니다.
 
             // 예시: 이동 가능 거리
@@ -239,7 +239,7 @@ loadData();
             <div class="col-md-6 section-divider">
 				<div class="row">
 					<div class="col-md-2 Subtitle">완성도</div>
-    				<div class="col-md-10" style="font-size: 20px; font-weight: bold; color: #85BCEB; ">15%</div>
+    				<div class="col-md-10" style="font-size: 20px; font-weight: bold; color: #85BCEB; ">${progress }%</div>
 				</div>
 				<div class="row">
 	                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0"

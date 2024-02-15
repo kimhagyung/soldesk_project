@@ -33,5 +33,13 @@ public interface ProProfileMapper {
          + "WHERE pro_id = #{pro_id}")
    void modifyPrice(@Param("price") String price, @Param("pro_id") int pro_id);
    
+   //진행도!!!!!!!!!!!!(실패)
+   @Select("SELECT profile_completion FROM pro_profile WHERE pro_id = #{pro_id}")
+   int getProfile_Completion(int pro_id);
+
+   // 프로필 완성도를 업데이트하는 메서드
+   @Update("UPDATE pro_profile SET profile_completion = #{profile_completion} WHERE pro_id = #{pro_id}")
+   void updateProfile_Completion(@Param("pro_id") int pro_id, @Param("profile_completion") int profile_completion);
+   
    
 }
