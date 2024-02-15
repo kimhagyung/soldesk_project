@@ -131,32 +131,7 @@
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
 
 
-<script>
-// 상세설명
-/* $(document).ready(function() {
-    // 저장 버튼 클릭 시
-    $("#saveBtn2").click(function() {
-        // 편집 중인 텍스트 내용을 가져오기
-        var detailText = $("#editTextArea2").val();
-
-        // Ajax를 사용하여 서버로 데이터 전송
-        $.ajax({
-            type: "POST",
-            url: "${root}/pro/expert_pro/",
-            contentType: "application/json",
-            data: JSON.stringify({ pro_detailed_introduction: detailText }), // 데이터를 JSON 문자열로 변환
-            success: function(response) {
-                // 성공 시 서버 응답에 대한 처리
-                console.log(response);
-            },
-            error: function(error) {
-                // 오류 시 처리
-                console.error("Error:", error);
-            }
-        });
-    });
-}); */
-
+<script> 
 //상세설명 수정과 삽입....
 $(document).ready(function() {
     // 수정 버튼 클릭 시
@@ -175,9 +150,7 @@ $(document).ready(function() {
     $("#saveBtn2").click(function() {
         // 편집 중인 텍스트 내용 가져오기
         var detailText = $("#editTextArea2").val();
-        
-        
-
+         
         // Ajax를 사용하여 서버로 데이터 전송
         $.ajax({
             type: "POST",
@@ -1081,36 +1054,37 @@ loadData();
 				</div>
 			</div>
 			<p></p> 
-			<c:forEach var="obj" items="${portfoliList }">
-			
-				<hr>
-				<div class="portfolio-feed" style="cursor:pointer ;" >
-					<div class="row">
-						<div class="col-10"> 
-							<div class="col">
-								<div class="row-3">
-									서비스 종류:${obj.service_type } 
-								</div>
-								<div class="row-3">
-									제목: ${obj.portfolio_title }  
-								</div>
-								<div class="row-3 detailed-content">
-									상세 내용:${obj.detailed_introduction }
-								</div>
-							</div> 
-						</div>
-						  <c:if test="${obj.detailed_images != null}">
-							<c:forEach var="portfolio_img" items="${fn:split(obj.detailed_images, ',')}" varStatus="loop">
-								<c:if test="${loop.index == 0}"> 
-									<div class="col-2"> 
-  										<img src="${root}/portfolio/${portfolio_img}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+			<c:forEach var="obj" items="${portfoliList }"> 
+				 <c:if test="${obj.inspectionNY ==1 }">
+					<hr>
+					<div class="portfolio-feed" style="cursor:pointer ;" >
+						<div class="row">
+							<div class="col-10"> 
+								<div class="col">
+									<div class="row-3">
+										서비스 종류:${obj.service_type } 
 									</div>
-								</c:if> 
-							</c:forEach>
-						</c:if>	  		
-						<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/Portfolio_modify?portfolio_id=${obj.portfolio_id }'">수정</button>
-					</div>
-				</div> 
+									<div class="row-3">
+										제목: ${obj.portfolio_title }  
+									</div>
+									<div class="row-3 detailed-content">
+										상세 내용:${obj.detailed_introduction }
+									</div>
+								</div> 
+							</div>
+							  <c:if test="${obj.detailed_images != null}">
+								<c:forEach var="portfolio_img" items="${fn:split(obj.detailed_images, ',')}" varStatus="loop">
+									<c:if test="${loop.index == 0}"> 
+										<div class="col-2"> 
+	  										<img src="${root}/portfolio/${portfolio_img}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+										</div>
+									</c:if> 
+								</c:forEach>
+							</c:if>	  		
+							<button type="button" class="InvisibleButton AfterMD" onclick="location.href='${root}/pro/Portfolio_modify?portfolio_id=${obj.portfolio_id }'">수정</button>
+						</div>
+					</div> 
+				</c:if> 
 			</c:forEach>
 			<p></p>
 		</div>
@@ -1395,14 +1369,7 @@ $(function () {
     });
 </script>
 
-
-
-
-<script> // 포폴 페이지로 이동하는 버튼
-    //function redirectToPortfolioPage() {
-    // window.location.href = 'Portfolio.html';
-    //}
-</script>
+ 
 
 </body>
 </html>

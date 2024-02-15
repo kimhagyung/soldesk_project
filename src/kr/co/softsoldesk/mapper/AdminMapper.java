@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
@@ -39,4 +40,12 @@ public interface AdminMapper {
 	
 	@Select("select pro_name from pro_user, board where pro_user.pro_id=board.pro_id and board_id=${board_id}")
 	String getPostProUserName(int board_id); 
+	
+	//포트폴리오 조회 
+	@Select("select *from portfolio")
+	List<PortFolioBean> getAllPortfolio();
+	
+	//게시글 삭제 
+	@Delete("delete from board where board_id=#{board_id}")
+	void deletePost(int board_id);
 }

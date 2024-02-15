@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
@@ -66,5 +67,13 @@ public class AdminService {
         return adminDao.getPostProUserName(board_id);
     }
 
-	
+    //포트폴리오 조회 
+    public  List<PortFolioBean> getAllPortfolio() { 
+		return  adminDao.getAllPortfolio();
+	}
+    
+    // 관리자 게시글 삭제 
+    public void deletePost(int board_id) {
+    	adminDao.deletePost(board_id);
+    }
 }

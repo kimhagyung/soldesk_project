@@ -16,7 +16,16 @@ public class PortFolioBean {
 	 	private String work_year; //작업 연도
 	 	private String work_period; // 작업 소요 기간
 	 	private String detailed_introduction; // 상세 설명
-	 	private List<MultipartFile> upload_photos;
+	 	private int inspectionNY;
+	 	
+	 	
+	 	public int getInspectionNY() {
+			return inspectionNY;
+		}
+		public void setInspectionNY(int inspectionNY) {
+			this.inspectionNY = inspectionNY;
+		}
+		private List<MultipartFile> upload_photos;
 	 	
 	 	private String test;
 	 	

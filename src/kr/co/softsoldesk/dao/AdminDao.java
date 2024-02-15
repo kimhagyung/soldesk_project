@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
@@ -53,4 +54,15 @@ public class AdminDao {
         return adminMapper.getPostProUserName(board_id);
     }
 	
+    //포트폴리오 조회 
+    public  List<PortFolioBean> getAllPortfolio() { 
+		return  adminMapper.getAllPortfolio();
+	}
+    
+    //관리자 게시글 삭제  
+    public void deletePost(int board_id) {
+    	adminMapper.deletePost(board_id);
+    }
+	
+   
 }

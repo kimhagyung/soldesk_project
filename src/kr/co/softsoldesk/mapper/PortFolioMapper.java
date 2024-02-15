@@ -11,8 +11,8 @@ import kr.co.softsoldesk.beans.PortFolioBean;
 public interface PortFolioMapper {
 
 
-	@Insert("INSERT INTO portfolio (portfolio_id, pro_id, service_type, portfolio_title, detailed_images, location_info, final_amount, work_year, work_period, detailed_introduction)\r\n"
-			+ "VALUES (portfolio_seq.nextval, #{pro_id}, #{service_type, jdbcType=VARCHAR}, #{portfolio_title, jdbcType=VARCHAR}, #{detailed_images, jdbcType=VARCHAR}, #{location_info, jdbcType=VARCHAR}, #{final_amount}, #{work_year, jdbcType=VARCHAR}, #{work_period, jdbcType=VARCHAR}, #{detailed_introduction, jdbcType=VARCHAR})")
+	@Insert("INSERT INTO portfolio (portfolio_id, pro_id, service_type, portfolio_title, detailed_images, location_info, final_amount, work_year, work_period, detailed_introduction,inspectionNY)\r\n"
+			+ "VALUES (portfolio_seq.nextval, #{pro_id}, #{service_type, jdbcType=VARCHAR}, #{portfolio_title, jdbcType=VARCHAR}, #{detailed_images, jdbcType=VARCHAR}, #{location_info, jdbcType=VARCHAR}, #{final_amount}, #{work_year, jdbcType=VARCHAR}, #{work_period, jdbcType=VARCHAR}, #{detailed_introduction, jdbcType=VARCHAR},#{inspectionNY})")
 	void addProPortfolioInfo(PortFolioBean ProPortfolio);
 
 	//일류 id를 통해 가져오는 포트폴리오 리스트 
@@ -20,7 +20,7 @@ public interface PortFolioMapper {
 	List<PortFolioBean> getPortfolioList(int pro_id);
 
 	//포트폴리오 아이디를 통해 가져오는 각 값
-	@Select("select * from portfolio where portfolio_id=#{portfolio_id} order by portfolio_id desc")
+	@Select("select * from portfolio where portfolio_id=#{portfolio_id} order by portfolio_id asc")
 	PortFolioBean getPortfolioIdList(int portfolio_id);
 	 
 	

@@ -3,6 +3,6 @@
 <c:set var='root' value='${pageContext.request.contextPath }/'/>
 
 <script>
-	alert('성공적으로 저장되었습니다')
+	alert('검수 요청 되었습니다')
 	location.href = '${root}pro/expert?id=${loginProuserBean.getPro_id()}'
 </script>

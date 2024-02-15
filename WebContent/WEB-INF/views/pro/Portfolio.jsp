@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script src="${root }/jquery/locdata.js"></script>
+<script src="${root }/jquery/locdata.js"></script> 
 <style>  
  
 .Explanation {
@@ -116,12 +116,12 @@ $(document).ready(function() {
     }
  
 
- // 상세 이미지 등록 처리
+ 	// 상세 이미지 등록 처리
     $('#document-btn').click(function() {
         $('#document-fileInput').click();
     });
 
- // 상세 이미지 선택 시 처리
+ 	//상세 이미지 선택 시 처리
     $('#document-fileInput').change(function() {
         var currentImageCount = $('.uploaded-document-image').length;
         if (currentImageCount >= 10) {
@@ -131,8 +131,7 @@ $(document).ready(function() {
 
         // Multiple files handling
         for (var i = 0; i < this.files.length; i++) {
-            var reader = new FileReader();
-
+            var reader = new FileReader(); 
             reader.onload = (function(file) {
                 return function(e) {
                     var newImage = $('<img>').attr({
@@ -161,8 +160,20 @@ $(document).ready(function() {
             reader.readAsDataURL(this.files[i]);
         }
     });
-});
+    // 등록하기 버튼 클릭 시
+    $('#registerBtn').click(function() {
+        // 등록 여부 확인
+        var confirmation = confirm('검수 요청 하시겠습니까?');
+        if (confirmation) {
+            // 폼 제출
+            $('#Proportfolio_pro').submit();
+        } else {
+        	  return false; // 폼 제출 막기
+        }
+    });
+});  
 
+     
 </script>
 
 </head>
@@ -224,8 +235,6 @@ $(document).ready(function() {
 							    </label>
 							    <input type="file" id="document-fileInput" name="uploadFiles" style="display: none;" accept="image/*" multiple="true" />
 							</div>
-
-
 							</div>
 							<p></p>
 							<p></p>
@@ -336,10 +345,7 @@ $(document).ready(function() {
 														placeholder="소요기간(ex.4개월, 1년반)" min="1" />
 												</div> 
 											</div>
-										</div>
-
-
-
+										</div> 
 									</div>
 
 									<div class="mt-4">
@@ -350,7 +356,7 @@ $(document).ready(function() {
 												class="form-control myTextarea"
 												style="border-radius: 10px; border: 1px solid #e1e1e1; width: 100%; margin-top: 0.8%;"
 												placeholder="해당 경력에 대한 상세한 설명을 작성해 주세요."
-												oninput="countChars()" rows="5"></form:textarea>
+												rows="5"></form:textarea>
 											<div class="col text-end"
 												style="color: #B5B5B5; font-size: 14px;">
 												<span id="descriptionCharCount" style="color: #85BCEB;">0&nbsp;</span>/100자
@@ -359,21 +365,20 @@ $(document).ready(function() {
 									</div>
 								</div>
 							</div>
-						</div>
-
+						</div> 
 						<div class="container mt-5">
 							<div class="row justify-content-center">
 								<div class="col-md-6 me-4">
-									<form:button class="btn button-custom"
+									<form:button class="btn button-custom" id="registerBtn"
 										style="width:110%; font-weight: bold; margin-top: 20px; ">등록하기</form:button>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> 
 				</form:form>
 			</div>
 		</div>
 	</div>
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
-</body>
+</body> 
 </html>

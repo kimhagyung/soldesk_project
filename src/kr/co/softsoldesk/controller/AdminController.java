@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
@@ -42,26 +43,23 @@ public class AdminController {
 		List<PostBean> boardAll=adminService.getAllUBoard();
 		
 		 
-	    List<String> userNames = new ArrayList<>();
-	    List<String> proUserNames = new ArrayList<>(); 
-
+	    List<String> allnames = new ArrayList<>(); 
+ 
 	    for (PostBean board : boardAll) {  
 	        String proUserName = adminService.getPostProUserName(board.getBoard_id());
 	        String userName = adminService.getPostUserName(board.getBoard_id()); 
 	        if( proUserName != null) { 
-	            proUserNames.add(proUserName);  
-		        System.out.println("proUserNames:"+proUserNames); 
+	        	allnames.add(proUserName);  
+		        System.out.println("proUserNames:"+allnames); 
 	        } 
 	        else if (userName != null) {
-	            userNames.add(userName);
-		        System.out.println("userNames:"+userNames); ;  
+	        	allnames.add(userName);
+		        System.out.println("userNames:"+allnames); ;  
 	        }  
 	    } 
 
 		//보드 가져오기 
-	    model.addAttribute("userNames", userNames); 
-	    model.addAttribute("proUserNames", proUserNames);
-
+	    model.addAttribute("allnames", allnames);  
 		model.addAttribute("boardAll",boardAll);
 		//이름 조회 
 		return "admin/community";
@@ -72,20 +70,28 @@ public class AdminController {
 		return "admin/category";
 	}
 	
+	//포트폴리오 검수 완료 
 	@GetMapping("/Completportfolio")
 	public String Completportfolio() {
 		return "admin/Completportfolio";
 	}
+	
+	//포트폴리오 검수 필요 
+	@GetMapping("/portfolioIncpection")
+	public String portfolioIncpection(Model model) {
+		
+		List<PortFolioBean> allportfolio=adminService.getAllPortfolio();
+		model.addAttribute("allportfolio",allportfolio);
+		 
+		return "admin/portfolioIncpection";
+	} 
 	
 	@GetMapping("/forbiddenWords")
 	public String forbiddenWords() {
 		return "admin/forbiddenWords";
 	}
 	
-	@GetMapping("/portfolioIncpection")
-	public String portfolioIncpection() {
-		return "admin/portfolioIncpection";
-	}
+	
 	
 	@GetMapping("/pro")
 	public String pro(Model model) {
@@ -131,7 +137,7 @@ public class AdminController {
 		        return "admin/login_fail";
 		    } 
 	}
-	
+	//회원 삭제
 	  @PostMapping("/deleteUsers")
 	    public ModelAndView deleteUsers(@RequestParam("user_id") int user_id) {
 	        ModelAndView modelAndView = new ModelAndView();
@@ -144,7 +150,7 @@ public class AdminController {
 	        return modelAndView;
 	
 	  }
-	  
+	  //일류 삭제 
 	   @PostMapping("/deletePros")
 	    public ModelAndView deletePros(@RequestParam("pro_id") int pro_id) {
 	        ModelAndView modelAndView = new ModelAndView();
@@ -157,5 +163,14 @@ public class AdminController {
 	        return modelAndView;
 	
 	  }
-	   
+	   //  게시글 삭제 
+	   @PostMapping("/deletePost")
+	   public ModelAndView deletePost(@RequestParam("board_id") int board_id) {
+	       ModelAndView modelAndView = new ModelAndView();
+	       System.out.println("board_id:"+board_id);
+	           adminService.deletePost(board_id);
+	           modelAndView.setViewName("redirect:/admin/community");
+	       
+	       return modelAndView;
+	   }
 }
