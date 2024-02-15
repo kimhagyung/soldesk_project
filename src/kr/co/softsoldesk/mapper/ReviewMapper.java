@@ -30,8 +30,6 @@ public interface ReviewMapper {
 			+ "where pro_id=#{pro_id}")
 	Float getAvgReview(int pro_id);
 	
-
-	
 	//------------ajax 리뷰---------------------
 	
 	@Select("select r.review_id, r.user_id, u.user_name AS writer_name, r.rating, r.review_contents, to_char(r.review_date,'YYYY-MM-DD') as review_date, r.photos "

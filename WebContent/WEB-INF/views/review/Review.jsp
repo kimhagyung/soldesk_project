@@ -81,25 +81,25 @@ $(document).ready(function() {
     
     // 리뷰 삭제
     function deleteReview(reviewId) {
-        var isConfirmed = confirm('정말로 이 댓글을 삭제하시겠습니까?');
+        var isConfirmed = confirm('정말로 이 리뷰를 삭제하시겠습니까?');
         
         if (isConfirmed) {
             $.ajax({
-                url: '${root}/deleteReview',
-                type: 'GET',
-                data: { review_id: reviewId },
+                url: '${root}/review/deleteReview',
+                contentType: "application/json",
+                type: 'POST',
+                data: JSON.stringify({ review_id: reviewId }),
                 success: function(response) {
-                    alert('댓글이 성공적으로 삭제되었습니다.');
+                    alert('리뷰가 성공적으로 삭제되었습니다.');
                     
-                    /* // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
-                    updateReviewList();
-                    //updateReviewCount(); */
-                    
+                    // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
+                    //updateReviewList();
+                    //updateReviewCount();
                     location.reload();
                 },
                 error: function(error) {
                     console.log(error);
-                    alert('댓글 삭제에 실패했습니다.');
+                    alert('리뷰 삭제에 실패했습니다.');
                 }
             });
         }
@@ -830,7 +830,7 @@ $(document).ready(function() {
 									<c:if test="${obj.user_id eq loginUserBean.user_id}">
 										<div>
 											<%-- <button style="border: none; border-radius: 8px;" onclick="editComment(${obj.review_id})">수정</button> --%>
-											<button style="border: none; border-radius: 8px;" onclick="deleteReview(${obj.review_id})">삭제</button>
+											<button style="border: none; border-radius: 8px;" onclick="deleteReview('${obj.review_id}')">삭제</button>
 										</div>
 									</c:if>
 
