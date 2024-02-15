@@ -106,5 +106,5 @@ public class PostDao {
 		 
 		 return postMapper.getMyCommentCnt(user_id, pro_id);
 	 }
-
+	 
 }

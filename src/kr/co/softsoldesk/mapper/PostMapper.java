@@ -138,6 +138,8 @@ public interface PostMapper {
 			+ "where (user_id = #{user_id, jdbcType=INTEGER} or pro_id = #{pro_id, jdbcType=INTEGER})")
 	int getMyCommentCnt(@Param("user_id") Integer user_id, @Param("pro_id") Integer pro_id);
 	
+	
+	
 
 
 }

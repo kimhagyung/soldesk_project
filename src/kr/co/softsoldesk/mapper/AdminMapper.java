@@ -3,6 +3,7 @@ package kr.co.softsoldesk.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import kr.co.softsoldesk.beans.AdminBean;
@@ -43,4 +44,19 @@ public interface AdminMapper {
 	// !!! 게시글 삭제 !!!
 	@Delete("delete from board where board_id=#{board_id}")
 	void deletePost(int board_id);
+	
+	
+	// !!! 내가 쓴 게시글 갯수 !!!
+
+	@Select("SELECT COUNT(*)\r\n"
+			+ "FROM board\r\n"
+			+ "WHERE (user_id = #{user_id, jdbcType=INTEGER})")
+	int getUserPostCnt(@Param("user_id") Integer user_id);
+	
+	@Select("SELECT COUNT(*)\r\n"
+			+ "FROM board\r\n"
+			+ "WHERE (pro_id = #{pro_id, jdbcType=INTEGER})")
+	int getProPostCnt(@Param("pro_id") Integer pro_id);
+	
+	
 }

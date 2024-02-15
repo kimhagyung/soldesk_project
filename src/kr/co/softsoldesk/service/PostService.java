@@ -211,5 +211,6 @@ public List<PostBean> getAllPostList(int page){
 	   return pageBean3;
    }
    
+   
 
 }

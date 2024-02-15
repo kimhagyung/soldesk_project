@@ -26,7 +26,35 @@ public class ProUserBean {
 	private String gender;
 	private boolean prouserEmailExist;
 	private boolean prouserLogin;
+	private int reportCnt;
+	private int postCount; //!!! 게시글 카운트 !!!
 	
+	
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+	public int getReportCnt() {
+		return reportCnt;
+	}
+
+	public void setReportCnt(int reportCnt) {
+		this.reportCnt = reportCnt;
+	}
+
+	public int getPostCount() { //!!! 게시글 카운트 !!!
+		return postCount;
+	}
+
+	public void setPostCount(int postCount) { ///!!! 게시글 카운트 !!!
+		this.postCount = postCount;
+	}
+
 	public ProUserBean() { 
 		this.prouserEmailExist = false; // 초기값 false
 		// 초기화, 처음에는 중복검사를 하지 않으므로 디폴트 값을 false로 주입

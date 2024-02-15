@@ -8,13 +8,32 @@ public class UserBean {
 	private String confirmPassword;
 	private boolean userEmailExist;
 	private boolean userLogin;
-
+	private int reportCnt;
+	private int postCount; //!!! 게시글 카운트 !!!
+	
 	public UserBean() { 
 		this.userEmailExist = false; // 초기값 false
 		// 초기화, 처음에는 중복검사를 하지 않으므로 디폴트 값을 false로 주입
 		this.userLogin = false;
 		// 초기화, 로그아웃 상태
 	}
+	
+	public int getReportCnt() {
+		return reportCnt;
+	}
+
+	public void setReportCnt(int reportCnt) {
+		this.reportCnt = reportCnt;
+	}
+	
+	public int getPostCount() { //!!! 게시글 카운트 !!!
+		return postCount;
+	}
+
+	public void setPostCount(int postCount) { ///!!! 게시글 카운트 !!!
+		this.postCount = postCount;
+	}
+
 	public int getUser_id() {
 		return user_id;
 	}

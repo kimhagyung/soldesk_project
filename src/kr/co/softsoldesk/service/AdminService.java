@@ -70,6 +70,19 @@ public class AdminService {
     public void deletePost(int board_id) {
     	adminDao.deletePost(board_id);
     }
-
+    
+    // !!! 유저 게시글 카운트 !!!
+	public int getUserPostCnt(int user_id) {
+		 
+		 return adminDao.getUserPostCnt(user_id);
+		 
+	 }
+	
+	public int getProPostCnt(int pro_id) {
+		 
+		 return adminDao.getProPostCnt(pro_id);
+		 
+	 }
+	
 	
 }

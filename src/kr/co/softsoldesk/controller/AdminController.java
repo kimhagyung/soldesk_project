@@ -46,7 +46,10 @@ public class AdminController {
  
 	    for (PostBean board : boardAll) {  
 	        String proUserName = adminService.getPostProUserName(board.getBoard_id());
-	        String userName = adminService.getPostUserName(board.getBoard_id()); 
+	        String userName = adminService.getPostUserName(board.getBoard_id());
+	        
+	        
+	        
 	        if( proUserName != null) { 
 	        	allnames.add(proUserName);  
 		        System.out.println("proUserNames:"+allnames); 
@@ -60,6 +63,7 @@ public class AdminController {
 		//보드 가져오기 
 	    model.addAttribute("allnames", allnames);  
 		model.addAttribute("boardAll",boardAll);
+
 		//이름 조회 
 		return "admin/community";
 	}
@@ -86,22 +90,30 @@ public class AdminController {
 	
 	@GetMapping("/pro")
 	public String pro(Model model) {
-		
-		List<ProUserBean> allpros=adminService.getAllUProUsers();
-		model.addAttribute("allpros", allpros);
-		
-		 
-		return "admin/pro";
+	    List<ProUserBean> allpros = adminService.getAllUProUsers();
+	    // pro 유저 게시글 수 카운트
+	    for (ProUserBean pro : allpros) {
+	        int postCnt = adminService.getProPostCnt(pro.getPro_id());
+	        pro.setPostCount(postCnt);
+	    }
+
+	    model.addAttribute("allpros", allpros);
+
+	    return "admin/pro";
 	}
 	
 	@GetMapping("/user")
 	public String user(Model model) {
-		
-		List<UserBean> allusers=adminService.getAllUsers();
-		model.addAttribute("allusers",allusers);
-		
-		 
-		return "admin/user";
+	    List<UserBean> allusers = adminService.getAllUsers();
+	    // user 유저 게시글 수 카운트
+	    for (UserBean user : allusers) {
+	        int postCnt = adminService.getUserPostCnt(user.getUser_id());
+	        user.setPostCount(postCnt);
+	    }
+
+	    model.addAttribute("allusers", allusers);
+
+	    return "admin/user";
 	}
 	
 	@GetMapping("/adminLogin")
@@ -164,5 +176,7 @@ public class AdminController {
 	       
 	       return modelAndView;
 	   }
+	   
+
 	   
 }
