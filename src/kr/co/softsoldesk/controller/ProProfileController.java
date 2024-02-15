@@ -124,13 +124,13 @@ public class ProProfileController {
 	     //System.out.println("------------------------");
 	        
 	        //카테고리 
-	        String cate1 = proUserService.getCategory1(id);
+	        String cate1 = proUserService.getCategory11(id);
 	       // System.out.println("cate1 : " + cate1);
 	        
-	        String cate2 = proUserService.getCategory2(id);
+	        String cate2 = proUserService.getCategory22(id);
 	        //System.out.println("cate2 : " + cate2);
 	        
-	        String cate3 = proUserService.getCategory3(id);
+	        String cate3 = proUserService.getCategory33(id);
 	        //System.out.println("cate3 : " + cate3);
 	        
 	        model.addAttribute("cate1", cate1);
