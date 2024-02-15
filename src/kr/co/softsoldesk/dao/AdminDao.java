@@ -2,11 +2,11 @@ package kr.co.softsoldesk.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
@@ -59,10 +59,31 @@ public class AdminDao {
 		return  adminMapper.getAllPortfolio();
 	}
     
+    //포폴 이름 조회 
+    public String getPortfolioName(int portfolio_id) {
+        return adminMapper.getPortfolioName(portfolio_id);
+    }
+      
     //관리자 게시글 삭제  
     public void deletePost(int board_id) {
     	adminMapper.deletePost(board_id);
     }
-	
+    //카테고리 조회....
+    public List<DetailCategoryBean> getDetailList() {
+    	
+    	return adminMapper.getDetailList();
+    }
+    
+    //서비스 카테고리 이름 조회...
+    public List<ServiceCategoryBean> getServiceCategoryName() {
+    	
+    	return adminMapper.getServiceCategoryName();
+    }
+    
+    //카테고리 추가..
+    public void addCategory(DetailCategoryBean addCategoryBean) {
+    	
+    	adminMapper.addCategory(addCategoryBean);
+    }
    
 }

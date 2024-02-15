@@ -358,8 +358,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col-md-4">
                         <div class="card">
                             <img class="card-img-top" src="https://i.imgur.com/ue0AB6J.png" alt="Card image cap">
@@ -387,9 +385,7 @@
                             </div>
                         </div>
                     </div>
-
-
-                </div><!-- .row -->
+            	</div><!-- .row -->
             </div><!-- .animated -->
         </div><!-- .content -->
 

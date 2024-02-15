@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.AdminService;
 
@@ -65,10 +67,30 @@ public class AdminController {
 		return "admin/community";
 	}
 	
-	@GetMapping("/category")
-	public String category() {
-		return "admin/category";
-	}
+	//카테고리
+		@GetMapping("/category")
+		public String category(Model model, @ModelAttribute("addCategoryBean") DetailCategoryBean addCategoryBean) {
+			
+			//상세 카테고리 조회
+			List<DetailCategoryBean> getDetailList = adminService.getDetailList();
+			model.addAttribute("getDetailList", getDetailList);
+			
+			//서비스 카테고리 이름조회...
+			List<ServiceCategoryBean> getServiceCategoryName = adminService.getServiceCategoryName();
+			model.addAttribute("getServiceCategoryName", getServiceCategoryName);
+			
+			return "admin/category";
+		}
+		
+		//카테고리 추가...
+		@PostMapping("/category_pro")
+		public String category_pro(@ModelAttribute("addCategoryBean") DetailCategoryBean addCategoryBean
+									) {
+			System.out.println(addCategoryBean.getFile_name());
+			adminService.addCategory(addCategoryBean);
+			
+			return "admin/category_success";
+		}
 	
 	//포트폴리오 검수 완료 
 	@GetMapping("/Completportfolio")
@@ -80,9 +102,19 @@ public class AdminController {
 	@GetMapping("/portfolioIncpection")
 	public String portfolioIncpection(Model model) {
 		
+		//전체 포트폴리오 
 		List<PortFolioBean> allportfolio=adminService.getAllPortfolio();
 		model.addAttribute("allportfolio",allportfolio);
 		 
+		//작성자 이름 조회 
+		List<String> Portfolioallnames = new ArrayList<>(); 
+		 for (PortFolioBean portfolioname : allportfolio) {  
+		        String PortfolioproUserName = adminService.getPortfolioName(portfolioname.getPortfolio_id()); 
+		        Portfolioallnames.add(PortfolioproUserName);  
+		  }
+		 
+		 model.addAttribute("Portfolioallnames",Portfolioallnames); 
+	     System.out.println("Portfolioallnames :"+Portfolioallnames);
 		return "admin/portfolioIncpection";
 	} 
 	
