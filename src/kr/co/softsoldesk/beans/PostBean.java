@@ -132,6 +132,16 @@ public class PostBean {
 	}
 
 
+	private int commentCnt;
+	
+	public int getCommentCnt() {
+		return commentCnt;
+	}
+	public void setCommentCnt(int commentCnt) {
+		this.commentCnt = commentCnt;
+	}
+	
+	
 	
 	
     

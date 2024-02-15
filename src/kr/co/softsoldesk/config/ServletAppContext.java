@@ -30,6 +30,7 @@ import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.mapper.AdminMapper;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.CareerMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
@@ -222,6 +223,17 @@ public class ServletAppContext implements WebMvcConfigurer {
 		
 		return factoryBean;
 	}
+	
+	//관리자
+	@Bean
+	public MapperFactoryBean<AdminMapper> getAdminMapper(SqlSessionFactory factory) throws Exception {
+		
+		MapperFactoryBean<AdminMapper> factoryBean = new MapperFactoryBean<AdminMapper>(AdminMapper.class);
+		
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	} 
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
