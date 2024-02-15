@@ -61,8 +61,8 @@ $(document).ready(function(){
                                                     <td class="serial">${users.user_id }</td>
                                                     <td class="avatar">${users.user_name }</td>
                                                     <td class="email"> ${users.user_email } </td>
-                                                    <td>  <span class="name">${users.reportCnt }</span> </td> 
-                                                    <td><span class="count">게시글 수</span></td> 
+                                                    <td><span class="name">${users.reportCnt }</span> </td> 
+                                                    <td><span class="count">${users.postCount}</span></td> 
                                                     <td>
                                                        <button class="btn badge badge-complete deleteMemberButton" data-user-id="${users.user_id }">회원삭제</button>
                                                     </td>

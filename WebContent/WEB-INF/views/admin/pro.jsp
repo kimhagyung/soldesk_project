@@ -60,7 +60,7 @@ $(document).ready(function(){
                                                   <td class="avatar">${pros.pro_name }</td>
                                                   <td> ${pros.pro_email } </td>
                                                   <td>  <span class="name">${pros.reportCnt }</span> </td> 
-                                                  <td><span class="count">게시글 수</span></td> 
+                                                  <td><span class="count">${pros.postCount}</span></td> 
                                                   <td>
                                                      <button class="btn badge badge-complete deleteProButton" data-pro-id="${pros.pro_id }">일류삭제</button>
                                                   </td>

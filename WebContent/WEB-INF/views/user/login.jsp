@@ -18,6 +18,21 @@
 	font-size: 18px;
 }
 </style>
+
+<script>
+$(document).ready(function() {
+    $('form').submit(function(event) {
+        event.preventDefault(); // 기본 동작 중지
+        var formData = new FormData(this);
+        var email = formData.get('user_email');
+        var password = formData.get('user_pwd');
+
+        // email과 password 변수에 화면에 입력된 값이 들어갑니다.
+        // 이제 이 값을 이용하여 원하는 로직을 수행하실 수 있습니다.
+        // AJAX를 사용하여 서버로 이 값을 전송할 수도 있습니다.
+    });
+});
+</script>
 </head>
 <body>
 	<c:import url="/WEB-INF/views/include/header.jsp" />
@@ -28,14 +43,13 @@
 				<h2 class="card-title text-center mb-5 mt-5 fw-bold">로그인</h2>
 				<div class="card">
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
-						<c:if test="${fail==true }">
-							<div class="alter alter-danger">
-								<h3>로그인 실패</h3>
-								<p>아이디 비밀번호를 확인해 주세요
-							</div>
-						</c:if>
-						<form:form action="${root }/user/login_pro" method="post"
-							modelAttribute="tempLoginUserBean">
+						<c:if test="${fail == true }">
+						<div class="alert alert-danger">
+							<h3>로그인 실패</h3>
+							<p>아이디 비밀번호를 확인해주세요</p>
+							</div>	
+						</c:if>  
+						<form:form action="${root }/user/login_pro" method="post" modelAttribute="tempLoginUserBean">
 							<div class="mb-3">
 								<form:label path="user_email">이메일</form:label>
 								<form:input path="user_email" class="form-control" type="email"
@@ -43,15 +57,15 @@
 							</div>
 							<div class="mb-3">
 								<form:label path="user_pwd">비밀번호</form:label>
-								<form:input path="user_pwd" class="form-control"
+								<form:password path="user_pwd" class="form-control"  autocomplete="new-password" 
 									placeholder="비밀번호를 입력해주세요" />
 							</div>
 
-							<div class="form-group" style="display: flex; justify-content: flex-end;">
-							    <form:button class="btn button-custom" style="color: white;">로그인</form:button>
+							<div class="form-group mb-1" style="display: flex; justify-content: flex-end;">
+							    <form:button class="btn button-custom me-3" style="color: white;">로그인</form:button>
 							    <a href="${root}/user/join" class="btn button-custom">회원가입</a>
 							</div>
-						</form:form>
+						</form:form> 
 					</div>
 				</div>
 			</div>

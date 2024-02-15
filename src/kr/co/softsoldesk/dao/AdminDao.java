@@ -58,12 +58,21 @@ public class AdminDao {
     public  List<PortFolioBean> getAllPortfolio() { 
 		return  adminMapper.getAllPortfolio();
 	}
+    //포폴 검수 완료 
+    public void CompPort(int portfolio_id) {
+    	adminMapper.CompPort(portfolio_id);
+    }
     
     //포폴 이름 조회 
     public String getPortfolioName(int portfolio_id) {
         return adminMapper.getPortfolioName(portfolio_id);
     }
       
+    //포폴 삭제
+    public void DelPortfolio(int portfolio_id) {
+    	adminMapper.DelPortfolio(portfolio_id);
+    }
+    
     //관리자 게시글 삭제  
     public void deletePost(int board_id) {
     	adminMapper.deletePost(board_id);
@@ -86,4 +95,16 @@ public class AdminDao {
     	adminMapper.addCategory(addCategoryBean);
     }
    
+    // !!! 유저 게시글 카운트 !!!
+ 	 public int getUserPostCnt(int user_id) {
+ 		 
+ 		 return adminMapper.getUserPostCnt(user_id);
+ 		 
+ 	 }
+ 	 
+ 	 public int getProPostCnt(int pro_id) {
+ 		 
+ 		 return adminMapper.getProPostCnt(pro_id);
+ 		 
+ 	 }
 }

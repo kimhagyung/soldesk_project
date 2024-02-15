@@ -8,26 +8,26 @@
    <script src="${root}/script/jquery-3.4.1.min.js"></script> 
 </head>
 <script> //!!! 게시글 삭제 !!!
-$(document).ready(function() {
-    $(".delete-btn").click(function() {   
-        var boardId = $(this).data("board-id"); // data-board-id 속성에서 boardId를 가져옵니다.
-        console.log("board_id : " + boardId);
-        // 삭제 확인 메시지를 띄우기
-        if(confirm("삭제하시겠습니까?")){
-            $.ajax({
-                type: "POST",
-                url: "${root}/admin/deletePost",
-                data: { board_id: boardId },
-                success: function(data) {
-                    location.reload();
-                },
-                error: function() {
-                    alert("게시글 삭제 실패");
-                }
-            });
-        }
-    });
-});
+	$(document).ready(function() {
+	    $(".delete-btn").click(function() {   
+	        var boardId = $(this).data("board-id"); // data-board-id 속성에서 boardId를 가져옵니다.
+	        console.log("board_id : " + boardId);
+	        // 삭제 확인 메시지를 띄우기
+	        if(confirm("삭제하시겠습니까?")){
+	            $.ajax({
+	                type: "POST",
+	                url: "${root}/admin/deletePost",
+	                data: { board_id: boardId },
+	                success: function(data) {
+	                    location.reload();
+	                },
+	                error: function() {
+	                    alert("게시글 삭제 실패");
+	                }
+	            });
+	        }
+	    });
+	});
 </script>
 <body>
   <c:import url="/WEB-INF/views/admin/header.jsp" />

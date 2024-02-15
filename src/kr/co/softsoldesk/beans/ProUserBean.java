@@ -26,7 +26,9 @@ public class ProUserBean {
 	private String confirmPassword;
 	private String pro_gender;
 	private boolean prouserEmailExist;
-	private boolean prouserLogin;
+	private boolean prouserLogin;  
+	private int postCount;   
+	
 	
 	public ProUserBean() { 
 		this.prouserEmailExist = false; // 초기값 false
@@ -34,8 +36,13 @@ public class ProUserBean {
 		this.prouserLogin = false;
 		// 초기화, 로그아웃 상태
 	}
-	 
- 
+	public int getPostCount() { //!!! 게시글 카운트 !!!
+		return postCount;
+	}
+
+	public void setPostCount(int postCount) { ///!!! 게시글 카운트 !!!
+		this.postCount = postCount;
+	}
 
 	public int getReportCnt() {
 		return reportCnt;

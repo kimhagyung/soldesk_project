@@ -86,6 +86,16 @@ public class AdminService {
         return adminDao.getPortfolioName(portfolio_id);
     }
     
+    //포폴 검수 완료 
+    public void CompPort(int portfolio_id) {
+    	adminDao.CompPort(portfolio_id);
+    }
+    
+    //포폴 삭제
+    public void DelPortfolio(int portfolio_id) {
+    	adminDao.DelPortfolio(portfolio_id);
+    }
+    
     // 관리자 게시글 삭제 
     public void deletePost(int board_id) {
     	adminDao.deletePost(board_id);
@@ -140,5 +150,16 @@ public class AdminService {
         // DAO를 통해 카테고리 추가
         adminDao.addCategory(addCategoryBean);
     }
-
+    //유저 게시글 카운트
+   	public int getUserPostCnt(int user_id) {
+   		 
+   		 return adminDao.getUserPostCnt(user_id);
+   		 
+   	 }
+   	
+   	public int getProPostCnt(int pro_id) {
+   		 
+   		 return adminDao.getProPostCnt(pro_id);
+   		 
+   	 }
 }
