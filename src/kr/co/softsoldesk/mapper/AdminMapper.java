@@ -85,6 +85,7 @@ public interface AdminMapper {
 		@Insert("INSERT INTO detailctg (detail_category_id, service_category_id, detail_category_name, file_name)\r\n"
 				+ "VALUES (detailctg_seq.nextval, (SELECT service_category_id FROM servicectg WHERE service_category_name = #{service_category_name}), #{detail_category_name}, #{file_name})")
 		void addCategory(DetailCategoryBean addCategoryBean);
+		
 		//내가 쓴 게시글 갯수
 		@Select("SELECT COUNT(*)\r\n"
 				+ "FROM board\r\n"
@@ -96,4 +97,11 @@ public interface AdminMapper {
 				+ "WHERE (pro_id = #{pro_id, jdbcType=INTEGER})")
 		int getProPostCnt(@Param("pro_id") Integer pro_id);
 		
+		//검수 요청 포트폴리오 정보
+		@Select("select * from portfolio where inspectionny = 0")
+		List<PortFolioBean> getInspectionPortfolio();
+		
+		//검수 요청 포트폴리오 개수
+		@Select("select count(*) from portfolio where inspectionny = 0")
+		int getCntInspectionPortfolio();
 }

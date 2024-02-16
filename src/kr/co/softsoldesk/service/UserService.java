@@ -17,8 +17,7 @@ public class UserService {
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
 	
-	public boolean checkuserEmailExist(String user_email) {
-		
+	public boolean checkuserEmailExist(String user_email) { 
 		String user_name = userDao.checkUserEmailExist(user_email);
 		if(user_name == null) {
 			return true;

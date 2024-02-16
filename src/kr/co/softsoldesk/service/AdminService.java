@@ -29,6 +29,10 @@ public class AdminService {
 	
 	@Resource(name = "AdminloginBean")
 	private AdminBean AdminloginBean;
+	 
+	@Resource(name = "AdminAlarm")
+	private PortFolioBean AdminAlarm;
+  
 	
 	public void getLoginadminInfo(AdminBean adminTempLoginBean) {
 		
@@ -145,8 +149,6 @@ public class AdminService {
 			//System.out.println(file_name);
 			addCategoryBean.setFile_name(fileName);
 		}
-
-        
         // DAO를 통해 카테고리 추가
         adminDao.addCategory(addCategoryBean);
     }
@@ -157,9 +159,19 @@ public class AdminService {
    		 
    	 }
    	
-   	public int getProPostCnt(int pro_id) {
-   		 
-   		 return adminDao.getProPostCnt(pro_id);
-   		 
+   	public int getProPostCnt(int pro_id) { 
+   		 return adminDao.getProPostCnt(pro_id); 
    	 }
+   	
+ 	//검수 요청 포트폴리오 정보
+   	public List<PortFolioBean> getInspectionPortfolio(){
+   		return adminDao.getInspectionPortfolio();
+   	}
+   	
+   	//검수 요청 포트폴리오 개수
+   	public int getCntInspectionPortfolio() {
+   		return adminDao.getCntInspectionPortfolio();
+   	}
+   	
+   	
 }

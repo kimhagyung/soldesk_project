@@ -1,7 +1,9 @@
 package kr.co.softsoldesk.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.AdminBean;
@@ -36,7 +39,7 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping("/index")
-	public String index() {
+	public String index() { 
 		return "admin/index";
 	}
 	
@@ -111,7 +114,7 @@ public class AdminController {
 		 model.addAttribute("Portfolioallnames",Portfolioallnames); 
 	     System.out.println("Portfolioallnames :"+Portfolioallnames);
 		return "admin/portfolioIncpection";
-		} 
+	} 
 	
 
 	//포트폴리오 검수 완료변경
@@ -173,8 +176,7 @@ public class AdminController {
 	        // 삭제 후, 관리자 페이지로 이동
 	        modelAndView.setViewName("redirect:/admin/Completportfolio");
 	
-	        return modelAndView;
-
+	        return modelAndView; 
 	  }
 		
 	@GetMapping("/forbiddenWords")
@@ -211,6 +213,36 @@ public class AdminController {
 
 	    return "admin/user";
 	}
+
+	/*
+	@GetMapping("/header")
+	public String header(Model model) {
+		List<PortFolioBean> inspecPort=adminService.getInspectionPortfolio();
+		int portCnt=adminService.getCntInspectionPortfolio();
+		
+		for(PortFolioBean inspe:inspecPort) {
+
+			System.out.println("inspe :"+inspe.getPortfolio_title());
+		}
+		System.out.println("portCnt :"+portCnt);
+		return "admin/header";
+	}
+	@GetMapping("/header")
+	public @ResponseBody Map<String, Object> header(Model model) {
+	    Map<String, Object> resultMap = new HashMap<>();
+	    List<PortFolioBean> inspecPort = adminService.getInspectionPortfolio();
+	    int portCnt = adminService.getCntInspectionPortfolio();
+	    
+	    for (PortFolioBean inspe : inspecPort) {
+	        System.out.println("inspe :" + inspe.getPortfolio_title());
+	    }
+	    System.out.println("portCnt :" + portCnt);
+	    
+	    resultMap.put("inspecPort", inspecPort);
+	    resultMap.put("portCnt", portCnt);
+	    
+	    return resultMap;
+	} */
 	
 	@GetMapping("/adminLogin")
 	public String adminLogin(@ModelAttribute("adminTempLoginBean") AdminBean adminTempLoginBean,

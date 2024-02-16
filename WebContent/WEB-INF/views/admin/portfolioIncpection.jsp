@@ -55,7 +55,7 @@ $(document).ready(function() {
 					<div class="col-sm-4">
 						<div class="page-header float-left">
 							<div class="page-title">
-								<h1>검수 완료된 포트폴리오</h1>
+								<h1>검수 요청된 포트폴리오</h1>
 							</div>
 						</div>
 					</div>

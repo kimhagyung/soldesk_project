@@ -107,4 +107,15 @@ public class AdminDao {
  		 return adminMapper.getProPostCnt(pro_id);
  		 
  	 }
+ 	 
+ 	//검수 요청 포트폴리오 정보
+ 	public List<PortFolioBean> getInspectionPortfolio(){
+ 		return adminMapper.getInspectionPortfolio();
+ 	}
+ 	
+ 	//검수 요청 포트폴리오 개수
+ 	public int getCntInspectionPortfolio() {
+ 		return adminMapper.getCntInspectionPortfolio();
+ 	}
+ 	
 }

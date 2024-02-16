@@ -48,8 +48,7 @@
 	 <c:import url="/WEB-INF/views/admin/header.jsp" />
     <!-- /#left-panel -->
     <!-- Right Panel -->
-    <div id="right-panel" class="right-panel">
-       
+    <div id="right-panel" class="right-panel"> 
         <!-- Content -->
         <div class="content">
             <!-- Animated -->

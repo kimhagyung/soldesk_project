@@ -39,7 +39,7 @@
 					<div class="col-sm-4">
 						<div class="page-header float-left">
 							<div class="page-title">
-								<h1>검수 요청 포트폴리오</h1>
+								<h1>검수 완료된 포트폴리오</h1>
 							</div>
 						</div>
 					</div>
@@ -132,7 +132,7 @@
 																		<c:forEach var="portfolio_img"
 																			items="${fn:split(portfolio.detailed_images, ',')}">
 																			<img src="${root}/portfolio/${portfolio_img}"
-																				class=" mt-3" style="border: 1px solid black;">
+																				class=" mt-3" style="border: 1px solid black; width: 500px;">
 																		</c:forEach>
 																	</c:if></td>
 															</tr>
