@@ -158,7 +158,7 @@
 
 										<div class="date"
 											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											2023. 11. 23</div>
+											${chatroom.createdate}</div>
 									</div>
 								</button>
 							</div>
@@ -204,7 +204,7 @@
 
 										<div class="date"
 											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											2023. 11. 23</div>
+											${chatroom.createdate}</div>
 									</div>
 								</button>
 							</div>

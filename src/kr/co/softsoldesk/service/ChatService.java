@@ -89,8 +89,5 @@ public class ChatService {
     public List<ChatHistoryBean> findChatHistoryByRoomId(int roomId) {
         return chatMapper.findChatHistoryByRoomId(roomId);
     }
-    
-    
-    	
- 
+
 }
