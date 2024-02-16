@@ -39,6 +39,7 @@ import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.AdminMapper;
 import kr.co.softsoldesk.mapper.CalendarMapper;
 import kr.co.softsoldesk.mapper.CareerMapper;
+import kr.co.softsoldesk.mapper.ChatMapper;
 import kr.co.softsoldesk.mapper.DetailCategoryMapper;
 import kr.co.softsoldesk.mapper.EducationMapper;
 import kr.co.softsoldesk.mapper.InterestMapper;
@@ -178,7 +179,15 @@ public class ServletAppContext implements WebMvcConfigurer {
 		return factoryBean;
 	}
 	
-	
+	// 채팅
+			@Bean
+			public MapperFactoryBean<ChatMapper> ChatHistoryMapper(SqlSessionFactory factory) throws Exception {
+
+				MapperFactoryBean<ChatMapper> factoryBean = new MapperFactoryBean<ChatMapper>(ChatMapper.class);
+				factoryBean.setSqlSessionFactory(factory);
+
+				return factoryBean;
+			}
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	

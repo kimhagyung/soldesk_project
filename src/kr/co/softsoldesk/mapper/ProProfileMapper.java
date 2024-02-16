@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.ReviewBean;
 
 public interface ProProfileMapper {
 
@@ -56,5 +58,20 @@ public interface ProProfileMapper {
    @Select("select certification_documents_images from pro_profile "
          + "where pro_id = #{pro_id}")
    String getProfileImgInfo(int pro_id);
+   
+ //일류프로필 정보 조회 
+ 	@Select("select pro_detailed_introduction,pro_profile_image,pro_id from pro_profile")
+ 	List<ExpertBean> getProProfileInfo();
+ 	
+ 	//경력 정보 조회
+ 	@Select("SELECT SUM(total_experience_period) AS total_experience_period\r\n"
+ 			+ "FROM career\r\n"
+ 			+ "GROUP BY pro_id order by pro_id asc")
+ 	List<CareerBean> getCareerInfo();
+ 	
+ 	//리뷰 조회 
+
+ 	@Select("select * from review")
+ 	List<ReviewBean> getAllReview();
 	
 }

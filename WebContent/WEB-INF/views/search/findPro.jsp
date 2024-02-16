@@ -379,30 +379,38 @@ function sendToServerLocation(selectedLocation) {
 							</div>
 						</c:forEach>
 					</c:when>  
-					 <%-- <c:otherwise>
-						 <c:forEach var="proname" items="${pro_names}"  > 
+					 <c:otherwise>
+						 <c:forEach var="proname" items="${pro_names}" varStatus="num" > 
 								<div class="card mb-3">
 									<div class="card-body row">
 										<div class="col-10">
-											<b style="font-size: 18px;">${proname.pro_name }</b>
-											<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
-												/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
-												‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
-												긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
-												참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
-												ZOOM으로 진행.</div>
-											<div class="star-review mt-1">
-												<i class="bi bi-star-fill star"></i> <span
-													class="review-count" style="font-size: 13px;">5.0(리뷰
-													수)</span>
-											</div> 
-											<div class="career mt-2 lig">
-												<span>경력 10년</span>
-											</div>
+											<b style="font-size: 18px;">${proname.pro_name }</b> 
+											<div class="card-content">${ProprofileInfo[num.index].pro_detailed_introduction }</div> 
+												<c:choose>
+													<c:when test="${not empty reviewAvgg[num.index]}">
+														<div class="star-review mt-1">
+															<i class="bi bi-star-fill star"></i> 
+															<span class="review-count" style="font-size: 13px;">${reviewAvgg[num.index] }(${reviewCnt[num.index]})</span>
+														</div> 
+													</c:when>
+													<c:otherwise>
+													<p>
+														<p style="color: grey;">리뷰없음</p>
+													</c:otherwise>
+												</c:choose>   
+												<c:choose>
+													<c:when test="${not empty CareerInfo[num.index].total_experience_period}">
+														<span>총 ${CareerInfo[num.index].total_experience_period }년</span>
+													</c:when>
+													<c:otherwise> 
+														<div class="career mt-2 lig">
+															<span>총 0년</span>
+														</div>
+													</c:otherwise>
+												</c:choose>   
 										</div>
-	
 										<div class="col-2 text-center mt-4">
-											<img class="profileimage" src="../image/logo4.png">
+											<img class="profileimage" src="${ProprofileInfo[num.index].pro_profile_image }">
 										</div>
 									</div>
 								</div> 
@@ -456,7 +464,7 @@ function sendToServerLocation(selectedLocation) {
 										
 									</ul>
 								</div>
-					</c:otherwise>   --%>
+					</c:otherwise>  
 				</c:choose> 
 				<div> </div>
 			</div>

@@ -1,5 +1,6 @@
 package kr.co.softsoldesk.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.softsoldesk.beans.CareerBean;
+import kr.co.softsoldesk.beans.EducationBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
+import kr.co.softsoldesk.beans.ProProfileBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.InterestService;
@@ -65,6 +70,44 @@ public class ReviewController {
 		return "review/ReviewWrite_success";
 	}
 	
+	//년, 월 경력
+	private void extractYearAndMonth(CareerBean career) {
+	    // 시작 날짜 정보 가공
+	    if (career.getStart_date() != null) {
+	        Calendar startCal = Calendar.getInstance();
+	        startCal.setTime(career.getStart_date());
+	        career.setStartYear(startCal.get(Calendar.YEAR));
+	        career.setStartMonth(startCal.get(Calendar.MONTH) + 1); // Calendar의 월은 0부터 시작하므로 +1 처리
+	    }
+
+	    // 종료 날짜 정보 가공
+	    if (career.getEnd_date() != null) {
+	        Calendar endCal = Calendar.getInstance();
+	        endCal.setTime(career.getEnd_date());
+	        career.setEndYear(endCal.get(Calendar.YEAR));
+	        career.setEndMonth(endCal.get(Calendar.MONTH) + 1); // Calendar의 월은 0부터 시작하므로 +1 처리
+	    }
+	}
+	
+	//학력
+	private void extractYearAndMonth2(EducationBean education) {
+	    // 시작 날짜 정보 가공
+	    if (education.getAdmission_date() != null) {
+	        Calendar startCal = Calendar.getInstance();
+	        startCal.setTime(education.getAdmission_date());
+	        education.setAdmissionYear(startCal.get(Calendar.YEAR));
+	        education.setAdmissionMonth(startCal.get(Calendar.MONTH) + 1); // Calendar의 월은 0부터 시작하므로 +1 처리
+	    }
+
+	    // 종료 날짜 정보 가공
+	    if (education.getGraduation_date() != null) {
+	        Calendar endCal = Calendar.getInstance();
+	        endCal.setTime(education.getGraduation_date());
+	        education.setGraduationYear(endCal.get(Calendar.YEAR));
+	        education.setGraduationMonth(endCal.get(Calendar.MONTH) + 1); // Calendar의 월은 0부터 시작하므로 +1 처리
+	    }
+	} 
+	
 	@GetMapping("/Review")
 	public String Review(@RequestParam("pro_id") int pro_id, Model model) {
 		
@@ -74,10 +117,36 @@ public class ReviewController {
 		
 		float reviewAvg = reviewService.getAvgReview(pro_id);
 		
+		ProProfileBean proProfileBean = reviewService.getProProfileInfo(pro_id);
+		
+		List<CareerBean> careerList = reviewService.getCareerListInfo(pro_id);
+		
+		int sumTotal = reviewService.getSumTotalExperience(pro_id);
+		
+		List<EducationBean> educationList = reviewService.getEducationListInfo(pro_id);
+		
+		//커리어, 학력 년,월
+		careerList.forEach(this::extractYearAndMonth);
+		
+		educationList.forEach(this::extractYearAndMonth2);
+		
+		//PortFolioBean tempPortfolioBean = reviewService.getPortfolioInfo(portfolio_id)
+		
+		List<PortFolioBean> portfolioList = reviewService.getProtfolioListInfo(pro_id);
+		
+		//PortFolioBean readPortfolioBean = reviewService.getPortfolioInfo(portfolio_id);
+		
+		
+		
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("reviewCnt", reviewCnt);
 		model.addAttribute("reviewAvg", reviewAvg);
 		model.addAttribute("loginUserBean", loginUserBean);
+		model.addAttribute("proProfileBean", proProfileBean);
+		model.addAttribute("careerList", careerList);
+		model.addAttribute("sumTotal", sumTotal);
+		model.addAttribute("educationList", educationList);
+		model.addAttribute("portfolioList", portfolioList);
 		
 		return "review/Review";
 	}

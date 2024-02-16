@@ -130,7 +130,6 @@
 
 <script src="${root }/jquery/address.js"></script> <!-- 도로주소명API 불러오기 -->
 
-
 <script> 
 //상세설명 수정과 삽입....
 $(document).ready(function() {
@@ -885,21 +884,15 @@ loadData();
 	                           <img src="${root }/upload/${image}" style="width: 60px; height: 60px; border-radius: 10px; margin-right: 10px; border: 1px solid lightgray;"/>
 	                        </c:forEach>
 	                     </c:if>
-                     </div>
-                    
-                  </div>
-
-
+                     </div> 
+                  </div> 
                   <div>
                      <form:button type="submit" class="InvisibleButton AfterMD" style="margin-top: 22px;">
                      등록
                         </form:button>
                   </div>
                </div>
-            </form:form>
-
-
-
+            </form:form> 
          </div>
       </div>
    </div>
