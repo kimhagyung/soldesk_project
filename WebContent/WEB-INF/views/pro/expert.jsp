@@ -1003,7 +1003,7 @@ loadData();
 			<c:forEach var="career" items="${careerList}">
 				<div class="content mt-3">
 					<div class="period mb-3">
-					 	총경력 ${career.total_experience_period  }년
+					 	경력 ${career.total_experience_period  }년
 					</div>
 					<div class="row">
 						<div class="col career_title fw-bold"> 
