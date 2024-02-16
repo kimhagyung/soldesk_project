@@ -24,6 +24,22 @@
 				$(this).text(truncatedText);
 			}
 		}); 
+
+		$('.star-review').each(function() {
+		    // 리뷰 평점의 원본 텍스트 추출
+		    var reviewCount = $(this).find('.review-count').text();
+		    var reviewRating = reviewCount.match(/[\d.]+/)[0]; // 평점만 추출
+
+		    // 리뷰 평점의 숫자 값 추출
+		    var reviewRatingValue = parseFloat(reviewRating);
+
+		    // 리뷰 평점을 소수점 첫 번째 자리까지 반올림
+		    var roundedRating = Math.round(reviewRatingValue * 10) / 10;
+
+		    // 반올림된 값을 텍스트로 업데이트
+		    var updatedReviewCount = reviewCount.replace(reviewRating, roundedRating.toFixed(1));
+		    $(this).find('.review-count').text(updatedReviewCount);
+		});
 	});
 </script> 
 
