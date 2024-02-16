@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 
 public interface ProUserMapper {
@@ -25,7 +26,7 @@ public interface ProUserMapper {
 	
 	@Select("select pro_name from pro_user WHERE pro_name LIKE '%' || #{pro_name} || '%'")
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
-	
+	 
 	//카
 	@Select("select active_detailcategory1 from pro_user where pro_id = #{pro_id}")
 	   String getCategory1(Long pro_id);
@@ -49,7 +50,7 @@ public interface ProUserMapper {
 	List<String> getRecoProUserByName(String reco);  //활동지역 고수 조회 
 
 	
-	@Select("select pro_name from pro_user")
+	@Select("select pro_name,pro_id from pro_user order by pro_id asc")
 	List<ProUserBean> getProUserByName(RowBounds rowBounds); // 모든 pro_name조회
  
 	@Select("select count(*) from pro_user")

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.mapper.PortFolioMapper; 
 
@@ -36,4 +37,7 @@ public class ProPortfolioDAO {
 	public void modifyPortfolioInfo(PortFolioBean ProPortfoliomodify) {
 		portfoliMapper.modifyPortfolioInfo(ProPortfoliomodify);
 	}
+	
+	
 }
+

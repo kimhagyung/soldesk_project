@@ -12,7 +12,7 @@
 <script>
 	$(document).ready(function() {
 		// 각 후기 내용을 제한할 길이
-		var maxCharacters = 100;
+		var maxCharacters = 40;
 
 		// 각 후기 내용에 대해 실행
 		$('.card-content').each(function() {
@@ -53,7 +53,7 @@ $(document).ready(function () {
 });
 
 function sendToServer(selectedCategory, selectedLocation) {
-	// 값이 없을 때 디폴트로 null 설정 
+    // 값이 없을 때 디폴트로 null 설정 
     $.ajax({
         type: 'GET',
         url: '${root}/search/getCategoryInfo',
@@ -67,32 +67,38 @@ function sendToServer(selectedCategory, selectedLocation) {
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
 
-            for (var i = 0; i < data.length; i++) {
-                var detailCategory = data[i];
+            // 받아온 데이터를 반복하여 처리
+            data.forEach(function(item) {
+                var detailCategory = item.detailCategory;
+                var detailedIntroduction = item.proDetailedIntroduction;
+                var profileImage = item.proProfileImage;
+                var experience = item.totalExperiencePeriod;
 
+                // 카드 생성 및 내용 추가
                 var card = $('<div class="card mb-3"></div>');
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
                 var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
-                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
+                var cardContent = $('<div class="card-content"></div>').text(detailedIntroduction);
                 var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
-                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 ' + experience + '년</span>');
 
                 col10.append(boldText, cardContent, starReview, career);
 
-                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
+                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="' + profileImage + '">');
 
                 cardBodyRow.append(col10, col2);
                 card.append(cardBodyRow);
 
                 outputContainer.append(card);
-            }
+            });
         },
         error: function (error) {
             console.error('Error fetching category info:', error);
         }
     });
 }
+
 
 function sendToServerCategory(selectedCategory) {
 	// 값이 없을 때 디폴트로 null 설정 
@@ -350,59 +356,60 @@ function sendToServerLocation(selectedLocation) {
 				</form>
 				<c:choose>
 					<c:when test="${not empty search_proname}">
-						<c:forEach var="proname" items="${search_proname}">
+						<c:forEach var="proname" items="${search_proname}" varStatus="num" >
 							<div class="card mb-3">
-								<div class="card-body row">
-									<div class="col-10">
-										<b style="font-size: 18px;">${proname}</b>
-										<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
-											/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
-											‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
-											긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
-											참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
-											ZOOM으로 진행.</div>
-										<div class="star-review mt-1">
-											<i class="bi bi-star-fill star"></i> <span
-												class="review-count" style="font-size: 13px;">5.0(리뷰
-												수)</span>
-										</div>
-
-										<div class="career mt-2 lig">
-											<span>경력 10년</span>
-										</div>
-									</div>
-
-									<div class="col-2 text-center mt-4">
-										<img class="profileimage" src="../image/logo4.png">
-									</div>
-								</div>
-							</div>
-						</c:forEach>
-					</c:when>  
-					 <%-- <c:otherwise>
-						 <c:forEach var="proname" items="${pro_names}"  > 
-								<div class="card mb-3">
 									<div class="card-body row">
 										<div class="col-10">
-											<b style="font-size: 18px;">${proname.pro_name }</b>
-											<div class="card-content">상세소개입니다.【발음교정/ 오픽/ 토익스피킹/ 비즈니스
-												/ 회화】Eugene English는 영어문장을 듣고 단어와 문장, 강세, 에티튜드 하나하나를 다 고쳐나가는
-												‘영어 발음 교정 전문’입니다. ✔ 발음 교정 후, Casual한 지문부터 Formal한 지문까지 읽어나가며
-												긴 문장에 익숙해지는 훈련을 합니다. ✔ 수강생 개인에 최적화된 수업으로 진행됩니다. 수강생님들의 적극적인
-												참여 환영합니다. ✔ 수업은 1:1 화상강의로 진행되기 때문에 시간을 절약할 수 있습니다. * 화상강의는
-												ZOOM으로 진행.</div>
+											<b style="font-size: 18px;">${proname.pro_name }</b> 
+											<div class="card-content">${ProprofileInfo[num.index].pro_detailed_introduction }</div>
 											<div class="star-review mt-1">
 												<i class="bi bi-star-fill star"></i> <span
-													class="review-count" style="font-size: 13px;">5.0(리뷰
-													수)</span>
-											</div> 
+													class="review-count" style="font-size: 13px;">${reviewAvgg[num.index] }(${reviewCnt[num.index]})</span>
+											</div>  
 											<div class="career mt-2 lig">
-												<span>경력 10년</span>
+												<span>총 ${CareerInfo[num.index].total_experience_period }년</span>
 											</div>
 										</div>
 	
 										<div class="col-2 text-center mt-4">
-											<img class="profileimage" src="../image/logo4.png">
+											<img class="profileimage" src="${ProprofileInfo[num.index].pro_profile_image }">
+										</div>
+									</div>
+								</div> 
+						</c:forEach>
+					</c:when>  
+					 <c:otherwise>
+						 <c:forEach var="proname" items="${pro_names}" varStatus="num" > 
+								<div class="card mb-3">
+									<div class="card-body row">
+										<div class="col-10">
+											<b style="font-size: 18px;">${proname.pro_name }</b> 
+											<div class="card-content">${ProprofileInfo[num.index].pro_detailed_introduction }</div> 
+												<c:choose>
+													<c:when test="${not empty reviewAvgg[num.index]}">
+														<div class="star-review mt-1">
+															<i class="bi bi-star-fill star"></i> 
+															<span class="review-count" style="font-size: 13px;">${reviewAvgg[num.index] }(${reviewCnt[num.index]})</span>
+														</div> 
+													</c:when>
+													<c:otherwise>
+													<p>
+														<p style="color: grey;">리뷰없음</p>
+													</c:otherwise>
+												</c:choose>   
+												<c:choose>
+													<c:when test="${not empty CareerInfo[num.index].total_experience_period}">
+														<span>총 ${CareerInfo[num.index].total_experience_period }년</span>
+													</c:when>
+													<c:otherwise> 
+														<div class="career mt-2 lig">
+															<span>총 0년</span>
+														</div>
+													</c:otherwise>
+												</c:choose>   
+										</div>
+										<div class="col-2 text-center mt-4">
+											<img class="profileimage" src="${ProprofileInfo[num.index].pro_profile_image }">
 										</div>
 									</div>
 								</div> 
@@ -456,7 +463,7 @@ function sendToServerLocation(selectedLocation) {
 										
 									</ul>
 								</div>
-					</c:otherwise>   --%>
+					</c:otherwise>  
 				</c:choose> 
 				<div> </div>
 			</div>
