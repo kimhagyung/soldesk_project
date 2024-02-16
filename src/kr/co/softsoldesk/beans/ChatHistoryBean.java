@@ -8,7 +8,8 @@ public class ChatHistoryBean {
     private int room_id; 
     private String content;
     private LocalDateTime chattime;
-    
+    private int senderId;
+    private int pro_id;
     
 	public int getChat_id() {
 		return chat_id;
@@ -33,6 +34,18 @@ public class ChatHistoryBean {
 	}
 	public void setChattime(LocalDateTime chattime) {
 		this.chattime = chattime;
+	}
+	public int getSenderId() {
+		return senderId;
+	}
+	public void setSenderId(int senderId) {
+		this.senderId = senderId;
+	}
+	public int getPro_id() {
+		return pro_id;
+	}
+	public void setPro_id(int pro_id) {
+		this.pro_id = pro_id;
 	}
     
 }

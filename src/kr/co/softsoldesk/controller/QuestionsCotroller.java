@@ -3,12 +3,15 @@ package kr.co.softsoldesk.controller;
 import java.util.ArrayList; 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.softsoldesk.beans.ChatHistoryBean;
 import kr.co.softsoldesk.beans.ChatRoomBean;
 import kr.co.softsoldesk.beans.ChatRoomSelect;
 import kr.co.softsoldesk.beans.ProUserBean;
@@ -25,11 +28,11 @@ public class QuestionsCotroller {
 	
 	QuestionBean questionBean;
 	  
-	@Autowired 
-    private UserBean loginUserBean;
-      
-    @Autowired
-    private ProUserBean loginProuserBean;
+	@Resource(name = "loginUserBean")
+	private UserBean loginUserBean;
+
+	@Resource(name = "loginProuserBean")
+	private ProUserBean loginProuserBean;
     
     @Autowired
     private ChatService chatService;
@@ -78,28 +81,38 @@ public class QuestionsCotroller {
 	
 	@GetMapping("/ChattingList")
 	public String chattingList(Model model) {
-	    // 로그인한 사용자의 ID 가져오기
-	    int userId;
+	    Integer userId = null;
+	    Integer proId = null;
+	    
+	    // 일반 사용자로 로그인한 경우
 	    if (loginUserBean.isUserLogin()) {
 	        userId = loginUserBean.getUser_id();
-	    } else if (loginProuserBean.isProuserLogin()) {
-	        userId = loginProuserBean.getPro_id();
-	    } else {
-	        // 로그인하지 않은 경우 처리, 예: 로그인 페이지로 리다이렉트
+	        List<ChatRoomSelect> chatrooms = chatService.findChatroomsWithProNameByUserId(userId);
+	        model.addAttribute("chatrooms", chatrooms);
+	    }
+	    
+	    // 전문가로 로그인한 경우
+	    if (loginProuserBean.isProuserLogin()) {
+	        proId = loginProuserBean.getPro_id();
+	        userId = loginUserBean.getUser_id();
+	        List<ChatRoomSelect> chatrooms = chatService.findChatroomsWithUserNameByProId(proId);
+	        model.addAttribute("chatrooms", chatrooms);
+	    }
+	    
+	    // 로그인하지 않은 경우 처리
+	    if (userId == null && proId == null) {
 	        return "redirect:/index";
 	    }
-
-	    List<ChatRoomSelect> chatrooms = chatService.findChatroomsWithProNameByUserId(userId);
-	    model.addAttribute("chatrooms", chatrooms);
+	    
 	    return "ChattingList";
 	}
 	  
-	 
+	/* @RequestParam("pro_name") int proName */
 	/* @RequestParam("s") int serviceCategoryId */
 	 @GetMapping("/chatting")
 	 public String chatting(Model model, 
-			 @RequestParam("pro_id") int proId,
-			 @RequestParam(value = "s", required = false) Integer serviceCategoryId// 프로의 ID를 요청 파라미터로 받음
+			 @RequestParam("pro_id") int proId,// 프로의 ID를 요청 파라미터로 받음
+			 @RequestParam(value = "s", required = false) Integer serviceCategoryId
 	         ) {
 	     
 	     int userId; // 사용자 ID 초기화
@@ -114,20 +127,44 @@ public class QuestionsCotroller {
 
 	  // 채팅방 생성 또는 기존 채팅방 조회
 	     Integer existingRoomId = chatService.findChatroomIdByProIdAndUserId(proId, userId);
-	     if (existingRoomId == null) {
-	         // 새 채팅방 생성
-	         ChatRoomBean chatroom = new ChatRoomBean();
-	         chatroom.setPro_id(proId);
-	         chatroom.setUser_id(userId);
-	         chatService.createChatroom(chatroom);
-	         model.addAttribute("roomId", chatroom.getRoom_id()); // 새로 생성된 채팅방 ID
-	     } else {
-	         // 기존 채팅방 ID 사용
-	         model.addAttribute("roomId", existingRoomId);
+	     Integer existingRoomId2 = chatService.findChatroomIdByProId(proId);
+	     if(loginUserBean.isUserLogin()) { 
+		     if (existingRoomId == null) {
+		         // 새 채팅방 생성
+		    		 
+		         ChatRoomBean chatroom = new ChatRoomBean();
+		         chatroom.setPro_id(proId);
+		         chatroom.setUser_id(userId);
+		         //chatroom.setRoom_id(chatroom.getRoom_id());
+		         
+		         chatService.createChatroom(chatroom);
+		         
+		         model.addAttribute("roomId", chatroom.getRoom_id()); // 새로 생성된 채팅방 ID
+		         
+
+		         
+		         
+		         
+		     } else {
+		         // 기존 채팅방 ID 사용
+		         model.addAttribute("roomId", existingRoomId);
+	
+		     }
 	     }
 	     
+	     if(loginProuserBean.isProuserLogin()) {
+	
+	    	 
+	    	 model.addAttribute("roomId" , existingRoomId2);
+	    	  
+	     }
 	     
 	      model.addAttribute("currentUserId", userId); 
+	      
+			/*
+			 * model.addAttribute("userId", userId); model.addAttribute("proId", proId);
+			 */
+	      
 	      model.addAttribute("1", questionBean.getCertifaction_exam()); //자격증시험
 	      model.addAttribute("2", questionBean.getInterior());  //인테리어
 	      model.addAttribute("3", questionBean.getAppliance()); //가전제품

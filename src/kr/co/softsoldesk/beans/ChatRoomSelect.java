@@ -6,6 +6,9 @@ public class ChatRoomSelect {
     private int room_id;
     private String pro_name; // 전문가 이름 필드
     private int pro_id;
+    private int user_id;
+    private String user_name;
+    private String pro_profile_image;
 
     public int getPro_id() {
 		return pro_id;
@@ -41,6 +44,28 @@ public class ChatRoomSelect {
     public void setPro_name(String pro_name) {
         this.pro_name = pro_name;
     }
-    
+
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+	public String getPro_profile_image() {
+		return pro_profile_image;
+	}
+	
+	public void setPro_profile_image(String pro_profile_image) {
+		this.pro_profile_image = pro_profile_image;
+	}
     
 }

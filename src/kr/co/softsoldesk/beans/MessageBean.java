@@ -4,9 +4,10 @@ package kr.co.softsoldesk.beans;
 public class MessageBean {
 	
     private String text;
-    private String senderId;
+    private int senderId;
     private int user_id;
     private int pro_id;
+    private int room_id;
     
 	public String getText() {
 		return text;
@@ -14,10 +15,10 @@ public class MessageBean {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getSenderId() {
+	public int getSenderId() {
 		return senderId;
 	}
-	public void setSenderId(String senderId) {
+	public void setSenderId(int senderId) {
 		this.senderId = senderId;
 	}
 	public int getUser_id() {
@@ -31,6 +32,12 @@ public class MessageBean {
 	}
 	public void setPro_id(int pro_id) {
 		this.pro_id = pro_id;
+	}
+	public int getRoom_id() {
+		return room_id;
+	}
+	public void setRoom_id(int room_id) {
+		this.room_id = room_id;
 	}
     
     

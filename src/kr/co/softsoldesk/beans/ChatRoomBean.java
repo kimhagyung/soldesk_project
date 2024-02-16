@@ -10,6 +10,7 @@ public class ChatRoomBean {
     private LocalDateTime createdate;
     private String pro_name; // 전문가 이름
     
+    
 	public int getRoom_id() {
 		return room_id;
 	}
@@ -40,6 +41,7 @@ public class ChatRoomBean {
 	public void setPro_name(String pro_name) {
 		this.pro_name = pro_name;
 	}
+	
     
 
     

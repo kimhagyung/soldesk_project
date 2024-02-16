@@ -11,7 +11,6 @@
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-
 <!-- Bootstrap JavaScript 파일 로드 -->
 </head>
 <style>
@@ -232,7 +231,15 @@ textarea {
                      onclick="moveToChattingList()">
                      <i class="bi bi-arrow-left-short" style="font-size: 30px;"></i>
                   </button>
-                  <strong style="font-size: 25px;">한유정 일류님</strong>
+                  <c:choose>
+                  <c:when test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+                  	<strong style="font-size: 25px;">${param.pro_name } 일류님</strong>
+                  </c:when>
+                   <c:when test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
+                   <strong style="font-size: 25px;">${param.user_name } 회원님</strong>
+                
+                   </c:when>
+                    </c:choose>
                </div>
                <div
                   style="display: flex; justify-content: center; align-items: center;">
@@ -549,8 +556,10 @@ textarea {
    <script>
        var stompClient = null;
        var CURRENT_USER_ID = '${currentUserId}'; 
-       var USER_TYPE = '${userType}'; // 사용자 유형 받기
+
        var roomId = '${roomId}';
+       var proId = '${proId}';
+       var userId = '${userId}'
        console.log("현재 채팅방 ID: ", roomId);
        
        function connect() {
@@ -565,6 +574,7 @@ textarea {
                // 메시지 주제 구독
                
                console.log("현재 로그인 된 ID : " + CURRENT_USER_ID);
+               console.log("현재 방 ID : " + roomId);
              
                
                stompClient.subscribe('/topic/messages', function(messageOutput) {
@@ -573,7 +583,7 @@ textarea {
             	        console.log('수신 메시지: ', message);
 
             	        // 현재 로그인한 사용자가 보낸 메시지는 화면에 표시하지 않습니다.
-            	        if(message.senderId !== CURRENT_USER_ID) {
+            	        if(message.senderId != CURRENT_USER_ID) {
             	            displayMessage(message);
             	        }
             	    } catch (error) {
@@ -620,7 +630,10 @@ textarea {
     	    if(messageContent && stompClient) {
     	        var chatMessage = {
     	            senderId: CURRENT_USER_ID,
-    	            text: messageContent
+    	            text: messageContent,
+    	            room_id : roomId,
+    	            user_id : userId,
+    	        	pro_id : proId
     	        };
     	        
     	        // 송신한 메시지를 화면에 표시
@@ -651,6 +664,63 @@ textarea {
            notificationElement.textContent = notification;
            notificationElement.className = 'notification'; // 알림 스타일 추가
        }
+       
+       function loadChatHistory(roomId) {
+    	    $.ajax({
+    	        url: `${root}/chat/getChatHistory`, // 채팅 기록을 불러오는 서버의 URL
+    	        type: 'GET',
+    	        data: { room_id: roomId },
+    	        dataType: 'json',
+    	        success: function(chatHistories) {
+    	            chatHistories.forEach(function(chat) {
+    	            	console.log(chat)
+    	                // 여기에서 새로운 함수를 사용하여 메시지를 화면에 추가
+    	                displayChatMessage(chat);
+    	            });
+    	            // 스크롤을 최하단으로 이동
+    	            var chatElement = document.getElementById('chat');
+    	            chatElement.scrollTop = chatElement.scrollHeight;
+    	        },
+    	        error: function(error) {
+    	            console.error("채팅 기록 불러오기 실패: ", error);
+    	        }
+    	    });
+    	}
+
+    	// 새로운 함수: DB에서 불러온 채팅 메시지를 화면에 표시
+    	function displayChatMessage(chat) {
+    	    var chatElement = document.getElementById('chat');
+    	    var messageContainer = document.createElement('div');
+    	    
+    	    // 현재 로그인한 사용자가 보낸 메시지인 경우
+    	    if (chat.senderId == CURRENT_USER_ID) {
+    	        messageContainer.className = 'myMessage';
+    	    } else {
+    	        messageContainer.className = 'otherMessage';
+    	    }
+
+    	    var textElement = document.createElement('span');
+    	    textElement.textContent = chat.content;
+
+    	    // 날짜 객체 생성
+    	    var chatDate = new Date(chat.chattime[0], chat.chattime[1] - 1, chat.chattime[2], chat.chattime[3], chat.chattime[4]);
+
+    	    // 월/일 시:분 형식으로 날짜 포매팅
+    	    var formattedTime = chatDate.getMonth() + 1 + '/' + chatDate.getDate() + ' ' + chatDate.getHours() + ':' + chatDate.getMinutes().toString().padStart(2, '0');
+    	    
+    	    var timeElement = document.createElement('div');
+    	    timeElement.textContent = formattedTime;
+
+    	    messageContainer.appendChild(textElement);
+    	    messageContainer.appendChild(timeElement);
+    	    chatElement.appendChild(messageContainer);
+    	}
+    	
+    	function moveToChattingList() {
+			window.location.href = '${root}/ChattingList';
+		}
+
+
       /*  //여기서부터 이미지
        function openImageUploader() {
     	    // 파일 업로드 창
@@ -700,7 +770,8 @@ textarea {
    
        // 페이지 로드 시 웹소켓 연결을 시작하고, 이벤트 리스너를 추가
        window.onload = function() {
-           connect();
+           connect();        
+           loadChatHistory(roomId);//채팅기록 가져오기 위해 추가했슴다
            document.getElementById('sendButton').addEventListener('click', sendMessage);
            document.getElementById('messageInput').addEventListener('keydown', function(event) {
                if (event.key === 'Enter') {
