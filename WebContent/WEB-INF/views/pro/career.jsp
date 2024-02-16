@@ -179,7 +179,7 @@
 
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 	<!-- JavaScript 부분 -->
- <script>
+<script>
 		// 경력 타이틀 입력 글자수 세기
 		$('#validationTextarea').on('input', function() {
 			var enteredValue = $(this).val();
@@ -192,6 +192,10 @@
 				$('#titleCharCount').text("20" + " ");
 			}
 		});
+		
+		 $('#myTextarea').on('input', function() {
+		        countChars();
+		    });
 
 		// 상세 설명 입력 글자수 세기
 		function countChars() {

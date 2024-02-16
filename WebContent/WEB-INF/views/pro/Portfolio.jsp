@@ -173,7 +173,34 @@ $(document).ready(function() {
     });
 });  
 
-     
+</script>
+
+<script>
+$(document).ready(function() {
+    // 서비스 종류 글자 수 세기
+    $('#service_type').on('input', function() {
+        var enteredValue = $(this).val();
+        var charCount = enteredValue.length;
+        $('#titleCharCount').text(charCount + " ");
+        // 30자 제한
+        if (charCount > 30) {
+            $(this).val(enteredValue.substring(0, 30));
+            $('#titleCharCount').text("30" + " ");
+        }
+    });
+
+    // 상세 설명 글자 수 세기
+    $('.myTextarea').on('input', function() {
+        var enteredValue = $(this).val();
+        var charCount = enteredValue.length;
+        $('#descriptionCharCount').text(charCount + " ");
+        // 100자 제한
+        if (charCount > 100) {
+            $(this).val(enteredValue.substring(0, 100));
+            $('#descriptionCharCount').text("100" + " ");
+        }
+    });
+});
 </script>
 
 </head>

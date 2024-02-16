@@ -81,11 +81,11 @@
     display: none;
 } 
 
-.col-1{
+.colllll{
       border: 1px solid #C2C2C2;
        border-radius: 10px;
-       width: 60px !important; 
-       height: 60px !important;
+       width: 55px !important; 
+       height: 52 !important;
        display: flex;
        align-items: center;
        justify-content: center;
@@ -668,7 +668,7 @@ loadData();
                      <form:input path="upload_file" type="file" name="profile-myfile"
                         id="profile-myfile" accept="image/*" style="display: none;" />
                   </div>
-                  <form:button class="ms-4 btn btn-light">프로필 이미지 수정</form:button>
+                  <form:button class="ms-3 btn btn-light" style="width:170px;" >프로필 이미지 수정</form:button>
                </form:form>
 	            </div>
 	            <div class="col-md">
@@ -865,18 +865,12 @@ loadData();
             <i class="bi bi-exclamation-circle">&nbsp;개인/민감 정보를 삭제 후 등록해야 하며, 허위정보에 대한 모든 책임은 본인에게 있습니다.</i>
          </div>
 
-         <div class="commnuity-select" style="display: flex; align-items: center;">
-      
-            
-            <form:form id="uploadForm" action="${root }/pro/image_pro" method="post" modelAttribute="imageExpertBean" enctype="multipart/form-data" style="width: 100%;">
-                
-                <form:hidden path="pro_id"/>
-
-               <div
-                  style="width: 100%; display: flex; flex-direction: row; justify-content: space-between;">
+         <div class="commnuity-select" style="display: flex; align-items: center;"> 
+            <form:form id="uploadForm" action="${root }/pro/image_pro" method="post" modelAttribute="imageExpertBean" enctype="multipart/form-data" style="width: 100%;">     
+                <form:hidden path="pro_id"/> 
+               <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between;">
                   <div style="display: flex; flex-direction: row;">
-                     <div class="col-1">
-
+                     <div class="colllll"> 
                         <input type="file" class="form-control col-2"
                            id="inputGroupFile04" name="uploadFiles" style="display: none;"
                            accept="image/*" multiple="true" /> 
@@ -884,8 +878,6 @@ loadData();
                            <i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
                         </form:label>
                      </div>
-
-					
                      <div class="selected-image" style="display: flex; flex-direction: row;">
                      
 	                     <c:if test="${imageInfo != null }">
