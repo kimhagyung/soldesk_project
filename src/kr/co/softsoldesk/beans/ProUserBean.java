@@ -27,9 +27,19 @@ public class ProUserBean {
 	private String pro_gender;
 	private boolean prouserEmailExist;
 	private boolean prouserLogin;  
-	private int postCount;   
+	private int postCount; 
+	
+	private String certification_documents_images;
 	
 	
+	
+	
+	public String getCertification_documents_images() {
+		return certification_documents_images;
+	}
+	public void setCertification_documents_images(String certification_documents_images) {
+		this.certification_documents_images = certification_documents_images;
+	}
 	public ProUserBean() { 
 		this.prouserEmailExist = false; // 초기값 false
 		// 초기화, 처음에는 중복검사를 하지 않으므로 디폴트 값을 false로 주입

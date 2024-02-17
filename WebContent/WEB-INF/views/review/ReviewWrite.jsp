@@ -179,10 +179,10 @@
                 <div class="account"><strong>리뷰 작성</strong></div>
                 <div class="reviewCard" style="border: 1px solid #D9E8F5; border-radius: 10px; background-color: #fff; height: auto;; margin-top: 2%;">
                     <div class="provider_profile" style="width: 75%; padding-top: 40px;">
-                        <img src="../image/1.png" style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 1.5%"/>
+                        <img src="${root }/upload/${proUserBean.certification_documents_images}" style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 1.5%"/>
                         <div class="profileInfo" style="margin-top: 0.6%;">
-                            <div class="provider_name" style="font-size: 16px;"><strong>심리상담사 OOO</strong></div>
-                            <div class="service_name" style="font-size: 14px; color: #737373;">일류</div>
+                            <div class="provider_name" style="font-size: 16px;"><strong>${proUserBean.pro_name }</strong></div>
+                            <div class="service_name" style="font-size: 14px; color: #737373;">${ctg1 }, ${ctg2 }, ${ctg3 }</div>
                         </div>
                     </div>
                     <div style="width: 75%;">

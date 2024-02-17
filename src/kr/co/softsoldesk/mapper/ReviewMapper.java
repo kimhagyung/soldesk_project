@@ -11,6 +11,7 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProProfileBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 
 public interface ReviewMapper {
@@ -37,6 +38,16 @@ public interface ReviewMapper {
 	@Delete("delete from review "
 			+ "where review_id = #{review_id}")
 	void deleteReview(int review_id);
+	
+	@Select("SELECT pro_profile.certification_documents_images, "
+			+ "pro_user.pro_name, "
+			+ "pro_user.active_detailcategory1, "
+			+ "pro_user.active_detailcategory2, "
+			+ "pro_user.active_detailcategory3 "
+			+ "FROM pro_user "
+			+ "JOIN pro_profile ON pro_user.pro_id = pro_profile.pro_id "
+			+ "WHERE pro_user.pro_id = #{pro_id}")
+	ProUserBean getProReviewInfo(int pro_Id);
 	
 	//------------ajax 리뷰---------------------
 	

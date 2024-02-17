@@ -9,6 +9,7 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProProfileBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.mapper.ReviewMapper;
 
@@ -36,6 +37,10 @@ public class ReviewDao {
 	
 	public void deleteReview(int review_id) {
 		reviewMapper.deleteReview(review_id);
+	}
+	
+	public ProUserBean getProReviewInfo(int pro_Id) {
+		return reviewMapper.getProReviewInfo(pro_Id);
 	}
 	
 	//---------------ajax 리뷰------------------------
