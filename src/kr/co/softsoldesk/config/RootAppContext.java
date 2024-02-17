@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.SessionScope;
 
 import kr.co.softsoldesk.beans.AdminBean;
+import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 
@@ -34,5 +35,10 @@ public class RootAppContext {
 		return new AdminBean();
 	}
 	
+	@Bean("AdminAlarm")  
+	@SessionScope
+	public PortFolioBean portFolioBean() {
+		return new PortFolioBean();
+	}
 	
 }

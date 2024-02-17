@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.dao.ProProfileDAO;
 
 @Service
@@ -109,5 +111,19 @@ public class ProProfileService {
 	      return proProfileDao.getProfileImgInfo(pro_id);
 	   }
 	
+	 //일류 프로필 정보 조회 
+	   public List<ExpertBean> getProProfileInfo(){
+		   return proProfileDao.getProProfileInfo();
+	   }
+	   
+	 //경력 정보 조회 
+	   public List<ExpertBean> getCareerInfo(){
+		   return proProfileDao.getCareerInfo();
+	   }
+	   
+	 //리뷰조회 
+		public List<ExpertBean> getAllReview(){
+			return proProfileDao.getAllReview();
+		}
 	
 }

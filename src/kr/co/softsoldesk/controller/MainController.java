@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.QuestionBean;
+import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
 import kr.co.softsoldesk.service.PostService;
+import kr.co.softsoldesk.service.ReviewService;
 import kr.co.softsoldesk.service.ServiceCategoryService;
 
 @Controller
@@ -25,6 +27,9 @@ public class MainController {
 	
 	@Autowired
 	DetailCategoryService detailCategoryService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	//@Autowired
 	QuestionBean questionBean;
@@ -59,10 +64,30 @@ public class MainController {
 		String serviceCategoryname = detailCategoryService.getServiceCategoryName(service_category_id);
 		model.addAttribute("serviceCategoryname", serviceCategoryname);
 		System.out.println("serviceCategoryname"+serviceCategoryname);
+		
 		//상세 카테고리 정보들
 		List<DetailCategoryBean> detailCategoryList = detailCategoryService.getDetailCategoryList(service_category_id);
 		model.addAttribute("detailCategoryList", detailCategoryList); 
 		System.out.println("detailCategoryList"+detailCategoryList);
+		
+		//리뷰 
+		List<ReviewBean> getReviewList = reviewService.getReviwList(service_category_id);
+		model.addAttribute("getReviewList", getReviewList);
+		
+		// 리뷰 정보 출력
+	    System.out.println("Review Information:");
+	    for (ReviewBean review : getReviewList) {
+	        System.out.println("Review ID: " + review.getReview_id());
+	        System.out.println("User ID: " + review.getUser_name());
+	        System.out.println("Review Contents: " + review.getReview_contents());
+	        System.out.println("Rating: " + review.getRating());
+	        System.out.println("Photos: " + review.getPhotos());
+	        System.out.println("pro: " + review.getPro_id());
+	        System.out.println("service_id : " + review.getService_category_id());
+	        // 필요한 다른 리뷰 정보들도 출력
+	        System.out.println("-----------------------------------");
+	    }
+		
 		return "/detailCategory";
 	}
 	

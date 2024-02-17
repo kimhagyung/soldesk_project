@@ -47,6 +47,14 @@ public interface ReviewMapper {
     List<ReviewBean> getReviewsPaged(@Param("startIdx") int startIdx, @Param("pageSize") int pageSize);
 	
 	
-	
+	//리뷰 가져오기(datail_category)
+	@Select("SELECT r.*, u.user_name, p.pro_name, r.pro_id \r\n"
+			+ "FROM review r\r\n"
+			+ "JOIN detailctg d ON r.category = d.detail_category_name\r\n"
+			+ "JOIN servicectg s ON d.service_category_id = s.service_category_id\r\n"
+			+ "JOIN users u ON r.user_id = u.user_id\r\n"
+			+ "JOIN pro_user p ON r.pro_id = p.pro_id\r\n"
+			+ "WHERE s.service_category_id = #{service_category_id}\r\n")
+	List<ReviewBean> getReviwList(int service_category_id);
 	
 }

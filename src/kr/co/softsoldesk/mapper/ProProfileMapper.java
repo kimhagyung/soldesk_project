@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.ReviewBean;
 
 public interface ProProfileMapper {
 
@@ -56,5 +58,31 @@ public interface ProProfileMapper {
    @Select("select certification_documents_images from pro_profile "
          + "where pro_id = #{pro_id}")
    String getProfileImgInfo(int pro_id);
+   
+   	//일류프로필 정보 조회 order by
+  	@Select("select pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name\r\n"
+  			+ "from pro_user, pro_profile\r\n"
+  			+ "where pro_user.pro_id = pro_profile.pro_id\r\n"
+  			+ "order by pro_id asc")
+  	List<ExpertBean> getProProfileInfo();
+  	
+  	//경력 정보 조회 order by
+  	@Select("SELECT SUM(career.total_experience_period) AS career_sum, pro_user.pro_id\r\n"
+  			+ "FROM pro_user\r\n"
+  			+ "JOIN career ON pro_user.pro_id = career.pro_id\r\n"
+  			+ "GROUP BY pro_user.pro_id\r\n"
+  			+ "order by pro_id asc")
+  	List<ExpertBean> getCareerInfo();
+  	
+  	//리뷰 조회 order by
+  	@Select("SELECT COUNT(*) AS review_cnt, pro_user.pro_id\r\n"
+  			+ "FROM pro_user\r\n"
+  			+ "JOIN review ON pro_user.pro_id = review.pro_id\r\n"
+  			+ "GROUP BY pro_user.pro_id\r\n"
+  			+ "order by pro_id asc")
+  	List<ExpertBean> getAllReview();
+  	
+  	
+  
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.mapper.CareerMapper;
+import kr.co.softsoldesk.mapper.ProProfileMapper;
 
 @Repository
 public class CareerDAO {
@@ -38,5 +39,7 @@ public class CareerDAO {
 		
 		careerMapper.deleteCareer(career_id);
 	}
+	
+	
 	
 }

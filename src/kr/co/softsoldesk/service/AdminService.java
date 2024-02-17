@@ -29,7 +29,11 @@ public class AdminService {
 	
 	@Resource(name = "AdminloginBean")
 	private AdminBean AdminloginBean;
-	
+	 
+	@Resource(name = "AdminAlarm")
+	private PortFolioBean AdminAlarm;
+  
+	/*
 	public void getLoginadminInfo(AdminBean adminTempLoginBean) {
 		
 		AdminBean AdminLoginBean2 = adminDao.getLoginadminInfo(adminTempLoginBean);
@@ -42,7 +46,7 @@ public class AdminService {
 		}
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 관리자 이메일:"+AdminLoginBean2.getAdmin_id());
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 관리자 비번:"+AdminLoginBean2.getAdmin_pwd());  
-	} 
+	}  */
 	
 	//모든 회원 정보 가져오기
 	public List<UserBean> getAllUsers() { 
@@ -84,6 +88,16 @@ public class AdminService {
     //포폴 이름 조회 
     public String getPortfolioName(int portfolio_id) {
         return adminDao.getPortfolioName(portfolio_id);
+    }
+    
+    //포폴 검수 완료 
+    public void CompPort(int portfolio_id) {
+    	adminDao.CompPort(portfolio_id);
+    }
+    
+    //포폴 삭제
+    public void DelPortfolio(int portfolio_id) {
+    	adminDao.DelPortfolio(portfolio_id);
     }
     
     // 관리자 게시글 삭제 
@@ -135,10 +149,29 @@ public class AdminService {
 			//System.out.println(file_name);
 			addCategoryBean.setFile_name(fileName);
 		}
-
-        
         // DAO를 통해 카테고리 추가
         adminDao.addCategory(addCategoryBean);
     }
-
+    //유저 게시글 카운트
+   	public int getUserPostCnt(int user_id) {
+   		 
+   		 return adminDao.getUserPostCnt(user_id);
+   		 
+   	 }
+   	
+   	public int getProPostCnt(int pro_id) { 
+   		 return adminDao.getProPostCnt(pro_id); 
+   	 }
+   	
+ 	//검수 요청 포트폴리오 정보
+   	public List<PortFolioBean> getInspectionPortfolio(){
+   		return adminDao.getInspectionPortfolio();
+   	}
+   	
+   	//검수 요청 포트폴리오 개수
+   	public int getCntInspectionPortfolio() {
+   		return adminDao.getCntInspectionPortfolio();
+   	}
+   	
+   	
 }

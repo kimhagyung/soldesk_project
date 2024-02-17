@@ -1,7 +1,9 @@
 package kr.co.softsoldesk.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.AdminBean;
@@ -36,7 +39,7 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping("/index")
-	public String index() {
+	public String index() { 
 		return "admin/index";
 	}
 	
@@ -92,11 +95,6 @@ public class AdminController {
 			return "admin/category_success";
 		}
 	
-	//포트폴리오 검수 완료 
-	@GetMapping("/Completportfolio")
-	public String Completportfolio() {
-		return "admin/Completportfolio";
-	}
 	
 	//포트폴리오 검수 필요 
 	@GetMapping("/portfolioIncpection")
@@ -118,6 +116,69 @@ public class AdminController {
 		return "admin/portfolioIncpection";
 	} 
 	
+
+	//포트폴리오 검수 완료변경
+	  @PostMapping("/portfolioIncpection_pro")
+	    public ModelAndView CompletePortfolio(@RequestParam("portfolio_id") int portfolio_id) {
+	        ModelAndView modelAndView = new ModelAndView();
+	        System.out.println("portfolio_id:"+portfolio_id);
+	        // 회원 삭제 기능을 수행하는 서비스 메서드 호출
+	        adminService.CompPort(portfolio_id); 
+	        // 삭제 후, 관리자 페이지로 이동
+	        modelAndView.setViewName("redirect:/admin/portfolioIncpection");
+	
+	        return modelAndView;
+
+	  }
+	 //포트폴리오 삭제
+	  @PostMapping("/portfolio_Delpro")
+	    public ModelAndView portfolio_Delpro(@RequestParam("portfolio_id") int portfolio_id) {
+	        ModelAndView modelAndView = new ModelAndView();
+	        System.out.println("portfolio_id:"+portfolio_id);
+	        // 회원 삭제 기능을 수행하는 서비스 메서드 호출
+	        adminService.DelPortfolio(portfolio_id); 
+	        // 삭제 후, 관리자 페이지로 이동
+	        modelAndView.setViewName("redirect:/admin/portfolioIncpection");
+	
+	        return modelAndView;
+
+	  }
+	
+	  //------------------------
+	//포트폴리오 검수 완료 
+		@GetMapping("/Completportfolio")
+		public String Completportfolio(Model model) {
+			//전체 포트폴리오 
+			List<PortFolioBean> allportfolio=adminService.getAllPortfolio();
+			model.addAttribute("allportfolio",allportfolio);
+			 
+			//작성자 이름 조회 
+			List<String> Portfolioallnames = new ArrayList<>(); 
+			 for (PortFolioBean portfolioname : allportfolio) {  
+			        String PortfolioproUserName = adminService.getPortfolioName(portfolioname.getPortfolio_id()); 
+			        Portfolioallnames.add(PortfolioproUserName);  
+			  }
+			 
+			 model.addAttribute("Portfolioallnames",Portfolioallnames); 
+		     System.out.println("Portfolioallnames :"+Portfolioallnames);
+ 
+			
+			
+			return "admin/Completportfolio";
+		}
+	//검수 완료된 포폴 삭제 
+	 @PostMapping("/Completeportfolio_Delpro")
+	    public ModelAndView Completeportfolio_Delpro(@RequestParam("portfolio_id") int portfolio_id) {
+	        ModelAndView modelAndView = new ModelAndView();
+	        System.out.println("portfolio_id:"+portfolio_id);
+	        // 회원 삭제 기능을 수행하는 서비스 메서드 호출
+	        adminService.DelPortfolio(portfolio_id); 
+	        // 삭제 후, 관리자 페이지로 이동
+	        modelAndView.setViewName("redirect:/admin/Completportfolio");
+	
+	        return modelAndView; 
+	  }
+		
 	@GetMapping("/forbiddenWords")
 	public String forbiddenWords() {
 		return "admin/forbiddenWords";
@@ -127,23 +188,61 @@ public class AdminController {
 	
 	@GetMapping("/pro")
 	public String pro(Model model) {
-		
-		List<ProUserBean> allpros=adminService.getAllUProUsers();
-		model.addAttribute("allpros", allpros);
-		
-		 
-		return "admin/pro";
+	    List<ProUserBean> allpros = adminService.getAllUProUsers();
+	    // pro 유저 게시글 수 카운트
+	    for (ProUserBean pro : allpros) {
+	        int postCnt = adminService.getProPostCnt(pro.getPro_id());
+	        pro.setPostCount(postCnt);
+	    }
+
+	    model.addAttribute("allpros", allpros);
+
+	    return "admin/pro";
 	}
 	
 	@GetMapping("/user")
 	public String user(Model model) {
-		
-		List<UserBean> allusers=adminService.getAllUsers();
-		model.addAttribute("allusers",allusers);
-		
-		 
-		return "admin/user";
+	    List<UserBean> allusers = adminService.getAllUsers();
+	    // user 유저 게시글 수 카운트
+	    for (UserBean user : allusers) {
+	        int postCnt = adminService.getUserPostCnt(user.getUser_id());
+	        user.setPostCount(postCnt);
+	    }
+
+	    model.addAttribute("allusers", allusers);
+
+	    return "admin/user";
 	}
+
+	/*
+	@GetMapping("/header")
+	public String header(Model model) {
+		List<PortFolioBean> inspecPort=adminService.getInspectionPortfolio();
+		int portCnt=adminService.getCntInspectionPortfolio();
+		
+		for(PortFolioBean inspe:inspecPort) {
+
+			System.out.println("inspe :"+inspe.getPortfolio_title());
+		}
+		System.out.println("portCnt :"+portCnt);
+		return "admin/header";
+	}
+	@GetMapping("/header")
+	public @ResponseBody Map<String, Object> header(Model model) {
+	    Map<String, Object> resultMap = new HashMap<>();
+	    List<PortFolioBean> inspecPort = adminService.getInspectionPortfolio();
+	    int portCnt = adminService.getCntInspectionPortfolio();
+	    
+	    for (PortFolioBean inspe : inspecPort) {
+	        System.out.println("inspe :" + inspe.getPortfolio_title());
+	    }
+	    System.out.println("portCnt :" + portCnt);
+	    
+	    resultMap.put("inspecPort", inspecPort);
+	    resultMap.put("portCnt", portCnt);
+	    
+	    return resultMap;
+	} */
 	
 	@GetMapping("/adminLogin")
 	public String adminLogin(@ModelAttribute("adminTempLoginBean") AdminBean adminTempLoginBean,
@@ -151,7 +250,7 @@ public class AdminController {
 		model.addAttribute("fail", fail);
 		return "admin/adminLogin";
 	}
-	
+	/*
 	@PostMapping("/adminLogin_pro")
 	public String adminLogin_pro(@ModelAttribute("adminTempLoginBean") AdminBean adminTempLoginBean) {
 		
@@ -168,7 +267,7 @@ public class AdminController {
 		        // NullPointerException이 발생하면 로그인 실패로 처리
 		        return "admin/login_fail";
 		    } 
-	}
+	} */
 	//회원 삭제
 	  @PostMapping("/deleteUsers")
 	    public ModelAndView deleteUsers(@RequestParam("user_id") int user_id) {

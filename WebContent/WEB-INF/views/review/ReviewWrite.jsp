@@ -45,12 +45,13 @@
         #btn-container {
             display: flex;
             align-items: center;
+            
         }
 
         #btn {
             border: 1px solid #F3F3F3;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 10px;
             position: relative;
             overflow: hidden;
@@ -95,18 +96,14 @@
 		align-items: center;
 	}
 	
-	label.form-control.col-2.btn{
-		display: flex;
-    	align-items: center;
-    	justify-content: center;
-	}
 	
-	.col-1{
+	
+	.selectimg{
 		border: 1px solid #C2C2C2;
     	border-radius: 10px;
-    	width: 60px !important; 
-    	height: 60px !important;
-    	display: flex;
+    	width: 60px; 
+    	height: 60px;
+    	padding: 10px;
     	align-items: center;
     	justify-content: center;
     	margin-right: 15px;
@@ -139,23 +136,16 @@
     	border-radius: 8px;
 	}
 	
-	span.col-2 {
-    width: fit-content;
-    display: flex;
+	.catebtn {
+    width:auto; 
     align-items: center;
     margin-bottom: 15px;
     border: 1px solid #B5B5B5;
     border-radius: 8px;
     margin-right: 7.5px;
-}
-		
-    </style>
-    <script>
-    $(function(){
-      $(".header").load("header.html");
-       $(".footer").load("footer.html");
-    });
-  </script>
+    padding:10px; 
+} 
+    </style> 
   
   <script>
 		var categoryData = {
@@ -175,6 +165,7 @@
 <c:import url="/WEB-INF/views/include/header.jsp" />
    <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
+        
             <div class="col-md-10">
                 <div class="account"><strong>리뷰 작성</strong></div>
                 <div class="reviewCard" style="border: 1px solid #D9E8F5; border-radius: 10px; background-color: #fff; height: auto;; margin-top: 2%;">
@@ -196,20 +187,19 @@
 									style="color: #B5B5B5; font-size: 14px;">카테고리를 선택해주세요</div>
 								
 								<!-- 카테고리 모달 -->
-							<div class="postInfo">
-								<span class="col-2 mt-2">
-									<button class="btn button categoryBtn" data-bs-toggle="modal"
+							<div class="postInfo mt-3">
+								<span class="mt-2 catebtn">
+									<button class="btn button categoryBtn ms-2" data-bs-toggle="modal"
 										data-bs-target="#exampleModal" aria-controls="category">
-										카테고리 <i class="bi bi-caret-down"></i>
+										카테고리<i class="bi bi-caret-down"></i>
 									</button>
-								</span>
-
+								</span> 
 							</div>
 							
 							<!-- 카테고리 클릭하면 보이는 모달창 -->
 							<div class="modal fade" id="exampleModal" tabindex="-1"
 								aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-scrollable">
+								<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
 									<div class="modal-content">
 										<div class="modal-header">
 											<h1 class="modal-title fs-5" id="exampleModalLabel">카테고리
@@ -325,19 +315,19 @@
 								<div id="btn-container"
 									style="margin-top: 0.8%; margin-bottom: 40px;">
 									<!-- 사진 -->
-			<div class="commnuity-select">
-				<div class="col-1"> 
-					
-					<input type="file" class="form-control col-2" id="inputGroupFile04" name="uploadFiles" style="display: none;" accept="image/*" multiple="true"/>
-					
-					<form:label path="photos" for="inputGroupFile04" class="form-control col-2 btn"> 
-						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
-					</form:label>
-				</div>
-				
-				<div class="selected-image"></div>
-				
-			</div>
+									<div class="commnuity-select">
+										<div class=" selectimg"> 
+											
+											<input type="file" class="form-control col-2" id="inputGroupFile04" name="uploadFiles" style="display: none;" accept="image/*" multiple="true"/>
+											
+											<form:label path="photos" for="inputGroupFile04" class="form-control btn"> 
+												<i class="bi bi-camera-fill me-1"></i> <!-- 카메라 아이콘(사진 첨부) -->
+											</form:label>
+										</div>
+										
+										<div class="selected-image"></div>
+										
+									</div>
 									<!-- <label for="fileInput">
 										<div class="btn" id="btn">
 											<i class="bi bi-plus-circle upload-icon"
@@ -394,13 +384,13 @@
 	                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
 	                selectedImageDiv.append(img);
 
-	               /*  const removeButton = $('<button>').text('삭제').addClass('remove-button');
+	                 const removeButton = $('<button>').text('삭제').addClass('remove-button');
 	                removeButton.on('click', function () {
 	                    img.remove();
 	                    removeButton.remove();
 	                });
 
-	                img.after(removeButton); */
+	                img.after(removeButton); 
 	            };
 
 	            reader.readAsDataURL(file);

@@ -97,4 +97,6 @@ public class ReviewController {
         interestService.toggleInterest(user_id, pro_id);
         return ResponseEntity.ok("Liked toggled successfully");
     }
+	
+	
 }

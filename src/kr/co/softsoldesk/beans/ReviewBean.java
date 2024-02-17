@@ -21,6 +21,31 @@ public class ReviewBean {
     
     private String category;
     
+    private String user_name;
+    private String pro_name;
+    private int service_category_id;
+    
+    
+    
+    
+	public int getService_category_id() {
+		return service_category_id;
+	}
+	public void setService_category_id(int service_category_id) {
+		this.service_category_id = service_category_id;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+	public String getPro_name() {
+		return pro_name;
+	}
+	public void setPro_name(String pro_name) {
+		this.pro_name = pro_name;
+	}
 	public String getCategory() {
 		return category;
 	}

@@ -35,55 +35,59 @@
 			<h2>마이페이지</h2>
 		</div>
 		<ul class="list-group list-group-flush mx-auto">
+		
 		  <li class="list-group-item">
 			  <div class="row justify-content-between mt-3">
+					<div class="col-4">
+						<div class="row"  >
 							<div class="col-4">
-								<div class="row"  >
-									<div class="col-4">
-										<img src="../image/logo4.png" style="height: 100px; width: 80px;" />
-									</div>
-									<div class="col-7 mt-3">
-										<c:choose>
-										<c:when
-											test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
-											
-											<b>${loginUserBean.user_name }</b>
-											<br>
-											<p><a>${loginUserBean.user_email} </a></p>
-										
-										</c:when>
-										
-										<c:when
-											test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
-											
-											<b>${loginProuserBean.pro_name }</b>
-											<br>
-											<p><a>${loginProuserBean.pro_email} </a>
-										</c:when>
-										
-									</c:choose>
-									</div>
-								</div>
+								<img src="../image/logo4.png" style="height: 100px; width: 80px;" />
 							</div>
-							<div class="col-4 ms-5  mt-3 text-end">
-							 <c:choose>
-                               <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
-                                    <button class="btn button-custom " onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
-                                </c:when>
-                             </c:choose> 
-								<button class="btn button-custom account"
-								onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
+							<div class="col-7 mt-3">
+								<c:choose>
+								<c:when
+									test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
+									
+									<b>${loginUserBean.user_name }</b>
+									<br>
+									<p><a>${loginUserBean.user_email} </a></p>
+								
+								</c:when>
+								
+								<c:when
+									test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
+									
+									<b>${loginProuserBean.pro_name }</b>
+									<br>
+									<p><a>${loginProuserBean.pro_email} </a>
+								</c:when>
+								
+							</c:choose>
 							</div>
 						</div>
+					</div>
+					<div class="col-4 ms-5  mt-3 text-end">
+					 <c:choose>
+	                            <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
+	                                 <button class="btn button-custom " onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
+	                             </c:when>
+	                          </c:choose> 
+						<button class="btn button-custom account"
+						onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
+					</div>
+				</div>
 		  </li>
 		  
+		  <c:if test="${loginProuserBean.prouserLogin == false}">
 		  <li class="list-group-item mt-3">
-			  
-			  <h4><b>일류찾기</b></h4>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="saved.html"> 찜한 일류</a>
-			  </div>
-		  </li>
+			    
+			        <h4><b>일류찾기</b></h4>
+			        <div class="mt-3 mb-3" style="font-size: 17px;" onclick="location.href='${root }/common/saved?id=${param.id}'" >
+			            <p style="cursor:pointer">찜한 일류</p>
+			        </div>
+			   
+			</li>
+		   </c:if>
 		  
 		  <li class="list-group-item mt-3">
 			  <h4><b>커뮤니티</b></h4>

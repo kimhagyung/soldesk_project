@@ -16,8 +16,38 @@ public class ExpertBean {
     private String pro_detailed_introduction;
     private String price;
     private MultipartFile upload_file;
+    
+    //일류 찾기..
+    private String pro_name;
+    private int review_cnt;
+    private int career_sum;
+    
+   
+    public String getPro_name() {
+		return pro_name;
+	}
 
-    public MultipartFile getUpload_file() {
+	public void setPro_name(String pro_name) {
+		this.pro_name = pro_name;
+	}
+
+	public int getReview_cnt() {
+		return review_cnt;
+	}
+
+	public void setReview_cnt(int review_cnt) {
+		this.review_cnt = review_cnt;
+	}
+
+	public int getCareer_sum() {
+		return career_sum;
+	}
+
+	public void setCareer_sum(int career_sum) {
+		this.career_sum = career_sum;
+	}
+
+	public MultipartFile getUpload_file() {
        return upload_file;
     }
 

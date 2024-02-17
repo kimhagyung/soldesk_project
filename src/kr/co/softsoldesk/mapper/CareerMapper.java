@@ -39,4 +39,6 @@ public interface CareerMapper {
 	@Delete("delete from career where career_id = #{career_id} ")
 	void deleteCareer(int career_id);
 	
+	
+	
 }

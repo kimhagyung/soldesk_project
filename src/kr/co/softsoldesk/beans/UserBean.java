@@ -9,7 +9,14 @@ public class UserBean {
 	private boolean userEmailExist;
 	private boolean userLogin;
 	private int reportCnt;
-
+	private int postCount;  
+	
+	public int getPostCount() {
+		return postCount;
+	}
+	public void setPostCount(int postCount) {
+		this.postCount = postCount;
+	}
 	
 	
 	public int getReportCnt() {

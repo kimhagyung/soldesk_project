@@ -79,5 +79,11 @@ public class ReviewService {
 		return reviewDao.getAllReviews(pro_id);
 	}
 	
+	// 리뷰 가져오기(detail_category)
+	public List<ReviewBean> getReviwList(int service_category_id) {
+		
+		return reviewDao.getReviewList(service_category_id);
+	}
+	
 	
 }

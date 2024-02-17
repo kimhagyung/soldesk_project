@@ -1,5 +1,6 @@
 package kr.co.softsoldesk.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,17 +14,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.CalendarBean;
 import kr.co.softsoldesk.beans.CommentBean;
+import kr.co.softsoldesk.beans.InterestBean;
 import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.CalendarService;
+import kr.co.softsoldesk.service.InterestService;
 import kr.co.softsoldesk.service.PostService;
 import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
@@ -45,6 +50,9 @@ public class CommonController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private InterestService interestService;
 	
 	@Autowired
 	CalendarService calendarService;
@@ -378,6 +386,64 @@ public class CommonController {
 	    }
 		
 		return "common/comment";
+	}
+	
+	//--------------------------------------------------------------내가 찜한 일류
+	
+	@GetMapping("/saved")
+	public String saved(Model model, @RequestParam("id") int id) {
+		
+		//이름, 프로필 사진, 상세 소개, pro_id
+		List<InterestBean> getProfileList = interestService.getProfileList(id);//프로필
+		System.out.println("id...: " + id);
+		model.addAttribute("getProfileList", getProfileList);
+		
+		// for 루프를 사용하여 리스트의 각 요소를 출력
+		for (InterestBean interest : getProfileList) {
+		    System.out.println("pro_id: " + interest.getPro_id());
+		    System.out.println("pro_detailed_introduction: " + interest.getPro_detailed_introduction());
+		    System.out.println("certification_documents_images: " + interest.getCertification_documents_images());
+		    System.out.println("pro_name: " + interest.getPro_name());
+		    System.out.println("---------------------------");
+		}
+		
+		
+		//경력
+		List<InterestBean> getcareerList = interestService.getcareerList(id);
+		model.addAttribute("getcareerList", getcareerList);
+		
+		for(InterestBean interest2 : getcareerList) {
+			System.out.println("pro_id : " + interest2.getPro_id());
+			System.out.println("total_experience_period: " + interest2.getTotal_experience_sum());
+			System.out.println("-----------------------------");
+		}
+		
+		//리뷰
+		List<InterestBean> getReviewList = interestService.getReviewList(id);
+		model.addAttribute("getReviewList", getReviewList);
+		
+		for(InterestBean interest3 : getReviewList) {
+			System.out.println("pro_iddddd: " + interest3.getPro_id());
+			System.out.println("review_count: " + interest3.getReview_count());
+			 
+			System.out.println("--------------------------------");
+		}
+		
+	
+		return "common/saved";
+	}
+	
+	//찜한 일류 삭제
+	@PostMapping(value = "/interest_delete", consumes = "application/json")
+	@ResponseBody
+	public String interest_delete(@RequestBody InterestBean interestDeleteBean) {
+		
+		System.out.println("interest_idddddddd : " + interestDeleteBean.getInterest_id());
+		interestService.InterestDelete(interestDeleteBean.getInterest_id());
+		
+		
+		
+		return "delete interest success";
 	}
 	
 }

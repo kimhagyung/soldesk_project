@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.ExpertBean;
+import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.mapper.ProProfileMapper;
 
 @Repository
@@ -59,4 +61,19 @@ public class ProProfileDAO {
 	   public String getProfileImgInfo(int pro_id) {
 	      return proProfileMapper.getProfileImgInfo(pro_id);
 	   }
+	   
+	 //일류 프로필 정보 조회 
+	   public List<ExpertBean> getProProfileInfo(){
+		   return proProfileMapper.getProProfileInfo();
+	   }
+	   
+	 //경력 정보 조회 
+	   public List<ExpertBean> getCareerInfo(){
+		   return proProfileMapper.getCareerInfo();
+	   }
+	   
+	//리뷰조회 
+	public List<ExpertBean> getAllReview(){
+		return proProfileMapper.getAllReview();
+	}
 }

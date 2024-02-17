@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
@@ -53,6 +55,14 @@ public interface AdminMapper {
 	@Select("select pro_name from pro_user, portfolio where pro_user.pro_id=portfolio.pro_id and portfolio_id=${portfolio_id}")
 	String getPortfolioName(int portfolio_id);
 	
+	//포폴 검수 완료  
+	@Update("update portfolio set inspectionNY=1 where portfolio_id=#{portfolio_id}")
+	void CompPort(int portfolio_id);
+
+	//포폴 삭제
+	@Delete("delete from portfolio where portfolio_id=#{portfolio_id}")
+	void DelPortfolio(int portfolio_id);
+	
 	//게시글 삭제 
 	@Delete("delete from board where board_id=#{board_id}")
 	void deletePost(int board_id);
@@ -75,4 +85,23 @@ public interface AdminMapper {
 		@Insert("INSERT INTO detailctg (detail_category_id, service_category_id, detail_category_name, file_name)\r\n"
 				+ "VALUES (detailctg_seq.nextval, (SELECT service_category_id FROM servicectg WHERE service_category_name = #{service_category_name}), #{detail_category_name}, #{file_name})")
 		void addCategory(DetailCategoryBean addCategoryBean);
+		
+		//내가 쓴 게시글 갯수
+		@Select("SELECT COUNT(*)\r\n"
+				+ "FROM board\r\n"
+				+ "WHERE (user_id = #{user_id, jdbcType=INTEGER})")
+		int getUserPostCnt(@Param("user_id") Integer user_id);
+		
+		@Select("SELECT COUNT(*)\r\n"
+				+ "FROM board\r\n"
+				+ "WHERE (pro_id = #{pro_id, jdbcType=INTEGER})")
+		int getProPostCnt(@Param("pro_id") Integer pro_id);
+		
+		//검수 요청 포트폴리오 정보
+		@Select("select * from portfolio where inspectionny = 0")
+		List<PortFolioBean> getInspectionPortfolio();
+		
+		//검수 요청 포트폴리오 개수
+		@Select("select count(*) from portfolio where inspectionny = 0")
+		int getCntInspectionPortfolio();
 }
