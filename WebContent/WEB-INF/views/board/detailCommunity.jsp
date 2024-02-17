@@ -16,9 +16,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> 
 <script>
 
 $(document).ready(function() {
@@ -54,6 +52,8 @@ $(document).ready(function() {
                     
                     // 댓글 목록 조회
                     updateReplyList();
+                    
+                    sendNotification();
                 }
             },
             error: function(error) {
@@ -540,26 +540,7 @@ $(document).ready(function() {
 
 	</script>
 	
-	<script>
-      var stompClient = null;
-      
-      function connect() {
-          var socket = new SockJS('/ws');
-          stompClient = Stomp.over(socket);
-      
-          stompClient.connect({}, function(frame) {
-              console.log('Connected: ' + frame);
-      
-          });
-      }
-      
-      
-      
-      // 페이지 로드 시 연결
-      window.onload = function() {
-          connect();
-      };
-      </script>
+	 
 
 </body>
 </html>
