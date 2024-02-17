@@ -10,7 +10,7 @@ public class ChatHistoryBean {
     private LocalDateTime chattime;
     private int senderId;
     private int pro_id;
-    private int view_status;
+
     
 	public int getChat_id() {
 		return chat_id;
@@ -48,12 +48,5 @@ public class ChatHistoryBean {
 	public void setPro_id(int pro_id) {
 		this.pro_id = pro_id;
 	}
-	public int getView_status() {
-		return view_status;
-	}
-	public void setView_status(int view_status) {
-		this.view_status = view_status;
-	}
-    
 	
 }

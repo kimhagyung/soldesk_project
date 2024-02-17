@@ -156,9 +156,9 @@
 
 									<div class="chatInfo" style="padding-bottom: 20px;">
 
-										<div class="date"
-											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											${chatroom.createdate}</div>
+										<div class="date" style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
+											2024.1.12
+										</div>
 									</div>
 								</button>
 							</div>
@@ -202,9 +202,10 @@
 
 									<div class="chatInfo" style="padding-bottom: 20px;">
 
-										<div class="date"
-											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											${chatroom.createdate}</div>
+										<div class="date" style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
+											2024.1.12
+										</div>	
+											
 									</div>
 								</button>
 							</div>
@@ -246,6 +247,9 @@
 					showNotificationBadge();
 					//alert("새로운 알림 : " + notification.body);
 					showLatestMessage(notification.body);
+					
+					//시간
+					showLatestMessageWithTimestamp(notification.body);
 				});
 			});
 		}
@@ -269,6 +273,20 @@
 						+ "..." : message;
 				latestMessageElement.innerText = displayText; // displayText 변수를 사용하여 화면에 표시
 			}
+		}
+		
+		function showLatestMessageWithTimestamp(message) {
+		    var latestMessageElement = document.getElementById('latestMessage');
+		    if (latestMessageElement) {
+		        // 현재 시간을 포맷
+		        var now = new Date();
+		        var timestamp = now.getHours().toString().padStart(2, '0') + ':' +
+		                        now.getMinutes().toString().padStart(2, '0');
+
+		        // 메시지 길이가 20글자 이상이면 앞의 20글자만 표시하고 "..." 추가
+		        var displayText = message.length > 20 ? message.substring(0, 20) + "..." : message;
+		        latestMessageElement.innerText = displayText + " (" + timestamp + ")"; // 메시지와 시간을 함께 표시
+		    }
 		}
 
 		// 페이지 로드 시 연결

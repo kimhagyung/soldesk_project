@@ -1,6 +1,6 @@
 package kr.co.softsoldesk.beans;
 
-
+import java.time.LocalDateTime;
 
 public class ChatRoomSelect {
     private int room_id;
@@ -9,6 +9,7 @@ public class ChatRoomSelect {
     private int user_id;
     private String user_name;
     private String pro_profile_image;
+
 
     public int getPro_id() {
 		return pro_id;
@@ -67,5 +68,7 @@ public class ChatRoomSelect {
 	public void setPro_profile_image(String pro_profile_image) {
 		this.pro_profile_image = pro_profile_image;
 	}
-    
+
+	
+	
 }

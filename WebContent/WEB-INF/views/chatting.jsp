@@ -524,55 +524,7 @@ textarea {
     	function moveToChattingList() {
 			window.location.href = '${root}/ChattingList';
 		}
-
-
-      /*  //여기서부터 이미지
-       function openImageUploader() {
-    	    // 파일 업로드 창
-    	    var fileInput = document.createElement('input');
-    	    fileInput.type = 'file';
-    	    fileInput.accept = 'image/*';
-    	    fileInput.click();
-
-    	    // 파일이 선택되면 해당 파일을 처리하는 함수를 호출
-    	    fileInput.addEventListener('change', function() {
-    	        handleFileUpload(fileInput.files[0]);
-    	    });
-    	}
-
-    	function handleFileUpload(file) {
-    	    // 파일 업로드를 처리 부분
-    	    console.log('Selected file:', file);
-
-    	    // 이미지 파일을 화면에 표시하는 기능 추가
-    	    displayImage(file);
-    	}
-
-    	function displayImage(file) {
-    	    var chatElement = document.getElementById('chat');
-    	    var imageContainer = document.createElement('div');
-    	    imageContainer.className = 'messageContainer';
-
-    	    var imageElement = document.createElement('img');
-    	    imageElement.src = URL.createObjectURL(file);
-    	    imageElement.style.maxWidth = '200px'; // 이미지의 최대 너비 설정
-
-    	    var currentTime = new Date();
-    	    var hours = currentTime.getHours().toString().padStart(2, '0');
-    	    var minutes = currentTime.getMinutes().toString().padStart(2, '0');
-    	    var timeString = hours + ':' + minutes;
-
-    	    var timeElement = document.createElement('div');
-    	    timeElement.textContent = timeString;
-
-    	    imageContainer.appendChild(imageElement);
-    	    imageContainer.appendChild(timeElement);
-
-    	    chatElement.appendChild(imageContainer);
-    	    chatElement.scrollTop = chatElement.scrollHeight;
-    	} */
-
-   
+  
        // 페이지 로드 시 웹소켓 연결을 시작하고, 이벤트 리스너를 추가
        window.onload = function() {
            connect();        

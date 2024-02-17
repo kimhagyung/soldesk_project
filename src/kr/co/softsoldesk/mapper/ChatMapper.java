@@ -48,7 +48,7 @@ public interface ChatMapper {
             "WHERE c.pro_id = #{pro_id}")
     List<ChatRoomSelect> findChatroomsWithUserNameByProId(@Param("pro_id") int proId);
     
-    @Insert("INSERT INTO chatHistory(chat_id, room_id, content, senderId, chattime, view_status) VALUES(chatHistory_seq.NEXTVAL, #{room_id}, #{content}, #{senderId},DEFAULT, DEFAULT)")
+    @Insert("INSERT INTO chatHistory(chat_id, room_id, content, senderId, chattime) VALUES(chatHistory_seq.NEXTVAL, #{room_id}, #{content}, #{senderId},DEFAULT)")
     void insertChatHistory(ChatHistoryBean chatHistory);
     
     @Select("SELECT * FROM chatHistory WHERE room_id = #{room_id} ORDER BY chattime ASC")
