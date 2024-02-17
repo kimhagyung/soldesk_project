@@ -66,8 +66,8 @@ public interface PostMapper {
 	
 	//----------------신고-----------------------------
 	
-	@Insert("insert into report(report_id, board_id, report_state, report_msg) "
-			+ "values(report_seq.nextval, #{board_id}, #{report_state}, #{report_msg})")
+	@Insert("insert into report(report_id, board_id, report_state, report_msg, report_date) "
+			+ "values(report_seq.nextval, #{board_id}, #{report_state}, #{report_msg}, sysdate)")
 	void addReportInfo(ReportBean writeReportBean);
 	
 	//------------------댓글---------------------------------

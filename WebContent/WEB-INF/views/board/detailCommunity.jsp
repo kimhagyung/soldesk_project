@@ -415,6 +415,7 @@ $(document).ready(function() {
   						<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
     						<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
       							<img src="${root}/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
+      							<div>${photo }</div>
     						</div>
   						</c:forEach>
 					</div>

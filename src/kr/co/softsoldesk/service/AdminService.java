@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.AdminDao;
 @Service
@@ -65,6 +67,34 @@ public class AdminService {
     public String getPostProUserName(int board_id) {
         return adminDao.getPostProUserName(board_id);
     }
-
+    
+    //신고 목록 불러오기
+    public List<ReportBean> getReportList(){
+    	return adminDao.getReportList();
+    }
+    
+    //신고 반려
+    public void deleteReportInfo(int board_id) {
+    	adminDao.deleteReportInfo(board_id);
+    }
+    
+  //게시글 삭제
+    public void deletePostInfo(int board_id){
+    	adminDao.deletePostInfo(board_id);
+    }
+    
+  //신고 누적 횟수
+    public void updateUserReportCnt(int user_id) {
+    	adminDao.updateUserReportCnt(user_id);
+    }
+    
+    public void updateProuserReportCnt(int pro_id) {
+    	adminDao.updateProuserReportCnt(pro_id);
+    }
+    
+  //신고 개수
+    public int getCntReport() {
+    	return adminDao.getCntReport();
+    }
 	
 }

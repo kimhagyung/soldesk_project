@@ -79,45 +79,17 @@
                         </div>
 
                         <div class="dropdown for-message">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-envelope"></i>
-                                <span class="count bg-primary">4</span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="message">
-                                <p class="red">You have 4 Mails</p>
-                                <a class="dropdown-item media" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/1.jpg"></span>
-                                    <div class="message media-body">
-                                        <span class="name float-left">Jonathan Smith</span>
-                                        <span class="time float-right">Just now</span>
-                                        <p>Hello, this is an example msg</p>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item media" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/2.jpg"></span>
-                                    <div class="message media-body">
-                                        <span class="name float-left">Jack Sanders</span>
-                                        <span class="time float-right">5 minutes ago</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item media" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/3.jpg"></span>
-                                    <div class="message media-body">
-                                        <span class="name float-left">Cheryl Wheeler</span>
-                                        <span class="time float-right">10 minutes ago</span>
-                                        <p>Hello, this is an example msg</p>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item media" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/4.jpg"></span>
-                                    <div class="message media-body">
-                                        <span class="name float-left">Rachel Santos</span>
-                                        <span class="time float-right">15 minutes ago</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                    </div>
-                                </a>
-                            </div>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="moveToReport()">
+
+								<i class="fa fa-envelope"></i>
+								<!-- 들어온 신고 수 -->
+								<c:if test="${alarmReportBean.getReportCnt() != 0}">
+									<span class="count bg-primary">${alarmReportBean.getReportCnt() }</span>
+								</c:if>
+								
+
+							</button>
+                            
                         </div>
                     </div>
 
@@ -159,9 +131,12 @@
                     </li>
                     <li class="menu-title">게시글 관리</li><!-- /.menu-title --> 
                     <li class="menu-item-has-children dropdown">
-                        <a href="${root }/admin/community" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>게시글 관리</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>게시글 관리</a>
+                        <ul class="sub-menu children dropdown-menu">                            
+							<li><i class="fa fa-solid fa-user"></i><a href="${root }/admin/community" aria-haspopup="true" aria-expanded="false">게시글 관리</a></li>
+                            <li><i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i><a href="${root }/admin/report">신고 관리</a></li>
+                        </ul>
                     </li>
-                    
                     <li class="menu-title">카테고리 관리</li><!-- /.menu-title --> 
                     <li class="menu-item-has-children dropdown">
                         <a href="${root }/admin/category"  aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>카테고리 관리</a>
@@ -206,6 +181,16 @@
     <script src="assets/js/lib/data-table/buttons.colVis.min.js"></script>
     <script src="assets/js/init/datatables-init.js"></script>
 
+	<script>
+    function moveToReport() {
+     
+    	var root = "${root}"; // root 변수가 어디서 가져오는지에 따라 수정이 필요할 수 있음
+        var targetUrl = root + "/admin/report";
+
+        // 페이지 이동
+        window.location.href = targetUrl;
+    }
+</script>
 
 </body>
 </html>

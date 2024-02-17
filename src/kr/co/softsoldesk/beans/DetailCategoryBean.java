@@ -2,13 +2,26 @@ package kr.co.softsoldesk.beans;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class DetailCategoryBean {
 
 	 private int detail_category_id;
 	 private int service_category_id;
 	 private String detail_category_name;
 	 private String file_name; 
+	 private MultipartFile upload_file;
 	 
+	 
+	 
+	public MultipartFile getUpload_file() {
+		return upload_file;
+	}
+
+	public void setUpload_file(MultipartFile upload_file) {
+		this.upload_file = upload_file;
+	}
+
 	public int getDetail_category_id() {
 		return detail_category_id;
 	}

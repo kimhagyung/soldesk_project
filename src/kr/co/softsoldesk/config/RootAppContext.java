@@ -6,6 +6,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 
 //import kr.co.softsoldesk.beans.UserBean;
@@ -32,6 +33,12 @@ public class RootAppContext {
 	@SessionScope
 	public AdminBean adminBean() { 
 		return new AdminBean();
+	}
+	
+	@Bean("alarmReportBean")  
+	@SessionScope
+	public ReportBean alarmReportBean() {
+		return new ReportBean();
 	}
 	
 	

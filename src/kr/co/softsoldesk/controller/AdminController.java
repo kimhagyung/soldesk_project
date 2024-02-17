@@ -2,22 +2,28 @@ package kr.co.softsoldesk.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.AdminService;
 
@@ -42,26 +48,23 @@ public class AdminController {
 		List<PostBean> boardAll=adminService.getAllUBoard();
 		
 		 
-	    List<String> userNames = new ArrayList<>();
-	    List<String> proUserNames = new ArrayList<>(); 
-
+	    List<String> allnames = new ArrayList<>(); 
+ 
 	    for (PostBean board : boardAll) {  
 	        String proUserName = adminService.getPostProUserName(board.getBoard_id());
 	        String userName = adminService.getPostUserName(board.getBoard_id()); 
 	        if( proUserName != null) { 
-	            proUserNames.add(proUserName);  
-		        System.out.println("proUserNames:"+proUserNames); 
+	        	allnames.add(proUserName);  
+		        System.out.println("proUserNames:"+allnames); 
 	        } 
 	        else if (userName != null) {
-	            userNames.add(userName);
-		        System.out.println("userNames:"+userNames); ;  
+	        	allnames.add(userName);
+		        System.out.println("userNames:"+allnames); ;  
 	        }  
 	    } 
 
 		//보드 가져오기 
-	    model.addAttribute("userNames", userNames); 
-	    model.addAttribute("proUserNames", proUserNames);
-
+	    model.addAttribute("allnames", allnames);  
 		model.addAttribute("boardAll",boardAll);
 		//이름 조회 
 		return "admin/community";
@@ -157,5 +160,51 @@ public class AdminController {
 	        return modelAndView;
 	
 	  }
+	  
+	  @GetMapping("/report")
+	  public String report(Model model) {
+		  
+		  List<ReportBean> allReportBean = adminService.getReportList();
+		  
+		  model.addAttribute("allReportBean", allReportBean);
+		  for(ReportBean all:allReportBean) {
+			  System.out.println("일루이르으음"+all.getPro_writer_name());
+			  System.out.println("이르으음"+all.getUser_writer_name());
+		  }
+		  return "admin/report";
+	  }
+	  
+	  //반려
+		@PostMapping("/rejectReport")
+		@ResponseBody
+		public String rejectReport(@RequestBody ReportBean reportBean) {
+			
+
+			adminService.deleteReportInfo(reportBean.getBoard_id());
+
+			return "반려";
+		}
+		
+		//게시글 삭제
+		@PostMapping("/approveReport")
+		@ResponseBody
+		public String approveReport(@RequestBody ReportBean reportBean) {
+			
+			adminService.deletePostInfo(reportBean.getBoard_id());
+			
+			if(reportBean.getUser_id() != null) {
+				
+				adminService.updateUserReportCnt(reportBean.getUser_id());
+			}
+			
+			else if(reportBean.getPro_id() != null) {
+			
+				adminService.updateProuserReportCnt(reportBean.getPro_id());
+			}
+			
+			return "삭제";
+		}
+	  
+		
 	   
 }
