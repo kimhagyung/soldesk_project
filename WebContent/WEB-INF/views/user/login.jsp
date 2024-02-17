@@ -18,6 +18,7 @@
 	font-size: 18px;
 }
 </style>
+
 </head>
 <body>
 	<c:import url="/WEB-INF/views/include/header.jsp" />
@@ -28,30 +29,32 @@
 				<h2 class="card-title text-center mb-5 mt-5 fw-bold">로그인</h2>
 				<div class="card">
 					<div class="card-body" style="padding: 30px; font-size: 20px;">
-						<c:if test="${fail==true }">
-							<div class="alter alter-danger">
+						<c:if test="${fail == true }">
+							<div class="alert alert-danger">
 								<h3>로그인 실패</h3>
-								<p>아이디 비밀번호를 확인해 주세요
+								<p>아이디 비밀번호를 확인해주세요</p>
 							</div>
 						</c:if>
-						<form:form action="${root }/user/login_pro" method="post"
-							modelAttribute="tempLoginUserBean">
+						
+						<form:form action="${root }/user/login_pro" method="post" modelAttribute="tempLoginUserBean">
+						
 							<div class="mb-3">
 								<form:label path="user_email">이메일</form:label>
-								<form:input path="user_email" class="form-control" type="email"
-									placeholder="이메일 주소를 입력하세요" />
+								<form:input path="user_email" class="form-control" type="email" placeholder="이메일 주소를 입력하세요" />
 							</div>
+							
 							<div class="mb-3">
 								<form:label path="user_pwd">비밀번호</form:label>
-								<form:input path="user_pwd" class="form-control"
-									placeholder="비밀번호를 입력해주세요" />
+								<form:password path="user_pwd" class="form-control" autocomplete="new-password" placeholder="비밀번호를 입력해주세요" />
 							</div>
-
-							<div class="form-group" style="display: flex; justify-content: flex-end;">
-							    <form:button class="btn button-custom" style="color: white;">로그인</form:button>
-							    <a href="${root}/user/join" class="btn button-custom">회원가입</a>
+							
+							<div class="form-group mb-1" style="display: flex; justify-content: flex-end;">
+								<form:button class="btn button-custom me-3" style="color: white;">로그인</form:button>
+								<a href="${root}/user/join" class="btn button-custom">회원가입</a>
 							</div>
+							
 						</form:form>
+						
 					</div>
 				</div>
 			</div>

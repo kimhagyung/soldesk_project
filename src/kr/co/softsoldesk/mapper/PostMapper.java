@@ -46,7 +46,6 @@ public interface PostMapper {
 	@Delete("delete from board where board_id=#{board_id}")
 	void deletePostInfo(int board_id);
 
-	
 	@Update("update board set viewcnt = viewcnt+1 where board_id=#{board_id}")
 	void plusCnt(int board_id);
 	

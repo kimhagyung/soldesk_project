@@ -5,101 +5,82 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Review</title>
-	<script src="${root}/script/jquery-3.4.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
   
 <script type="text/javascript">
   
 $(document).ready(function() {
-    
-    /* // 댓글 개수 조회 함수
-    function updateReviewCount() {
-        $.ajax({
-            url: '${root}/reviewsCnt',
-            type: 'GET',
-            data: { pro_id: ${pro_id} },
-            success: function(response) {
-                $("#commentCount").text(response);
-            },
-            error: function(error) {
-                console.log(error);
+	
+	<c:forEach var="portfolio" items="${portfolioList}">
+    $('#exampleModal_${portfolio.portfolio_id}').on('shown.bs.modal', function () {
+        var imageCount = $('#portfolioSlider_${portfolio.portfolio_id} img').length;
+        console.log('Number of images in the modal:', imageCount);
+
+        // 현재 표시되는 이미지의 인덱스를 추적하는 변수
+        var currentImageIndex = 0;
+
+        // plusDivs 함수 정의
+        function plusDivs(n) {
+            showDivs(currentImageIndex += n);
+        }
+
+        // showDivs 함수 정의
+        function showDivs(n) {
+            var i;
+            var slides = $('#portfolioSlider_${portfolio.portfolio_id} img');
+            if (n >= slides.length) { currentImageIndex = 0 }
+            if (n < 0) { currentImageIndex = slides.length - 1 }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
             }
+            slides[currentImageIndex].style.display = "block";
+        }
+
+        // 초기 이미지 표시
+        showDivs(currentImageIndex);
+
+        // 좌우 버튼에 plusDivs 함수 연결
+        $('#portfolioSlider_${portfolio.portfolio_id} .w3-display-left').click(function() {
+            plusDivs(-1);
         });
-    } */
 
-    /* // 댓글 목록 조회 함수
-    function updateReviewList() {
-        $.ajax({
-            url: '${root}/reviews?pro_id=${pro_id}',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                $("#replySection").empty(); 
-                $.each(response, function(index, review) {
-                    var replyHtml = '<div class="reviewItem" id="replySection" style="margin-bottom: 4%;">' +
-                                        '<div class="author" style="margin-bottom: 0.5%">' + review.writer_name + '</div>' +
-                                        '<div class="serviceScore" style="display:flex; justify-content: space-between;">' +
-                                        '<div><img src="../image/star-solid.svg" style="margin-top: -5px;" />' + 
-                                        '<strong>' + review.rating.toFixed(1) + '</strong></div>';
-                                        
-                    if (review.user_id === loginUserBean.user_id) {
-                        replyHtml += '<div>' +
-                                          '<button style="border: none; border-radius: 8px;" onclick="deleteReview(' + review.review_id + ')">삭제</button>' +
-                                          '</div></div><div class="reviewImg" style="margin-top: 5px; margin-bottom: 5px;">';
-                    }
-                    
-                    if (review.photos !== null) {
-                        var photoArray = review.photos.split(',');
-
-                        for (var i = 0; i < photoArray.length; i++) {
-                            var photoUrl = photoArray[i].trim(); // 각각의 사진 URL을 얻음
-
-                            // 동적으로 생성한 img 태그를 reviewImgHtml에 추가
-                            replyHtml += '<img src="' + photoUrl + '" style="width: 80px; height: 80px; border-radius: 8px; margin-right: 5px;">';
-                        }
-                    }
-
-                    replyHtml += '</div>' +
-                                 '<div class="reviewText">' + review.review_contents + '</div>' +
-                                 '<div class="date" style="color: #787878; font-size: 12px">' + review.review_date + '</div>' +
-                                 '</div>';
-
-                    $("#replySection").append(replyHtml); 
-                });
-            },
-            error: function(error) {
-                console.log(error);
-            }
+        $('#portfolioSlider_${portfolio.portfolio_id} .w3-display-right').click(function() {
+            plusDivs(1);
         });
-    } */
-    
+    });
+</c:forEach>
+
     // 리뷰 삭제
     function deleteReview(reviewId) {
-        var isConfirmed = confirm('정말로 이 댓글을 삭제하시겠습니까?');
+        var isConfirmed = confirm('정말로 이 리뷰를 삭제하시겠습니까?');
         
         if (isConfirmed) {
             $.ajax({
-                url: '${root}/deleteReview',
-                type: 'GET',
-                data: { review_id: reviewId },
+                url: '${root}/review/deleteReview',
+                contentType: "application/json",
+                type: 'POST',
+                data: JSON.stringify({ review_id: reviewId }),
                 success: function(response) {
-                    alert('댓글이 성공적으로 삭제되었습니다.');
+                    alert('리뷰가 성공적으로 삭제되었습니다.');
                     
-                    /* // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
-                    updateReviewList();
-                    //updateReviewCount(); */
-                    
+                    // 댓글이 성공적으로 삭제된 후에 updateReplyList 함수 호출
+                    //updateReviewList();
+                    //updateReviewCount();
                     location.reload();
                 },
                 error: function(error) {
                     console.log(error);
-                    alert('댓글 삭제에 실패했습니다.');
+                    alert('리뷰 삭제에 실패했습니다.');
                 }
             });
         }
@@ -122,6 +103,8 @@ $(document).ready(function() {
 			color: black;
 			text-decoration: none;
 		}
+		
+		.mySlides {display:none;}
 
 		.nav-link.active {
 			color: #6387A6;
@@ -421,15 +404,16 @@ $(document).ready(function() {
 					<h5 class="fw-bold" style="margin-bottom: 2.5%;">일류 정보</h5>
 					<p style="margin-bottom: 2.5%;">
 					<div style="display: flex; align-items: center; ">
-						<img src="../image/1.png"
+					<!-- <div>${proProfileBean.certification_documents_images}</div> -->
+						<img src="${root }/upload/${proProfileBean.certification_documents_images}"
 							style="width: 125px; height: 125px; border-radius: 15px; border: 1px solid #F3F3F3; margin-right: 35px;">
 						<div class="">
-							<h1 class="nickname" style="font-size: 24px;"><strong>OOO</strong></h1>
+							<h1 class="nickname" style="font-size: 24px;"><strong>${proProfileBean.pro_name }</strong></h1>
 							
-							<div class="subcategory">반려동물 훈련</div>
+							<div class="subcategory">${proProfileBean.active_detailcategory1 }, ${proProfileBean.active_detailcategory2 }, ${proProfileBean.active_detailcategory3 }</div>
 							<div style="display: flex; align-items: center;">
 								<i class="bi bi-geo-alt" style="font-size: 16px;"></i>
-								<div class="address" style="font-size: 14px;">서울 관악구 / 100km 이동 가능</div>
+								<div class="address" style="font-size: 14px;">${proProfileBean.active_location }</div>
 							</div>
 							
 							<div class="introduce">자세한 사항은 상세 서비스를 읽어주세요!</div>
@@ -462,7 +446,7 @@ $(document).ready(function() {
 						</div>
 						<div class="career_item">
 							<span style="font-size: 14px;">총 경력</span>
-							<span style="font-size: 20px;"><strong>n년</strong></span>
+							<span style="font-size: 20px;"><strong>${sumTotal }년</strong></span>
 						</div>
 					</div>
 					<!-- <div class="addInfo">
@@ -486,17 +470,11 @@ $(document).ready(function() {
 
 						<div class="partialContent">
 							<!-- 더보기 클릭 전 보이는 내용 -->
-							🧡고객님들의 새로운 보금자리를 만들어드리는 치워드림입니다.🧡 <br>
-							🤍숨고 종합 카테고리 전체리뷰 1위🤍<br>
-							💛 월 평균 1100집 청소! 압도적인 청소 경험치💛<br>
-							💚수많은 시공과 청소로 다져진 타업체와 비교불가 노하우 보유.💚<br>
-							💙3개월간 교육을 통해 투입되는 정식계약된 팀장님으로만 이루어지는 서비스💙<br>
-							💜최신식 프리미엄 장비 보유. 구역별 걸레사용, 2회 사용시 걸레폐기가 원칙💜<br>
-							🤎각종 맘카페, 입주민카페 선호도 만족도 1위🤎<br>
+							${proProfileBean.pro_detailed_introduction }
 							<br>
 						</div>
-						<div class="fullContent" style="display: none;">
-							<!-- 더보기 클릭 후 보이는 내용 -->
+						<!-- <div class="fullContent" style="display: none;">
+							<!-- 더보기 클릭 후 보이는 내용 
 							🧡고객님들의 새로운 보금자리를 만들어드리는 치워드림입니다.🧡 <br>
 							🤍숨고 종합 카테고리 전체리뷰 1위🤍<br>
 							💛 월 평균 1100집 청소! 압도적인 청소 경험치💛<br>
@@ -538,25 +516,36 @@ $(document).ready(function() {
 						<div style="display: flex; justify-content: center;">
 							<button class="readMoreBtn" onclick="toggleFullContent()">더 보기 <i
 									class="bi bi-chevron-down"></i></button>
-						</div>
+						</div> -->
 					</div>
 					<div class="offerService" style="margin-top: 30px;">
 						<div style="font-size: 16px; margin-bottom: 8px"><strong>제공 서비스</strong></div>
 						<div class="offerServiceList">
 							<ul style="padding: 0px; display: flex; flex-direction: row;">
-								<li class="serviceli">이사/입주 청소업체</li>
-								<li class="serviceli">거주 청소업체</li>
-								<li class="serviceli">준공 청소</li>
-								<li class="serviceli">줄눈 시공</li>
+								<li class="serviceli">${proProfileBean.active_detailcategory1 }</li>
+								<li class="serviceli">${proProfileBean.active_detailcategory2 }</li>
+								<li class="serviceli">${proProfileBean.active_detailcategory3 }</li>
 							</ul>
 						</div>
 					</div>
 					<div class="career">
 						<div style="font-size: 16px; margin-bottom: 8px"><strong>경력</strong></div>
 						<div style="font-size: 16px; color: #6387A6; margin-bottom: 5px"><strong><i
-									class="bi bi-briefcase" style="margin-right: 8px;"></i>총 경력 24년</strong></div>
+									class="bi bi-briefcase" style="margin-right: 8px;"></i>총 경력 ${sumTotal }년</strong></div>
 
 						<div class="partialContent">
+						
+							<c:forEach var="career" items="${careerList }" >
+								<div class="careerContent">
+									<div class="careerHeader">${career.career_title }</div>
+									<div class="careerDate">${career.startYear }년 ${career.startMonth }월 ~ ${career.endYear }년 ${career.endMonth }월</div>
+									<div class="careerDescription">${career.detailed_introduction }</div>
+								</div>
+							</c:forEach>
+							
+						</div>
+
+						<!-- <div class="fullContent" style="display: none;">
 							<div class="careerContent">
 								<div class="careerHeader">경인지역 청소협회 대표</div>
 								<div class="careerDate">2018년 1월 ~ 현재 (6년 1개월)</div>
@@ -572,41 +561,38 @@ $(document).ready(function() {
 								<div class="careerDate">2022년 11월 ~ 2323년 1월 (3개월)</div>
 								<div class="careerDescription">동탄 삼정그린코아 200여 세대 공동구매 진행</div>
 							</div>
-						</div>
-
-						<div class="fullContent" style="display: none;">
-							<div class="careerContent">
-								<div class="careerHeader">경인지역 청소협회 대표</div>
-								<div class="careerDate">2018년 1월 ~ 현재 (6년 1개월)</div>
-								<div class="careerDescription">경인지역 정소협쇠 대표업체</div>
-							</div>
-							<div class="careerContent">
-								<div class="careerHeader">(주)이즈디자인 정식협력 업체</div>
-								<div class="careerDate">2022년 2월 ~ 현재 (2년)</div>
-								<div class="careerDescription">(주)이즈디자인 공식협력업체 인테리어 후 청소, 입주청소 부문</div>
-							</div>
 							<div class="careerContent">
 								<div class="careerHeader">동탄 삼정그림코아 공동구매 진행</div>
 								<div class="careerDate">2022년 11월 ~ 2323년 1월 (3개월)</div>
 								<div class="careerDescription">동탄 삼정그린코아 200여 세대 공동구매 진행</div>
 							</div>
-							<div class="careerContent">
-								<div class="careerHeader">동탄 삼정그림코아 공동구매 진행</div>
-								<div class="careerDate">2022년 11월 ~ 2323년 1월 (3개월)</div>
-								<div class="careerDescription">동탄 삼정그린코아 200여 세대 공동구매 진행</div>
-							</div>
-						</div>
+						</div> -->
 
-						<div style="display: flex; justify-content: center;">
+						<!-- <div style="display: flex; justify-content: center;">
 							<button class="readMoreBtn" onclick="toggleFullContent()">더 보기 <i
 									class="bi bi-chevron-down"></i></button>
-						</div>
+						</div> -->
 
 					</div>
 					<div class="education" style="margin-top: 30px; display: flex; flex-direction: column;">
 						<div style="font-size: 16px; margin-bottom: 8px"><strong>학력</strong></div>
-						<div>-</div>
-						<p>
+						
+						<c:forEach var="edu" items="${educationList }">
+							<div class="partialContent">
+								<div class="careerContent">
+									<div class="careerHeader">${edu.school_name }</div>
+									<div class="careerDate">${edu.admissionYear }년 ${edu.admissionMonth }월 ~ ${edu.graduationYear }년 ${edu.graduationMonth }월</div>
+									<div class="careerDescription">${edu.major_name }</div>
+								</div>
+							</div>
+							<p style="margin-bottom: 2.5%;">
+							<!-- <div>${edu.evidence_image}</div> -->
+							<img src="${root }/upload/${edu.evidence_image}"
+								style="width: 120px; height: 120px; border-radius: 15px; margin-right: 10px;">
+						</p>
+						</c:forEach>
+						
+						
 
 					</div>
 					</p>
@@ -615,152 +601,115 @@ $(document).ready(function() {
 					<p style="margin-bottom: 2.5%;">
 						<!-- Button trigger modal -->
 
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-							data-bs-target="#exampleModal"
-							style="width: 155px; height: 155px; border: none; background-color: #fff;">
-							<div class="portfolio">
-								<div class="overlay"></div>
-								<img src="https://archivenew.vop.co.kr/images/90952a5d266e2222a78d4eb07938162f/2018-05/26023757_DeDeCbRVQAAhzEb.jpg"
-									style="width: 100%; height: 100%; border-radius: 10px;">
-								<div class="text-overlay">
-									<div class="portfolioTitle">법무법인 로율 로고 디자인 건</div>
-									<div class="portfolioDescription">로고 디자인</div>
-								</div>
-							</div>
-						</button>
+						<div style="display: flex; flex-wrap: wrap;">
+							<c:forEach var="portfolio" items="${portfolioList}">
+							
+								<c:if test="${portfolio.inspectionny != 0 }">
+									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_${portfolio.portfolio_id}"
+										style="width: 155px; height: 155px; border: none; background-color: #fff; margin-right: 10px; margin-bottom: 10px;" >
+            						<div class="portfolio" style="display: flex; flex-direction: column; height: 100%;">
+                						<div class="overlay"></div>
+                						
+                							<c:if test="${portfolio.detailed_images != null}">
+												<c:forEach var="photo" items="${fn:split(protfolio.detailed_images, ',')}" varStatus="loop">
+													<c:if test="${loop.index == 0}">
+        												<img src="${root}/upload/${photo}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+    												</c:if>
+												</c:forEach>
+											</c:if>
+                							
+                							<!-- <img src="https://archivenew.vop.co.kr/images/90952a5d266e2222a78d4eb07938162f/2018-05/26023757_DeDeCbRVQAAhzEb.jpg"
+														style="width: 100%; height: 100%; border-radius: 10px;"> -->
+                							<div class="text-overlay" style="display: flex; flex-direction: column; justify-content: flex-end;">
+                    							<div class="portfolioTitle" style="text-align: left; color: #fff; margin-bottom: 5px;">${portfolio.portfolio_title}</div>
+                    							<div class="portfolioDescription" style="color: #fff;">${portfolio.service_type}</div>
+                							</div>
+            						</div>
+        						</button>
+								</c:if>
+								
+        						
 
-						<!-- Modal -->
-					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog modal-xl modal-dialog-centered">
-							<div class="modal-content" style="display: flex; flex-direction: row;">
-
-								<!-- 캐러셀 -->
-
-								<div id="carouselExampleIndicators" class="carousel"
-									style="height: 100%; width: 65%; margin-top: 50px; margin-bottom: 50px;">
-									<div class="carousel-indicators">
-										<button type="button" data-bs-target="#carouselExampleIndicators"
-											data-bs-slide-to="0" class="active" aria-current="true"
-											aria-label="Slide 1"></button>
-										<button type="button" data-bs-target="#carouselExampleIndicators"
-											data-bs-slide-to="1" aria-label="Slide 2"></button>
-										<button type="button" data-bs-target="#carouselExampleIndicators"
-											data-bs-slide-to="2" aria-label="Slide 3"></button>
-									</div>
-									<div class="carousel-inner">
-										<div class="carousel-item active">
-											<img src="../image/test5.png" class="d-block w-100 img-fluid" alt="..."
-												style="object-fit: cover;">
-										</div>
-										<div class="carousel-item">
-											<img src="../image/2.png" class="d-block w-100 img-fluid" alt="..."
-												style="object-fit: cover;">
-										</div>
-										<div class="carousel-item">
-											<img src="../image/It.png" class="d-block w-100 img-fluid" alt="..."
-												style="object-fit: cover;">
-										</div>
-									</div>
-									<button class="carousel-control-prev" type="button"
-										data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-										<span class="visually-hidden">Previous</span>
-									</button>
-									<button class="carousel-control-next" type="button"
-										data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-										<span class="carousel-control-next-icon" aria-hidden="true"></span>
-										<span class="visually-hidden">Next</span>
-									</button>
-
-								</div>
-								<div style="display: flex; flex-direction: column; width: 35%;">
-									<div class="modal-header">
-										<h1 class="modal-title fs-5" id="exampleModalLabel">동탄 입주청소</h1>
-										<button type="button" class="btn-close" data-bs-dismiss="modal"
-											aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										<div class="portfolioProfile"
-											style="display: flex; flex-direction: row; margin-bottom: 10px;">
-											<div class="portfolioProfile_img">
-												<img src="https://ccdn.lezhin.com/v2/comics/5403861310570496/images/tall.jpg?updated=1643943172332&width=840"
-													style="width: 46px; height: 46px; border-radius: 10px; margin-right: 10px;">
+								<!-- Modal -->
+								<div class="modal fade" id="exampleModal_${portfolio.portfolio_id }" tabindex="-1"
+									aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">${portfolio.portfolio_title }</h1>
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
-											<div class="portfolioProfile_info">
-												<div class="portfolioProfile_name" style="font-size: 14px;">윤아디자인</div>
-												<div style="display: flex; flex-direction: row;">
-													<div>
-														<ul class="stars" style="padding: 0px 0px; margin: 0px 0px;">
-															<script>
-        var avgRating = ${reviewAvg};
-        var fullStars = Math.floor(avgRating);  // 소수점 이하 버린 별
-
-        // Full stars
-        for (var i = 0; i < fullStars; i++) {
-            document.write('<img src="../image/star-solid.svg" />');
-        }
-
-        // Determine the appropriate additional stars based on the decimal part
-        var decimalPart = avgRating % 1;
-        if (decimalPart >= 0.5) {
-            document.write('<img src="../image/star-half.png" style="width:18px; height: 16px;"/>');
-            fullStars++;  // 반개 별이 표시되었으므로 fullStars 증가
-        }
-
-        // Remaining empty stars
-        var emptyStars = 5 - fullStars;
-        for (var j = 0; j < emptyStars; j++) {
-            document.write('<img src="../image/star-solid-gray.svg" />');
-        }
-    </script>
-														</ul>
+											<div class="modal-body">
+											
+												<div class="portfolioProfile_detail">
+													<div class="portfolioProfile_detail_service" style="color: #888888; display: flex; flex-direction: row;">
+														<div style="width: 100px;">서비스 종류</div> 
+															<span style="color: #2D2D2D;">${portfolio.service_type  }</span>
 													</div>
-													<div style="margin-top: 2px; color: #888888;">(${reviewCnt })</div>
+													<div class="portfolioProfile_detail_area" style="color: #888888; display: flex; flex-direction: row;">
+														<div style="width: 100px;">지역 정보</div> 
+															<span style="color: #2D2D2D;">${portfolio.location_info }</span>
+													</div>
+													<div class="portfolioProfile_detail_cost" style="color: #888888; display: flex; flex-direction: row;">
+														<div style="width: 100px;">가격대</div> 
+															<span style="color: #2D2D2D;">${portfolio.final_amount }원</span>
+													</div>
+													<div class="portfolioProfile_detail_year" style="color: #888888; display: flex; flex-direction: row;">
+														<div style="width: 100px;">작업년도</div> 
+															<span style="color: #2D2D2D;">${portfolio.work_year }년</span>
+													</div>
+													<div class="portfolioProfile_detail_year" style="color: #888888; display: flex; flex-direction: row;">
+														<div style="width: 100px;">작업 기간</div> 
+															<span style="color: #2D2D2D;">${portfolio.work_period }</span>
+													</div>
+													<div class="portfolioProfile_detail_description" style="color: #2D2D2D; margin-top: 16px;">${portfolio.detailed_introduction }</div>
 												</div>
+												
+												<!-- 캐러셀 -->
+												<%-- <div id="carouselExample" class="carousel slide">
+													<div class="carousel-inner">
+    													<c:forEach var="image" items="${fn:split(portfolio.detailed_images, ',')}" varStatus="loop">
+        													<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
+            													<img src="${root }/upload/${image}" class="d-block w-100" alt="그림${loop.index + 1}">
+        													</div>
+    													</c:forEach>
+													</div>
+													
+													<button class="carousel-control-prev" type="button"
+														data-bs-target="#carouselExample" data-bs-slide="prev">
+														<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+														<span class="visually-hidden">Previous</span>
+													</button>
+													<button class="carousel-control-next" type="button"
+														data-bs-target="#carouselExample" data-bs-slide="next">
+														<span class="carousel-control-next-icon" aria-hidden="true"></span>
+														<span class="visually-hidden">Next</span>
+													</button>
+												</div> --%>
+											
+											<!-- 슬라이더 -->
+											<div class="w3-content w3-display-container portfolio-slider" id="portfolioSlider_${portfolio.portfolio_id}">
+											   <c:forEach var="photo" items="${fn:split(portfolio.detailed_images, ',')}" varStatus="loop">
+											        <img src="${root}/portfolio/${photo}" alt="pic" style="width: 468px; height: 480px;">
+											    </c:forEach>
+											    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+											    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
 											</div>
-
 										</div>
-										<div class="portfolioProfile_detail">
-											<div class="portfolioProfile_detail_service"
-												style="color: #888888; display: flex; flex-direction: row;">
-												<div style="width: 100px;">서비스 종류</div> <span
-													style="color: #2D2D2D;">이사/입주 청소업체</span>
-											</div>
-											<div class="portfolioProfile_detail_area"
-												style="color: #888888; display: flex; flex-direction: row;">
-												<div style="width: 100px;">지역 정보</div> <span style="color: #2D2D2D;">경기
-													파주시</span>
-											</div>
-											<div class="portfolioProfile_detail_cost"
-												style="color: #888888; display: flex; flex-direction: row;">
-												<div style="width: 100px;">가격대</div> <span
-													style="color: #2D2D2D;">280,000원</span>
-											</div>
-											<div class="portfolioProfile_detail_year"
-												style="color: #888888; display: flex; flex-direction: row;">
-												<div style="width: 100px;">작업년도</div> <span
-													style="color: #2D2D2D;">2022</span>
-											</div>
-											<div class="portfolioProfile_detail_description"
-												style="color: #2D2D2D; margin-top: 16px;">초롱꽃마을 8단지 고객님댁입니다.</div>
-
+											
 										</div>
+											
 									</div>
 								</div>
-							</div>
+								
+							</c:forEach>
 						</div>
-					</div>
+					
 					</p>
 
-					<!-- <div id="scrollspyHeading3" style="height: 3vh;"></div>
-					<h5 class="fw-bold" style="margin-bottom: 2.5%;">사진 / 동영상</h5>
-					<p style="margin-bottom: 2.5%;">
-						<img src="../image//1.png"
-							style="width: 120px; height: 120px; border-radius: 15px; margin-right: 10px;">
-						<img src="../image//2.png"
-							style="width: 120px; height: 120px; border-radius: 15px; margin-right: 10px;">
-					</p> -->
+					
+					
 
 					<div id="scrollspyHeading4" style="height: 3vh;"></div>
 					<h5 class="fw-bold" style="margin-bottom: 2.5%;"><strong>리뷰</strong></h5>
@@ -830,7 +779,7 @@ $(document).ready(function() {
 									<c:if test="${obj.user_id eq loginUserBean.user_id}">
 										<div>
 											<%-- <button style="border: none; border-radius: 8px;" onclick="editComment(${obj.review_id})">수정</button> --%>
-											<button style="border: none; border-radius: 8px;" onclick="deleteReview(${obj.review_id})">삭제</button>
+											<button style="border: none; border-radius: 8px;" onclick="deleteReview('${obj.review_id}')">삭제</button>
 										</div>
 									</c:if>
 
@@ -856,9 +805,10 @@ $(document).ready(function() {
 
 					</div>
 					
+					<!--
 					<button id="loadMoreButton">Load More</button>
 
-					<!--
+					
 					<button class="btn btn-primary mt-3 d-md-flex justify-content-md-center mx-auto" id="loadMore"
 						style="border: none; color: #6387A6; background-color: white;">
 						리뷰 더보기 <i class="bi bi-chevron-down"></i>
@@ -874,62 +824,34 @@ $(document).ready(function() {
 
 	<script>
 	
-	var page = 2; // 초기 페이지 값 설정
-    $(document).ready(function () {
-        $("#loadMoreButton").click(function () {
-            loadMoreReviews();
-        });
-    });
+	var avgRating = $
+	{
+		reviewAvg
+	};
+	var fullStars = Math
+			.floor(avgRating); // 소수점 이하 버린 별
 
-    function loadMoreReviews() {
-        $.ajax({
-            type: "GET",
-            url: "/moreReviews", // ReviewController의 매핑 경로
-            data: { page: page, pageSize: 3 }, // 페이지 및 페이지 크기 전달
-            success: function (data) {
-                if (data.length > 0) {
-                    // 받아온 리뷰를 reviewContainer에 추가
-                    $("#reviewContainer").append(data);
-                    // 페이지 값 업데이트
-                    page++;
-                } else {
-                    // 불러올 리뷰가 없으면 "Load More" 버튼 숨기기
-                    $("#loadMoreButton").hide();
-                }
-            },
-            error: function () {
-                alert("Error loading reviews.");
-            }
-        });
-    }
-    
-	/* 	$(document).ready(function () {
+	// Full stars
+	for (var i = 0; i < fullStars; i++) {
+		document
+				.write('<img src="../image/star-solid.svg" />');
+	}
 
-			$('#carouselExampleIndicators').carousel();
+	// Determine the appropriate additional stars based on the decimal part
+	var decimalPart = avgRating % 1;
+	if (decimalPart >= 0.5) {
+		document
+				.write('<img src="../image/star-half.png" style="width:18px; height: 16px;"/>');
+		fullStars++; // 반개 별이 표시되었으므로 fullStars 증가
+	}
 
-			var visibleItemCount = 3; //리뷰 3개
+	// Remaining empty stars
+	var emptyStars = 5 - fullStars;
+	for (var j = 0; j < emptyStars; j++) {
+		document
+				.write('<img src="../image/star-solid-gray.svg" />');
+	}
 
-			$('#loadMore').on('click', function () {
-
-				var additionalItemCount = 3; //추가 리뷰 3개
-
-				for (var i = 0; i < additionalItemCount; i++) {
-					var newReviewItem = $('<div class="reviewItem">' + (visibleItemCount + i + 1) + '. 추가 리뷰 내용</div>');
-					$('#reviewContainer').append(newReviewItem);
-				}
-
-				visibleItemCount += additionalItemCount;
-			});
-
-			// 최신순으로 드롭다운 버튼의 텍스트와 배경색 설정
-			var defaultSelectedText = "최신순";
-
-			$('.btn-secondary').text(defaultSelectedText);
-			changeColor($('.dropdown-item').filter(function () {
-			    return $(this).text() === defaultSelectedText;
-			}));
-
-		}); */
 
 		// 드롭다운 메뉴 아이템을 클릭했을 때 스크롤 이동 방지
 		$('.dropdown-menu a').on('click', function (e) {
@@ -975,7 +897,7 @@ $(document).ready(function() {
 			}
 		}
 
-		function toggleFullContent() {
+		/* function toggleFullContent() {
 			var partialContents = document.getElementsByClassName('partialContent');
 			var fullContents = document.getElementsByClassName('fullContent');
 			var readMoreBtns = document.getElementsByClassName('readMoreBtn');
@@ -991,7 +913,7 @@ $(document).ready(function() {
 					readMoreBtns[i].innerHTML = '더 보기 <i class="bi bi-chevron-down"></i>';
 				}
 			}
-		}
+		} */
 		
 		function toggleInterest() {
 		    var heartIcon = document.getElementById("heartIcon");
@@ -1031,6 +953,69 @@ $(document).ready(function() {
 
 
 	</script>
+	
+<script>
+/* // plusDivs 함수와 showDivs 함수를 전역 스코프에 선언
+var slideIndex = 1;
+
+function plusDivs(n) {
+  console.log("현재 슬라이드 인덱스:", slideIndex);
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+
+	// 이미지 개수를 콘솔에 출력
+	var imageCount = ${fn:length(fn:split(portfolio.detailed_images, ','))};
+	console.log("이미지 개수:", imageCount);
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  console.log("총 이미지 개수",x.length );
+  // 이미지 개수만큼 순환하도록 조정
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  
+  // 모든 이미지를 숨기고 현재 슬라이드만 보여주도록 수정
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  
+  // 현재 슬라이드만 보여주도록 수정
+  x[slideIndex-1].style.display = "block";  
+}
+
+window.onload = function() {
+  showDivs(slideIndex);
+}; */
+ ///////////////////////////////////////////////////////
+    // 이미지 슬라이더 초기화 시 실행되는 함수
+    function initializeSlider(portfolioId) {
+        var slider = $('#portfolioSlider_' + portfolioId);
+        //var images = slider.find('img');
+        var images = ${fn:length(fn:split(portfolio.detailed_images, ','))};
+       
+    }
+
+    // 슬라이더 컨트롤 함수
+    $('.portfolio-slider').each(function () {
+        var portfolioId = $(this).attr('id').split('_')[1];
+        console.log('이미지 개수222:', images.length);
+        $(this).find('.w3-display-left, .w3-display-right').on('click', function () {
+            // 이미지 전환 로직 추가
+            // ...
+
+            // 이미지 개수 콘솔에 출력
+            initializeSlider(portfolioId);
+        });
+    });
+}); 
+</script>
+
+
+
+
+
+
 </body>
 
 </html>

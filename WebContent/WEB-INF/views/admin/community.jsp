@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>   
 <c:set var="root" value="${pageContext.request.contextPath }" />
@@ -8,6 +7,28 @@
 
    <script src="${root}/script/jquery-3.4.1.min.js"></script> 
 </head>
+<script> //!!! 게시글 삭제 !!!
+	$(document).ready(function() {
+	    $(".delete-btn").click(function() {   
+	        var boardId = $(this).data("board-id"); // data-board-id 속성에서 boardId를 가져옵니다.
+	        console.log("board_id : " + boardId);
+	        // 삭제 확인 메시지를 띄우기
+	        if(confirm("삭제하시겠습니까?")){
+	            $.ajax({
+	                type: "POST",
+	                url: "${root}/admin/deletePost",
+	                data: { board_id: boardId },
+	                success: function(data) {
+	                    location.reload();
+	                },
+	                error: function() {
+	                    alert("게시글 삭제 실패");
+	                }
+	            });
+	        }
+	    });
+	});
+</script>
 <body>
   <c:import url="/WEB-INF/views/admin/header.jsp" />
 
@@ -169,21 +190,18 @@
 	                                    <c:forEach var="boards" items="${boardAll }" varStatus="num">
 										    <tr>
 										        <td>${boards.title}</td>
-										        <td>${boards.content}</td>
-										        <c:choose>
-										            <c:when test="${boards.pro_id != null}">
-										                <td>${proUserNames[num.index]}</td>
-										            </c:when>
-										            <c:when test="${boards.user_id != null}">
-										                <td>${userNames[num.index]}</td>
-										            </c:when>
-										        </c:choose>
+										        <td>${boards.content}</td> 
+										        <td>${allnames[num.index]}</td>   
 										        <td>${boards.viewCnt}</td>
 										        <td>${boards.board_date}</td>
 										        <!-- 댓글 수를 나타내는 적절한 변수로 변경 -->
 										        <td>${boards.commentCnt}</td>
 										        <td>${boards.reportedPostSt}</td>
-										        <td><button class="btn btn-danger">삭제</button></td> 
+										        <td>
+												  <button class="btn btn-danger delete-btn" data-board-id="${boards.board_id}">삭제</button>
+												</td>
+												
+ 
 										    </tr>
 										</c:forEach>
                                     </tbody> 

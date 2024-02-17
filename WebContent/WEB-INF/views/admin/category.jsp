@@ -1,399 +1,187 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
-<!doctype html> 
+<!DOCTYPE html>
+<html lang="en">
 <head>
    <script src="${root}/script/jquery-3.4.1.min.js"></script> 
+   <link href="https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css" rel="stylesheet" />
+  
 </head>
+<style>
+.selected-image {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100px;
+		height: 100px;
+	}
+
+	.selected-image-item {
+		position: relative;
+		margin: 5px;
+		width: 100px;
+		height: 100px;
+		border-radius: 10px;
+	}
+
+	.remove-button {
+		position: absolute;
+		right: 17.2%;
+		height: 30%;
+		background: #D9E8F5;
+		color: #6387A6;;
+		border: none;
+		padding: 5px;
+		cursor: pointer;
+		width: 70px;
+    	border-radius: 8px;
+	}
+	
+	.form-group .form-control-file {
+        display: none;
+    }
+
+    .form-group .form-control-label {
+        width: 100%;
+        color: red;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid gray; /* 아이콘 테두리에 선 추가 */
+        border-radius: 10px;
+        cursor: pointer;
+        margin-right: 40px;
+        background: gray;
+    }
+
+    .form-group .form-control-label i {
+        color: red;
+    }
+
+   
+</style>
+<script>
+$(function() {
+    $('#categoryImage').on('change', function (event) {
+        const selectedImageDiv = $('.selected-image');
+
+        // Count only images, not remove buttons
+        if (selectedImageDiv.find('.selected-image-item:not(.remove-button)').length >= 5) {
+            alert('최대 1개의 이미지까지만 선택할 수 있습니다.');
+            return;
+        }
+
+        const files = event.target.files;
+
+        for (const file of files) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
+                selectedImageDiv.append(img);
+
+                const removeButton = $('<button>').text('삭제').addClass('remove-button');
+                removeButton.on('click', function () {
+                    img.remove();
+                    removeButton.remove();
+                });
+
+                img.after(removeButton);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
 <body>
   <c:import url="/WEB-INF/views/admin/header.jsp" />
      
-    <div id="right-panel" class="right-panel">
- 
-        <div class="breadcrumbs">
-            <div class="breadcrumbs-inner">
-                <div class="row m-0">
-                    <div class="col-sm-4">
-                        <div class="page-header float-left">
-                            <div class="page-title">
-                                <h1>Dashboard</h1>
-                            </div>
+  <div id="right-panel" class="right-panel">
+                    <div class="card" style="width: 100%">
+                        <div class="card-header">
+                            <strong class="card-title">카테고리</strong>
                         </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="page-header float-right">
-                            <div class="page-title">
-                                <ol class="breadcrumb text-right">
-                                    <li><a href="#">Dashboard</a></li>
-                                    <li><a href="#">UI Elements</a></li>
-                                    <li class="active">Cards</li>
-                                </ol>
-                            </div>
-                        </div>
+                        <div class="card-body text-center">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">서비스 카테고리</th>
+                                      <th scope="col">상세 카테고리</th>
+                                      
+                                  </tr>
+                              </thead>
+                              <tbody>
+                               <c:forEach var="cate" items="${getDetailList}" varStatus="num">
+							        <tr>
+							            <th scope="row">${num.index+1 }</th>
+							            <td>${cate.service_category_name}</td>
+							            <td>${cate.detail_category_name}</td>
+							        </tr>
+							    </c:forEach>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="content">
-            <div class="animated fadeIn">
-                <div class="row">
-
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title mb-3">Profile Card</strong>
-                            </div>
-                            <div class="card-body">
-                                <div class="mx-auto d-block">
-                                    <img class="rounded-circle mx-auto d-block" src="images/admin.jpg" alt="Card image cap">
-                                    <h5 class="text-sm-center mt-2 mb-1">Steven Lee</h5>
-                                    <div class="location text-sm-center"><i class="fa fa-map-marker"></i> California, United States</div>
-                                </div>
-                                <hr>
-                                <div class="card-text text-sm-center">
-                                    <a href="#"><i class="fa fa-facebook pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-twitter pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest pr-1"></i></a>
-                                </div>
-                            </div>
+                
+                <div class="card mb-5" style="width: 100%">
+                        <div class="card-header">
+                            <strong class="card-title">카테고리 추가</strong>
                         </div>
+                        <div class="card-body">
+                            <form:form action="${root}/admin/category_pro" method="post" modelAttribute="addCategoryBean" enctype="multipart/form-data">
+			                    
+			                    <!-- 옵션 -->
+			                    <div class="form-group">
+								    <label for="servicectg">서비스 카테고리</label>
+								    <form:select path="service_category_name" class="form-control" id="serviceCategory">
+								        <!-- 서비스 카테고리 옵션을 동적으로 추가 -->
+								        <form:options items="${getServiceCategoryName}" itemValue="service_category_name" itemLabel="service_category_name" />
+								    </form:select>
+								    
+								</div>
+			                    
+			                    <!-- 선택한 옵션을 출력할 영역 -->
+								<!-- <div id="selectedOption"></div> -->
+			                    
+			                    <!-- 카테고리 작성 -->
+			                    <div class="form-group">
+							        <label for="detail_category_name">상세 카테고리</label>
+							        <form:input type="text" class="form-control" id="detailCategory" path="detail_category_name" required="required" />
+							    </div>
+							    
+							    <!-- 이미지 -->
+							    <div class="row text-start">
+				                    <div class="form-group mb-5 col-1 mt-5 ms-1">
+				                    	<form:input type="file" path="upload_file" class="form-control-file " id="categoryImage" name="file_name" accept="image/*" multiple="true" style="display: none;" ></form:input>
+				                        
+				                        <form:label path="file_name" for="categoryImage" class="form-control btn col-6 ms-5 text-center" style="width: 100px; color: black; border: 1px solid black; ">
+				                        	<i class="bi bi-camera-fill" style="color: gray; width: 100%"></i>
+				                        </form:label>
+				                    </div>
+				                    
+				                    <div class="selected-image col-10"></div>
+			                    </div>
+			                    
+			                    <div class="text-center mt-3">
+			                   		<form:button type="submit" class="btn btn-primary" id="addButton">추가</form:button>
+			                    </div>
+			                    
+			                </form:form>
+					
                     </div>
+                </div>
+          
+ </div>
+               
 
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mx-auto d-block">
-                                    <img class="rounded-circle mx-auto d-block" src="images/admin.jpg" alt="Card image cap">
-                                    <h5 class="text-sm-center mt-2 mb-1">Steven Lee</h5>
-                                    <div class="location text-sm-center"><i class="fa fa-map-marker"></i> California, United States</div>
-                                </div>
-                                <hr>
-                                <div class="card-text text-sm-center">
-                                    <a href="#"><i class="fa fa-facebook pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-twitter pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest pr-1"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <strong class="card-title mb-3">Profile Card</strong>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-user"></i><strong class="card-title pl-2">Profile Card</strong>
-                            </div>
-                            <div class="card-body">
-                                <div class="mx-auto d-block">
-                                    <img class="rounded-circle mx-auto d-block" src="images/admin.jpg" alt="Card image cap">
-                                    <h5 class="text-sm-center mt-2 mb-1">Steven Lee</h5>
-                                    <div class="location text-sm-center"><i class="fa fa-map-marker"></i> California, United States</div>
-                                </div>
-                                <hr>
-                                <div class="card-text text-sm-center">
-                                    <a href="#"><i class="fa fa-facebook pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-twitter pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin pr-1"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest pr-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <aside class="profile-nav alt">
-                            <section class="card">
-                                <div class="card-header user-header alt bg-dark">
-                                    <div class="media">
-                                        <a href="#">
-                                            <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="images/admin.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <h2 class="text-light display-6">Jim Doe</h2>
-                                            <p>Project Manager</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <a href="#"> <i class="fa fa-envelope-o"></i> Mail Inbox <span class="badge badge-primary pull-right">10</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a href="#"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge badge-danger pull-right">15</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a href="#"> <i class="fa fa-bell-o"></i> Notification <span class="badge badge-success pull-right">11</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a href="#"> <i class="fa fa-comments-o"></i> Message <span class="badge badge-warning pull-right r-activity">03</span></a>
-                                    </li>
-                                </ul>
-
-                            </section>
-                        </aside>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="feed-box text-center">
-                            <section class="card">
-                                <div class="card-body">
-                                    <div class="corner-ribon blue-ribon">
-                                        <i class="fa fa-twitter"></i>
-                                    </div>
-                                    <a href="#">
-                                        <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="images/admin.jpg">
-                                    </a>
-                                    <h2>Kanye West</h2>
-                                    <p>Just got a pretty neat project via <a href="#">@ooomf</a> - Give it a try <a href="#">http://t.co/e02DwGEeOJ</a></p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, laudantium explicabo autem molestias eaque, mollitia impedit, officia repudiandae culpa nemo veritatis quisquam totam error voluptate vel, quod nihil nobis tempora.
-                                    </p>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-4">
-                        <section class="card">
-                            <div class="twt-feed blue-bg">
-                                <div class="corner-ribon black-ribon">
-                                    <i class="fa fa-twitter"></i>
-                                </div>
-                                <div class="fa fa-twitter wtt-mark"></div>
-
-                                <div class="media">
-                                    <a href="#">
-                                        <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="images/admin.jpg">
-                                    </a>
-                                    <div class="media-body">
-                                        <h2 class="text-white display-6">Jim Doe</h2>
-                                        <p class="text-light">Project Manager</p>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-                            <div class="weather-category twt-category">
-                                <ul>
-                                    <li class="active">
-                                        <h5>750</h5>
-                                        Tweets
-                                    </li>
-                                    <li>
-                                        <h5>865</h5>
-                                        Following
-                                    </li>
-                                    <li>
-                                        <h5>3645</h5>
-                                        Followers
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="twt-write col-sm-12">
-                                <textarea placeholder="Write your Tweet and Enter" rows="1" class="form-control t-text-area"></textarea>
-                            </div>
-                            <footer class="twt-footer">
-                                <a href="#"><i class="fa fa-camera"></i></a>
-                                <a href="#"><i class="fa fa-map-marker"></i></a>
-                                New Castle, UK
-                                <span class="pull-right">
-                                    32
-                                </span>
-                            </footer>
-                        </section>
-                    </div>
-
-
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">Card with switch</strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">Card with Label <small><span class="badge badge-success float-right mt-1">Success</span></small></strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">Card with Label <small><span class="badge badge-danger float-right mt-1">49</span></small></strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-4">
-                        <div class="card border border-primary">
-                            <div class="card-header">
-                                <strong class="card-title">Card Outline</strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card border border-secondary">
-                            <div class="card-header">
-                                <strong class="card-title">Card Outline</strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card border border-success">
-                            <div class="card-header">
-                                <strong class="card-title">Card Outline</strong>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card bg-warning">
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0 text-light">
-                                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer text-light">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card bg-danger">
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer text-light">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card bg-primary">
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0 text-light">
-                                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                    <footer class="blockquote-footer text-light">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                <strong class="card-title text-light">Card Header</strong>
-                            </div>
-                            <div class="card-body text-white bg-primary">
-                                <p class="card-text text-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-success">
-                                <strong class="card-title text-light">Card Header</strong>
-                            </div>
-                            <div class="card-body text-white bg-warning">
-                                <p class="card-text text-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-dark">
-                                <strong class="card-title text-light">Card Header</strong>
-                            </div>
-                            <div class="card-body text-white bg-danger">
-                                <p class="card-text text-light">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://i.imgur.com/ue0AB6J.png" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title mb-3">Card Image Title</h4>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://i.imgur.com/hrS2McC.png" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title mb-3">Card Image Title</h4>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://i.imgur.com/MUBS4Gh.png" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title mb-3">Card Image Title</h4>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div><!-- .row -->
-            </div><!-- .animated -->
-        </div><!-- .content -->
-
-    <div class="clearfix"></div>
-
+   
+<div class="clearfix"></div>
     <footer class="site-footer">
         <div class="footer-inner bg-white">
             <div class="row">
@@ -404,10 +192,37 @@
                     Designed by <a href="https://colorlib.com">Colorlib</a>
                 </div>
             </div>
-        </div>
+        </div> 
     </footer>
 
 
-    </div>
+    <script>
+    // 문서가 로드된 후 실행되는 함수
+    $(document).ready(function () {
+        // 서비스 카테고리 선택이 변경될 때 실행되는 함수
+        $('#serviceCategory').change(function () {
+            // 선택한 서비스 카테고리의 값 가져오기
+            var selectedCategory = $(this).val();
+            
+            // 콘솔에 선택한 카테고리 출력
+            console.log("Selected Category: " + selectedCategory);
+            
+            // 선택한 카테고리를 화면에 출력할 영역에 추가 (예: #selectedOption)
+            $('#selectedOption').text("Selected Category: " + selectedCategory);
+        });
+    });
+    
+    // 등록하기 버튼 클릭 시
+    $('#addButton').click(function() {
+        // 등록 여부 확인
+        var confirmation = confirm('추가하시겠습니까?');
+        if (confirmation) {
+            // 폼 제출
+            $('#addCategoryBean').submit();
+        } else {
+             return false; // 폼 제출 막기
+        }
+    });
+</script>
 </body>
 </html>

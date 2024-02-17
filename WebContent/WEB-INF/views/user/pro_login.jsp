@@ -8,13 +8,6 @@
 <head>
 
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-
-<script>
-	$(function() {
-
-	});
-</script>
-
 <style>
 .card-body {
 	background-color: #C6D7E0;
@@ -42,18 +35,18 @@
 						</c:if> 
 						<form:form action="${root }/user/proUser_login" method="post" modelAttribute="tempLoginUserBean2">
 							<div class="mb-3">
-								<form:label path="pro_email"   autocomplete="off">이메일</form:label>
+								<form:label path="pro_email">이메일</form:label>
 								<form:input path="pro_email" class="form-control" type="email"
 									placeholder="이메일 주소를 입력하세요" />
 							</div>
 							<div class="mb-3">
-								<form:label path="pro_pwd" autocomplete="new-password">비밀번호</form:label>
-								<form:password path="pro_pwd" class="form-control"
+								<form:label path="pro_pwd" >비밀번호</form:label>
+								<form:password path="pro_pwd" class="form-control" autocomplete="new-password" 
 									placeholder="비밀번호를 입력해주세요" />
 							</div>
 
-							<div class="form-group" style="display: flex; justify-content: flex-end;">
-							    <form:button class="btn button-custom" style="color: white;">로그인</form:button>
+							<div class="form-group mb-1" style="display: flex; justify-content: flex-end;">
+							    <form:button class="btn button-custom me-3" style="color: white;">로그인</form:button>
 							    <a href="${root}/user/pro_join" class="btn button-custom">회원가입</a>
 							</div>
 						</form:form>

@@ -148,7 +148,7 @@
 			                <form:errors path="major_name" cssClass="invalid-feedback" />
 			            </div>
 			            <div class="col text-end" style="color: #B5B5B5; font-size: 14px;">
-			                <span id="titleCharCount" style="color: #85BCEB;">0&nbsp;</span>/20자
+			                <span id="descriptionCharCount" style="color: #85BCEB;">0&nbsp;</span>/20자
 			            </div>
 			        </div>
 			    </div>
@@ -224,31 +224,31 @@
 
 		<!-- JavaScript 부분 -->
 		<script>
-			// 학교명 입력 글자수 세기
-			$('#validationTextarea').on('input', function() {
-				var enteredValue = $(this).val();
-				var charCount = enteredValue.length;
-				$('#titleCharCount').text(charCount + " ");
+		// 학교명 입력 글자수 세기
+		$('#school_name').on('input', function() {
+		    var enteredValue = $(this).val();
+		    var charCount = enteredValue.length;
+		    $('#titleCharCount').text(charCount + " ");
 
-				// 40자 제한
-				if (charCount > 40) {
-					$(this).val(enteredValue.substring(0, 40));
-					$('#titleCharCount').text("40" + " ");
-				}
-			});
+		    // 40자 제한
+		    if (charCount > 40) {
+		        $(this).val(enteredValue.substring(0, 40));
+		        $('#titleCharCount').text("40" + " ");
+		    }
+		});
 
-			// 전공명 입력 글자수 세기
-			function countChars() {
-				var enteredValue = $('#myTextarea').val();
-				var charCount = enteredValue.length;
-				$('#descriptionCharCount').text(charCount + " ");
+		// 전공명 입력 글자수 세기
+		$('#major_name').on('input', function() {
+		    var enteredValue = $(this).val();
+		    var charCount = enteredValue.length;
+		    $('#descriptionCharCount').text(charCount + " ");
 
-				// 20자 제한
-				if (charCount > 20) {
-					$('#myTextarea').val(enteredValue.substring(0, 20));
-					$('#descriptionCharCount').text("20" + " ");
-				}
-			}
+		    // 20자 제한
+		    if (charCount > 20) {
+		        $(this).val(enteredValue.substring(0, 20));
+		        $('#descriptionCharCount').text("20" + " ");
+		    }
+		});
 		</script>
 
 
