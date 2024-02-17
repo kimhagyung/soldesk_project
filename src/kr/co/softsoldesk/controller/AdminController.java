@@ -1,9 +1,7 @@
 package kr.co.softsoldesk.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +22,7 @@ import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.AdminService;
@@ -304,4 +304,31 @@ public class AdminController {
 	       
 	       return modelAndView;
 	   }
+	   
+	   
+	   
+	   @GetMapping("/report")
+		  public String report(Model model) {
+			  
+			  List<ReportBean> allReportBean = adminService.getReportList();
+			  
+			  model.addAttribute("allReportBean", allReportBean);
+			  for(ReportBean all:allReportBean) {
+				  System.out.println("일루이르으음"+all.getPro_writer_name());
+				  System.out.println("이르으음"+all.getUser_writer_name());
+			  }
+			  return "admin/report";
+		  }
+		  
+		  //반려
+			@PostMapping("/rejectReport")
+			@ResponseBody
+			public String rejectReport(@RequestBody ReportBean reportBean) {
+				
+
+				adminService.deleteReportInfo(reportBean.getBoard_id());
+
+				return "반려";
+			}
+			
 }

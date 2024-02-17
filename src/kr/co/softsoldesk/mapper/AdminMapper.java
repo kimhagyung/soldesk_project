@@ -14,6 +14,7 @@ import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.beans.UserBean;
 
@@ -104,4 +105,39 @@ public interface AdminMapper {
 		//검수 요청 포트폴리오 개수
 		@Select("select count(*) from portfolio where inspectionny = 0")
 		int getCntInspectionPortfolio();
+		 
+		
+		//신고 목록 불러오기
+				@Select("SELECT b.title, b.user_id, b.pro_id, r.board_id, r.report_date, r.report_msg, u.user_name as user_writer_name, p.pro_name as pro_writer_name, b.content, b.photos,"
+						+ "CASE WHEN b.user_id IS NOT NULL THEN u.reportCnt ELSE NULL END AS user_reportcnt, "
+						+ "CASE WHEN b.user_id IS NULL THEN p.reportCnt ELSE NULL END AS pro_reportcnt "
+						+ "FROM report r "
+						+ "JOIN board b ON r.board_id = b.board_id "
+						+ "LEFT JOIN users u ON b.user_id = u.user_id "
+						+ "LEFT JOIN pro_user p ON b.pro_id = p.pro_id "
+						+ "order by report_date desc")
+				List<ReportBean> getReportList();
+				
+				//신고 반려 삭제
+				@Delete("delete from report "
+						+ "where board_id = #{board_id}")
+				void deleteReportInfo(int board_id);
+				
+				//신고 게시글 삭제
+				@Delete("delete from board "
+						+ "where board_id = #{board_id}")
+				void deletePostInfo(int board_id);
+				
+				//신고 누적 횟수
+				@Update("update users set reportcnt = reportcnt + 1 "
+						+ "where user_id = #{user_id}")
+				void updateUserReportCnt(int user_id);
+				
+				@Update("update pro_user set reportcnt = reportcnt +1 "
+						+ "where pro_id = #{pro_id}")
+				void updateProuserReportCnt(int pro_id);
+				
+				//신고 개수
+				@Select("select count(*) from report")
+				int getCntReport();
 }

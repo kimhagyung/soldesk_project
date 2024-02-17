@@ -2,12 +2,15 @@ package kr.co.softsoldesk.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.softsoldesk.beans.ChatHistoryBean;
 import kr.co.softsoldesk.beans.ChatRoomBean;
 import kr.co.softsoldesk.beans.ChatRoomSelect;
+import kr.co.softsoldesk.beans.QuoteBean;
 import kr.co.softsoldesk.mapper.ChatMapper;
 
 @Service
@@ -90,7 +93,17 @@ public class ChatService {
         return chatMapper.findChatHistoryByRoomId(roomId);
     }
     
+    //견적서 저장 
+    public void insertReceiverQuote(QuoteBean quoteBean) {
+    	chatMapper.insertReceiverQuote(quoteBean);
+    }
+    //견적서 전체 
+    public List<QuoteBean> receviedQuote(){
+    	return chatMapper.receviedQuote();
+    }
+    //견적서 보낸 사람 이름 
+    public String getSendQuoteUsername(int quote_history_id) {
+    	return chatMapper.getSendQuoteUsername(quote_history_id);
+    }
     
-    	
- 
 }

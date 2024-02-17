@@ -10,6 +10,7 @@ import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.AdminMapper; 
@@ -118,4 +119,31 @@ public class AdminDao {
  		return adminMapper.getCntInspectionPortfolio();
  	}
  	
+ 	 //신고 목록 불러오기
+    public List<ReportBean> getReportList(){
+    	return adminMapper.getReportList();
+    }
+    
+    //신고 반려
+    public void deleteReportInfo(int board_id) {
+    	adminMapper.deleteReportInfo(board_id);
+    }
+    
+	//신고 누적 횟수
+    public void updateUserReportCnt(int user_id) {
+    	adminMapper.updateUserReportCnt(user_id);
+    }
+    
+    public void updateProuserReportCnt(int pro_id) {
+    	adminMapper.updateProuserReportCnt(pro_id);
+    }
+    
+    //신고 개수
+    public int getCntReport() {
+    	return adminMapper.getCntReport();
+    }
+    //게시글 삭제
+    public void deletePostInfo(int board_id){
+    	adminMapper.deletePostInfo(board_id);
+    }
 }

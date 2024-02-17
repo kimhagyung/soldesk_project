@@ -155,5 +155,7 @@ public interface ProUserMapper {
 	             + "SET active_location = #{active_location, jdbcType=VARCHAR}\r\n"
 	             + "WHERE pro_id = #{pro_id}")
 	      void modifyActive_location(@Param("active_location") String active_location, @Param("pro_id") int pro_id);
+	    
+	    
 	     
 	}

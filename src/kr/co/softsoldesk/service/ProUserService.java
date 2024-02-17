@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.QuoteBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
 @Service
@@ -29,6 +30,8 @@ public class ProUserService {
 	
 	@Value("${page.paginationcnt}")
 	private int page_paginationcnt;
+	
+
 	
 	public boolean checkProuserEmailExist(String pro_email) {
 		System.out.println("ProUserService pro_email:"+pro_email);
@@ -48,19 +51,23 @@ public class ProUserService {
 
 	public void getLoginProuserInfo(ProUserBean tempLoginUserBean2) {
 		
-		 ProUserBean tempLoginProuserBean3 = proUserDao.getLoginProuserInfo(tempLoginUserBean2);
-		
+		 ProUserBean tempLoginProuserBean3 = proUserDao.getLoginProuserInfo(tempLoginUserBean2); 
+		 
 		if(tempLoginProuserBean3 != null) {
 			loginProuserBean.setPro_id(tempLoginProuserBean3.getPro_id());
 			loginProuserBean.setPro_email(tempLoginProuserBean3.getPro_email());
 			loginProuserBean.setPro_pwd(tempLoginProuserBean3.getPro_pwd());
 			loginProuserBean.setPro_name(tempLoginProuserBean3.getPro_name());
-			loginProuserBean.setProuserLogin(true);
+			loginProuserBean.setProuserLogin(true);  
+			 
+			 
 		}
+		
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이메일:"+tempLoginProuserBean3.getPro_email());
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 이름:"+tempLoginProuserBean3.getPro_name());
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 번호:"+tempLoginProuserBean3.getPro_id());
 		System.out.println("Service 현재 로그ㅡㅡ그으ㅡㅇ 일류 비밀번호:"+tempLoginProuserBean3.getPro_pwd());
+		
 	} 
 	
 	

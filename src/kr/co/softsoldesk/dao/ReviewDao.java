@@ -9,6 +9,7 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProProfileBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.mapper.ReviewMapper;
 
@@ -69,6 +70,10 @@ public class ReviewDao {
 		//-----------------포트폴리오--------------------------------
 		public List<PortFolioBean> getProtfolioListInfo(int pro_id){
 			return reviewMapper.getProtfolioListInfo(pro_id);
+		}
+		
+		public ProUserBean getProReviewInfo(int pro_Id) {
+			return reviewMapper.getProReviewInfo(pro_Id);
 		}
 		 
 }

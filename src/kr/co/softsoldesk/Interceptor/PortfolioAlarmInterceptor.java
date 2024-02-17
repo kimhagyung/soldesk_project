@@ -31,6 +31,7 @@ public class PortfolioAlarmInterceptor implements HandlerInterceptor{
 			for(PortFolioBean insepecport:inspecportfolio) {
 			AdminAlarm.setPortfolio_id(insepecport.getPortfolio_id());
 			AdminAlarm.setPortfolio_title(insepecport.getPortfolio_title()); 
+			AdminAlarm.setInspectionNY(insepecport.getInspectionNY());
 		}	
 		AdminAlarm.setPortfolioCnt(CntPortfolio);
 		request.setAttribute("AdminAlarm", AdminAlarm); 

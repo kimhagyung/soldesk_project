@@ -45,12 +45,13 @@
         #btn-container {
             display: flex;
             align-items: center;
+            
         }
 
         #btn {
             border: 1px solid #F3F3F3;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 10px;
             position: relative;
             overflow: hidden;
@@ -95,18 +96,14 @@
 		align-items: center;
 	}
 	
-	label.form-control.col-2.btn{
-		display: flex;
-    	align-items: center;
-    	justify-content: center;
-	}
 	
-	.col-1{
+	
+	.selectimg{
 		border: 1px solid #C2C2C2;
     	border-radius: 10px;
-    	width: 60px !important; 
-    	height: 60px !important;
-    	display: flex;
+    	width: 60px; 
+    	height: 60px;
+    	padding: 10px;
     	align-items: center;
     	justify-content: center;
     	margin-right: 15px;
@@ -139,24 +136,16 @@
     	border-radius: 8px;
 	}
 	
-	span.col-2 {
-    width: fit-content;
-    display: flex;
+	.catebtn {
+    width:auto; 
     align-items: center;
     margin-bottom: 15px;
     border: 1px solid #B5B5B5;
     border-radius: 8px;
     margin-right: 7.5px;
-}
-		
-    </style>
-    <script>
-    $(function(){
-      $(".header").load("header.html");
-       $(".footer").load("footer.html");
-    });
-  </script>
-  
+    padding:10px; 
+} 
+    </style>  
   <script>
 		var categoryData = {
 		   자격증시험: ['스포츠지도사 준비', '한국어능력시험 준비', '한국사능력시험 준비', '정보처리기사 준비', '컴퓨터활용능력 준비'],
@@ -197,7 +186,7 @@
 								
 								<!-- 카테고리 모달 -->
 							<div class="postInfo">
-								<span class="col-2 mt-2">
+								<span class="col-2 mt-2 catebtn">
 									<button class="btn button categoryBtn" data-bs-toggle="modal"
 										data-bs-target="#exampleModal" aria-controls="category">
 										카테고리 <i class="bi bi-caret-down"></i>

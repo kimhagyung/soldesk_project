@@ -87,4 +87,6 @@ public class PortfolioService {
 		   System.out.println("수정된 상세글"+ProPortfoliomodify.getDetailed_introduction());
 		   proPortfoliodao.modifyPortfolioInfo(ProPortfoliomodify);
 	   }
+	  
+	  
 }

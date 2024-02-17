@@ -25,6 +25,50 @@
 	height: 35px;
 }
 </style>
+<script>
+$(document).ready(function() {
+    var selectedAnswers = []; // selectedAnswers 값을 설정합니다.
+    <c:forEach var="obj" items="${paramValues.selectedAnswers}">
+        selectedAnswers.push('${obj}');
+    </c:forEach>
+    
+    $('.send-quote-btn').click(function() {
+        // 배열을 문자열로 변환
+        var selectedAnswersStr = selectedAnswers.join(',');
+        console.log('selectedAnswersStr:', selectedAnswersStr);
+        
+        var pro_id = $(this).data('pro-id');
+        var user_id = '${loginUserBean.getUser_id()}';
+        console.log('pro_id:', pro_id);
+        console.log('user_id:', user_id);
+        //console.log('selectedAnswers:', selectedAnswers);
+        
+        // 클라이언트 측에서 서버로 보낼 데이터 확인 후 서버로 전송
+        if (confirm('전송하시겠습니까?')) {
+            $.ajax({
+                type: 'POST',
+                url: '${root}/sendQuote',
+                data: JSON.stringify({
+                    received_quote: selectedAnswersStr,
+                    pro_id: pro_id,
+                    user_id: user_id,
+                    service_category_id:'${param.s}'
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('성공',response);
+                    location.href = '${root}/chatting?pro_id=' + pro_id + '&s=${param.s}';
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+});
+
+</script>
+
 
 </head>
 
@@ -56,9 +100,10 @@
 								<div class="col-6 fw-bold" style="cursor: pointer;"
 									onclick="location.href='${root}/review/Review?pro_id=${proIds[loop.index]}'">프로필
 									보기</div>
-								<div class="col-6 fw-bold"
-									style="color: #00CDFF; cursor: pointer;"
-									onclick="location.href='${root}/chatting?pro_id=${proIds[loop.index]}&s=${param.s }&selectedAnswers=${fn:join(paramValues.selectedAnswers, ',')}'">견적보내기</div>
+								<div class="col-6 fw-bold send-quote-btn"
+							    style="color: #00CDFF; cursor: pointer;"
+							    data-pro-id="${proIds[loop.index]}"
+							    >견적보내기</div> 
 							</div>
 						</div>
 					</div>

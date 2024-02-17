@@ -350,7 +350,7 @@ function sendToServerLocation(selectedLocation) {
 				</form>
 				<c:choose>
 					<c:when test="${not empty search_proname}">
-						<c:forEach var="proname" items="${search_proname}">
+						<c:forEach var="pro" items="${search_proname}" varStatus="num">
 							<div class="card mb-3">
 								<div class="card-body row">
 									<div class="col-10">
@@ -379,91 +379,27 @@ function sendToServerLocation(selectedLocation) {
 							</div>
 						</c:forEach>
 					</c:when>  
-					 <c:otherwise>
-						 <c:forEach var="proname" items="${pro_names}" varStatus="num" > 
-								<div class="card mb-3">
-									<div class="card-body row">
-										<div class="col-10">
-											<b style="font-size: 18px;">${proname.pro_name }</b> 
-											<div class="card-content">${ProprofileInfo[num.index].pro_detailed_introduction }</div> 
-												<c:choose>
-													<c:when test="${not empty reviewAvgg[num.index]}">
-														<div class="star-review mt-1">
-															<i class="bi bi-star-fill star"></i> 
-															<span class="review-count" style="font-size: 13px;">${reviewAvgg[num.index] }(${reviewCnt[num.index]})</span>
-														</div> 
-													</c:when>
-													<c:otherwise>
-													<p>
-														<p style="color: grey;">리뷰없음</p>
-													</c:otherwise>
-												</c:choose>   
-												<c:choose>
-													<c:when test="${not empty CareerInfo[num.index].total_experience_period}">
-														<span>총 ${CareerInfo[num.index].total_experience_period }년</span>
-													</c:when>
-													<c:otherwise> 
-														<div class="career mt-2 lig">
-															<span>총 0년</span>
-														</div>
-													</c:otherwise>
-												</c:choose>   
-										</div>
-										<div class="col-2 text-center mt-4">
-											<img class="profileimage" src="${ProprofileInfo[num.index].pro_profile_image }">
-										</div>
-									</div>
-								</div> 
-								
-						</c:forEach>
-						<!-- 페이징 처리 -->
-								<div class="d-none d-md-block">
-									<ul class="pagination justify-content-center">
-										<c:choose>
-										<c:when test="${pageBean.prevPage <= 0 }">
-										<li class="page-item disabled">
-											<a href="#" class="page-link">이전</a>
-										</li>
-										</c:when>
-										<c:otherwise>
-										<li class="page-item">
-											<a href="${root }/search/findPro?page=${pageBean.prevPage}" class="page-link">이전</a>
-										</li>
-										</c:otherwise>
-										</c:choose>
-										
-										
-										<c:forEach var='idx' begin="${pageBean.min }" end='${pageBean.max }'>
-										<c:choose>
-										<c:when test="${idx == pageBean.currentPage }">
-										<li class="page-item active">
-											<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
-										</li>
-										</c:when>
-										<c:otherwise>
-										<li class="page-item">
-											<a href="${root }/search/findPro?page=${idx}" class="page-link">${idx }</a>
-										</li>
-										</c:otherwise>
-										</c:choose>
-										
-										</c:forEach>
-												
-										<c:choose>
-										<c:when test="${pageBean.max >= pageBean.pageCnt }">
-										<li class="page-item disabled">
-											<a href="#" class="page-link">다음</a>
-										</li>
-										</c:when>
-										<c:otherwise>
-										<li class="page-item">
-											<a href="${root }/search/findPro?page=${pageBean.nextPage}" class="page-link">다음</a>
-										</li>
-										</c:otherwise>
-										</c:choose>
-										
-									</ul>
-								</div>
+					 <c:otherwise> 
+						<c:forEach var="pro" items="${ProprofileInfo}" varStatus="num">
+						    <div class="card mb-3">
+						        <div class="card-body row">
+						            <div class="col-10">
+						                <b style="font-size: 18px;">${pro.pro_name }</b> 
+						                <div class="card-content">${pro.pro_detailed_introduction }</div> 
+					                        <div class="star-review mt-1">
+					                            <i class="bi bi-star-fill star"></i> 
+					                            <span class="review-count" style="font-size: 13px;">(${reviewList[num.index].review_cnt})</span>
+					                        </div> 
+					                		<div>
+					                		 	<span>총 ${CareerInfo[num.index].career_sum }년</span>
+					                		</div>
+						            </div>
+						            <div class="col-2 text-center mt-4">
+						                <img class="profileimage" src="${root }/upload/${pro.certification_documents_images}">
+						            </div>
+						        </div>
+						    </div>
+						</c:forEach> 
 					</c:otherwise>  
 				</c:choose> 
 				<div> </div>

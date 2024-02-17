@@ -7,6 +7,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 
 //import kr.co.softsoldesk.beans.UserBean;
@@ -39,5 +40,11 @@ public class RootAppContext {
 	@SessionScope
 	public PortFolioBean portFolioBean() {
 		return new PortFolioBean();
+	}
+	
+	@Bean("alarmReportBean")  
+	@SessionScope
+	public ReportBean alarmReportBean() {
+		return new ReportBean();
 	}
 }

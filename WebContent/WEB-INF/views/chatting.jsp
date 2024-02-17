@@ -237,8 +237,6 @@ textarea {
 <body>
  <c:import url="/WEB-INF/views/include/header.jsp" />
 
-
-<c:if test="${not empty requestScope[param.s] }">
 <%
 	String selectedAnswersParam = request.getParameter("selectedAnswers");
     String[] selectedAnswersArray = selectedAnswersParam.split(",");
@@ -248,41 +246,40 @@ textarea {
       	out.println(answer+"/");
     } */
 %>  
-	<!-- Button to trigger the modal -->
-	<button type="button" class="btn button-custom" data-toggle="modal" data-target="#myModal">
-	    보기
-	</button>
-	
-	<!-- The Modal -->
-	<div class="modal fade" id="myModal">
-	    <div class="modal-dialog">
-	        <div class="modal-content"> 
-	            <!-- Modal Header -->
-	            <div class="modal-header">
-	                <h4 class="modal-title">견적요청서</h4>
-	                <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            </div> 
-	            <!-- Modal Body -->
-	            <div class="modal-body">
-	                <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop">
-	                    <h3>${questionEntry.key}</h3>
-	                    <c:set var="index" value="${loop.index - 1}" />
-	                    <c:set var="answers" value="${selectedAnswersArray[index]}" />
-	                    <ul>
-	                        <c:forEach var="answer" items="${answers}">
-	                            <li>${answer}</li>
-	                        </c:forEach>
-	                    </ul>
-	                </c:forEach>
-	            </div>
-	            <!-- Modal Footer -->
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
-	            </div> 
-	        </div>
-	    </div>
-	</div>
- </c:if>
+<!-- Button to trigger the modal -->
+<button type="button" class="btn button-custom" data-toggle="modal" data-target="#myModal">
+    보기
+</button>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">견적요청서</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div> 
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop">
+                    <h3>${questionEntry.key}</h3>
+                    <c:set var="index" value="${loop.index - 1}" />
+                    <c:set var="answers" value="${selectedAnswersArray[index]}" />
+                    <ul>
+                        <c:forEach var="answer" items="${answers}">
+                            <li>${answer}</li>
+                        </c:forEach>
+                    </ul>
+                </c:forEach>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+            </div> 
+        </div>
+    </div>
+</div>
    <div class="container mt-5" style="height: 76vh;">
       <div class="row justify-content-center" style="height: 76vh;">
          <div class="col-md-10">

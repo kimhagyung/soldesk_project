@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ 
 <c:set var="root" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
@@ -137,6 +139,10 @@
 	display: none !important;
 }
 
+.autostyle{
+	width:280px; 
+	padding:10px; 
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -404,19 +410,27 @@ function displayAlarms(alarms) {
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 									
 								<!-- 종 -->	
-								<div class="dropdown ms-3" id="notificationDropdown"> 
+								<div class="dropdown ms-3 " id="notificationDropdown"> 
 									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
 										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
 										</span>
 									</i>
-									
-									<ul class="dropdown-menu ">
-										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
-							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
-										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									<ul class="dropdown-menu"> 
+										<c:forEach var="obj" items="${quoteBean }" varStatus="num">  
+										    <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
+										        <li class="autostyle">
+										        	<div class="autostyle">${sendQuetes[num.index] } 님께 받은견적이 있어요!</div> 
+										            <a class="dropdown-item" href="'${root}/chatting?pro_id=${loginProuserBean.getPro_id()}&user_name=${sendQuetes[num.index]}"">
+													  - ${fn:replace(obj.getReceived_quote(), ',', '<br>- ')}
+													</a> 
+
+										        </li> 
+										    </c:if> 
+										</c:forEach>					
 									</ul>
 								</div>
-								
+								  
+									    
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">

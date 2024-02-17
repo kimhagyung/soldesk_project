@@ -16,6 +16,7 @@ import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.PostBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.ServiceCategoryBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.AdminDao;
@@ -172,6 +173,34 @@ public class AdminService {
    	public int getCntInspectionPortfolio() {
    		return adminDao.getCntInspectionPortfolio();
    	}
+    
+  //게시글 삭제
+    public void deletePostInfo(int board_id){
+    	adminDao.deletePostInfo(board_id);
+    }
    	
-   	
+    //신고 누적 횟수
+    public void updateUserReportCnt(int user_id) {
+    	adminDao.updateUserReportCnt(user_id);
+    }
+    
+    public void updateProuserReportCnt(int pro_id) {
+    	adminDao.updateProuserReportCnt(pro_id);
+    }
+    
+  //신고 개수
+    public int getCntReport() {
+    	return adminDao.getCntReport();
+    }
+    
+
+    //신고 목록 불러오기
+    public List<ReportBean> getReportList(){
+    	return adminDao.getReportList();
+    }
+    
+    //신고 반려
+    public void deleteReportInfo(int board_id) {
+    	adminDao.deleteReportInfo(board_id);
+    }
 }

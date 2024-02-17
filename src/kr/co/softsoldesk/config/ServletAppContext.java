@@ -29,12 +29,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import kr.co.softsoldesk.Interceptor.CheckWriterInterceptor;
 import kr.co.softsoldesk.Interceptor.LoginInterceptor;
 import kr.co.softsoldesk.Interceptor.PortfolioAlarmInterceptor;
+import kr.co.softsoldesk.Interceptor.ReportAlarmInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor2;
 import kr.co.softsoldesk.Interceptor.TopMenuInterceptor3;
 import kr.co.softsoldesk.beans.AdminBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.ReportBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.mapper.AdminMapper;
 import kr.co.softsoldesk.mapper.CalendarMapper;
@@ -51,6 +53,7 @@ import kr.co.softsoldesk.mapper.ReviewMapper;
 import kr.co.softsoldesk.mapper.ServiceCategoryMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.AdminService;
+import kr.co.softsoldesk.service.ChatService;
 import kr.co.softsoldesk.service.PostService;
 
 /*import kr.co.softsoldesk.Inteceptor.CheckLoginInterceptor;
@@ -93,12 +96,16 @@ public class ServletAppContext implements WebMvcConfigurer {
 	@Resource(name="AdminAlarm")
 	public PortFolioBean AdminAlarm;
 	
+	@Resource(name="alarmReportBean")
+	public ReportBean alarmReportBean;
+	
 	@Autowired
 	private PostService postService;
 	
 	@Autowired
 	private AdminService adminservice;
-	
+	@Autowired
+	private ChatService chatservice;
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -192,20 +199,25 @@ public class ServletAppContext implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 	
 		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(loginUserBean);
-		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean);
+		TopMenuInterceptor2 topMenuInterceptor2 = new TopMenuInterceptor2(loginProuserBean,chatservice);
 		TopMenuInterceptor3 topMenuInterceptor3 = new TopMenuInterceptor3(AdminloginBean);
 		LoginInterceptor loginInterceptor = new LoginInterceptor(loginUserBean, loginProuserBean,AdminloginBean);
 		PortfolioAlarmInterceptor portfolioAlarmInterceptor = new PortfolioAlarmInterceptor(AdminAlarm,adminservice);
+		ReportAlarmInterceptor reportAlarmInterceptor = new ReportAlarmInterceptor(alarmReportBean, adminservice);
+		
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
 		InterceptorRegistration reg2 = registry.addInterceptor(topMenuInterceptor2);
 		InterceptorRegistration reg5 = registry.addInterceptor(topMenuInterceptor3);
 		InterceptorRegistration reg3 = registry.addInterceptor(loginInterceptor);
 		InterceptorRegistration reg6 = registry.addInterceptor(portfolioAlarmInterceptor);
-
+		InterceptorRegistration reg7 = registry.addInterceptor(reportAlarmInterceptor);
+		
 		reg1.addPathPatterns("/**");// 모든 요청에서 동작
 		reg2.addPathPatterns("/**");// 모든 요청에서 동작
 		reg5.addPathPatterns("/**");// 모든 요청에서 동작
 		reg6.addPathPatterns("/**");// 모든 요청에서 동작
+		reg7.addPathPatterns("/**");// 모든 요청에서 동작
+		
 		//reg3.addPathPatterns("/common/calendar");
 		reg3.addPathPatterns("/common/myPage");
 		reg3.addPathPatterns("/common/AccountModify");

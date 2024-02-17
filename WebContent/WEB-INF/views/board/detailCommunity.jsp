@@ -54,6 +54,8 @@ $(document).ready(function() {
                     
                     // 댓글 목록 조회
                     updateReplyList();
+                    
+                    sendNotification();
                 }
             },
             error: function(error) {

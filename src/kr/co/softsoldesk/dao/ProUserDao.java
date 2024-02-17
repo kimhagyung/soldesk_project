@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.beans.QuoteBean;
+import kr.co.softsoldesk.mapper.ChatMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 
 @Repository
@@ -14,6 +16,9 @@ public class ProUserDao {
 
 	@Autowired
 	private ProUserMapper ProuserMapper;
+	
+	@Autowired
+	private ChatMapper chatMapper;
 	
 	public String checkProuserEmailExist(String pro_email) {
 		
@@ -165,5 +170,7 @@ public class ProUserDao {
          
       ProuserMapper.modifyActive_location(active_location, pro_id);
    }
+   
+    
    
 }

@@ -63,17 +63,18 @@ public class ProProfileDAO {
 	   }
 	   
 
-	//일류 프로필 정보 조회 
+	 //일류 프로필 정보 조회 
 	   public List<ExpertBean> getProProfileInfo(){
 		   return proProfileMapper.getProProfileInfo();
 	   }
 	   
 	 //경력 정보 조회 
-	   public List<CareerBean> getCareerInfo(){
+	   public List<ExpertBean> getCareerInfo(){
 		   return proProfileMapper.getCareerInfo();
 	   }
+	   
 	//리뷰조회 
-	public List<ReviewBean> getAllReview(){
+	public List<ExpertBean> getAllReview(){
 		return proProfileMapper.getAllReview();
 	}
 }

@@ -29,7 +29,23 @@ public class ProUserBean {
 	private boolean prouserLogin;  
 	private int postCount;   
 	
+	private int quote_history_id;
+	private String received_quote;   
+	  
 	
+	
+	public int getQuote_history_id() {
+		return quote_history_id;
+	}
+	public void setQuote_history_id(int quote_history_id) {
+		this.quote_history_id = quote_history_id;
+	}
+	public String getReceived_quote() {
+		return received_quote;
+	}
+	public void setReceived_quote(String received_quote) {
+		this.received_quote = received_quote;
+	}
 	public ProUserBean() { 
 		this.prouserEmailExist = false; // 초기값 false
 		// 초기화, 처음에는 중복검사를 하지 않으므로 디폴트 값을 false로 주입

@@ -17,6 +17,7 @@ public class UserService {
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
 	
+	
 	public boolean checkuserEmailExist(String user_email) { 
 		String user_name = userDao.checkUserEmailExist(user_email);
 		if(user_name == null) {
@@ -34,12 +35,14 @@ public class UserService {
 	public void getLoginUserInfo(UserBean tempLoginUserBean) {
 		
 		UserBean tempLoginUserBean2 = userDao.getLoginUserInfo(tempLoginUserBean);
+	 
 		if(tempLoginUserBean2 != null) {
 			loginUserBean.setUser_id(tempLoginUserBean2.getUser_id());
 			loginUserBean.setUser_email(tempLoginUserBean2.getUser_email());
 			loginUserBean.setUser_pwd(tempLoginUserBean2.getUser_pwd());
 			loginUserBean.setUser_name(tempLoginUserBean2.getUser_name());
 			loginUserBean.setUserLogin(true);
+			
 		}else {
 		    System.out.println("로그인 사용자 정보가 없습니다.");
 		}
