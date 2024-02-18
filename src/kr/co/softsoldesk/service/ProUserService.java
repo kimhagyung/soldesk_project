@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.ProUserBean;
-import kr.co.softsoldesk.beans.QuoteBean;
 import kr.co.softsoldesk.dao.ProUserDao;
 
 @Service
@@ -71,7 +71,7 @@ public class ProUserService {
 	} 
 	
 	
-	 public List<String> getSearchProUserByName(String pro_name) {
+	 public List<ExpertBean> getSearchProUserByName(String pro_name) {
 	        return proUserDao.getSearchProUserByName(pro_name);
 	    }  
 	 //

@@ -46,10 +46,10 @@ public class TopMenuInterceptor2 implements HandlerInterceptor{
 	      request.setAttribute("6", QuestionBean.getDevelopment()); //문서
 	      request.setAttribute("7", QuestionBean.getDocument()); //개발외주
 	      request.setAttribute("8", QuestionBean.getPet()); //반려동
-	      */
+	      
 	    for (String sendQuete : sendQuetes) {
 	        System.out.println("sendQuete : "+sendQuete);
-	    }
+	    }*/
 		request.setAttribute("sendQuetes", sendQuetes);
 		request.setAttribute("quoteBean", quoteBean);
 		request.setAttribute("loginProuserBean", loginProuserBean); 

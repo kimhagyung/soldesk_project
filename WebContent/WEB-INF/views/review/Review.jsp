@@ -602,9 +602,8 @@ $(document).ready(function() {
 						<!-- Button trigger modal -->
 
 						<div style="display: flex; flex-wrap: wrap;">
-							<c:forEach var="portfolio" items="${portfolioList}">
-							
-								<c:if test="${portfolio.inspectionny != 0 }">
+							<c:forEach var="portfolio" items="${portfolioList}"> 
+								<c:if test="${portfolio.inspectionNY != 0 }">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_${portfolio.portfolio_id}"
 										style="width: 155px; height: 155px; border: none; background-color: #fff; margin-right: 10px; margin-bottom: 10px;" >
             						<div class="portfolio" style="display: flex; flex-direction: column; height: 100%;">

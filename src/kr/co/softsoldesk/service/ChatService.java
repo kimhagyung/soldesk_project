@@ -106,4 +106,8 @@ public class ChatService {
     	return chatMapper.getSendQuoteUsername(quote_history_id);
     }
     
+    //견적서 삭제 
+    public int delQuote(int quote_history_id) {
+    	return chatMapper.delQuote(quote_history_id);
+    }
 }

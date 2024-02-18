@@ -9,8 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chatting</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 <!-- Bootstrap JavaScript 파일 로드 -->
 </head>
 <style>
@@ -644,8 +642,7 @@ textarea {
            });
        };
        </script>
-    <script>
-   var jq = $.noConflict();
+    <script> 
 </script>
 </body>
 </html>

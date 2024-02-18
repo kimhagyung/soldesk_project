@@ -61,15 +61,53 @@ public class SearchController {
 	    
 	    model.addAttribute("detailCategoryList", detailCategoryList);
 	    model.addAttribute("service_category_name", service_Category_Name);  
-	     
-	    //List<ProUserBean> pro_names = proUserService.getProUserByName(page, size);
-	    //model.addAttribute("pro_names",pro_names); 
+	      
 	    model.addAttribute("currentPage", page);
 	    
 	    //일류 정보 조회 
 	    List<ExpertBean> ProprofileInfo=proprofileservice.getProProfileInfo();
+	     
 	    
-	    for(ExpertBean proprofile:ProprofileInfo) {
+	    //프로필
+	    model.addAttribute("ProprofileInfo",ProprofileInfo);
+	    
+	  //경력 정보 조회 
+	    List<ExpertBean> CareerInfo=proprofileservice.getCareerInfo();
+	    /*
+	    for(ExpertBean career: CareerInfo) {
+	    	System.out.println("career 총 경력:"+career.getCareer_sum());
+	    }*/
+	    
+	    //경력
+	    model.addAttribute("CareerInfo",CareerInfo);
+	    
+	    //별점조회  
+	    List<ExpertBean> reviewList = proprofileservice.getAllReview();
+	     /*
+	    for(ExpertBean allrei:reviewList) {
+	    	System.out.println("allreview 아이디 :"+allrei.getReview_cnt());
+	    	System.out.println("---------------------------------------------------------");
+	    }*/
+	    
+	    //리뷰
+	    model.addAttribute("reviewList",reviewList);
+ 
+	    
+	    return "search/findPro";
+	}
+	
+	@GetMapping("/searchProName")
+	public String searchProName(@RequestParam("searchInput") String searchInput,Model model) {
+		System.out.println("searchInput:"+searchInput); //받은 값  
+		List<ExpertBean> search_proname = proUserService.getSearchProUserByName(searchInput);
+		//model.addAttribute("search_proname",search_proname); //유사한 고수 이름  
+		//List<String> activeProUser=proUserService.getProCategoryAndLocation(activeData); //전달받은 값  
+		System.out.println("유사한 고수 이름:"+search_proname);
+		  
+	    //일류 정보 조회 
+	    //List<ExpertBean> ProprofileInfo=proprofileservice.getProProfileInfo();
+	    
+	    for(ExpertBean proprofile:search_proname) {
 	    	System.out.println("proprofile 상세설명 :"+proprofile.getPro_detailed_introduction());
 	    	System.out.println("proprofile 이미지:"+proprofile.getPro_profile_image());
 	    	System.out.println("proprofile 프로아이디:"+proprofile.getPro_id());
@@ -78,58 +116,30 @@ public class SearchController {
 	    }
 	    
 	    //프로필
-	    model.addAttribute("ProprofileInfo",ProprofileInfo);
+	    model.addAttribute("search_proname",search_proname);
 	    
-	  //경력 정보 조회 
+	    //경력 정보 조회 
 	    List<ExpertBean> CareerInfo=proprofileservice.getCareerInfo();
-	    
+	    /*
 	    for(ExpertBean career: CareerInfo) {
 	    	System.out.println("career 총 경력:"+career.getCareer_sum());
-	    }
+	    }*/
 	    
 	    //경력
 	    model.addAttribute("CareerInfo",CareerInfo);
 	    
-	    //별점조회 
-	    //List<Integer> reviewCnt = new ArrayList<>();
-	    //List<Float> reviewAvgg = new ArrayList<>(); 
+	    //별점조회  
 	    List<ExpertBean> reviewList = proprofileservice.getAllReview();
-	    
-	    for(ExpertBean proprofile:ProprofileInfo) {
-		    //int reviewcnts= proprofile.getAllReview();
-		    //Float reviewAvg=reviewService.getAvgReview(proprofile.getPro_id());
-		    
-		   // System.out.println("reviewcnt :" +reviewcnt);
-		   // System.out.println("reviewAvg :" +reviewAvg);
-		    //System.out.println("------------------------------------------------------");
-		    //reviewCnt.add(reviewcnt);
-		    //reviewAvgg.add(reviewAvg);
-	    	
-	    	//int reviewcnts = proprofile.getReview_cnt();
-	    	//System.out.println("review_cnt: " + reviewcnts);
-	    }
-	    //List<ReviewBean> allreview=proprofileservice.getAllReview();
+	     /*
 	    for(ExpertBean allrei:reviewList) {
 	    	System.out.println("allreview 아이디 :"+allrei.getReview_cnt());
 	    	System.out.println("---------------------------------------------------------");
-	    }
+	    }*/
 	    
 	    //리뷰
 	    model.addAttribute("reviewList",reviewList);
-
-	    //model.addAttribute("reviewCnt",reviewCnt);
-	    //model.addAttribute("reviewAvgg",reviewAvgg);
-	    
-	    return "search/findPro";
-	}
-	
-	@GetMapping("/searchProName")
-	public String searchProName(@RequestParam("searchInput") String searchInput,Model model) {
-		System.out.println("searchInput:"+searchInput); //받은 값  
-		List<String> search_proname = proUserService.getSearchProUserByName(searchInput);
-		model.addAttribute("search_proname",search_proname); //유사한 고수 이름  
-		//List<String> activeProUser=proUserService.getProCategoryAndLocation(activeData); //전달받은 값  
-		System.out.println("유사한 고수 이름:"+search_proname);
+ 
+	      
 		return "search/findPro";
 	}  
 }

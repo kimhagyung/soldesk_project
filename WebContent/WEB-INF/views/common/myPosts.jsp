@@ -162,17 +162,7 @@
                
             </ul>
          </div>
-         
-        <!--  <div class="d-block d-md-none">
-            <ul class="pagination justify-content-center">
-               <li class="page-item">
-                  <a href="#" class="page-link">이전</a>
-               </li>
-               <li class="page-item">
-                  <a href="#" class="page-link">다음</a>
-               </li>
-            </ul>
-         </div> -->
+          
 	
 <c:import url="/WEB-INF/views/include/footer.jsp" />
 

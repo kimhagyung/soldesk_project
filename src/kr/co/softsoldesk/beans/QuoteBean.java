@@ -5,8 +5,7 @@ public class QuoteBean {
 	private int quote_history_id;
 	private String received_quote;  
 	private int pro_id;
-	private int user_id;
-	private int service_category_id; 
+	private int user_id; 
 	private String user_name;
 	private int received_quoteNY;
 	
@@ -23,13 +22,7 @@ public class QuoteBean {
 	}
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
-	}
-	public int getService_category_id() {
-		return service_category_id;
-	}
-	public void setService_category_id(int service_category_id) {
-		this.service_category_id = service_category_id;
-	}
+	} 
 	public int getQuote_history_id() {
 		return quote_history_id;
 	}

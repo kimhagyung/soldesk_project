@@ -6,8 +6,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
-import kr.co.softsoldesk.beans.QuoteBean;
 import kr.co.softsoldesk.mapper.ChatMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 
@@ -31,7 +31,7 @@ public class ProUserDao {
 	
 	} 
 	
-	public List<String> getSearchProUserByName(String pro_name) {
+	public List<ExpertBean> getSearchProUserByName(String pro_name) {
 		
 		return ProuserMapper.getSearchProUserByName(pro_name);
 		

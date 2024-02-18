@@ -91,7 +91,8 @@ html, body {
 				추가하세요</label>
 			<textarea type="text" id="eventTitle" name="calendar_memo"
 				style="width: 100%; height: 300px; padding: 5px; margin-bottom: 10px; box-sizing: border-box; font-size: 18px;"></textarea>
-				
+
+			
 		</form:form>
 	</div>
 	
@@ -104,7 +105,7 @@ html, body {
 		function loadEventsFromServer() {
 			 jq.ajax({
 			        type: "GET",
-			        url: "/Soldesk_Project2_Unicode/common/calendar_events",
+			        url: "${root}/common/calendar_events",
 			        dataType: "json",
 			        //data: {
 			            // 일반 회원인 경우

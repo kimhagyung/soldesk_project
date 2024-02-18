@@ -184,7 +184,11 @@
 	</div>
  <script>
         $(document).ready(function () {
-        	
+
+            // 선택된 값들을 저장할 배열
+			var selectedAnswers = [];
+
+			selectedAnswers.push($(".firstformset .question-form:first").fadeIn(400));
             setTimeout(function () {
                 $(".questionname").fadeIn(400);
             }, 1000);
@@ -217,9 +221,6 @@
             var answersContainer = $(".firstanswer");
             /* 확인버튼을 누르면 */
             
-            // 선택된 값들을 저장할 배열
-			var selectedAnswers = [];
-			selectedAnswers.push($(".firstformset .question-form:first").fadeIn(400));
             $(document).on('click', '.submitbtn', function () {
                 var selectedAnswer = $("input[name='answer']:checked").val();
 

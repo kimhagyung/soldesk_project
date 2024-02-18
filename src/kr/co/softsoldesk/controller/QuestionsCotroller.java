@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.softsoldesk.beans.ChatRoomBean;
 import kr.co.softsoldesk.beans.ChatRoomSelect;
@@ -191,5 +194,36 @@ public class QuestionsCotroller {
 	 	    chatService.insertReceiverQuote(quoteBean);
 	        return "success";
 	    }
-	 
+
+
+
+		   @PostMapping("/deleteQuoteeee")
+		    public ModelAndView deleteQuoteeee(@RequestParam("quote_history_id") int quote_history_id) {
+		        ModelAndView modelAndView = new ModelAndView();
+		        
+		        chatService.delQuote(quote_history_id);
+		        // 삭제 후, 관리자 페이지로 이동
+		        modelAndView.setViewName("redirect:/include/header");
+		
+		        return modelAndView;
+		
+		  }
+	 /*	
+	 	@PostMapping("/deleteQuoteeee")
+			public ResponseEntity<?> Completeportfolio_Delpro(@RequestParam("quote_history_id") int quote_history_id) {
+			    try {
+			        chatService.delQuote(quote_history_id);
+			        return ResponseEntity.ok().build();
+			    } catch (Exception e) {
+			        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete the quote.");
+			    }
+			}
+	 	
+	 	
+
+	 	@PostMapping("/deleteQuoteeee")
+	 	public void Completeportfolio_Delpro(@RequestParam("quote_history_id") int quote_history_id, HttpServletResponse response) {
+	 	    chatService.delQuote(quote_history_id);
+	 	    response.setStatus(HttpServletResponse.SC_OK);
+	 	}*/
 }

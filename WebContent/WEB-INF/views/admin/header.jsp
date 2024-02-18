@@ -86,17 +86,15 @@
                             </div>
                         </div> 
                         <div class="dropdown for-message">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-envelope"></i>
-                                <span class="count bg-primary">4</span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="message">
-                                
-                                
-                                
-                                
-                            </div>
-                        </div> 
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="moveToReport()">
+
+								<i class="fa fa-envelope"></i>
+								<!-- 들어온 신고 수 -->
+								<c:if test="${alarmReportBean.getReportCnt() != 0}">
+									<span class="count bg-primary">${alarmReportBean.getReportCnt() }</span>
+								</c:if> 
+							</button> 
+                        </div>
                      </div>
                 </div>
             </div>
@@ -117,7 +115,11 @@
                     </li>
                     <li class="menu-title">게시글 관리</li><!-- /.menu-title --> 
                     <li class="menu-item-has-children dropdown">
-                        <a href="${root }/admin/community" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>게시글 관리</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>게시글 관리</a>
+                        <ul class="sub-menu children dropdown-menu">                            
+							<li><i class="fa fa-solid fa-user"></i><a href="${root }/admin/community" aria-haspopup="true" aria-expanded="false">게시글 관리</a></li>
+                            <li><i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i><a href="${root }/admin/report">신고 관리</a></li>
+                        </ul>
                     </li>
                     
                     <li class="menu-title">카테고리 관리</li><!-- /.menu-title --> 

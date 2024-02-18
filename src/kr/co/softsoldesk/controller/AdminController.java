@@ -330,5 +330,24 @@ public class AdminController {
 
 				return "반려";
 			}
-			
+			//게시글 삭제
+			@PostMapping("/approveReport")
+			@ResponseBody
+			public String approveReport(@RequestBody ReportBean reportBean) {
+				
+				adminService.deletePostInfo(reportBean.getBoard_id());
+				
+				if(reportBean.getUser_id() != null) {
+					
+					adminService.updateUserReportCnt(reportBean.getUser_id());
+				}
+				
+				else if(reportBean.getPro_id() != null) {
+				
+					adminService.updateProuserReportCnt(reportBean.getPro_id());
+				}
+				
+				return "삭제";
+			}
+		  
 }

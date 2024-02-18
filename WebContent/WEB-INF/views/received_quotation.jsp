@@ -51,8 +51,7 @@ $(document).ready(function() {
                 data: JSON.stringify({
                     received_quote: selectedAnswersStr,
                     pro_id: pro_id,
-                    user_id: user_id,
-                    service_category_id:'${param.s}'
+                    user_id: user_id, 
                 }),
                 contentType: 'application/json',
                 success: function(response) {
@@ -75,10 +74,7 @@ $(document).ready(function() {
 <body>
 	<!-- 네비부분 -->
 	<c:import url="/WEB-INF/views/include/header.jsp" />
-	
- 	<c:forEach var="obj" items="${paramValues.selectedAnswers}">
-    <div>선택한 값: ${obj} </div>
-</c:forEach> 
+ 
 
 	<div class="container mt-5 mb-5" style="width: 50%">
 		<h2>
