@@ -104,7 +104,7 @@ html, body {
 		function loadEventsFromServer() {
 			 jq.ajax({
 			        type: "GET",
-			        url: "/Soldesk_Project2_Unicode/common/calendar_events",
+			        url: "${root}/common/calendar_events",
 			        dataType: "json",
 			        //data: {
 			            // 일반 회원인 경우

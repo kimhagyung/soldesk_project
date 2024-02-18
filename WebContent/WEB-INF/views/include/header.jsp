@@ -303,7 +303,7 @@ $(document).ready(function() {
 function loadAlarmsForAddedEvents() {
     $.ajax({
         type: "GET",
-        url: "/Soldesk_Project2_Unicode/common/calendar_alarm",
+        url: "${root}/common/calendar_alarm",
         //data: {
          //   userId: ${loginUserBean.user_id}
         //},

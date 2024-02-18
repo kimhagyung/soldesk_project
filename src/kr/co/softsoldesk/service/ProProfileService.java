@@ -79,7 +79,7 @@ public class ProProfileService {
 	   }
 	   
 	   
-	private String saveUploadFile(MultipartFile upload_file) {
+	public String saveUploadFile(MultipartFile upload_file) {
 	      
 	      String file_name = FilenameUtils.getBaseName(upload_file.getOriginalFilename()) + "." + 
 	            FilenameUtils.getExtension(upload_file.getOriginalFilename());

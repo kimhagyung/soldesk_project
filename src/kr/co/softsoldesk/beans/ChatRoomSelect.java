@@ -8,7 +8,7 @@ public class ChatRoomSelect {
     private int pro_id;
     private int user_id;
     private String user_name;
-    private String pro_profile_image;
+    private String certification_documents_images;
 
     public int getPro_id() {
 		return pro_id;
@@ -60,12 +60,14 @@ public class ChatRoomSelect {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	public String getPro_profile_image() {
-		return pro_profile_image;
+
+	public String getCertification_documents_images() {
+		return certification_documents_images;
+	}
+
+	public void setCertification_documents_images(String certification_documents_images) {
+		this.certification_documents_images = certification_documents_images;
 	}
 	
-	public void setPro_profile_image(String pro_profile_image) {
-		this.pro_profile_image = pro_profile_image;
-	}
     
 }

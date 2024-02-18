@@ -493,6 +493,7 @@ textarea {
     	    var messageInput = document.getElementById('messageInput');
     	    var messageContent = messageInput.value.trim();
     	    
+    	    
     	    if(messageContent && stompClient) {
     	        var chatMessage = {
     	            senderId: CURRENT_USER_ID,

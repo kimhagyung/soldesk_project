@@ -116,6 +116,9 @@ public class QuestionsCotroller {
 	         ) {
 	     
 	     int userId; // 사용자 ID 초기화
+	     
+	     ChatHistoryBean chathistory = new ChatHistoryBean(); 
+	     
 	     if (loginUserBean.isUserLogin()) {
 	         userId = loginUserBean.getUser_id(); // 일반 사용자로 로그인한 경우
 	     } else if (loginProuserBean.isProuserLogin()) {
@@ -173,6 +176,7 @@ public class QuestionsCotroller {
 	      model.addAttribute("6", questionBean.getDevelopment()); //문서
 	      model.addAttribute("7", questionBean.getDocument()); //개발외주
 	      model.addAttribute("8", questionBean.getPet()); //반려동
+	      
 	      
 	      
 	      
