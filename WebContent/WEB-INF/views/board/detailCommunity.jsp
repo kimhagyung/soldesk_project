@@ -93,9 +93,20 @@ $(document).ready(function() {
                 $.each(response, function(index, comment) {
                     var replyHtml = '<hr><div style="margin-bottom: 20px;">' + 
                                     '<div style="display:flex; flex-direction:row; justify-content: space-between; align-items:center;">' +
-                                    '<div style="display:flex; flex-direction: row;">' + 
-                                    '<div><img src="../image/profile.png" style="width: 45px; margin-right: 8px;"></div>' + 
-                                    '<div style="display:flex; flex-direction:column">';
+                                    '<div style="display:flex; flex-direction: row;">';
+                                    
+                    if(comment.user_id == null){ //pro_user가 댓글 작성
+                        replyHtml += '<div><img src="${root}/upload/' + comment.certification_documents_images + '" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"></div>' + 
+                                     '<div style="display:flex; flex-direction:column">';
+                        
+                    } 
+                    
+                    if(comment.pro_id == null){
+                        replyHtml += '<div><img src="../image/profile.png" style="width: 45px; margin-right: 8px;"></div>' + 
+                        			 '<div style="display:flex; flex-direction:column">';
+                        
+                    }
+                                    
                     
                     if(comment.user_id == null){
                         replyHtml += '<div>' + comment.comment_prowriter_name + '</div>';

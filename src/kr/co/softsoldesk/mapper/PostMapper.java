@@ -76,12 +76,12 @@ public interface PostMapper {
 			+ "values(comments_seq.nextval, #{board_id}, #{user_id, jdbcType=INTEGER, javaType=Integer}, #{pro_id, jdbcType=INTEGER, javaType=Integer}, #{comment_content}, sysdate)")
 	void addComment(CommentBean writeCommentBean);
 	
-	@Select("SELECT c.board_id, c.user_id, c.pro_id, u.user_name as comment_writer_name, "
-			+ "p.pro_name as comment_prowriter_name, c.comment_id, c.comment_content, "
-			+ "c.comment_date "
+	@Select("SELECT c.board_id, c.user_id, c.pro_id, u.user_name as comment_writer_name, p.pro_name as comment_prowriter_name, "
+			+ "pr.certification_documents_images, c.comment_id, c.comment_content, c.comment_date "
 			+ "FROM comments c "
 			+ "LEFT JOIN users u ON c.user_id = u.user_id "
 			+ "LEFT JOIN pro_user p ON c.pro_id = p.pro_id "
+			+ "LEFT JOIN pro_profile pr ON c.pro_id = pr.pro_id "
 			+ "LEFT JOIN board b ON c.board_id = b.board_id "
 			+ "WHERE b.board_id = #{board_id}")
 	List<CommentBean> getAllComments(int board_id);
