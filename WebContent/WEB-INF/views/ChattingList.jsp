@@ -107,6 +107,16 @@
     width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
     padding-top: 5px; /* hr과의 간격 조정 */
 }
+/* 2월 18일 추가한내용 */
+.bubble {
+    display: inline-block;
+    background-color: #f0f0f0; /* 말풍선 배경색 */
+    border-radius: 10px; /* 테두리 둥근 모서리 */
+    padding: 6px; /* 상하 좌우 패딩 */
+    margin: 5px; /* 마진 */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    font-size: 14px; /* 폰트 사이즈 */
+}
 
 </style>
 </head>
@@ -152,8 +162,13 @@
 													style="font-size: 16px; width: max-content;">
 													<strong>${chatroom.pro_name} 일류님</strong>
 												</div>
+												<!-- 2월 18일 추가내용 -->
 												<div class="service_name"
-													style="font-size: 14px; width: max-content; color: #737373;">스포츠지도사준비</div>
+													style="font-size: 14px; width: max-content; color: #737373;">
+													<span class="bubble">${chatroom.active_detailcategory1 }</span>
+													<span class="bubble">${chatroom.active_detailcategory2 }</span>
+													<span class="bubble">${chatroom.active_detailcategory3 }</span>
+													</div>
 											</div>
 										</div>
 									</div>

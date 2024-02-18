@@ -37,7 +37,8 @@ public interface ChatMapper {
 	 * "WHERE c.user_id = #{user_id}")
 	 */
     
-    @Select("SELECT c.room_id, p.pro_name, c.pro_id,f.certification_documents_images FROM chatroom c, pro_user p, pro_profile f "
+    @Select("SELECT c.room_id, p.pro_name, c.pro_id,f.certification_documents_images,p.active_detailcategory1,p.active_detailcategory2,p.active_detailcategory3 "
+    		+ "FROM chatroom c, pro_user p, pro_profile f "
     		+ "where c.pro_id = p.pro_id "
     		+ "and c.pro_id=f.pro_id "
     		+ "and c.user_id = #{user_id}")
