@@ -17,57 +17,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	
 	
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<!-- jQuery CDN 추가 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- 부트스트랩 JavaScript 추가 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 <script>
-$(document).ready(function() {
-	
-	<c:forEach var="portfolio" items="${portfolioList}">
-    $('#exampleModal_${portfolio.portfolio_id}').on('shown.bs.modal', function () {
-        var imageCount = $('#portfolioSlider_${portfolio.portfolio_id} img').length;
-        console.log('Number of images in the modal:', imageCount);
+//showDivs 함수 정의
+// 전역 변수로 currentImageIndex 선언
 
-        // 현재 표시되는 이미지의 인덱스를 추적하는 변수
-        var currentImageIndex = 0;
 
-        // plusDivs 함수 정의
-        function plusDivs(n) {
-            showDivs(currentImageIndex += n);
-        }
+$(document).ready(function () {
+    <c:forEach var="report" items="${allReportBean}">
+        $('#exampleModal_${report.board_id }').on('shown.bs.modal', function () {
+            var imageCount = $('#portfolioSlider_${report.report_id} img').length;
+            console.log('Number of images in the modal:', imageCount);
 
-        // showDivs 함수 정의
-        function showDivs(n) {
-            var i;
-            var slides = $('#portfolioSlider_${portfolio.portfolio_id} img');
-            if (n >= slides.length) { currentImageIndex = 0 }
-            if (n < 0) { currentImageIndex = slides.length - 1 }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slides[currentImageIndex].style.display = "block";
-        }
+            var currentImageIndex = 0;
 
-        // 초기 이미지 표시
-        showDivs(currentImageIndex);
+         // plusDivs 함수 정의
+         function plusDivs(n) {
+         	currentImageIndex += n;
+         	showDivs(currentImageIndex);
+         }
 
-        // 좌우 버튼에 plusDivs 함수 연결
-        $('#portfolioSlider_${portfolio.portfolio_id} .w3-display-left').click(function() {
-            plusDivs(-1);
+         // showDivs 함수 정의
+         function showDivs(n) {
+             var slides = $('#portfolioSlider_${report.report_id} img');
+             if (slides.length > 0) {
+                 currentImageIndex = (n + slides.length) % slides.length;
+                 slides.hide().eq(currentImageIndex).show();
+             }
+         }
+            
+            // plusDivs 함수 연결
+            $('#portfolioSlider_${report.report_id} .w3-display-left').click(function () {
+                plusDivs(-1);
+            });
+
+            $('#portfolioSlider_${report.report_id} .w3-display-right').click(function () {
+                plusDivs(1);
+            });
+
+            // 초기 이미지 표시
+            showDivs(currentImageIndex);
         });
+    </c:forEach>
+});
 
-        $('#portfolioSlider_${portfolio.portfolio_id} .w3-display-right').click(function() {
-            plusDivs(1);
-        });
+function initializeSlider(reportId) {
+    var slider = $('#portfolioSlider_' + reportId);
+    //var images = slider.find('img');
+    var images = slider.find('img');
+   
+}
+// 슬라이더 컨트롤 함수
+$('.portfolio-slider').each(function () {
+    var reportId = $(this).attr('id').split('_')[1];
+    console.log('이미지 개수222:', images.length);
+    $(this).find('.w3-display-left, .w3-display-right').on('click', function () {
+        // 이미지 전환 로직 추가
+        // ...
+        // 이미지 개수 콘솔에 출력
+        initializeSlider(reportId);
     });
-</c:forEach>
+});
 </script>
 
 <style>
@@ -93,6 +111,8 @@ $(document).ready(function() {
             background-color: gray; /* 비활성화된 버튼 배경 색상 설정 */
             color: white; /* 비활성화된 버튼 텍스트 색상 설정 */
         }
+        
+        .mySlides {display:none;}
 </style>
 <body>
 	<c:import url="/WEB-INF/views/admin/header.jsp" />
@@ -187,7 +207,8 @@ $(document).ready(function() {
 															
 															<c:if test="${report.photos != null }">
 																(사진)
-																<div class="w3-content w3-display-container portfolio-slider" id="portfolioSlider_${portfolio.portfolio_id}">
+																<!-- 슬라이더 -->
+																<div class="w3-content w3-display-container portfolio-slider" id="portfolioSlider_${report.report_id}">
 											   						<c:forEach var="photo" items="${fn:split(report.photos, ',')}" varStatus="loop">
 											        					<img src="${root}/portfolio/${photo}" alt="pic" style="width: 468px; height: 480px;">
 											    					</c:forEach>
@@ -345,6 +366,12 @@ $(document).ready(function() {
     });
 </script> --%>
 
+<script>
+
+ ///////////////////////////////////////////////////////
+    // 이미지 슬라이더 초기화 시 실행되는 함수
+     
+</script>
 	
 </body>
 </html>

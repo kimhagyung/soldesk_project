@@ -107,7 +107,7 @@ public interface AdminMapper {
 		int getCntInspectionPortfolio();
 	
 		//신고 목록 불러오기
-		@Select("SELECT b.title, b.user_id, b.pro_id, r.board_id, r.report_date, r.report_msg, u.user_name as user_writer_name, p.pro_name as pro_writer_name, b.content, b.photos,"
+		@Select("SELECT r.report_id, b.title, b.user_id, b.pro_id, r.board_id, r.report_date, r.report_msg, u.user_name as user_writer_name, p.pro_name as pro_writer_name, b.content, b.photos,"
 				+ "CASE WHEN b.user_id IS NOT NULL THEN u.reportCnt ELSE NULL END AS user_reportcnt, "
 				+ "CASE WHEN b.user_id IS NULL THEN p.reportCnt ELSE NULL END AS pro_reportcnt "
 				+ "FROM report r "
