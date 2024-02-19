@@ -52,6 +52,8 @@ $(document).ready(function() {
                     
                     // 댓글 목록 조회
                     updateReplyList();
+                    
+                    sendNotification();
                 }
             },
             error: function(error) {
@@ -524,6 +526,20 @@ $(document).ready(function() {
 			});
 		});
 	</script>
+		<script>
+
+
+	// 페이지 로드 시 WebSocket 연결을 초기화
+		function sendNotification() {
+		    if(stompClient) {
+		        stompClient.send("/app/board/newPost", {}, JSON.stringify({}));
+		    } else {
+		        console.log("WebSocket 연결이 없습니다.");
+		    }
+		}
+
+	</script>
+	
 
 </body>
 </html>

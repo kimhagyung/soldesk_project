@@ -4,5 +4,5 @@
 <c:set var='root' value='${pageContext.request.contextPath}/'/>
 <script>
 	alert('리뷰가 저장되었습니다.')
-	location.href = '${root}review/Review'
+	location.href = '${root}/review/Review?pro_id=${writeReviewBean.pro_id}';
 </script>

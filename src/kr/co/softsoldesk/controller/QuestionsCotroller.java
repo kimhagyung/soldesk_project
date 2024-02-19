@@ -1,21 +1,27 @@
 package kr.co.softsoldesk.controller;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.softsoldesk.beans.ChatHistoryBean;
 import kr.co.softsoldesk.beans.ChatRoomBean;
 import kr.co.softsoldesk.beans.ChatRoomSelect;
 import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.QuestionBean;
+import kr.co.softsoldesk.beans.QuoteBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.ChatService;
 import kr.co.softsoldesk.service.ProUserService;
@@ -37,6 +43,7 @@ public class QuestionsCotroller {
     @Autowired
     private ChatService chatService;
 	
+    
 	@GetMapping("/received_quotation")
 	public String received_quotation(@RequestParam("reco") String reco, Model model) {
 	    List<String> recoProUsers = proUserService.getRecoProUserByName(reco);
@@ -161,10 +168,7 @@ public class QuestionsCotroller {
 	     
 	      model.addAttribute("currentUserId", userId); 
 	      
-			/*
-			 * model.addAttribute("userId", userId); model.addAttribute("proId", proId);
-			 */
-	      
+		 
 	      model.addAttribute("1", questionBean.getCertifaction_exam()); //자격증시험
 	      model.addAttribute("2", questionBean.getInterior());  //인테리어
 	      model.addAttribute("3", questionBean.getAppliance()); //가전제품
@@ -180,4 +184,46 @@ public class QuestionsCotroller {
 	     return "chatting";
 	 }
 	 
+	 	@PostMapping(value = "/sendQuote", consumes = "application/json")
+	    @ResponseBody
+	    public String sendQuote(@RequestBody QuoteBean quoteBean) {
+	 		
+	 		//System.out.println("Selected Answers: " + quoteBean.getReceived_quote());
+	 	    System.out.println("Pro ID: " + quoteBean.getPro_id());
+	 	    System.out.println("User ID: " + quoteBean.getUser_id());
+	 	    chatService.insertReceiverQuote(quoteBean);
+	        return "success";
+	    }
+
+
+
+		   @PostMapping("/deleteQuoteeee")
+		    public ModelAndView deleteQuoteeee(@RequestParam("quote_history_id") int quote_history_id) {
+		        ModelAndView modelAndView = new ModelAndView();
+		        
+		        chatService.delQuote(quote_history_id);
+		        // 삭제 후, 관리자 페이지로 이동
+		        modelAndView.setViewName("redirect:/include/header");
+		
+		        return modelAndView;
+		
+		  }
+	 /*	
+	 	@PostMapping("/deleteQuoteeee")
+			public ResponseEntity<?> Completeportfolio_Delpro(@RequestParam("quote_history_id") int quote_history_id) {
+			    try {
+			        chatService.delQuote(quote_history_id);
+			        return ResponseEntity.ok().build();
+			    } catch (Exception e) {
+			        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete the quote.");
+			    }
+			}
+	 	
+	 	
+
+	 	@PostMapping("/deleteQuoteeee")
+	 	public void Completeportfolio_Delpro(@RequestParam("quote_history_id") int quote_history_id, HttpServletResponse response) {
+	 	    chatService.delQuote(quote_history_id);
+	 	    response.setStatus(HttpServletResponse.SC_OK);
+	 	}*/
 }

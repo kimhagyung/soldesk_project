@@ -24,9 +24,11 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProProfileBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.InterestService;
+import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.ReviewService;
 
 @Controller
@@ -39,11 +41,15 @@ public class ReviewController {
 	@Autowired
 	private InterestService interestService;
 	
+	@Autowired
+	private ProUserService proUserService;
+	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean;
 
 	@GetMapping("/ReviewWrite")
-	public String reviewWrite(@ModelAttribute("writeReviewBean") ReviewBean writeReviewBean, Model model) {
+	public String reviewWrite(@ModelAttribute("writeReviewBean") ReviewBean writeReviewBean, Model model, 
+			@RequestParam(name="pro_id") int pro_id) {
 		
 		//@RequestParam(name="pro_id") int pro_id 추가
 		
@@ -52,6 +58,15 @@ public class ReviewController {
 		//model.addAttribute("빈", 빈);
 		//jsp에서 ${빈.필요한 데이터} 형태
 		
+		ProUserBean proUserBean = reviewService.getProReviewInfo(pro_id);
+		String ctg1 = proUserService.getCategory11(pro_id);
+		String ctg2 = proUserService.getCategory22(pro_id);
+		String ctg3 = proUserService.getCategory33(pro_id);
+		
+		model.addAttribute("proUserBean", proUserBean);
+		model.addAttribute("ctg1", ctg1);
+		model.addAttribute("ctg2", ctg2);
+		model.addAttribute("ctg3", ctg3);
 		model.addAttribute("writeReviewBean", writeReviewBean);
 		
 		return "review/ReviewWrite";

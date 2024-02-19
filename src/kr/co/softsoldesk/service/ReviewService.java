@@ -17,6 +17,7 @@ import kr.co.softsoldesk.beans.CareerBean;
 import kr.co.softsoldesk.beans.EducationBean;
 import kr.co.softsoldesk.beans.PortFolioBean;
 import kr.co.softsoldesk.beans.ProProfileBean;
+import kr.co.softsoldesk.beans.ProUserBean;
 import kr.co.softsoldesk.beans.ReviewBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.ReviewDao;
@@ -26,8 +27,8 @@ import kr.co.softsoldesk.dao.ReviewDao;
 @PropertySource("/WEB-INF/properties/option.properties")
 public class ReviewService {
 
-	@Value("${path.upload}")
-	private String path_upload;
+	@Value("${path.portfolio}")
+	private String path_portfolio;
 	
 	@Autowired
 	private ReviewDao reviewDao;
@@ -45,7 +46,7 @@ public class ReviewService {
 					   			FilenameUtils.getExtension(uploadFile.getOriginalFilename());
 			   
 			   try {
-				uploadFile.transferTo(new File(path_upload + "/" + photo_name));
+				uploadFile.transferTo(new File(path_portfolio + "/" + photo_name));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -77,43 +78,46 @@ public class ReviewService {
 		reviewDao.deleteReview(review_id);
 	}
 	
+	public ProUserBean getProReviewInfo(int pro_Id) {
+		return reviewDao.getProReviewInfo(pro_Id);
+	}
+	
 	//---------------ajax 리뷰---------------------------
 	
-		public List<ReviewBean> getAllReviews(int pro_id){
-			return reviewDao.getAllReviews(pro_id);
-		}
-		
-		//------------------일류 프로필 정보--------------------
-		
-		public ProProfileBean getProProfileInfo(int pro_id) {
-			return reviewDao.getProProfileInfo(pro_id);
-		}
-		
-		//-------------------경력------------------------------
-		
-		public List<CareerBean> getCareerListInfo(int pro_id){
-			return reviewDao.getCareerListInfo(pro_id);
-		}
-		
-		public int getSumTotalExperience(int pro_id) {
-			return reviewDao.getSumTotalExperience(pro_id);
-		}
-		
-		//-------------------학력---------------------------------
-		
-		public List<EducationBean> getEducationListInfo(int pro_id){
-			return reviewDao.getEducationListInfo(pro_id);
-		}
-		
-		//-----------------포트폴리오--------------------------------
-		public List<PortFolioBean> getProtfolioListInfo(int pro_id){
-			return reviewDao.getProtfolioListInfo(pro_id);
-		}
-		
-		/*
-		 * public PortFolioBean getPortfolioInfo(int portfolio_id) { return
-		 * reviewDao.getPortfolioInfo(portfolio_id); }
-		 */
+	public List<ReviewBean> getAllReviews(int pro_id){
+		return reviewDao.getAllReviews(pro_id);
+	}
 	
+	//------------------일류 프로필 정보--------------------
+	
+	public ProProfileBean getProProfileInfo(int pro_id) {
+		return reviewDao.getProProfileInfo(pro_id);
+	}
+	
+	//-------------------경력------------------------------
+	
+	public List<CareerBean> getCareerListInfo(int pro_id){
+		return reviewDao.getCareerListInfo(pro_id);
+	}
+	
+	public int getSumTotalExperience(int pro_id) {
+		return reviewDao.getSumTotalExperience(pro_id);
+	}
+	
+	//-------------------학력---------------------------------
+	
+	public List<EducationBean> getEducationListInfo(int pro_id){
+		return reviewDao.getEducationListInfo(pro_id);
+	}
+	
+	//-----------------포트폴리오--------------------------------
+	public List<PortFolioBean> getProtfolioListInfo(int pro_id){
+		return reviewDao.getProtfolioListInfo(pro_id);
+	}
+	
+	/*
+	 * public PortFolioBean getPortfolioInfo(int portfolio_id) { return
+	 * reviewDao.getPortfolioInfo(portfolio_id); }
+	 */
 	
 }

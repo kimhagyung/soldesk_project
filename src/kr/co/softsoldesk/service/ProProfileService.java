@@ -111,19 +111,20 @@ public class ProProfileService {
 	      return proProfileDao.getProfileImgInfo(pro_id);
 	   }
 	
-
-		//일류 프로필 정보 조회 
-		   public List<ExpertBean> getProProfileInfo(){
-			   return proProfileDao.getProProfileInfo();
-		   }
+ 
 		   
-		 //경력 정보 조회 
-		   public List<CareerBean> getCareerInfo(){
-			   return proProfileDao.getCareerInfo();
-		   }
+	   //경력 정보 조회 
+	   public List<ExpertBean> getCareerInfo(){
+		   return proProfileDao.getCareerInfo();
+	   }
 		   
-		 //리뷰조회 
-			public List<ReviewBean> getAllReview(){
-				return proProfileDao.getAllReview();
-			}
+	   //리뷰조회 
+		public List<ExpertBean> getAllReview(){
+			return proProfileDao.getAllReview();
+		}
+			 //일류 프로필 정보 조회 
+			   public List<ExpertBean> getProProfileInfo(){
+				   return proProfileDao.getProProfileInfo();
+			   }
+			   
 }

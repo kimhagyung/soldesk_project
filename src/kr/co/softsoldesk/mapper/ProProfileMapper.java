@@ -59,19 +59,27 @@ public interface ProProfileMapper {
          + "where pro_id = #{pro_id}")
    String getProfileImgInfo(int pro_id);
    
- //일류프로필 정보 조회 
- 	@Select("select pro_detailed_introduction,pro_profile_image,pro_id from pro_profile")
+ //일류프로필 정보 조회 order by
+ 	@Select("select pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name\r\n"
+ 			+ "from pro_user, pro_profile\r\n"
+ 			+ "where pro_user.pro_id = pro_profile.pro_id\r\n"
+ 			+ "order by pro_id asc")
  	List<ExpertBean> getProProfileInfo();
+   
+ //경력 정보 조회 order by
+ 	@Select("SELECT SUM(career.total_experience_period) AS career_sum, pro_user.pro_id\r\n"
+ 			+ "FROM pro_user\r\n"
+ 			+ "JOIN career ON pro_user.pro_id = career.pro_id\r\n"
+ 			+ "GROUP BY pro_user.pro_id\r\n"
+ 			+ "order by pro_id asc")
+ 	List<ExpertBean> getCareerInfo();
  	
- 	//경력 정보 조회
- 	@Select("SELECT SUM(total_experience_period) AS total_experience_period\r\n"
- 			+ "FROM career\r\n"
- 			+ "GROUP BY pro_id order by pro_id asc")
- 	List<CareerBean> getCareerInfo();
- 	
- 	//리뷰 조회 
-
- 	@Select("select * from review")
- 	List<ReviewBean> getAllReview();
+ 	//리뷰 조회 order by
+ 	@Select("SELECT COUNT(*) AS review_cnt, pro_user.pro_id\r\n"
+ 			+ "FROM pro_user\r\n"
+ 			+ "JOIN review ON pro_user.pro_id = review.pro_id\r\n"
+ 			+ "GROUP BY pro_user.pro_id\r\n"
+ 			+ "order by pro_id asc")
+ 	List<ExpertBean> getAllReview();
 	
 }

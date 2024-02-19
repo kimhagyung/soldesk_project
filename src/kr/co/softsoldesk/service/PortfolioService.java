@@ -1,6 +1,8 @@
 package kr.co.softsoldesk.service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,12 +34,13 @@ public class PortfolioService {
 
 	public void addProPortfolioInfo(PortFolioBean ProPortfolio, List<MultipartFile> uploadFiles) {
 		String fileNames = uploadFiles.stream().map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
-		ProPortfolio.setDetailed_images(fileNames);
+		//ProPortfolio.setDetailed_images(fileNames);
 
-		for (MultipartFile uploadFile : uploadFiles) {
-			String photo_name = FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "."
-					+ FilenameUtils.getExtension(uploadFile.getOriginalFilename());
-
+		for (MultipartFile uploadFile : uploadFiles) { 
+			String photo_name = System.currentTimeMillis() + "_" +  
+				      FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "." + 
+				            FilenameUtils.getExtension(uploadFile.getOriginalFilename());
+			ProPortfolio.setDetailed_images(photo_name);
 			try {
 				uploadFile.transferTo(new File(path_portfolio + "/" + photo_name));
 			} catch (Exception e) {
@@ -50,6 +53,8 @@ public class PortfolioService {
 		System.out.println("PortfolioService"+ProPortfolio.getPortfolio_title());
 		System.out.println("PortfolioService"+ProPortfolio.getWork_period());
 	}
+
+
 	
 	public List<PortFolioBean> getPortfolioList(int pro_id){
 		 return proPortfoliodao.getPortfolioList(pro_id);
@@ -61,12 +66,16 @@ public class PortfolioService {
 	
 	  public void modifyPortfolioInfo(PortFolioBean ProPortfoliomodify, List<MultipartFile> uploadFiles) { 
 		   String fileNames = uploadFiles.stream().map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
+		   
+		    
+
 		   ProPortfoliomodify.setDetailed_images(fileNames);
 		   
 		   for(MultipartFile uploadFile : uploadFiles) {
-			   String photo_name = FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "." + 
-					   			FilenameUtils.getExtension(uploadFile.getOriginalFilename());
 			   
+			   String photo_name = System.currentTimeMillis() + "_" +  
+					      FilenameUtils.getBaseName(uploadFile.getOriginalFilename()) + "." + 
+					            FilenameUtils.getExtension(uploadFile.getOriginalFilename());
 			   try {
 				uploadFile.transferTo(new File(path_portfolio + "/" + photo_name));
 			} catch (Exception e) {
@@ -78,4 +87,6 @@ public class PortfolioService {
 		   System.out.println("수정된 상세글"+ProPortfoliomodify.getDetailed_introduction());
 		   proPortfoliodao.modifyPortfolioInfo(ProPortfoliomodify);
 	   }
+	  
+	  
 }

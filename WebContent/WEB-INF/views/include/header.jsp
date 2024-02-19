@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ 
 <c:set var="root" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
@@ -28,6 +30,9 @@
     <!-- 부트스트랩 JavaScript 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 </head>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
@@ -137,6 +142,10 @@
 	display: none !important;
 }
 
+.autostyle{
+	width:280px; 
+	padding:10px; 
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -254,22 +263,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     loadAlarmsForAddedEvents();
     
-	  // 알람 클릭 이벤트 핸들러
-	 //$("#calendarDropdown .dropdown-menu").on("click", ".dropdown-item", function() {
-	  //   console.log("알람이 클릭됐다!"); // 추가된 로그
-	
-	     // rounded-pill 클래스 제거
-	  //   $(".rounded-circle").removeClass("text-danger").hide();
-	
-	     // 글씨 색상을 노란색으로 변경
-	  //   $(this).css({
-	  //       "color": "yellow",
-	  //       "text-decoration": "line-through"
-	  //   });
-	
-	     // 캘린더로 이동
-	  //   window.location.href = "${root}/common/calendar";
-	// });
+ 
 });
 
 function loadAlarmsForAddedEvents() {
@@ -319,24 +313,31 @@ function displayAlarms(alarms) {
     dropdown.on('click', '.alarm-link', function () {
         handleAlarmClick(this);
     });
+ 
+} 
 
-    /* function handleAlarmClick(clickedElement) {
-        console.log("알람이 클릭됐다!"); // 추가된 로그
-        
-        // rounded-pill 클래스 제거
-        $(".rounded-circle").removeClass("text-danger").hide();
-        
-        // 글씨 색상을 노란색으로 변경
-        $(clickedElement).find("a").css({
-            "color": "yellow",
-            "text-decoration": "line-through"
-        });
-        
-        // 캘린더로 이동
-        window.location.href = $(clickedElement).attr("href");
-    } */
-}
-
+$(document).ready(function(){
+    $(".dropdown-item").click(function() {
+        var quote_history_id = $(this).data('id');
+        console.log("quote_history_id :"+quote_history_id);
+        // 삭제 확인 메시지를 띄우기
+        if (confirm("삭제하시겠습니까?")) {
+            $.ajax({
+                type: "POST",
+                url: "${root}/deleteQuoteeee",
+                data: { quote_history_id: quote_history_id }, 
+                success: function(response) {
+                	console.log("response"+response);
+                    location.reload();
+                    // onclick="location.href='${root}/chatting?pro_id=${loginProuserBean.getPro_id()}&user_name=${sendQuetes[num.index]}"
+                },
+                error: function() {
+                    return false;
+                }
+            });
+        }
+    });
+});
 </script>
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
@@ -404,19 +405,30 @@ function displayAlarms(alarms) {
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 									
 								<!-- 종 -->	
-								<div class="dropdown ms-3" id="notificationDropdown"> 
+								<div class="dropdown ms-3 " id="notificationDropdown"> 
 									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
-										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
-										</span>
+										 <c:forEach var="obj" items="${quoteBean }" varStatus="num"> 
+											 <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
+												<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+												</span>
+											</c:if>
+										</c:forEach>
 									</i>
-									
-									<ul class="dropdown-menu ">
-										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
-							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
-										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
+									<ul class="dropdown-menu"> 
+										<c:forEach var="obj" items="${quoteBean }" varStatus="num">  
+										    <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
+										        <li class="autostyle" >
+										        	<div class="autostyle">${sendQuetes[num.index] } 님께 받은견적이 있어요</div> 
+										            <a class="dropdown-item" data-id="${obj.getQuote_history_id()}">
+													 	 - ${fn:replace(obj.getReceived_quote(), ',', '<br>- ')} 
+													</a>   
+										        </li> 
+										    </c:if> 
+										</c:forEach>					
 									</ul>
 								</div>
-								
+								  
+									    
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
@@ -443,21 +455,7 @@ function displayAlarms(alarms) {
 									onclick="location.href='${root}/user/logout'">로그아웃</button>
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage?id=${loginUserBean.getUser_id() }'">마이프로필</button>
-									
-								<!-- 종 -->
-								<div class="dropdown ms-3" id="notificationDropdown"> 
-									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
-										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style="display:none;"> 
-										</span>
-									</i>
-									
-									<ul class="dropdown-menu">
-										<!-- <li><a class="dropdown-item" href="#">알림 1</a></li>
-							        <li><a class="dropdown-item" href="#">알림 2</a></li> -->
-										<!-- 필요한 만큼 메뉴 항목을 추가하세요 -->
-									</ul>
-								</div>
-								
+									 
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
@@ -482,4 +480,24 @@ function displayAlarms(alarms) {
 	</div>
 </body>
 
+	<script>
+      var stompClient = null;
+      
+      function connect() {
+          var socket = new SockJS('/ws');
+          stompClient = Stomp.over(socket);
+      
+          stompClient.connect({}, function(frame) {
+              console.log('Connected: ' + frame);
+      
+          });
+      }
+      
+      
+      
+      // 페이지 로드 시 연결
+      window.onload = function() {
+          connect();
+      };
+      </script>
 </html>

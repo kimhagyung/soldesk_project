@@ -39,9 +39,6 @@
 			  <div class="row justify-content-between mt-3">
 							<div class="col-4">
 								<div class="row"  >
-									<div class="col-4">
-										<img src="../image/logo4.png" style="height: 100px; width: 80px;" />
-									</div>
 									<div class="col-7 mt-3">
 										<c:choose>
 										<c:when
@@ -77,36 +74,26 @@
 						</div>
 		  </li>
 		  
-		  <li class="list-group-item mt-3">
-			  
-			  <h4><b>일류찾기</b></h4>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="saved.html"> 찜한 일류</a>
-			  </div>
-		  </li>
-		  
+		   <c:if test="${loginProuserBean.prouserLogin == false}">
+		  <li class="list-group-item mt-3"> 
+			        <h4><b>일류찾기</b></h4>
+			        <div class="mt-3 mb-3" style="font-size: 17px;" onclick="location.href='${root }/common/saved?id=${param.id}'" >
+			            <p style="cursor:pointer">찜한 일류</p>
+			        </div> 
+			</li>
+		   </c:if> 
 		  <li class="list-group-item mt-3">
 			  <h4><b>커뮤니티</b></h4>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
 				  <a class="move" href="${root}/common/myPosts">작성글/댓글</a>
 			  </div>
-		  </li>
-		  
-		  
+		  </li> 
 		  <li class="list-group-item mt-3">
 			  <h4><b>일정</b></h4>
 			  <div class="mt-3 mb-3" style="font-size: 17px;">
 				  <a class="move" href="${root}/common/calendar">캘린더</a>
 			  </div>
-		  </li>
-		  
-		  <li class="list-group-item mt-3">
-			  <h4><b>설정</b></h4>
-			  <div class="mt-3 mb-3" style="font-size: 17px;">
-				  <a class="move" href="block.html">차단목록</a>
-			  </div>
-			  
-		  </li>
+		  </li> 
 		</ul>
 	</div>
 	

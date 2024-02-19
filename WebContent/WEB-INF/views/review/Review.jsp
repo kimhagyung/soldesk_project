@@ -602,8 +602,7 @@ $(document).ready(function() {
 						<!-- Button trigger modal -->
 
 						<div style="display: flex; flex-wrap: wrap;">
-							<c:forEach var="portfolio" items="${portfolioList}">
-							
+							<c:forEach var="portfolio" items="${portfolioList}"> 
 								<c:if test="${portfolio.inspectionNY != 0 }">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_${portfolio.portfolio_id}"
 										style="width: 155px; height: 155px; border: none; background-color: #fff; margin-right: 10px; margin-bottom: 10px;" >
@@ -663,7 +662,7 @@ $(document).ready(function() {
 														<div style="width: 100px;">작업 기간</div> 
 															<span style="color: #2D2D2D;">${portfolio.work_period }</span>
 													</div>
-													<div class="portfolioProfile_detail_description mb-5" style="color: #2D2D2D; margin-top: 16px;">${portfolio.detailed_introduction }</div>
+													<div class="portfolioProfile_detail_description" style="color: #2D2D2D; margin-top: 16px;">${portfolio.detailed_introduction }</div>
 												</div>
 												
 												<!-- 캐러셀 -->

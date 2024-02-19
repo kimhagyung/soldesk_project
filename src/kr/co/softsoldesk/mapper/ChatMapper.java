@@ -4,9 +4,9 @@ package kr.co.softsoldesk.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import kr.co.softsoldesk.beans.ChatHistoryBean;
 import kr.co.softsoldesk.beans.ChatRoomBean;
 import kr.co.softsoldesk.beans.ChatRoomSelect;
+import kr.co.softsoldesk.beans.QuoteBean;
 
 @Mapper
 public interface ChatMapper {
@@ -54,12 +55,20 @@ public interface ChatMapper {
     @Select("SELECT * FROM chatHistory WHERE room_id = #{room_id} ORDER BY chattime ASC")
     List<ChatHistoryBean> findChatHistoryByRoomId(@Param("room_id") int roomId);
     
+    @Insert("insert into received_quote values(received_quote_seq.nextval, #{received_quote},#{pro_id},#{user_id})" )
+    void insertReceiverQuote(QuoteBean quoteBean);
     
-}
+    @Select("Select *from received_quote")
+    List<QuoteBean> receviedQuote();
+    
+    @Select("select user_name \r\n"
+    		+ "from received_quote, users \r\n"
+    		+ "where received_quote.user_id=users.user_id and quote_history_id=#{quote_history_id}")
+    String getSendQuoteUsername(int quote_history_id);
+    
+    //견적서 삭제 
+    @Delete("delete from received_quote where quote_history_id=#{quote_history_id}")
+    int delQuote(int quote_history_id);
  
-/*
- * @Mapper public interface ChatMapper {
- * 
- * @Insert("INSERT INTO chatroom (room_id, pro_id, user_id, createdate) VALUES (chatroom_seq.NEXTVAL, #{pro_id}, #{user_id}, DEFAULT)"
- * ) void insertChatroom(ChatroomBean chatroom); }
- */
+}
+  

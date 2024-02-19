@@ -184,7 +184,11 @@
 	</div>
  <script>
         $(document).ready(function () {
-        	
+
+            // 선택된 값들을 저장할 배열
+			var selectedAnswers = [];
+
+			selectedAnswers.push($(".firstformset .question-form:first").fadeIn(400));
             setTimeout(function () {
                 $(".questionname").fadeIn(400);
             }, 1000);
@@ -217,9 +221,6 @@
             var answersContainer = $(".firstanswer");
             /* 확인버튼을 누르면 */
             
-            // 선택된 값들을 저장할 배열
-			var selectedAnswers = [];
-            
             $(document).on('click', '.submitbtn', function () {
                 var selectedAnswer = $("input[name='answer']:checked").val();
 
@@ -230,7 +231,7 @@
                     // 선택된 값들을 배열에 추가 
                  	// 기존 질문과 답변을 유지하면서 새로운 질문에 대한 컨테이너를 생성
                     //answerForm.html("<div class='user-message message'>" + selectedAnswer + "</div>").hide();
-                    // 만약 "기타"를 선택한 경우 textarea 값을 가져와서 추가
+                    // 만약 "기타"를 선택한 경우 textarea 값을 가져와서 추가 
                     if (selectedAnswer === "기타" || selectedAnswer==="작성") {
                         var textareaValue = questionForm.find('.user-textarea').val();
                         console.log("작성한 글",textareaValue);

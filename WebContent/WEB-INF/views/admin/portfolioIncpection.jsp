@@ -6,6 +6,7 @@
 <!doctype html>
 <head>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script> 
 $(document).ready(function() {
 	  $('.portDel').click(function() {

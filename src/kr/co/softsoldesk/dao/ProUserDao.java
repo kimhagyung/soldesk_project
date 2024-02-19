@@ -6,7 +6,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
+import kr.co.softsoldesk.mapper.ChatMapper;
 import kr.co.softsoldesk.mapper.ProUserMapper; 
 
 @Repository
@@ -14,6 +16,9 @@ public class ProUserDao {
 
 	@Autowired
 	private ProUserMapper ProuserMapper;
+	
+	@Autowired
+	private ChatMapper chatMapper;
 	
 	public String checkProuserEmailExist(String pro_email) {
 		
@@ -26,7 +31,7 @@ public class ProUserDao {
 	
 	} 
 	
-	public List<String> getSearchProUserByName(String pro_name) {
+	public List<ExpertBean> getSearchProUserByName(String pro_name) {
 		
 		return ProuserMapper.getSearchProUserByName(pro_name);
 		
@@ -165,5 +170,7 @@ public class ProUserDao {
          
       ProuserMapper.modifyActive_location(active_location, pro_id);
    }
+   
+    
    
 }

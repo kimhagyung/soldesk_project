@@ -49,6 +49,7 @@ public class UserController {
 	@Autowired
 	DetailCategoryService detailCategoryService;
 
+	
 	// 일반 회원 로그인
 	@GetMapping("/login")
 	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,

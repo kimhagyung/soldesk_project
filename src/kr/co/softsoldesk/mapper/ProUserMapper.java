@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.beans.ProUserBean;
 
 public interface ProUserMapper {
@@ -22,9 +23,16 @@ public interface ProUserMapper {
 	@Select("select * from pro_user where pro_email=#{pro_email} and pro_pwd=#{pro_pwd}")
 	ProUserBean getLoginProuserInfo(ProUserBean tempLoginUserBean2);
 
-	
+	/*
 	@Select("select pro_name from pro_user WHERE pro_name LIKE '%' || #{pro_name} || '%'")
 	List<String> getSearchProUserByName(String pro_name);// 검색한 pro_name조회
+	*/
+	//일류프로필 정보 조회 order by
+	@Select("select pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name\r\n"
+	 			+ "from pro_user, pro_profile\r\n"
+	 			+ "where pro_user.pro_id = pro_profile.pro_id and pro_name LIKE '%' || #{pro_name} || '%'"
+	 			+ "order by pro_id asc")
+	List<ExpertBean> getSearchProUserByName(String pro_name);
 	
 	//카
 	@Select("select active_detailcategory1 from pro_user where pro_id = #{pro_id}")
@@ -155,5 +163,7 @@ public interface ProUserMapper {
 	             + "SET active_location = #{active_location, jdbcType=VARCHAR}\r\n"
 	             + "WHERE pro_id = #{pro_id}")
 	      void modifyActive_location(@Param("active_location") String active_location, @Param("pro_id") int pro_id);
+	    
+	    
 	     
 	}
