@@ -64,6 +64,7 @@ public class ReviewController {
 		String ctg3 = proUserService.getCategory33(pro_id);
 		
 		model.addAttribute("proUserBean", proUserBean);
+		System.out.println("proUserBean :"+proUserBean.getPro_name());
 		model.addAttribute("ctg1", ctg1);
 		model.addAttribute("ctg2", ctg2);
 		model.addAttribute("ctg3", ctg3);
@@ -136,7 +137,7 @@ public class ReviewController {
 		
 		List<CareerBean> careerList = reviewService.getCareerListInfo(pro_id);
 		
-		int sumTotal = reviewService.getSumTotalExperience(pro_id);
+		Integer sumTotal = reviewService.getSumTotalExperience(pro_id);
 		
 		List<EducationBean> educationList = reviewService.getEducationListInfo(pro_id);
 		

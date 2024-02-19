@@ -52,6 +52,7 @@ $(document).ready(function () {
     }); 
 });
 
+//값이 두개가 있을 때 
 function sendToServer(selectedCategory, selectedLocation) {
 	// 값이 없을 때 디폴트로 null 설정 
     $.ajax({
@@ -94,6 +95,7 @@ function sendToServer(selectedCategory, selectedLocation) {
     });
 }
 
+//서비스 카테고리만 있을 떄 
 function sendToServerCategory(selectedCategory) {
 	// 값이 없을 때 디폴트로 null 설정 
     $.ajax({
@@ -108,15 +110,17 @@ function sendToServerCategory(selectedCategory) {
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
 
+            var reviewList = '${reviewList}'; 
+            console.log("출력할 reviewList"+reviewList)
             for (var i = 0; i < data.length; i++) {
                 var detailCategory = data[i];
-
+                console.log('가져온 값',detailCategory)
                 var card = $('<div class="card mb-3"></div>');
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
-                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
-                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
-                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
+                var cardContent = $('<div class="card-content">'+detailCategory.pro_detailed_introduction+'</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">'+reviewList+'</span>');
                 var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
 
                 col10.append(boldText, cardContent, starReview, career);
@@ -135,6 +139,7 @@ function sendToServerCategory(selectedCategory) {
     });
 }
 
+//지역카테고리만 있을 때
 function sendToServerLocation(selectedLocation) {
 	// 값이 없을 때 디폴트로 null 설정 
     $.ajax({
@@ -200,13 +205,9 @@ function sendToServerLocation(selectedLocation) {
 </style>
 </head>
 
-<body>
-	<!-- 네비부분 -->
+<body> 
 	<c:import url="/WEB-INF/views/include/header.jsp" />
-	<!--여기까지 네비부분-->
-	<!--본문-->
-
-
+ 
 	<div class="container mx-auto mt-5 mb-5" style="width: 60%;">
 
 		<div class=" mt-5">
@@ -307,16 +308,7 @@ function sendToServerLocation(selectedLocation) {
 													document
 															.write('</ul></div></div>');
 												});
-								// 콘솔에 출력하는 함수
-
-								/* // 페이지로 이동하는 함수
-								function redirectToPage(value) {
-									console.log('선택한 값: ' + value);
-									// 여기에 이동할 페이지 URL을 지정합니다.
-									var pageURL = '${root}/search/findPro?${param.service_category_id}&detail_category_name=${param.detail_category_name }&location='
-											+ value; // 예시 URL, 실제로 사용할 URL로 변경하세요.
-									window.location.href = pageURL;
-								} */
+								 
 							</script>
 						</div>
 					</div>
@@ -396,7 +388,6 @@ function sendToServerLocation(selectedLocation) {
 				<div> </div>
 			</div>
 			<!-- 페이징 처리 -->
-
 		</div> 
 		
 

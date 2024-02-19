@@ -38,9 +38,11 @@ $(document).ready(function() {
         console.log('selectedAnswersStr:', selectedAnswersStr);
         
         var pro_id = $(this).data('pro-id');
+        var pro_name = $(this).data('id');
         var user_id = '${loginUserBean.getUser_id()}';
         console.log('pro_id:', pro_id);
         console.log('user_id:', user_id);
+        console.log('pro_name:', pro_name);
         //console.log('selectedAnswers:', selectedAnswers);
         
         // 클라이언트 측에서 서버로 보낼 데이터 확인 후 서버로 전송
@@ -52,11 +54,12 @@ $(document).ready(function() {
                     received_quote: selectedAnswersStr,
                     pro_id: pro_id,
                     user_id: user_id, 
+                    service_category_id :'${param.s}'
                 }),
                 contentType: 'application/json',
                 success: function(response) {
                     console.log('성공',response);
-                    location.href = '${root}/chatting?pro_id=' + pro_id + '&s=${param.s}';
+                    location.href = '${root}/chatting?pro_id=' + pro_id +'&pro_name='+pro_name;
                 },
                 error: function(error) {
                     console.log(error);
@@ -73,8 +76,7 @@ $(document).ready(function() {
 
 <body>
 	<!-- 네비부분 -->
-	<c:import url="/WEB-INF/views/include/header.jsp" />
- 
+	<c:import url="/WEB-INF/views/include/header.jsp" /> 
 
 	<div class="container mt-5 mb-5" style="width: 50%">
 		<h2>
@@ -99,6 +101,7 @@ $(document).ready(function() {
 								<div class="col-6 fw-bold send-quote-btn"
 							    style="color: #00CDFF; cursor: pointer;"
 							    data-pro-id="${proIds[loop.index]}"
+							    data-id="${obj}"
 							    >견적보내기</div> 
 							</div>
 						</div>
@@ -106,10 +109,7 @@ $(document).ready(function() {
 				</li>
 			</c:forEach>
 		</ul>
-	</div>
-
-
-
+	</div> 
 	<!--여기까지 본문 -->
 	<!--푸터-->
 	<c:import url="/WEB-INF/views/include/footer.jsp" />

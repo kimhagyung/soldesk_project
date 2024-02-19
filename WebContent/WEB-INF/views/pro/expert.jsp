@@ -671,21 +671,20 @@ loadData();
                </form:form>
 	            </div>
 	            <div class="col-md">
-					<span class="col" style=" font-size: 36px; font-weight: bold; color: #3E3E3E; text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;
-																														0&nbsp;&nbsp;&nbsp;
-																														|&nbsp;&nbsp;&nbsp;
-																														0&nbsp;&nbsp;&nbsp;
-																														|&nbsp;&nbsp;&nbsp;
-																														0</span>
-					
-	                <p class="col" style=" font-size: 12px; font-weight: bold; color: #D9D9D9; text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																														리뷰평점&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																														리뷰수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																														고용수</p>
-	                <p></p>
-	            </div>
+                   <div class="container">
+                   <ul class="list-inline overview">
+                       <li class="list-inline-item text-center mx-3">
+                           <div style="font-size: 32px; font-weight: bold; color: #3E3E3E;">0</div>
+                           <div style="font-size: 14px; color: #C0C0C0;">리뷰 평점</div>
+                       </li>
+                       <li class="list-inline-item separator">|</li>
+                       <li class="list-inline-item text-center mx-3">
+                           <div style="font-size: 32px; font-weight: bold; color: #3E3E3E;">0</div>
+                           <div style="font-size: 14px; color: #C0C0C0;">리뷰수</div>
+                       </li> 
+                   </ul>
+               </div>
+               </div>
 			</div>
 		</div>
 	</div>

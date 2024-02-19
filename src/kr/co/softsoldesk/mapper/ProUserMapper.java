@@ -63,23 +63,42 @@ public interface ProUserMapper {
 	@Select("select count(*) from pro_user")
 	int getProCnt();
 	
+	//////////여기부터 일류찾기 ajax
+	
+	 //일류프로필 정보 조회 order by
+ 	@Select("select pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name\r\n"
+ 			+ "from pro_user, pro_profile\r\n"
+ 			+ "where pro_user.pro_id = pro_profile.pro_id and active_location = #{active_location, jdbcType=VARCHAR}\r\n"
+ 			+ "order by pro_id asc")
+ 	List<ExpertBean> getselectedLocation(@Param("active_location") String active_location);
+ /*
 	@Select("SELECT pro_name FROM pro_user " +
 			 "WHERE active_location = #{active_location, jdbcType=VARCHAR}")
 	List<String> getselectedLocation(@Param("active_location") String active_location);
- 
+	*/
+	
+ 	@Select("SELECT pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name " +
+ 	        "FROM pro_user, pro_profile " +
+ 	        "WHERE pro_user.pro_id = pro_profile.pro_id AND (active_detailcategory1 = #{selectedCategory, jdbcType=VARCHAR} " +
+ 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
+ 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR}) " +
+ 	        "ORDER BY pro_id ASC")
+ 	List<ExpertBean> getselectedCategory(@Param("selectedCategory") String selectedCategory);
+	
+ 	/*
 	@Select("SELECT pro_name FROM pro_user " +
 	        "WHERE active_detailcategory1 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR}")
 	List<String> getselectedCategory(@Param("selectedCategory") String selectedCategory);
- 
+ */
 	@Select("SELECT pro_name FROM pro_user " +
 	        "WHERE active_location = #{active_location, jdbcType=VARCHAR} " +
 	        "AND (active_detailcategory1 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR})")
 	List<String> getProCategoryAndLocation(@Param("selectedCategory") String selectedCategory, @Param("active_location") String active_location);
- 
+ /////////////////////////////////////
 	@Update("UPDATE pro_user " +
 	        "SET pro_name = #{pro_name}, pro_email = #{pro_email}, pro_pwd = #{pro_pwd} " +
 	        "WHERE pro_id = #{pro_id}")
@@ -157,12 +176,12 @@ public interface ProUserMapper {
 	    @Select("select active_location \r\n"
 	             + "from pro_user\r\n"
 	             + "where pro_id = #{pro_id}")
-	      String getActive_location(int pro_id);
+	    String getActive_location(int pro_id);
 	    
 	    @Update("UPDATE pro_user\r\n"
 	             + "SET active_location = #{active_location, jdbcType=VARCHAR}\r\n"
 	             + "WHERE pro_id = #{pro_id}")
-	      void modifyActive_location(@Param("active_location") String active_location, @Param("pro_id") int pro_id);
+	    void modifyActive_location(@Param("active_location") String active_location, @Param("pro_id") int pro_id);
 	    
 	    
 	     

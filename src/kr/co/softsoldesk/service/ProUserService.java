@@ -124,12 +124,12 @@ public class ProUserService {
 		 return proUserDao.getProCategoryAndLocation(selectedCategory,active_location);
 	 }
 	 
-	 public List<String> getselectedCategory(String selectedCategory) { 
+	 public List<ExpertBean> getselectedCategory(String selectedCategory) { 
 		 System.out.println("ProUserService-getselectedCategory 호출!");
 			return proUserDao.getselectedCategory(selectedCategory); 
 		} 
 
-	public List<String> getselectedLocation(String active_location) { 
+	public List<ExpertBean> getselectedLocation(String active_location) { 
 		 System.out.println("ProUserService-getselectedLocation 호출!");
 		return proUserDao.getselectedLocation(active_location); 
 	}  

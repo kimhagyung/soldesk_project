@@ -13,8 +13,8 @@ import kr.co.softsoldesk.beans.ReviewBean;
 
 public interface ProProfileMapper {
 
-	@Insert("INSERT INTO pro_profile (pro_profile_id, pro_id, pro_profile_image, profile_completion, review_rating, certification_documents_images, pro_detailed_introduction, price)\r\n"
-	        + "VALUES (pro_profile_seq.nextval, #{pro_id}, #{pro_profile_image, jdbcType=VARCHAR}, #{profile_completion, jdbcType=INTEGER}, #{review_rating, jdbcType=INTEGER}, #{certification_documents_images, jdbcType=VARCHAR}, #{pro_detailed_introduction, jdbcType=VARCHAR}, #{price, jdbcType=VARCHAR})")
+	@Insert("INSERT INTO pro_profile (pro_profile_id, pro_id, pro_profile_image, review_rating, certification_documents_images, pro_detailed_introduction, price)\r\n"
+	        + "VALUES (pro_profile_seq.nextval, #{pro_id}, #{pro_profile_image, jdbcType=VARCHAR}, #{review_rating, jdbcType=INTEGER}, #{certification_documents_images, jdbcType=VARCHAR}, #{pro_detailed_introduction, jdbcType=VARCHAR}, #{price, jdbcType=VARCHAR})")
 	void addExpertInfo(ExpertBean writeExpertInfo);
 	
 	@Select("SELECT COUNT(*) FROM pro_profile WHERE pro_id = #{proId}")
@@ -25,7 +25,7 @@ public interface ProProfileMapper {
 			+ "WHERE pro_id = #{pro_id}")
 	void modifyIntroduction(@Param("pro_detailed_introduction") String pro_detailed_introduction, @Param("pro_id") int pro_id);
 
-	@Select("select pro_profile_id, pro_id, pro_profile_image, profile_completion, review_rating, certification_documents_images, pro_detailed_introduction, price\r\n"
+	@Select("select pro_profile_id, pro_id, pro_profile_image, review_rating, certification_documents_images, pro_detailed_introduction, price\r\n"
 			+ "from pro_profile\r\n"
 			+ "where pro_id = #{pro_id}")
 	List<ExpertBean> getExpertInfoList(int pro_id);

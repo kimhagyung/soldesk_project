@@ -52,8 +52,6 @@ $(document).ready(function() {
                     
                     // 댓글 목록 조회
                     updateReplyList();
-                    
-                    sendNotification();
                 }
             },
             error: function(error) {
@@ -95,9 +93,20 @@ $(document).ready(function() {
                 $.each(response, function(index, comment) {
                     var replyHtml = '<hr><div style="margin-bottom: 20px;">' + 
                                     '<div style="display:flex; flex-direction:row; justify-content: space-between; align-items:center;">' +
-                                    '<div style="display:flex; flex-direction: row;">' + 
-                                    '<div><img src="../image/profile.png" style="width: 45px; margin-right: 8px;"></div>' + 
-                                    '<div style="display:flex; flex-direction:column">';
+                                    '<div style="display:flex; flex-direction: row;">';
+                                    
+                    if(comment.user_id == null){ //pro_user가 댓글 작성
+                        replyHtml += '<div><img src="${root}/upload/' + comment.certification_documents_images + '" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"></div>' + 
+                                     '<div style="display:flex; flex-direction:column">';
+                        
+                    } 
+                    
+                    if(comment.pro_id == null){
+                        replyHtml += '<div><img src="../image/profile.png" style="width: 45px; margin-right: 8px;"></div>' + 
+                        			 '<div style="display:flex; flex-direction:column">';
+                        
+                    }
+                                    
                     
                     if(comment.user_id == null){
                         replyHtml += '<div>' + comment.comment_prowriter_name + '</div>';
@@ -304,7 +313,14 @@ $(document).ready(function() {
 								style="width: 45px; margin-right: 10px;">
 							<div class="writerInfo"
 								style="display: flex; flex-direction: column">
-								<span>${readPostBean.writer_name }</span>
+								<c:choose>
+		                           <c:when test="${not empty readPostBean.pro_id}">
+		                              <span>${readPostBean.prowriter_name }</span>
+		                           </c:when>
+		                           <c:otherwise>
+		                              <span>${readPostBean.writer_name }</span>
+		                           </c:otherwise>
+		                        </c:choose>
 								<div class="time">${readPostBean.board_date }</div>
 								<!-- 조회수도 같이 하기 -->
 							</div>
@@ -373,37 +389,29 @@ $(document).ready(function() {
 
 
 					</div>
-				</div>
-				
-				
+				</div>  
 					<div style="display: flex; justify-content: end; align-items: center;">
-    <button class="pageBtn" onclick="location.href='${root}/board/community'" style="margin-right: 8px;">목록</button>
-    
-    <c:choose>
-        <c:when test="${not empty loginUserBean && (loginUserBean.user_id == readPostBean.user_id || loginProuserBean.pro_id == readPostBean.pro_id)}">
-            <div>
-                <button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'">수정</button>
-                <button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'">삭제</button>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div>
-                <i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="width: 100%; border-radius: 0px; background-color: #6387A6; border: 1px solid #6387A6;" data-bs-target="#exampleModal">게시글 신고</button>
-                    </li>
-                </ul>
-            </div>
-        </c:otherwise>
-    </c:choose>
-</div>
-
-
-
-
-
-				
+					    <button class="pageBtn" onclick="location.href='${root}/board/community'" style="margin-right: 8px;">목록</button>
+					    
+					    <c:choose>
+					        <c:when test="${loginUserBean.getUser_id() == readPostBean.user_id || loginProuserBean.getPro_id() == readPostBean.pro_id}">
+					            <div>
+					                <button class="pageBtn" onclick="location.href='${root}/board/modifyPost?board_id=${board_id}'">수정</button>
+					                <button class="pageBtn" onclick="location.href='${root}/board/delete?board_id=${board_id}'">삭제</button>
+					            </div>
+					        </c:when>
+					        <c:otherwise>
+					            <div>
+					                <i class="bi bi-three-dots-vertical" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"></i>
+					                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					                    <li>
+					                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="width: 100%; border-radius: 0px; background-color: #6387A6; border: 1px solid #6387A6;" data-bs-target="#exampleModal">게시글 신고</button>
+					                    </li>
+					                </ul>
+					            </div>
+					        </c:otherwise>
+					    </c:choose>
+					</div> 
 			</div>
 			<hr />
 		</div>
@@ -417,6 +425,7 @@ $(document).ready(function() {
   						<c:forEach var="photo" items="${fn:split(readPostBean.photos, ',')}" varStatus="loop">
     						<div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
       							<img src="${root}/upload/${photo}" class="d-block w-100" style="height: 500px;" alt="pic">
+      							<div>${photo }</div>
     						</div>
   						</c:forEach>
 					</div>
@@ -526,20 +535,6 @@ $(document).ready(function() {
 			});
 		});
 	</script>
-		<script>
-
-
-	// 페이지 로드 시 WebSocket 연결을 초기화
-		function sendNotification() {
-		    if(stompClient) {
-		        stompClient.send("/app/board/newPost", {}, JSON.stringify({}));
-		    } else {
-		        console.log("WebSocket 연결이 없습니다.");
-		    }
-		}
-
-	</script>
-	
 
 </body>
 </html>

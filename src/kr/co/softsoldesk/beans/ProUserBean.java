@@ -28,7 +28,16 @@ public class ProUserBean {
 	private boolean prouserEmailExist;
 	private boolean prouserLogin;  
 	private int postCount;   
+	private String certification_documents_images;
 	
+	
+	public String getCertification_documents_images() {
+		return certification_documents_images;
+	}
+	public void setCertification_documents_images(String certification_documents_images) {
+		this.certification_documents_images = certification_documents_images;
+	}
+
 	private int quote_history_id;
 	private String received_quote;   
 	  

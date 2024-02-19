@@ -28,6 +28,7 @@ import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.CalendarService;
 import kr.co.softsoldesk.service.InterestService;
 import kr.co.softsoldesk.service.PostService;
+import kr.co.softsoldesk.service.ProProfileService;
 import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
 
@@ -55,6 +56,8 @@ public class CommonController {
 	@Autowired
 	private InterestService interestService;
 	 
+	@Autowired
+	ProProfileService proProfileService;
 	
 	@GetMapping("/myPage")
 	public String mypage(Model model) { 
@@ -71,6 +74,8 @@ public class CommonController {
 	        System.out.println("user_namegg: " + loginUserBean.getUser_name());
 	        System.out.println("user_emailgg: " + loginUserBean.getUser_email());
 	    } else if (loginProuserBean.isProuserLogin()) {
+	    	String profileImgInfo = proProfileService.getProfileImgInfo(loginProuserBean.getPro_id());
+	           model.addAttribute("profileImgInfo", profileImgInfo);
 	        model.addAttribute("pro_name", loginProuserBean.getPro_name());
 	        model.addAttribute("pro_email", loginProuserBean.getPro_email());
 	        System.out.println("proname: " + loginProuserBean.getPro_name());
@@ -128,12 +133,7 @@ public class CommonController {
 			ProAccountModifyCom.setPro_email(loginProuserBean.getPro_email());
 			ProAccountModifyCom.setPro_pwd(loginProuserBean.getPro_pwd());
 			
-		}
-		
-		//System.out.println("22ㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁ22");
-		//System.out.println(AccountModifyCom.getUser_id());
-		//System.out.println("22ㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁㅇㅁ222");
-		//System.out.println(ProAccountModifyCom.getPro_id());
+		} 
 		model.addAttribute("AccountModifyCom", AccountModifyCom);
 		model.addAttribute("ProAccountModifyCom", ProAccountModifyCom);
 		

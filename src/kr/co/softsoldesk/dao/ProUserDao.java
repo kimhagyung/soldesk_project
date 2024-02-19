@@ -73,11 +73,11 @@ public class ProUserDao {
 		return ProuserMapper.getProCnt();
 	}
 	
-	public List<String> getselectedCategory(String selectedCategory) { 
+	public List<ExpertBean> getselectedCategory(String selectedCategory) { 
 		return ProuserMapper.getselectedCategory(selectedCategory); 
 	} 
 
-	public List<String> getselectedLocation(String active_location) { 
+	public List<ExpertBean> getselectedLocation(String active_location) { 
 		return ProuserMapper.getselectedLocation(active_location); 
 	} 
 	

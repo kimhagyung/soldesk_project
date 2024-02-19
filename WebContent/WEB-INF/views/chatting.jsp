@@ -9,6 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chatting</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 <!-- Bootstrap JavaScript 파일 로드 -->
 </head>
 <style>
@@ -235,6 +237,8 @@ textarea {
 <body>
  <c:import url="/WEB-INF/views/include/header.jsp" />
 
+
+<c:if test="${not empty requestScope[param.s] }">
 <%
 	String selectedAnswersParam = request.getParameter("selectedAnswers");
     String[] selectedAnswersArray = selectedAnswersParam.split(",");
@@ -244,40 +248,41 @@ textarea {
       	out.println(answer+"/");
     } */
 %>  
-<!-- Button to trigger the modal -->
-<button type="button" class="btn button-custom" data-toggle="modal" data-target="#myModal">
-    보기
-</button>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content"> 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">견적요청서</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div> 
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop">
-                    <h3>${questionEntry.key}</h3>
-                    <c:set var="index" value="${loop.index - 1}" />
-                    <c:set var="answers" value="${selectedAnswersArray[index]}" />
-                    <ul>
-                        <c:forEach var="answer" items="${answers}">
-                            <li>${answer}</li>
-                        </c:forEach>
-                    </ul>
-                </c:forEach>
-            </div>
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
-            </div> 
-        </div>
-    </div>
-</div>
+	<!-- Button to trigger the modal -->
+	<button type="button" class="btn button-custom" data-toggle="modal" data-target="#myModal">
+	    보기
+	</button>
+	
+	<!-- The Modal -->
+	<div class="modal fade" id="myModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content"> 
+	            <!-- Modal Header -->
+	            <div class="modal-header">
+	                <h4 class="modal-title">견적요청서</h4>
+	                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            </div> 
+	            <!-- Modal Body -->
+	            <div class="modal-body">
+	                <c:forEach var="questionEntry" items="${requestScope[param.s]}" varStatus="loop">
+	                    <h3>${questionEntry.key}</h3>
+	                    <c:set var="index" value="${loop.index - 1}" />
+	                    <c:set var="answers" value="${selectedAnswersArray[index]}" />
+	                    <ul>
+	                        <c:forEach var="answer" items="${answers}">
+	                            <li>${answer}</li>
+	                        </c:forEach>
+	                    </ul>
+	                </c:forEach>
+	            </div>
+	            <!-- Modal Footer -->
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+	            </div> 
+	        </div>
+	    </div>
+	</div>
+ </c:if>
    <div class="container mt-5" style="height: 76vh;">
       <div class="row justify-content-center" style="height: 76vh;">
          <div class="col-md-10">
@@ -297,7 +302,12 @@ textarea {
                    </c:when>
                     </c:choose>
                </div>
-          
+          <div
+				style="display: flex; justify-content: center; align-items: center">
+				<button
+					style="font-size: 14px; border: 1px solid #6387A6; color: #6387A6; background-color: #fff; border-radius: 10px; height: max-content"
+					onclick="location.href='${root}/review/ReviewWrite?pro_id=${param.pro_id}'">리뷰 작성</button>
+			</div>
             </div>
 
             <div id = "chat" class="chatting"
@@ -488,6 +498,7 @@ textarea {
     	    var messageInput = document.getElementById('messageInput');
     	    var messageContent = messageInput.value.trim();
     	    
+    	    
     	    if(messageContent && stompClient) {
     	        var chatMessage = {
     	            senderId: CURRENT_USER_ID,
@@ -642,7 +653,8 @@ textarea {
            });
        };
        </script>
-    <script> 
+    <script>
+   var jq = $.noConflict();
 </script>
 </body>
 </html>

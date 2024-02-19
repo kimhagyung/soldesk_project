@@ -121,16 +121,13 @@ public class BoardController {
 			model.addAttribute("writeReportBean", writeReportBean);
 			model.addAttribute("writeCommentBean", writeCommentBean);
 			
-			model.addAttribute("loginUserBean", loginUserBean);
-			model.addAttribute("loginProuserBean", loginProuserBean);
+			 model.addAttribute("loginUserBean", loginUserBean);
+			 model.addAttribute("loginProuserBean", loginProuserBean);
 
 		
 			//댓글 추가
 			List<CommentBean> comments = postService.getAllComments(board_id);
 			model.addAttribute("comments", comments);
-			
-			
-	       
 		
 		return "board/detailCommunity";
 	}

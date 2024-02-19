@@ -8,11 +8,7 @@
 <meta charset="UTF-8">
 <title>mypage</title>
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
-<script>
-	$(function(){
-		
-	})
-</script>
+ 
  <style>
 		#a_comment-board-title:hover{
 			color :#fff;
@@ -35,44 +31,53 @@
 			<h2>마이페이지</h2>
 		</div>
 		<ul class="list-group list-group-flush mx-auto">
-		  <li class="list-group-item">
-			  <div class="row justify-content-between mt-3">
-							<div class="col-4">
-								<div class="row"  >
-									<div class="col-7 mt-3">
-										<c:choose>
-										<c:when
-											test="${loginProuserBean.prouserLogin ==false && loginUserBean.userLogin ==true }">
-											
-											<b>${loginUserBean.user_name }</b>
-											<br>
-											<p><a>${loginUserBean.user_email} </a></p>
-										
-										</c:when>
-										
-										<c:when
-											test="${loginProuserBean.prouserLogin ==true && loginUserBean.userLogin ==false }">
-											
-											<b>${loginProuserBean.pro_name }</b>
-											<br>
-											<p><a>${loginProuserBean.pro_email} </a>
-										</c:when>
-										
-									</c:choose>
-									</div>
-								</div>
-							</div>
-							<div class="col-4 ms-5  mt-3 text-end">
-							 <c:choose>
-                               <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
-                                    <button class="btn button-custom " onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
-                                </c:when>
-                             </c:choose> 
-								<button class="btn button-custom account"
-								onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
-							</div>
-						</div>
-		  </li>
+		 <li class="list-group-item">
+           <div class="row mt-3">
+               
+                  
+               <div class="col-sm-2 text-center">
+                  <c:choose>
+                     <c:when test="${loginProuserBean.prouserLogin == false && loginUserBean.userLogin == true }">
+                        <img src="${root }/image/user-solid.svg" style="height: 100px; width: 80px; border-radius: 10px;" />
+                     </c:when>
+                     <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false }">
+                        <img src="${root }/upload/${profileImgInfo}" style="height: 100px; width: 80px; border-radius: 10px;">
+                     </c:when>
+                     
+                  </c:choose>
+                  
+               </div>
+               
+               <div class="col-sm-10 mt-3">
+                     <div class="row">
+                         <div class="col-9 col-sm-6">
+                             <c:choose>
+                                 <c:when test="${loginProuserBean.prouserLogin == false && loginUserBean.userLogin == true }">
+                                     <b>${loginUserBean.user_name }</b>
+                                     <br>
+                                     <p class=""><a>${loginUserBean.user_email} </a></p>
+                                 </c:when>
+                                 <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false }">
+                                     <b>${loginProuserBean.pro_name }</b>
+                                     <br>
+                                     <p class=""><a>${loginProuserBean.pro_email} </a>
+                                 </c:when>
+                             </c:choose>
+                         </div>
+         
+                         <div class="col-12 col-sm-6 text-center mt-3">
+                             <c:choose>
+                                 <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false}">
+                                     <button class="btn button-custom" onclick="location.href='${root}/pro/expert?id=${param.id }'">상세프로필</button>
+                                 </c:when>
+                             </c:choose>
+                             <button class="btn button-custom account" onclick="location.href='${root}/common/AccountSetting?id=${param.id }'">계정설정</button>
+                         </div>
+                     </div>
+                 </div>
+               
+            </div>
+        </li>
 		  
 		   <c:if test="${loginProuserBean.prouserLogin == false}">
 		  <li class="list-group-item mt-3"> 

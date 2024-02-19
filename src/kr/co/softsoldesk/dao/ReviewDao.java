@@ -57,7 +57,7 @@ public class ReviewDao {
 			return reviewMapper.getCareerListInfo(pro_id);
 		}
 		
-		public int getSumTotalExperience(int pro_id) {
+		public Integer getSumTotalExperience(int pro_id) {
 			return reviewMapper.getSumTotalExperience(pro_id);
 		}
 		
@@ -76,4 +76,11 @@ public class ReviewDao {
 			return reviewMapper.getProReviewInfo(pro_Id);
 		}
 		 
+		//리뷰 가져오기(detail_category)
+		public List<ReviewBean> getReviewList(int service_category_id) {
+			
+			return reviewMapper.getReviwList(service_category_id);
+		}
+		
+		
 }

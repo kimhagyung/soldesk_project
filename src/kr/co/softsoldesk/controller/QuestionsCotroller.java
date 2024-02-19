@@ -146,11 +146,7 @@ public class QuestionsCotroller {
 		         
 		         chatService.createChatroom(chatroom);
 		         
-		         model.addAttribute("roomId", chatroom.getRoom_id()); // 새로 생성된 채팅방 ID
-		         
-
-		         
-		         
+    
 		         
 		     } else {
 		         // 기존 채팅방 ID 사용
@@ -167,8 +163,7 @@ public class QuestionsCotroller {
 	     }
 	     
 	      model.addAttribute("currentUserId", userId); 
-	      
-		 
+ 
 	      model.addAttribute("1", questionBean.getCertifaction_exam()); //자격증시험
 	      model.addAttribute("2", questionBean.getInterior());  //인테리어
 	      model.addAttribute("3", questionBean.getAppliance()); //가전제품
@@ -177,9 +172,7 @@ public class QuestionsCotroller {
 	      model.addAttribute("6", questionBean.getDevelopment()); //문서
 	      model.addAttribute("7", questionBean.getDocument()); //개발외주
 	      model.addAttribute("8", questionBean.getPet()); //반려동
-	      
-	      
-	      
+ 
 
 	     return "chatting";
 	 }
@@ -192,11 +185,10 @@ public class QuestionsCotroller {
 	 	    System.out.println("Pro ID: " + quoteBean.getPro_id());
 	 	    System.out.println("User ID: " + quoteBean.getUser_id());
 	 	    chatService.insertReceiverQuote(quoteBean);
+	
 	        return "success";
 	    }
-
-
-
+ 
 		   @PostMapping("/deleteQuoteeee")
 		    public ModelAndView deleteQuoteeee(@RequestParam("quote_history_id") int quote_history_id) {
 		        ModelAndView modelAndView = new ModelAndView();
