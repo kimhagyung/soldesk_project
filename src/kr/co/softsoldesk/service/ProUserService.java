@@ -119,7 +119,7 @@ public class ProUserService {
 			return pageBean;
 		}
 	 
-	 public List<String> getProCategoryAndLocation(String selectedCategory,String active_location) {
+	 public List<ExpertBean> getProCategoryAndLocation(String selectedCategory,String active_location) {
 		 System.out.println("ProUserService-getProCategoryAndLocation 호출!");
 		 return proUserDao.getProCategoryAndLocation(selectedCategory,active_location);
 	 }

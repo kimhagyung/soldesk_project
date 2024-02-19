@@ -81,7 +81,7 @@ public class ProUserDao {
 		return ProuserMapper.getselectedLocation(active_location); 
 	} 
 	
-	public List<String> getProCategoryAndLocation(String selectedCategory,String active_location) { 
+	public List<ExpertBean> getProCategoryAndLocation(String selectedCategory,String active_location) { 
 		return ProuserMapper.getProCategoryAndLocation(selectedCategory,active_location); 
 	} 
 	 

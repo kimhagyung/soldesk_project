@@ -1,7 +1,9 @@
 package kr.co.softsoldesk.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.softsoldesk.beans.DetailCategoryBean;
 import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
+import kr.co.softsoldesk.service.ProProfileService;
 import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
 
@@ -23,6 +26,8 @@ public class RestApiController {
 	
 	@Autowired
 	private ProUserService proUserService;
+	@Autowired
+	ProProfileService proprofileservice;
 	
 	
 	@GetMapping("/user/checkUserEmailExist/{user_email:.+}")
@@ -54,32 +59,42 @@ public class RestApiController {
         System.out.println("autocompleteSuggestions: " + autocompleteSuggestions);
         return autocompleteSuggestions;
     }
-	
 	@GetMapping("/search/getCategoryInfo") //findPro.jsp
-	public List<ExpertBean> getCategoryInfo(
+	public Map<String, List<ExpertBean>> getCategoryInfo(
 	        @RequestParam(name = "selectedCategory", required = false) String selectedCategory,
 	        @RequestParam(name = "active_location", required = false) String active_location) {
 
-        System.out.println("RestApiController-selectedCategory: " + selectedCategory);
-        System.out.println("RestApiController-selectedLocation: " + active_location);
- 
-        // 기본값으로 빈 리스트를 설정
-        List<ExpertBean> proActive = new ArrayList<>(); // proActive 선언 및 초기화
- 
-        if (selectedCategory != null && active_location != null) {
-            // 두 값 모두가 존재할 경우
-           // proActive = proUserService.getProCategoryAndLocation(selectedCategory, active_location);
-        } else if (selectedCategory != null) {
-            // selectedCategory만 존재할 경우
-            proActive = proUserService.getselectedCategory(selectedCategory);
-        } else if (active_location != null) {
-            // active_location만 존재할 경우
-            proActive = proUserService.getselectedLocation(active_location);
-        }
-
-        
-        System.out.println("RestApiController-proActive: " + proActive);
-        return proActive;
-    }
+	    System.out.println("RestApiController-selectedCategory: " + selectedCategory);
+	    System.out.println("RestApiController-selectedLocation: " + active_location);
 	 
+	    // 기본값으로 빈 리스트를 설정
+	    List<ExpertBean> proActive = new ArrayList<>(); // proActive 선언 및 초기화
+	    List<ExpertBean> reviewList = new ArrayList<>(); // proActive 선언 및 초기화
+	    List<ExpertBean> CareerInfo = new ArrayList<>(); // proActive 선언 및 초기화
+	    
+	    if (selectedCategory != null && active_location != null) {
+	        // 두 값 모두가 존재할 경우
+	       proActive = proUserService.getProCategoryAndLocation(selectedCategory, active_location);
+	       reviewList = proprofileservice.getAllReview(); 
+		    CareerInfo=proprofileservice.getCareerInfo();
+	    } else if (selectedCategory != null) {
+	        // selectedCategory만 존재할 경우
+	        proActive = proUserService.getselectedCategory(selectedCategory);
+	        reviewList = proprofileservice.getAllReview(); 
+		    CareerInfo=proprofileservice.getCareerInfo();
+	    } else if (active_location != null) {
+	        // active_location만 존재할 경우
+	        proActive = proUserService.getselectedLocation(active_location);
+	        reviewList = proprofileservice.getAllReview(); 
+		    CareerInfo=proprofileservice.getCareerInfo();
+	    }
+
+	    // 맵에 두개의 리스트를 추가해서 반환
+	    Map<String, List<ExpertBean>> result = new HashMap<>();
+	    result.put("proActive", proActive);
+	    result.put("reviewList", reviewList); 
+	    result.put("careerInfo", CareerInfo);
+	    return result;
+	}
+
 }
