@@ -602,21 +602,22 @@ $(document).ready(function() {
 						<!-- Button trigger modal -->
 
 						<div style="display: flex; flex-wrap: wrap;">
-							<c:forEach var="portfolio" items="${portfolioList}"> 
-								<c:if test="${portfolio.inspectionNY != 0 }">
+							<c:forEach var="portfolio" items="${portfolioList}">
+							
+								<c:if test="${portfolio.inspectionNY == 1 }">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_${portfolio.portfolio_id}"
 										style="width: 155px; height: 155px; border: none; background-color: #fff; margin-right: 10px; margin-bottom: 10px;" >
             						<div class="portfolio" style="display: flex; flex-direction: column; height: 100%;">
                 						<div class="overlay"></div>
                 						
                 							<c:if test="${portfolio.detailed_images != null}">
-												<c:forEach var="photo" items="${fn:split(protfolio.detailed_images, ',')}" varStatus="loop">
+												<c:forEach var="photo" items="${fn:split(portfolio.detailed_images, ',')}" varStatus="loop">
 													<c:if test="${loop.index == 0}">
-        												<img src="${root}/upload/${photo}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+        												<img src="${root}/portfolio/${photo}" class="feed-img" style="width: 150px; height: 143.75px; border-radius: 8px;" alt="이미지"> 
     												</c:if>
 												</c:forEach>
 											</c:if>
-                							
+                						
                 							<!-- <img src="https://archivenew.vop.co.kr/images/90952a5d266e2222a78d4eb07938162f/2018-05/26023757_DeDeCbRVQAAhzEb.jpg"
 														style="width: 100%; height: 100%; border-radius: 10px;"> -->
                 							<div class="text-overlay" style="display: flex; flex-direction: column; justify-content: flex-end;">
@@ -954,39 +955,6 @@ $(document).ready(function() {
 	</script>
 	
 <script>
-/* // plusDivs 함수와 showDivs 함수를 전역 스코프에 선언
-var slideIndex = 1;
-
-function plusDivs(n) {
-  console.log("현재 슬라이드 인덱스:", slideIndex);
-  showDivs(slideIndex += n);
-}
-
-function showDivs(n) {
-
-	// 이미지 개수를 콘솔에 출력
-	var imageCount = ${fn:length(fn:split(portfolio.detailed_images, ','))};
-	console.log("이미지 개수:", imageCount);
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  console.log("총 이미지 개수",x.length );
-  // 이미지 개수만큼 순환하도록 조정
-  if (n > x.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = x.length}
-  
-  // 모든 이미지를 숨기고 현재 슬라이드만 보여주도록 수정
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  
-  // 현재 슬라이드만 보여주도록 수정
-  x[slideIndex-1].style.display = "block";  
-}
-
-window.onload = function() {
-  showDivs(slideIndex);
-}; */
- ///////////////////////////////////////////////////////
     // 이미지 슬라이더 초기화 시 실행되는 함수
     function initializeSlider(portfolioId) {
         var slider = $('#portfolioSlider_' + portfolioId);

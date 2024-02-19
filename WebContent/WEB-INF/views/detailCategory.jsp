@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -169,7 +170,8 @@
 		    <c:forEach var="obj" items="${detailCategoryList }">
 			    <div class="col" onclick="location.href='${root}/Questions?service_category_id=${service_category_id}&detail_category_name=${obj.detail_category_name}' ">
 			        <div class="card">
-			    		<img src="${root }/category/${obj.file_name}" class="card-img-top" alt="sport" style="object-fit: fill;">
+			    		<img src="${root}/category/${obj.file_name}" class="card-img-top" alt="sport" style="object-fit: fill;">
+			    		
 			      		<div class="card-body text-center ">
 			        		<h5 class="card-title text-center">${obj.detail_category_name }</h5>
 			      		</div>
@@ -188,103 +190,69 @@
 		
 	  <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
 		    <!-- Original Card -->
-		    <div class="col ">
-		        <div class="card reviewstory">
-		            <div class="card-header" id="cheader"> <!-- 카드 헤더 프로필 부분-->
-		                <div class="d-flex align-items-center">
-		                    <i class="bi bi-person-circle profile"></i>
-		                    <div class="ms-3">
-		                        <div><strong>유댕</strong></div>
-		                        <div><span>정보처리기사 준비</span></div>
-		                    </div>
-		                    <span class="ms-auto p-2">
-		                        <button type="button" class="btn">
-		                            <i class="bi bi-chevron-compact-right"></i>
-		                        </button>
-		                    </span>
-		                </div>
-		            </div>
-		            <div class="card-body"> <!-- 카드 바디 부분 리뷰 내용 -->
-		                <div class="score row mr-5"> <!-- 리뷰 점수 -->
-		                    <div class="col-md-10">
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <span class="ms-2">5.0</span>
-		                    </div>
-		                </div>
-		                <div class="row no-gutters align-items-center">
-		                    <div class="col-md-10">
-		                        <div class=" text-left mb-5" >
-		                            <p class="card-text">
-		                                리뷰 내용이 들어가는 부분입니다.
-		                            </p>
-		                            <div class="position-absolute bottom-0 start-0 p-2 col-auto me-auto ms-2 mt-5">
-							            <div class="username">
-							                <p>이** 고객님의 후기</p>
-							            </div>
-							        </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-2">
-		                        <img src="../image/pic1.jpg" class="square-image" alt="리뷰 이미지">
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		    </div><!-- col -->
-	  
-		
-    
-		     <div class="col ">
-		        <div class="card reviewstory">
-		            <div class="card-header" id="cheader"> <!-- 카드 헤더 프로필 부분-->
-		                <div class="d-flex align-items-center">
-		                    <i class="bi bi-person-circle profile"></i>
-		                    <div class="ms-3">
-		                        <div><strong>유댕</strong></div>
-		                        <div><span>정보처리기사 준비</span></div>
-		                    </div>
-		                    <span class="ms-auto p-2">
-		                        <button type="button" class="btn">
-		                            <i class="bi bi-chevron-compact-right"></i>
-		                        </button>
-		                    </span>
-		                </div>
-		            </div>
-		            <div class="card-body"> <!-- 카드 바디 부분 리뷰 내용 -->
-		                <div class="score row mr-5"> <!-- 리뷰 점수 -->
-		                    <div class="col-md-10">
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <i class="bi bi-star-fill star"></i>
-		                        <span class="ms-2">5.0</span>
-		                    </div>
-		                </div>
-		                <div class="row no-gutters align-items-center">
-		                    <div class="col-md-10">
-		                        <div class=" text-left mb-5" >
-		                            <p class="card-text">
-		                                리뷰 내용이 들어가는 부분입니다.리뷰 내용이 들어가는 부분입니다.리뷰 내용이 들어가는 부분입니다.리뷰 내용이 들어가는 부분입니다.리뷰 내용이 들어가는 부분입니다.리뷰 내용이 들어가는 부분입니다.
-		                            </p>
-		                            <div class="position-absolute bottom-0 start-0 p-2 col-auto me-auto ms-2 mt-5">
-							            <div class="username">
-							                <p>이** 고객님의 후기</p>
-							            </div>
-							        </div>
-		                        </div>
-		                    </div>
-		                   <!-- <div class="col-md-2">
-		                        
-		                    </div>-->
-		                </div>
-		            </div>
-		        </div>
-		    </div>
+		    
+		   
+		     <c:forEach var="review" items="${getReviewList}" varStatus="loop" begin="0" end="1">
+			    <!-- 여기서 ${reviews}는 가져온 리뷰 데이터를 나타내는 변수일 것입니다. -->
+			
+			    <div class="col">
+			        <div class="card reviewstory" style="">
+			            <!-- 카드 헤더 프로필 부분 -->
+			            <div class="card-header" id="cheader" onclick="location.href='${root}/review/Review?pro_id=${review.pro_id}'">
+			                <div class="d-flex align-items-center">
+			                    <i class="bi bi-person-circle profile"></i>
+			                    <div class="ms-3">
+			                        <div><strong>${review.pro_name}</strong></div>
+			                        <div><span>${review.category}</span></div>
+			                    </div>
+			                    <span class="ms-auto p-2">
+			                        <button type="button" class="btn">
+			                            <i class="bi bi-chevron-compact-right"></i>
+			                        </button>
+			                    </span>
+			                </div>
+			            </div>
+			            <!-- 카드 바디 부분 리뷰 내용 -->
+			            <div class="card-body">
+			                <!-- 리뷰 점수 -->
+			                <div class="score row mr-5">
+			                    <div class="col-md-10">
+			                        <i class="bi bi-star-fill star"></i>
+			                        <i class="bi bi-star-fill star"></i>
+			                        <i class="bi bi-star-fill star"></i>
+			                        <i class="bi bi-star-fill star"></i>
+			                        <i class="bi bi-star-fill star"></i>
+			                        <span class="ms-2">${review.rating}.0</span>
+			                    </div>
+			                </div>
+			                
+			                <div class="row">
+			                    <div class="col-md-9">   
+		                        	<div class="col-row-9 mt-3">
+		                            	<p class="card-text" style="height: 40px;">${review.review_contents}</p>
+		                            </div> 
+		                            <div class="col-row-2 username mt-3"> 
+		                               ${review.user_name} 고객님의 후기
+		                            </div>
+			                    </div>
+			                         
+			                    <div class="col-md-3" style="float:left;">
+								    <c:if test="${review.photos != null}">
+								        <c:forEach var="photo" items="${fn:split(review.photos, ',')}" varStatus="loop">
+								            <c:if test="${loop.index == 0}"> 
+								                <div class="me-3 float-start" style="position: absolute;"> 
+								                    <img src="${root}/upload/${photo}" class="feed-img" style="width: 100px; height: 100px; border-radius: 8px;" alt="이미지">
+								                </div>
+								            </c:if> 
+								        </c:forEach>
+								    </c:if>			                       
+								</div>
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</c:forEach>
 	  
 
 		</div>	

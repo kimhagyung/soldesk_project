@@ -77,9 +77,9 @@ public interface ReviewMapper {
 			+ "where pro_id = #{pro_id}")
 	List<CareerBean> getCareerListInfo(int pro_id);
 	
-	@Select("select sum(total_experience_period) from career "
-			+ "where pro_id = #{pro_id}")
-	int getSumTotalExperience(int pro_id);
+	@Select("select COALESCE(sum(total_experience_period), 0) from career where pro_id = #{pro_id}")
+	Integer getSumTotalExperience(@Param("pro_id") int pro_id);
+
 
 	//----------------------학력--------------------------------
 	
@@ -94,15 +94,16 @@ public interface ReviewMapper {
 			+ "from portfolio "
 			+ "where pro_id = #{pro_id}")
 	List<PortFolioBean> getProtfolioListInfo(int pro_id);
+	 
 	
-	/*
-	 * @Select("select portfolio_id, portfolio_title, service_type, location_info, final_amount, work_year, work_period, detailed_introduction, detailed_images, inspectionNY "
-	 * + "from portfolio " + "where portfolio_id = #{portfolio_id}") PortFolioBean
-	 * getPortfolioInfo(int portfolio_id);
-	 */
-	
-	
-	
-	
-	
-}
+	//리뷰 가져오기(datail_category)
+		@Select("SELECT r.*, u.user_name, p.pro_name, r.pro_id \r\n"
+				+ "FROM review r\r\n"
+				+ "JOIN detailctg d ON r.category = d.detail_category_name\r\n"
+				+ "JOIN servicectg s ON d.service_category_id = s.service_category_id\r\n"
+				+ "JOIN users u ON r.user_id = u.user_id\r\n"
+				+ "JOIN pro_user p ON r.pro_id = p.pro_id\r\n"
+				+ "WHERE s.service_category_id = #{service_category_id}\r\n")
+		List<ReviewBean> getReviwList(int service_category_id);
+		
+	}

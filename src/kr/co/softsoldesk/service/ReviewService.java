@@ -100,7 +100,7 @@ public class ReviewService {
 		return reviewDao.getCareerListInfo(pro_id);
 	}
 	
-	public int getSumTotalExperience(int pro_id) {
+	public Integer getSumTotalExperience(int pro_id) {
 		return reviewDao.getSumTotalExperience(pro_id);
 	}
 	
@@ -115,9 +115,13 @@ public class ReviewService {
 		return reviewDao.getProtfolioListInfo(pro_id);
 	}
 	
-	/*
-	 * public PortFolioBean getPortfolioInfo(int portfolio_id) { return
-	 * reviewDao.getPortfolioInfo(portfolio_id); }
-	 */
+
+	// 리뷰 가져오기(detail_category)
+	public List<ReviewBean> getReviwList(int service_category_id) {
+		
+		return reviewDao.getReviewList(service_category_id);
+	}
+	
+	
 	
 }

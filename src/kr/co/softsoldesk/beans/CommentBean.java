@@ -17,7 +17,18 @@ public class CommentBean {
 	private String comment_writer_name;
 	private String comment_prowriter_name;
 	
-	private int commentCnt;
+	private int commentCnt; 
+	
+	private String certification_documents_images;
+	
+	
+	public String getCertification_documents_images() {
+		return certification_documents_images;
+	}
+
+	public void setCertification_documents_images(String certification_documents_images) {
+		this.certification_documents_images = certification_documents_images;
+	}
 
 	public int getCommentCnt() {
 		return commentCnt;

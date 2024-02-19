@@ -45,13 +45,12 @@
         #btn-container {
             display: flex;
             align-items: center;
-            
         }
 
         #btn {
             border: 1px solid #F3F3F3;
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 10px;
             position: relative;
             overflow: hidden;
@@ -96,14 +95,18 @@
 		align-items: center;
 	}
 	
+	label.form-control.col-2.btn{
+		display: flex;
+    	align-items: center;
+    	justify-content: center;
+	}
 	
-	
-	.selectimg{
+	.col-1{
 		border: 1px solid #C2C2C2;
     	border-radius: 10px;
-    	width: 60px; 
-    	height: 60px;
-    	padding: 10px;
+    	width: 60px !important; 
+    	height: 60px !important;
+    	display: flex;
     	align-items: center;
     	justify-content: center;
     	margin-right: 15px;
@@ -136,7 +139,79 @@
     	border-radius: 8px;
 	}
 	
-	.catebtn {
+	span.col-2 {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #B5B5B5;
+    border-radius: 8px;
+    margin-right: 7.5px;
+}
+
+	
+	.selectimg{
+		border: 1px solid #C2C2C2;
+    	border-radius: 10px;
+    	width: 60px; 
+    	height: 60px;
+    	padding: 10px;
+    	align-items: center;
+    	justify-content: center;
+    	margin-right: 15px;
+	}      
+        .form-check-input:checked {
+    		background-color: #6387A6 !important; 
+    		border-color: #6387A6 !important;
+    		color: white !important;
+    		outline: none;
+		}
+		
+		.charCount {
+			 display: flex;
+             justify-content: flex-end;
+		}
+		
+		.star {
+			padding: 0px 0px;
+		}
+		
+		.commnuity-select{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	
+	
+	
+	.selected-image {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.selected-image-item {
+		position: relative;
+		margin: 5px;
+		max-width: 60px;
+		max-height: 60px;
+		border-radius: 10px;
+	}
+
+	.remove-button {
+		position: absolute;
+		right: 17.2%;
+		height: 5%;
+		background: #D9E8F5;
+		color: #6387A6;;
+		border: none;
+		padding: 5px;
+		cursor: pointer;
+		width: 70px;
+    	border-radius: 8px;
+	}
+	
+		.catebtn {
     width:auto; 
     align-items: center;
     margin-bottom: 15px;
@@ -144,8 +219,9 @@
     border-radius: 8px;
     margin-right: 7.5px;
     padding:10px; 
-} 
-    </style>  
+} 	
+    </style> 
+  
   <script>
 		var categoryData = {
 		   자격증시험: ['스포츠지도사 준비', '한국어능력시험 준비', '한국사능력시험 준비', '정보처리기사 준비', '컴퓨터활용능력 준비'],
@@ -168,10 +244,10 @@
                 <div class="account"><strong>리뷰 작성</strong></div>
                 <div class="reviewCard" style="border: 1px solid #D9E8F5; border-radius: 10px; background-color: #fff; height: auto;; margin-top: 2%;">
                     <div class="provider_profile" style="width: 75%; padding-top: 40px;">
-                        <img src="../image/1.png" style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 1.5%"/>
+                        <img src="${root }/upload/${proUserBean.certification_documents_images}" style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 1.5%"/>
                         <div class="profileInfo" style="margin-top: 0.6%;">
-                            <div class="provider_name" style="font-size: 16px;"><strong>심리상담사 OOO</strong></div>
-                            <div class="service_name" style="font-size: 14px; color: #737373;">일류</div>
+                            <div class="provider_name" style="font-size: 16px;"><strong>${proUserBean.pro_name }</strong></div>
+                            <div class="service_name" style="font-size: 14px; color: #737373;">${ctg1 }, ${ctg2 }, ${ctg3 }</div>
                         </div>
                     </div>
                     <div style="width: 75%;">
@@ -185,14 +261,13 @@
 									style="color: #B5B5B5; font-size: 14px;">카테고리를 선택해주세요</div>
 								
 								<!-- 카테고리 모달 -->
-							<div class="postInfo">
-								<span class="col-2 mt-2 catebtn">
-									<button class="btn button categoryBtn" data-bs-toggle="modal"
+							<div class="postInfo mt-3">
+								<span class="mt-2 catebtn">
+									<button class="btn button categoryBtn ms-2" data-bs-toggle="modal"
 										data-bs-target="#exampleModal" aria-controls="category">
-										카테고리 <i class="bi bi-caret-down"></i>
+										카테고리<i class="bi bi-caret-down"></i>
 									</button>
-								</span>
-
+								</span> 
 							</div>
 							
 							<!-- 카테고리 클릭하면 보이는 모달창 -->
@@ -314,19 +389,19 @@
 								<div id="btn-container"
 									style="margin-top: 0.8%; margin-bottom: 40px;">
 									<!-- 사진 -->
-			<div class="commnuity-select">
-				<div class="col-1"> 
-					
-					<input type="file" class="form-control col-2" id="inputGroupFile04" name="uploadFiles" style="display: none;" accept="image/*" multiple="true"/>
-					
-					<form:label path="photos" for="inputGroupFile04" class="form-control col-2 btn"> 
-						<i class="bi bi-camera-fill"></i> <!-- 카메라 아이콘(사진 첨부) -->
-					</form:label>
-				</div>
-				
-				<div class="selected-image"></div>
-				
-			</div>
+									<div class="commnuity-select">
+										<div class=" selectimg"> 
+											
+											<input type="file" class="form-control col-2" id="inputGroupFile04" name="uploadFiles" style="display: none;" accept="image/*" multiple="true"/>
+											
+											<form:label path="photos" for="inputGroupFile04" class="form-control btn"> 
+												<i class="bi bi-camera-fill me-1"></i> <!-- 카메라 아이콘(사진 첨부) -->
+											</form:label>
+										</div>
+										
+										<div class="selected-image"></div>
+										
+									</div>
 									<!-- <label for="fileInput">
 										<div class="btn" id="btn">
 											<i class="bi bi-plus-circle upload-icon"
@@ -383,13 +458,13 @@
 	                const img = $('<img>').attr('src', e.target.result).addClass('selected-image-item');
 	                selectedImageDiv.append(img);
 
-	               /*  const removeButton = $('<button>').text('삭제').addClass('remove-button');
+	                const removeButton = $('<button>').text('삭제').addClass('remove-button');
 	                removeButton.on('click', function () {
 	                    img.remove();
 	                    removeButton.remove();
 	                });
 
-	                img.after(removeButton); */
+	                img.after(removeButton); 
 	            };
 
 	            reader.readAsDataURL(file);

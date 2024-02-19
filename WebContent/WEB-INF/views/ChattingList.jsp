@@ -101,6 +101,23 @@
 	justify-content: center;
 	overflow: hidden; /* 내용이 원을 넘어갈 경우 숨김 처리 */
 }
+.chatInfo {
+    display: flex;
+    justify-content: flex-end; /* 요소들을 오른쪽으로 정렬 */
+    width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
+    padding-top: 5px; /* hr과의 간격 조정 */
+}
+/* 2월 18일 추가한내용 */
+.bubble {
+    display: inline-block;
+    background-color: #f0f0f0; /* 말풍선 배경색 */
+    border-radius: 10px; /* 테두리 둥근 모서리 */
+    padding: 6px; /* 상하 좌우 패딩 */
+    margin: 5px; /* 마진 */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    font-size: 14px; /* 폰트 사이즈 */
+}
+
 </style>
 </head>
 <body>
@@ -112,9 +129,6 @@
 					<strong style="font-size: 25px;">채팅</strong>
 					<div
 						style="display: flex; justify-content: center; align-items: center">
-						<button
-							style="font-size: 14px; border: 1px solid #6387A6; color: #6387A6; background-color: #fff; border-radius: 10px; height: max-content"
-							onclick="moveToEditChattingList()">채팅방 편집</button>
 					</div>
 				</div>
 				<c:forEach items="${chatrooms}" var="chatroom">
@@ -129,16 +143,32 @@
 									<div class="provider_profile"
 										style="width: 100%; padding-top: 20px; margin-bottom: 16px;">
 										<div class="provider_profileInfo">
-											<img
-												src="${chatroom.pro_profile_image}"
-												style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 6%">
+											<c:choose>
+												<c:when
+													test="${chatroom.certification_documents_images == null }">
+													<img class="uploaded-image" id="profile-image"
+														src="../image/user-solid.svg" alt="프로필 이미지"
+														style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 6%">
+												</c:when>
+												<c:otherwise>
+													<img class="uploaded-image" id="profile-image"
+														src="${root }/upload/${chatroom.certification_documents_images}"
+														alt="프로필 이미지"
+														style="width: 52px; height: 52px; border-radius: 25%; border: 1px solid #F3F3F3; margin-right: 6%">
+												</c:otherwise>
+											</c:choose>
 											<div class="profileInfo" style="margin-top: 2.5%;">
 												<div class="provider_name"
 													style="font-size: 16px; width: max-content;">
 													<strong>${chatroom.pro_name} 일류님</strong>
 												</div>
+												<!-- 2월 18일 추가내용 -->
 												<div class="service_name"
-													style="font-size: 14px; width: max-content; color: #737373;">스포츠지도사준비</div>
+													style="font-size: 14px; width: max-content; color: #737373;">
+													<span class="bubble">${chatroom.active_detailcategory1 }</span>
+													<span class="bubble">${chatroom.active_detailcategory2 }</span>
+													<span class="bubble">${chatroom.active_detailcategory3 }</span>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -154,15 +184,14 @@
 									<hr
 										style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
 
-									<div class="chatInfo" style="padding-bottom: 20px;">
+									<div class="chatInfo"">
 
-										<div class="date"
-											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											2023. 11. 23</div>
+										<div class="date" style="font-size: 14px; color: #B5B5B5;">
+										${currentTime}
+										</div>
 									</div>
 								</button>
 							</div>
-
 
 						</c:when>
 						<c:when
@@ -200,11 +229,14 @@
 									<hr
 										style="margin-top: -1%; margin-bottom: 1%; border: 1px solid #B5B5B5;">
 
-									<div class="chatInfo" style="padding-bottom: 20px;">
+									<div class="chatInfo"">
 
+										<!-- 2월 18일 수정부분 -->
 										<div class="date"
-											style="font-size: 14px; color: #B5B5B5; float: right; text-align: right;">
-											2023. 11. 23</div>
+											style="font-size: 14px; color: #B5B5B5;">
+										${currentTime}  
+
+										</div>
 									</div>
 								</button>
 							</div>
@@ -245,7 +277,8 @@
 					// 알림 뱃지 표시
 					showNotificationBadge();
 					//alert("새로운 알림 : " + notification.body);
-					showLatestMessage(notification.body);
+					//2월 18일 수정부분
+					 showLatestMessageWithTime(notification.body);
 				});
 			});
 		}
@@ -260,16 +293,36 @@
 			}
 		}
 
-		function showLatestMessage(message) {
-			var latestMessageElement = document.getElementById('latestMessage');
-			if (latestMessageElement) {
-				// 메시지 길이가 20글자 이상이면 앞의 20글자만 표시하고 "..." 추가
-				var displayText = message.length > 20 ? message
-						.substring(0, 20)
-						+ "..." : message;
-				latestMessageElement.innerText = displayText; // displayText 변수를 사용하여 화면에 표시
-			}
-		}
+		//이부분도 2월 18일 수정
+		function showLatestMessageWithTime(message) {
+	        var latestMessageElement = document.getElementById('latestMessage');
+	        var timeElement = document.querySelector('.date'); // 시간 표기할 요소 선택
+	        if (latestMessageElement && timeElement) {
+	            // 메시지 길이가 20글자 이상이면 앞의 20글자만 표시하고 "..." 추가
+	            var displayText = message.length > 20 ? message.substring(0, 20) + "..." : message;
+	            latestMessageElement.innerText = displayText; // displayText 변수를 사용하여 화면에 표시
+	            
+	            // 현재 시간을 가져와서 시간을 함께 표시
+	            var currentTime = getCurrentTime();
+	            timeElement.innerText = currentTime; // 시간을 화면에 표시
+	        }
+	    }
+		
+		//2월 18일 추가부분
+		 function getCurrentTime() {
+		        var now = new Date();
+		        var hours = now.getHours();
+		        var minutes = now.getMinutes();
+		        var seconds = now.getSeconds();
+
+		        // 시간, 분, 초가 한 자리 숫자인 경우 앞에 0을 붙여 두 자리로 만듭니다.
+		        hours = (hours < 10) ? '0' + hours : hours;
+		        minutes = (minutes < 10) ? '0' + minutes : minutes;
+		        seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+		        // 시간을 HH:MM:SS 형식으로 반환합니다.
+		        return hours + ':' + minutes + ':' + seconds;
+		    }
 
 		// 페이지 로드 시 연결
 		window.onload = function() {

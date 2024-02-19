@@ -114,7 +114,7 @@ body, div, span, h5, button, h2, p {
                             <div class="mb-3 form-group">
                                 <form:label path="user_email">이메일</form:label>
                                 <div class="input-group">
-	                                <form:input type="email" path="user_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
+	                                <form:input  path="user_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
 	                                <div class="input-group-append">
 										<button type="button" class="btn button-custom" onclick='checkUserEmailExist()'>
 											중복확인

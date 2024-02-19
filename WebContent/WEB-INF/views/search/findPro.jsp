@@ -200,13 +200,9 @@ function sendToServerLocation(selectedLocation) {
 </style>
 </head>
 
-<body>
-	<!-- 네비부분 -->
+<body> 
 	<c:import url="/WEB-INF/views/include/header.jsp" />
-	<!--여기까지 네비부분-->
-	<!--본문-->
-
-
+ 
 	<div class="container mx-auto mt-5 mb-5" style="width: 60%;">
 
 		<div class=" mt-5">
@@ -307,16 +303,7 @@ function sendToServerLocation(selectedLocation) {
 													document
 															.write('</ul></div></div>');
 												});
-								// 콘솔에 출력하는 함수
-
-								/* // 페이지로 이동하는 함수
-								function redirectToPage(value) {
-									console.log('선택한 값: ' + value);
-									// 여기에 이동할 페이지 URL을 지정합니다.
-									var pageURL = '${root}/search/findPro?${param.service_category_id}&detail_category_name=${param.detail_category_name }&location='
-											+ value; // 예시 URL, 실제로 사용할 URL로 변경하세요.
-									window.location.href = pageURL;
-								} */
+								 
 							</script>
 						</div>
 					</div>
@@ -396,7 +383,6 @@ function sendToServerLocation(selectedLocation) {
 				<div> </div>
 			</div>
 			<!-- 페이징 처리 -->
-
 		</div> 
 		
 

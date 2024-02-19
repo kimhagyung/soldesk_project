@@ -34,7 +34,7 @@ public class PostBean {
     private String location;
     private int ReportedPostSt; 
     private Timestamp board_date;
-    
+    private String prowriter_name;
     private int viewCnt;
     
     private int commentCnt;
@@ -62,7 +62,13 @@ public class PostBean {
 	private List<MultipartFile> uploadFiles;
     
     
-    public List<MultipartFile> getUploadFiles() {
+    public String getProwriter_name() {
+		return prowriter_name;
+	}
+	public void setProwriter_name(String prowriter_name) {
+		this.prowriter_name = prowriter_name;
+	}
+	public List<MultipartFile> getUploadFiles() {
 		return uploadFiles;
 	}
 	public void setUploadFiles(List<MultipartFile> uploadFiles) {

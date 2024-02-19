@@ -269,7 +269,7 @@ $(document).ready(function() {
 function loadAlarmsForAddedEvents() {
     $.ajax({
         type: "GET",
-        url: "/Soldesk_Project2_Unicode/common/calendar_alarm",
+        url: "${root}/common/calendar_alarm",
         //data: {
          //   userId: ${loginUserBean.user_id}
         //},
@@ -321,7 +321,7 @@ $(document).ready(function(){
         var quote_history_id = $(this).data('id');
         console.log("quote_history_id :"+quote_history_id);
         // 삭제 확인 메시지를 띄우기
-        if (confirm("삭제하시겠습니까?")) {
+        if (confirm("견적 기록을 삭제 하시겠습니까?")) {
             $.ajax({
                 type: "POST",
                 url: "${root}/deleteQuoteeee",
@@ -403,10 +403,10 @@ $(document).ready(function(){
 									onclick="location.href='${root}/user/pro_logout'">로그아웃</button>
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
-									
+							 
 								<!-- 종 -->	
 								<div class="dropdown ms-3 " id="notificationDropdown"> 
-									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
+									<i class="bi bi-pencil-square ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
 										 <c:forEach var="obj" items="${quoteBean }" varStatus="num"> 
 											 <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
 												<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -417,18 +417,16 @@ $(document).ready(function(){
 									<ul class="dropdown-menu"> 
 										<c:forEach var="obj" items="${quoteBean }" varStatus="num">  
 										    <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
-										        <li class="autostyle" >
+										        <li class="autostyle">
 										        	<div class="autostyle">${sendQuetes[num.index] } 님께 받은견적이 있어요</div> 
 										            <a class="dropdown-item" data-id="${obj.getQuote_history_id()}">
 													 	 - ${fn:replace(obj.getReceived_quote(), ',', '<br>- ')} 
 													</a>   
 										        </li> 
-										    </c:if> 
+										    </c:if>  
 										</c:forEach>					
 									</ul>
-								</div>
-								  
-									    
+								</div>  
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">

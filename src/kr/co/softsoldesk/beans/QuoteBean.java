@@ -8,9 +8,16 @@ public class QuoteBean {
 	private int user_id; 
 	private String user_name;
 	private int received_quoteNY;
+	private String service_category_id;
 	
 	
 	
+	public String getService_category_id() {
+		return service_category_id;
+	}
+	public void setService_category_id(String service_category_id) {
+		this.service_category_id = service_category_id;
+	}
 	public int getReceived_quoteNY() {
 		return received_quoteNY;
 	}

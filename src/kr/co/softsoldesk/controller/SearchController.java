@@ -37,8 +37,6 @@ public class SearchController {
 	@Autowired
 	private ReviewService reviewService;
 	
-	
-	 
 	@GetMapping("/findPro")
 	public String findPro(@RequestParam(defaultValue = "1") int page, 
             @RequestParam(defaultValue = "10") int size,Model model) {
