@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.softsoldesk.beans.DetailCategoryBean;
+import kr.co.softsoldesk.beans.ExpertBean;
 import kr.co.softsoldesk.service.DetailCategoryService;
 import kr.co.softsoldesk.service.ProUserService;
 import kr.co.softsoldesk.service.UserService;
@@ -55,7 +56,7 @@ public class RestApiController {
     }
 	
 	@GetMapping("/search/getCategoryInfo") //findPro.jsp
-	public List<String> getCategoryInfo(
+	public List<ExpertBean> getCategoryInfo(
 	        @RequestParam(name = "selectedCategory", required = false) String selectedCategory,
 	        @RequestParam(name = "active_location", required = false) String active_location) {
 
@@ -63,11 +64,11 @@ public class RestApiController {
         System.out.println("RestApiController-selectedLocation: " + active_location);
  
         // 기본값으로 빈 리스트를 설정
-        List<String> proActive = new ArrayList<>(); // proActive 선언 및 초기화
+        List<ExpertBean> proActive = new ArrayList<>(); // proActive 선언 및 초기화
  
         if (selectedCategory != null && active_location != null) {
             // 두 값 모두가 존재할 경우
-            proActive = proUserService.getProCategoryAndLocation(selectedCategory, active_location);
+           // proActive = proUserService.getProCategoryAndLocation(selectedCategory, active_location);
         } else if (selectedCategory != null) {
             // selectedCategory만 존재할 경우
             proActive = proUserService.getselectedCategory(selectedCategory);
