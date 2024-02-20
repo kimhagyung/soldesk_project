@@ -45,7 +45,7 @@
                     <form:form action="${root }/admin/adminLogin_pro" method="post" modelAttribute="adminTempLoginBean">
                         <div class="form-group text-left">
                             <form:label path="admin_id">아이디</form:label>
-                            <form:input path="admin_id" class="form-control" placeholder="id"/>
+                            <form:input path="admin_id" autocomplete='off'  class="form-control" placeholder="id"/>
                         </div>
                         <div class="form-group text-left">
                             <form:label path="admin_pwd">비밀번호</form:label>

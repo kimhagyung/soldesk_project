@@ -428,7 +428,7 @@ $(document).ready(function(){
 													 	 - ${fn:replace(obj.getReceived_quote(), ',', '<br>- ')} 
 													</a>   
 										        </li> 
-										    </c:if>  
+				 						    </c:if>  
 										</c:forEach>					
 									</ul>
 								</div>  

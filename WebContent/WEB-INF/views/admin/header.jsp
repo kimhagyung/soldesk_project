@@ -53,8 +53,8 @@
         <header id="header" class="header" style="background-color:  #D9E8F5;">
             <div class="top-left">
                 <div class="navbar-header" style="background-color:  #D9E8F5;">
-                    <a class="navbar-brand" href="${root }/admin/index" style="width: 150px;"><img src="${root }/image/logo4.png" alt="Logo" style="width: 50px; height: 42px;"></a>
-                    <a class="navbar-brand hidden" href="${root }/admin/index"><img src="${root }/image/logo4.png" alt="Logo"></a>
+                    <a class="navbar-brand" href="${root }/admin/user" style="width: 150px;"><img src="${root }/image/logo4.png" alt="Logo" style="width: 50px; height: 42px;"></a>
+                    <a class="navbar-brand hidden" href="${root }/admin/user"><img src="${root }/image/logo4.png" alt="Logo"></a>
                     <a id="menuToggle" class="menutoggle" style="margin-left: 10px;"><i class="fa fa-bars"></i></a>
                 </div>
             </div>

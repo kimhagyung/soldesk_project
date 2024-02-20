@@ -48,6 +48,7 @@ public class QuestionsCotroller {
 	public String received_quotation(@RequestParam("reco") String reco, Model model) {
 	    List<String> recoProUsers = proUserService.getRecoProUserByName(reco);
 	    System.out.println("recoProUsers: " + recoProUsers);
+	    System.out.println("recoooooooooooo: " + reco);
 	    model.addAttribute("recoProUsers", recoProUsers);
 	    
 	    List<Long> proIds = new ArrayList<>();
