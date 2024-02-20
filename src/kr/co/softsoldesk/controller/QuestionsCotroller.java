@@ -170,8 +170,8 @@ public class QuestionsCotroller {
 	      model.addAttribute("3", questionBean.getAppliance()); //가전제품
 	      model.addAttribute("4", questionBean.getCleaning());  //청소
 	      model.addAttribute("5", questionBean.getTranslation());  //번역
-	      model.addAttribute("6", questionBean.getDevelopment()); //문서
-	      model.addAttribute("7", questionBean.getDocument()); //개발외주
+	      model.addAttribute("6", questionBean.getDocument()); //문서
+	      model.addAttribute("7", questionBean.getDevelopment()); //개발외주
 	      model.addAttribute("8", questionBean.getPet()); //반려동
  
 

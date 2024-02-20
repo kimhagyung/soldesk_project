@@ -210,6 +210,10 @@ function sendToServerLocation(selectedLocation) {
 function showfindpro(){ 
 	$(".showhid").toggle(); 
 }
+
+function reset(){
+	location.reload();
+}
 </script> 
 
 <style>
@@ -229,6 +233,10 @@ function showfindpro(){
 	width: 70px;
 	height: 90px;
 }
+.bi.bi-arrow-counterclockwise {
+    font-weight: bold;
+}
+
 </style>
 </head>
 
@@ -255,7 +263,10 @@ function showfindpro(){
 				data-bs-toggle="modal" data-bs-target="#exampleModal"> 
 			        카테고리 V 
 			</button>
+			
+			<button onclick="reset()" class="btn btn-outline-dark mt-4 btncommon mt-4 ms-2 "><i class="bi bi-arrow-counterclockwise"></i>초기화</b>
 			<button onclick="showfindpro()" class="btn btn-outline-dark mt-4 btncommon mt-4 ms-2 ">전체 보기</button>
+			
 		</div>
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
