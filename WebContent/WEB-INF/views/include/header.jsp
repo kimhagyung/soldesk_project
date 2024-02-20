@@ -410,10 +410,15 @@ $(document).ready(function(){
 								<!-- 견적 -->	 
 								<div class="dropdown ms-2"> 
 									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
-										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
-										</span>
-									</i>	 
-									
+										<span style="display:none;"class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										</span> 
+										 <c:forEach var="obj" items="${quoteBean }" varStatus="num"> 
+											 <c:if test="${obj.getPro_id()==loginProuserBean.getPro_id()}">
+												<span style="display:show;"class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+												</span>
+											</c:if>
+										</c:forEach>
+									</i>	  
 									<ul class="dropdown-menu"> 
 										<c:forEach var="obj" items="${quoteBean }" varStatus="num">  
 										    <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">

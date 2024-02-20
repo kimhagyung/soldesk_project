@@ -207,15 +207,8 @@ function sendToServerLocation(selectedLocation) {
 
 
 
-function showfindpro(){
-	/*
-	var selectedLocation = $(".locationBtn").text().trim();
-	var selectedCategory = $(".categoryBtn").text().trim();
-	selectedLocation.empty(); 
-	selectedCategory.empty(); 
-	*/
-
-	$(".showhid").toggle();
+function showfindpro(){ 
+	$(".showhid").toggle(); 
 }
 </script> 
 
@@ -255,12 +248,12 @@ function showfindpro(){
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
 				data-bs-toggle="modal" data-bs-target="#locationModal"> 
-			        지역 ⋁ 
+			        지역 V 
 			</button>
 			<button type="button"
 				class="btn btn-outline-dark mt-4 ms-1 btncommon categoryBtn"
 				data-bs-toggle="modal" data-bs-target="#exampleModal"> 
-			        카테고리 ⋁ 
+			        카테고리 V 
 			</button>
 			<button onclick="showfindpro()" class="btn btn-outline-dark mt-4 btncommon mt-4 ms-2 ">전체 보기</button>
 		</div>
