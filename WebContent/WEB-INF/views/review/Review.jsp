@@ -427,7 +427,8 @@ $(document).ready(function() {
 									style="font-size: 30px; margin-top: 15px; margin-right: 20px;"></i>
 							</button>
 							<button
-								style="background-color: #6387A6; border: #6387A6; border-radius: 10px; padding: 10px; color: #fff;">견적
+								style="background-color: #6387A6; border: #6387A6; border-radius: 10px; padding: 10px; color: #fff;"
+								onclick="location.href='${root}/chatting?pro_id=${param.pro_id}&pro_name=${proProfileBean.pro_name }'">견적
 								요청</button>
 							<!-- 클릭 시 채팅화면으로 이동 -->
 						</div>

@@ -91,14 +91,25 @@ public interface ProUserMapper {
 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR}")
 	List<String> getselectedCategory(@Param("selectedCategory") String selectedCategory);
- */
+
 	@Select("SELECT pro_name FROM pro_user " +
 	        "WHERE active_location = #{active_location, jdbcType=VARCHAR} " +
 	        "AND (active_detailcategory1 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR})")
 	List<String> getProCategoryAndLocation(@Param("selectedCategory") String selectedCategory, @Param("active_location") String active_location);
- /////////////////////////////////////
+  */
+ 	
+ 	@Select("SELECT pro_user.pro_id, pro_detailed_introduction, certification_documents_images, pro_name " +
+ 	        "FROM pro_user, pro_profile " +
+ 	        "WHERE pro_user.pro_id = pro_profile.pro_id AND active_location = #{active_location, jdbcType=VARCHAR} and(active_detailcategory1 = #{selectedCategory, jdbcType=VARCHAR} " +
+ 	        "OR active_detailcategory2 = #{selectedCategory, jdbcType=VARCHAR} " +
+ 	        "OR active_detailcategory3 = #{selectedCategory, jdbcType=VARCHAR}) " +
+ 	        "ORDER BY pro_id ASC")
+	List<ExpertBean> getProCategoryAndLocation(@Param("selectedCategory") String selectedCategory, @Param("active_location") String active_location);
+
+	
+	/////////////////////////////////////
 	@Update("UPDATE pro_user " +
 	        "SET pro_name = #{pro_name}, pro_email = #{pro_email}, pro_pwd = #{pro_pwd} " +
 	        "WHERE pro_id = #{pro_id}")

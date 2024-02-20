@@ -37,7 +37,7 @@ $(document).ready(function () {
         console.log('선택된 디테일 카테고리:', selectedCategory);
         $(".categoryBtn").text(selectedCategory); 
         sendToServerCategory(selectedCategory);
-        sendToServer(selectedCategory,selectedLocation); // Send both selectedCategory and selectedLocation
+        sendToServer(selectedCategory,selectedLocation);  
     });
 
     $('.selectedLocation').on('click', function() {
@@ -48,7 +48,7 @@ $(document).ready(function () {
         console.log('선택된 위치:',selectedLocation);
         $(".locationBtn").text(selectedLocation);
         sendToServerLocation(selectedLocation);
-        sendToServer(selectedCategory,selectedLocation); // Send both selectedCategory and selectedLocation
+        sendToServer(selectedCategory,selectedLocation);  
     }); 
 });
 
@@ -68,21 +68,26 @@ function sendToServer(selectedCategory, selectedLocation) {
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
 
-            for (var i = 0; i < data.length; i++) {
-                var detailCategory = data[i];
-
+            for (var i = 0; i < data.proActive.length; i++) {
+                var detailCategory = data.proActive[i];  
+                var reviewList = data.reviewList[i];  
+                var careerInfo = data.careerInfo[i];  
+                console.log(" 받아온값은?",detailCategory);
                 var card = $('<div class="card mb-3"></div>');
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
-                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
-                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
-                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
-                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
+                var cardContent = $('<div class="card-content">'+detailCategory.pro_detailed_introduction+'</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">'+reviewList.review_cnt+'</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력'+careerInfo.career_sum+'</span>');
 
                 col10.append(boldText, cardContent, starReview, career);
 
-                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
-
+                var col2 = $('<div class="col-2 text-center mt-4"></div>');
+                var image = $('<img class="profileimage">');
+                image.attr("src", "${root}/upload/" + detailCategory.certification_documents_images);
+                col2.append(image);
+                
                 cardBodyRow.append(col10, col2);
                 card.append(cardBodyRow);
 
@@ -109,24 +114,28 @@ function sendToServerCategory(selectedCategory) {
            
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
-
-            var reviewList = '${reviewList}'; 
-            console.log("출력할 reviewList"+reviewList)
-            for (var i = 0; i < data.length; i++) {
-                var detailCategory = data[i];
-                console.log('가져온 값',detailCategory)
+            
+            
+            for (var i = 0; i < data.proActive.length; i++) {
+                var detailCategory = data.proActive[i];  
+                var reviewList = data.reviewList[i];  
+                var careerInfo = data.careerInfo[i];  
+                console.log(" 받아온값은?",detailCategory);
                 var card = $('<div class="card mb-3"></div>');
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
                 var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
                 var cardContent = $('<div class="card-content">'+detailCategory.pro_detailed_introduction+'</div>');
-                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">'+reviewList+'</span>');
-                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">'+reviewList.review_cnt+'</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력'+careerInfo.career_sum+'</span>');
 
                 col10.append(boldText, cardContent, starReview, career);
 
-                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
-
+                var col2 = $('<div class="col-2 text-center mt-4"></div>');
+                var image = $('<img class="profileimage">');
+                image.attr("src", "${root}/upload/" + detailCategory.certification_documents_images);
+                col2.append(image);
+                
                 cardBodyRow.append(col10, col2);
                 card.append(cardBodyRow);
 
@@ -154,21 +163,27 @@ function sendToServerLocation(selectedLocation) {
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
 
-            for (var i = 0; i < data.length; i++) {
-                var detailCategory = data[i];
-
+            
+            for (var i = 0; i < data.proActive.length; i++) {
+                var detailCategory = data.proActive[i];  
+                var reviewList = data.reviewList[i];  
+                var careerInfo = data.careerInfo[i];  
+                console.log(" 받아온값은?",detailCategory);
                 var card = $('<div class="card mb-3"></div>');
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
-                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory);
-                var cardContent = $('<div class="card-content">상세소개입니다... (여기에 실제 내용을 추가하세요)</div>');
-                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">5.0(리뷰 수)</span>');
-                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력 10년</span>');
+                var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
+                var cardContent = $('<div class="card-content">'+detailCategory.pro_detailed_introduction+'</div>');
+                var starReview = $('<div class="star-review mt-1"></div>').html('<i class="bi bi-star-fill star"></i> <span class="review-count" style="font-size: 13px;">'+reviewList.review_cnt+'</span>');
+                var career = $('<div class="career mt-2 lig"></div>').html('<span>경력'+careerInfo.career_sum+'</span>');
 
                 col10.append(boldText, cardContent, starReview, career);
 
-                var col2 = $('<div class="col-2 text-center mt-4"></div>').html('<img class="profileimage" src="../image/logo4.png">');
-
+                var col2 = $('<div class="col-2 text-center mt-4"></div>');
+                var image = $('<img class="profileimage">');
+                image.attr("src", "${root}/upload/" + detailCategory.certification_documents_images);
+                col2.append(image);
+                
                 cardBodyRow.append(col10, col2);
                 card.append(cardBodyRow);
 
@@ -362,7 +377,7 @@ function sendToServerLocation(selectedLocation) {
 						        </div>
 						    </div>
 						</c:forEach>
-					</c:if>  
+					</c:if>   
 					<c:if test="${selectedCategory eq '카테고리 ⋁' and selectedLocation eq '지역 ⋁'}">
 						<c:forEach var="pro" items="${ProprofileInfo}" varStatus="num">
 						    <div class="card mb-3">
