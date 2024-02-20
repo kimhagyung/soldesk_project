@@ -7,7 +7,6 @@
 <head> 
 
   <script src="${root}/script/jquery-3.4.1.min.js"></script> 
-   <link href="https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css" rel="stylesheet" />
 </head>
 <script> //!!! 게시글 삭제 !!!
 	$(document).ready(function() {

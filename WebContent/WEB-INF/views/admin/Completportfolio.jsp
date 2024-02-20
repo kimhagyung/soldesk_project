@@ -46,113 +46,119 @@
 				</div>
 			</div>
 		</div>
-		<div class="content">
-			<div class="animated fadeIn">
-				<div class="row">
-					<c:forEach var="portfolio" items="${allportfolio }" varStatus="num">
-						<c:if test="${portfolio.inspectionNY==1 }">
-							<div class="col-md-4">
-								<div class="card">
-									<c:if test="${portfolio.detailed_images != null}">
-										<c:forEach var="portfolio_img"
-											items="${fn:split(portfolio.detailed_images, ',')}"
-											varStatus="loop">
-											<c:if test="${loop.index == 0}">
-												<img src="${root}/portfolio/${portfolio_img}"
-													class="card-img-top">
-											</c:if>
-										</c:forEach>
-									</c:if>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-8">
-												<h4 class="card-title mb-3">작성자
-													:${Portfolioallnames[num.index]}</h4>
-												<p class="card-text detailed">제목:
-													${portfolio.portfolio_title }</p>
-											</div>
-											<div class="col-4">
-												<button type="button" class="btn btn-info mt-3"
-													data-toggle="modal"
-													data-target="#exampleModal_${portfolio.portfolio_id}">
-													자세히 보기</button>
-											</div>
-										</div>
-									</div>
-									<!-- 모달창 -->
-									<div class="modal fade"
-										id="exampleModal_${portfolio.portfolio_id}" tabindex="-1"
-										role="dialog" aria-labelledby="exampleModalLabel"
-										aria-hidden="true">
-										<div class="modal-dialog modal-dialog-scrollable modal-lg">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title" id="exampleModalLabel">자세히 보기
-														모달창</h5>
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-													<table class="table">
-														<tbody>
-															<tr>
-																<th>서비스 종류</th>
-																<td>${portfolio.service_type}</td>
-															</tr>
-															<tr>
-																<th>포트폴리오 제목</th>
-																<td>${portfolio.portfolio_title}</td>
-															</tr>
-															<tr>
-																<th>지역정보</th>
-																<td>${portfolio.location_info}</td>
-															</tr>
-															<tr>
-																<th>최종 금액</th>
-																<td>${portfolio.final_amount}</td>
-															</tr>
-															<tr>
-																<th>작업 연도</th>
-																<td>${portfolio.work_year}</td>
-															</tr>
-															<tr>
-																<th>작업 소요기간</th>
-																<td>${portfolio.work_period}</td>
-															</tr>
-															<tr>
-																<th>상세 설명</th>
-																<td>${portfolio.detailed_introduction}</td>
-															</tr>
-															<tr>
-																<th>상세이미지</th>
-																<td><c:if
-																		test="${portfolio.detailed_images != null}">
-																		<c:forEach var="portfolio_img"
-																			items="${fn:split(portfolio.detailed_images, ',')}">
-																			<img src="${root}/portfolio/${portfolio_img}"
-																				class=" mt-3" style="border: 1px solid black; width: 500px;">
-																		</c:forEach>
-																	</c:if></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger portDel"
-														data-bs-dismiss="modal"
-														data-id="${portfolio.portfolio_id}">삭제</button> 
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</c:if>
-					</c:forEach>
-				</div>
-			</div>
+		 <div class="content">
+         <div class="animated fadeIn">
+            <div class="row">
+               <c:forEach var="portfolio" items="${allportfolio }" varStatus="num">
+                  <c:if test="${portfolio.inspectionNY==0 }">
+                     <div class="col-md-4 ">
+                        <div class="card">
+                           <c:if test="${portfolio.detailed_images != null}">
+                              <c:forEach var="portfolio_img"
+                                 items="${fn:split(portfolio.detailed_images, ',')}"
+                                 varStatus="loop">
+                                 <c:if test="${loop.index == 0}">
+                                    <img src="${root}/portfolio/${portfolio_img}"
+                                       class="card-img-top" style="width:508px; height:300px;">
+                                 </c:if>
+                              </c:forEach>
+                           </c:if>
+                           <div class="card-body">
+                              <div class="row">
+                                 <div class="col-8">
+                                    <h4 class="card-title mb-3">작성자
+                                       :${Portfolioallnames[num.index]}</h4>
+                                    <p class="card-text detailed">제목:
+                                       ${portfolio.portfolio_title }</p>
+                                 </div>
+                                 <div class="col-4">
+                                    <button type="button" class="btn btn-info mt-3"
+                                       data-toggle="modal"
+                                       data-target="#exampleModal_${portfolio.portfolio_id}">
+                                       자세히 보기</button>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- 모달창 -->
+                           <div class="modal fade"
+                              id="exampleModal_${portfolio.portfolio_id}" tabindex="-1"
+                              role="dialog" aria-labelledby="exampleModalLabel"
+                              aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h5 class="modal-title" id="exampleModalLabel">자세히 보기
+                                          모달창</h5>
+                                       <button type="button" class="close" data-dismiss="modal"
+                                          aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                       </button>
+                                    </div>
+                                    <div class="modal-body">
+                                       <table class="table">
+                                          <tbody>
+                                             <tr>
+                                                <th>서비스 종류</th>
+                                                <td>${portfolio.service_type}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>포트폴리오 제목</th>
+                                                <td>${portfolio.portfolio_title}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>지역정보</th>
+                                                <td>${portfolio.location_info}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>최종 금액</th>
+                                                <td>${portfolio.final_amount}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>작업 연도</th>
+                                                <td>${portfolio.work_year}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>작업 소요기간</th>
+                                                <td>${portfolio.work_period}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>상세 설명</th>
+                                                <td>${portfolio.detailed_introduction}</td>
+                                             </tr>
+                                             <tr>
+                                                <th>상세이미지</th>
+                                                <td><c:if
+                                                      test="${portfolio.detailed_images != null}">
+                                                      <!-- 슬라이더 -->
+                                                <div class="w3-content w3-display-container portfolio-slider" id="portfolioSlider_${portfolio.portfolio_id}" style="width: 468px;">
+                                                      <c:forEach var="photo" items="${fn:split(portfolio.detailed_images, ',')}" varStatus="loop">
+                                                        <img src="${root}/portfolio/${photo}" alt="pic" style="width: 468px; height: 480px;">
+                                                    </c:forEach>
+                                                    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                                                    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+                                                </div>
+                                                   </c:if></td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-danger portDel"
+                                          data-bs-dismiss="modal"
+                                          data-id="${portfolio.portfolio_id}">삭제</button> 
+                                          <button type="button" class="btn btn-primary portComp"
+                                          data-bs-dismiss="modal"
+                                          data-id="${portfolio.portfolio_id}">검수 완료</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </c:if>
+               </c:forEach>
+            </div>
+         </div> 
 			<!-- .animated -->
 		</div>
 		<!-- .content -->
