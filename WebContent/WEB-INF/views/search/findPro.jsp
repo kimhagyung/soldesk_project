@@ -73,7 +73,10 @@ function sendToServer(selectedCategory, selectedLocation) {
                 var reviewList = data.reviewList[i];  
                 var careerInfo = data.careerInfo[i];  
                 console.log(" 받아온값은?",detailCategory);
-                var card = $('<div class="card mb-3"></div>');
+                var card = $('<div class="card mb-3" ></div>').click(function(){
+                    // Redirect to review page with pro_id
+                    location.href = '${root}/review/Review?pro_id=' + detailCategory.pro_id;
+                });
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
                 var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
@@ -121,7 +124,10 @@ function sendToServerCategory(selectedCategory) {
                 var reviewList = data.reviewList[i];  
                 var careerInfo = data.careerInfo[i];  
                 console.log(" 받아온값은?",detailCategory);
-                var card = $('<div class="card mb-3"></div>');
+                var card = $('<div class="card mb-3" ></div>').click(function(){
+                    // Redirect to review page with pro_id
+                    location.href = '${root}/review/Review?pro_id=' + detailCategory.pro_id;
+                });
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
                 var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
@@ -162,14 +168,17 @@ function sendToServerLocation(selectedLocation) {
            
             var outputContainer = $('.here > div'); 
             outputContainer.empty(); // 기존 내용을 비워줍니다.
-
+//onclick="location.href='${root}/review/Review?pro_id="+detailCategory.pro_id
             
             for (var i = 0; i < data.proActive.length; i++) {
                 var detailCategory = data.proActive[i];  
                 var reviewList = data.reviewList[i];  
                 var careerInfo = data.careerInfo[i];  
                 console.log(" 받아온값은?",detailCategory);
-                var card = $('<div class="card mb-3"></div>');
+                var card = $('<div class="card mb-3" ></div>').click(function(){
+                    // Redirect to review page with pro_id
+                    location.href = '${root}/review/Review?pro_id=' + detailCategory.pro_id;
+                });
                 var cardBodyRow = $('<div class="card-body row"></div>');
                 var col10 = $('<div class="col-10"></div>');
                 var boldText = $('<b style="font-size: 18px;"></b>').text(detailCategory.pro_name);
@@ -198,6 +207,16 @@ function sendToServerLocation(selectedLocation) {
 
 
 
+function showfindpro(){
+	/*
+	var selectedLocation = $(".locationBtn").text().trim();
+	var selectedCategory = $(".categoryBtn").text().trim();
+	selectedLocation.empty(); 
+	selectedCategory.empty(); 
+	*/
+
+	$(".showhid").toggle();
+}
 </script> 
 
 <style>
@@ -232,16 +251,18 @@ function sendToServerLocation(selectedLocation) {
 		</div>
 
 		<div class="btn-catelocat mb-5">
-			<button type="button"
-				class="btn btn-outline-dark mt-4 btncommon categoryBtn"
-				data-bs-toggle="modal" data-bs-target="#exampleModal"> 
-			        카테고리 ⋁ 
-			</button>
+			
 			<button type="button"
 				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
 				data-bs-toggle="modal" data-bs-target="#locationModal"> 
 			        지역 ⋁ 
 			</button>
+			<button type="button"
+				class="btn btn-outline-dark mt-4 ms-1 btncommon categoryBtn"
+				data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+			        카테고리 ⋁ 
+			</button>
+			<button onclick="showfindpro()" class="btn btn-outline-dark mt-4 btncommon mt-4 ms-2 ">전체 보기</button>
 		</div>
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -358,7 +379,7 @@ function sendToServerLocation(selectedLocation) {
 				 
 					<c:if test="${not empty search_proname}">
 						<c:forEach var="pro" items="${search_proname}" varStatus="num">
-							<div class="card mb-3">
+							<div class="card mb-3" style="cursor: pointer;" onclick="location.href='${root}/review/Review?pro_id=${pro.pro_id }'">
 						        <div class="card-body row">
 						            <div class="col-10">
 						                <b style="font-size: 18px;">${pro.pro_name }</b> 
@@ -377,10 +398,9 @@ function sendToServerLocation(selectedLocation) {
 						        </div>
 						    </div>
 						</c:forEach>
-					</c:if>   
-					<c:if test="${selectedCategory eq '카테고리 ⋁' and selectedLocation eq '지역 ⋁'}">
+					</c:if>    
 						<c:forEach var="pro" items="${ProprofileInfo}" varStatus="num">
-						    <div class="card mb-3">
+						    <div class="card mb-3 showhid" style="display: none;cursor: pointer;" onclick="location.href='${root}/review/Review?pro_id=${pro.pro_id }'">
 						        <div class="card-body row">
 						            <div class="col-10">
 						                <b style="font-size: 18px;">${pro.pro_name }</b> 
@@ -399,8 +419,8 @@ function sendToServerLocation(selectedLocation) {
 						        </div>
 						    </div>
 						</c:forEach> 
-					</c:if>   
-				<div> </div>
+				 <div> 
+				 </div>
 			</div>
 			<!-- 페이징 처리 -->
 		</div> 
@@ -412,5 +432,7 @@ function sendToServerLocation(selectedLocation) {
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
 
 </body>
+<script>
 
+</script>
 </html>

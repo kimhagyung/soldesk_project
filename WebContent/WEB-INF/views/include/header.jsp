@@ -93,7 +93,7 @@
 	 .searchResults{
 		position: absolute;
 		top: 57%; 
-		left: 34.3%; 
+		left: 38.8%; 
 		width: 26.2%; 
 	    background-color: white;
 	     border: 1px solid #ccc; 
@@ -292,7 +292,7 @@ function displayAlarms(alarms) {
 
     if (alarms.length === 0) {
         dropdown.append('<li><a class="dropdown-item">새로운 알림이 없습니다.</a></li>');
-        $(".rounded-circle").hide();
+        $("#rounded2").hide();
     } else {
         alarms.forEach(function(alarm) {
             // 적절한 알람 메시지를 가져오는 로직으로 변경
@@ -300,12 +300,8 @@ function displayAlarms(alarms) {
             dropdown.append('<li><a class="dropdown-item" href="${root}/common/calendar">' + alarmText + '</a></li>');
         });
         // 알림이 있을 경우 알림 아이콘에 빨간 동그라미 표시
-        $(".rounded-circle").show();
+        $("#rounded2").show();
     }
- 	// 평소에는 알림 아이콘 숨기기
-   // if (alarms.length === 0) {
-       
-    //}
  	
  	// 기존의 click 이벤트 핸들러를 off() 메서드를 사용하여 제거
     dropdown.off('click', '.alarm-link');
@@ -342,7 +338,7 @@ $(document).ready(function(){
 <body>
 	<div class="navbar-custom" style="padding-top: 30px;" id="fondDive">
 		<div class="container">
-			<nav class="navbar navbar-expand-lg navbar-custom navbar-light" style="height: 90px;">
+			<nav class="navbar navbar-expand-lg navbar-custom navbar-light" style="height: 120px;">
 				<div class="container-fluid">
 					<!-- 로고 -->
 					<div class="navbar-brand">
@@ -351,9 +347,16 @@ $(document).ready(function(){
 								onclick="location.href='${root}/index'">
 						</div>
 					</div>
+					
+					<!-- 내비게이션 토글 버튼 -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+					
+					
 					<!-- 메뉴 항목 -->
-					<div class="collapse navbar-collapse" id="navbarSupportedContent"
-						style="padding-bottom: 25px; font-size: 20px; ">
+					<div class="collapse navbar-collapse z-3" id="navbarSupportedContent" style="padding-bottom: 25px; font-size: 20px; background-color: #D9E8F5;">
+
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item">
 								<a class="nav-link" href='${root}/board/community'>커뮤니티</a>
@@ -404,16 +407,13 @@ $(document).ready(function(){
 								<button class="btn ms-2 button-custom" type="button" style="color: white;"
 									onclick="location.href='${root}/common/myPage?id=${loginProuserBean.getPro_id() }'">마이프로필</button>
 							 
-								<!-- 종 -->	
-								<div class="dropdown ms-3 " id="notificationDropdown"> 
-									<i class="bi bi-pencil-square ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
-										 <c:forEach var="obj" items="${quoteBean }" varStatus="num"> 
-											 <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
-												<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
-												</span>
-											</c:if>
-										</c:forEach>
-									</i>
+								<!-- 견적 -->	 
+								<div class="dropdown ms-2"> 
+									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										</span>
+									</i>	 
+									
 									<ul class="dropdown-menu"> 
 										<c:forEach var="obj" items="${quoteBean }" varStatus="num">  
 										    <c:if test="${obj.getPro_id() ==loginProuserBean.getPro_id()  }">
@@ -429,8 +429,8 @@ $(document).ready(function(){
 								</div>  
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
-									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
-										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" id="rounded2" data-bs-toggle="dropdown" aria-expanded="false">
 										</span>
 									</i>
 									
@@ -457,7 +457,7 @@ $(document).ready(function(){
 								<!-- 캘린더 -->
 								<div class="dropdown ms-3" id="calendarDropdown"> 
 									<i class="bi bi-calendar-check ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;">
-										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
+										<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" id="rounded2" data-bs-toggle="dropdown" aria-expanded="false">
 										</span>
 									</i>
 									
@@ -477,8 +477,9 @@ $(document).ready(function(){
 		</div>
 	</div>
 </body>
-
-	<script>
+ 
+      
+      <script>
       var stompClient = null;
       
       function connect() {
@@ -488,6 +489,11 @@ $(document).ready(function(){
           stompClient.connect({}, function(frame) {
               console.log('Connected: ' + frame);
       
+              stompClient.subscribe('/topic/boardNotifications', function(notification) {
+                
+                  alert("게시글에 댓글이 달렸습니다.");
+                 
+              });
           });
       }
       
@@ -496,6 +502,6 @@ $(document).ready(function(){
       // 페이지 로드 시 연결
       window.onload = function() {
           connect();
-      };
+      }; 
       </script>
 </html>

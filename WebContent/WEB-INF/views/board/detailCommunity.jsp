@@ -52,6 +52,9 @@ $(document).ready(function() {
                     
                     // 댓글 목록 조회
                     updateReplyList();
+                    
+                    // 댓글 알림 보내기 
+                    sendNotification();
                 }
             },
             error: function(error) {
@@ -161,7 +164,7 @@ $(document).ready(function() {
                          if(comment.user_id == ${loginUserBean.user_id}){
 
 						 	replyHtml += '<div style="display:flex; flex-direction: row; height: 100%;">' +
-                           			 	 '<button style="margin-right: 8px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
+                           			 	 '<button style="margin-right: 8px; margin-left: 910px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
                            			 	 ')">수정</button>' + '<button style="border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" id="deleteBtn' + comment.comment_id +
                    					 	 '" onclick="deleteComment(' + comment.comment_id + ')"' + 
                    					  	 '>삭제</button></div></div></div>';
@@ -534,6 +537,21 @@ $(document).ready(function() {
 				timeElement.textContent = relativeTime;
 			});
 		});
+	</script>
+	
+	
+	<script>
+
+
+	// 페이지 로드 시 WebSocket 연결을 초기화
+		function sendNotification() {
+		    if(stompClient) {
+		        stompClient.send("/app/board/newPost", {}, JSON.stringify({}));
+		    } else {
+		        console.log("WebSocket 연결이 없습니다.");
+		    }
+		}
+
 	</script>
 
 </body>

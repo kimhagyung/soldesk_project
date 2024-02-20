@@ -194,30 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	   
 <c:import url="/WEB-INF/views/include/footer.jsp" />
- 	 <script>
-      var stompClient = null;
-      
-      function connect() {
-          var socket = new SockJS('/ws');
-          stompClient = Stomp.over(socket);
-      
-          stompClient.connect({}, function(frame) {
-              console.log('Connected: ' + frame);
-      
-              stompClient.subscribe('/topic/boardNotifications', function(notification) {
-                
-                  alert("게시글에 댓글이 달렸습니다.");
-                 
-              });
-          });
-      }
-      
-      
-      
-      // 페이지 로드 시 연결
-      window.onload = function() {
-          connect();
-      };
-      </script>
+ 	
 </body>
 </html>

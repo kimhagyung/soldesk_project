@@ -107,6 +107,20 @@ $(document).ready(function() {
 			</h2>
 		</div>
 		
+		<div class="btn-catelocat">
+<!-- 			<button type="button"
+				class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
+				<i class="bi bi-caret-down"></i></button>
+			<button type="button"
+				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
+				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button> -->
+			<button type="button" class="btn button-custom me-5"
+				onclick="location.href='${root}/board/post'" style="float: right; color: white; margin:8px;">
+				글쓰기 <img src="../image/pen2.png" style="width: 18px;">
+			</button>
+		</div>
+		
 		<!-- 검색 폼 -->
 <form action="${root}/board/community" method="get" class="form-inline justify-content-center mt-3">
     <label for="searchType">검색 유형:</label>
@@ -120,20 +134,9 @@ $(document).ready(function() {
     <input type="text" name="searchText" id="searchText" class="form-control mx-2" value="${param.searchText}" />
     <button type="submit" class="btn btn-primary">검색</button>
 </form>
+</div>
 		
-		<div class="btn-catelocat">
-<!-- 			<button type="button"
-				class="btn btn-outline-dark ms-5 mt-4 btncommon categoryBtn"
-				data-bs-toggle="modal" data-bs-target="#exampleModal">카테고리
-				<i class="bi bi-caret-down"></i></button>
-			<button type="button"
-				class="btn btn-outline-dark ms-2 mt-4 btncommon locationBtn"
-				data-bs-toggle="modal" data-bs-target="#locationModal">지역 <i class="bi bi-caret-down"></i></button> -->
-			<button type="button" class="btn button-custom mt-4 me-5"
-				onclick="location.href='${root}/board/post'" style="float: right; color: white;">
-				글쓰기 <img src="../image/pen2.png" style="width: 18px;">
-			</button>
-		</div>
+		
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-scrollable">
@@ -204,7 +207,7 @@ $(document).ready(function() {
 			</div>
 		</div>
 
-	</div>
+	
 
 	<article class="community-feed-list mx-auto" style="width: 70%; height: 100%;">
 		<ul class="list-group list-group-flush commloc">
