@@ -161,7 +161,7 @@ $(document).ready(function() {
                          if(comment.user_id == ${loginUserBean.user_id}){
 
 						 	replyHtml += '<div style="display:flex; flex-direction: row; height: 100%;">' +
-                           			 	 '<button style="margin-right: 8px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
+                           			 	 '<button style="margin-right: 8px; margin-left: 528px; border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" onclick="editComment(' + comment.comment_id + 
                            			 	 ')">수정</button>' + '<button style="border: 1px solid gray; color: gray; background-color: #fff; border-radius: 8px;" id="deleteBtn' + comment.comment_id +
                    					 	 '" onclick="deleteComment(' + comment.comment_id + ')"' + 
                    					  	 '>삭제</button></div></div></div>';

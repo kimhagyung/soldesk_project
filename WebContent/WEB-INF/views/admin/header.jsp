@@ -25,7 +25,7 @@
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
     <link href="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/jqvmap.min.css" rel="stylesheet">
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
   
@@ -81,7 +81,7 @@
                         <div class="dropdown for-message">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="moveToReport()">
 
-								<i class="fa fa-envelope"></i>
+								<i class="bi bi-brightness-alt-high" style="font-size: 20px;"></i>
 								<!-- 들어온 신고 수 -->
 								<c:if test="${alarmReportBean.getReportCnt() != 0}">
 									<span class="count bg-primary">${alarmReportBean.getReportCnt() }</span>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="user-area dropdown float-right">
+                    <!-- <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar">
                         </a>
@@ -107,7 +107,7 @@
 
                             <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
