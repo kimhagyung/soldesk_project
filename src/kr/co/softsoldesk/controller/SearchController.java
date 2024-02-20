@@ -104,7 +104,9 @@ public class SearchController {
 		  
 	    //일류 정보 조회 
 	    //List<ExpertBean> ProprofileInfo=proprofileservice.getProProfileInfo();
-	    
+		  ArrayList<List<DetailCategoryBean>> detailCategoryList = new ArrayList<>();
+		    ArrayList<String> service_Category_Name = new ArrayList<>();
+		    
 	    for(ExpertBean proprofile:search_proname) {
 	    	System.out.println("proprofile 상세설명 :"+proprofile.getPro_detailed_introduction());
 	    	System.out.println("proprofile 이미지:"+proprofile.getPro_profile_image());
@@ -118,10 +120,18 @@ public class SearchController {
 	    
 	    //경력 정보 조회 
 	    List<ExpertBean> CareerInfo=proprofileservice.getCareerInfo();
-	    /*
-	    for(ExpertBean career: CareerInfo) {
-	    	System.out.println("career 총 경력:"+career.getCareer_sum());
-	    }*/
+	    for (int i = 1; i <= 8; i++) {
+	        List<DetailCategoryBean> list1 = detailCategoryService.getDetailCategoryList(i);
+	        String categoryName = detailCategoryService.getServiceCategoryName(i);
+	        
+	        detailCategoryList.add(list1);
+	        service_Category_Name.add(categoryName);
+	    }
+	     
+	    
+	    model.addAttribute("detailCategoryList", detailCategoryList);
+	    model.addAttribute("service_category_name", service_Category_Name);  
+	      
 	    
 	    //경력
 	    model.addAttribute("CareerInfo",CareerInfo);

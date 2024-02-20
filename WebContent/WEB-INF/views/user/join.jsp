@@ -109,12 +109,12 @@ body, div, span, h5, button, h2, p {
                         	<form:hidden path="userEmailExist"/>
                             <div class="mb-3">
                                 <form:label path="user_name">이름</form:label>
-                                <form:input path="user_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
+                                <form:input path="user_name"  autocomplete='off'   type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
                             </div>
                             <div class="mb-3 form-group">
                                 <form:label path="user_email">이메일</form:label>
                                 <div class="input-group">
-	                                <form:input  path="user_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
+	                                <form:input  path="user_email"  autocomplete='off'   class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
 	                                <div class="input-group-append">
 										<button type="button" class="btn button-custom" onclick='checkUserEmailExist()'>
 											중복확인

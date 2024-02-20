@@ -41,10 +41,17 @@
                         <img src="${root }/image/user-solid.svg" style="height: 100px; width: 80px; border-radius: 10px;" />
                      </c:when>
                      <c:when test="${loginProuserBean.prouserLogin == true && loginUserBean.userLogin == false }">
-                        <img src="${root }/upload/${profileImgInfo}" style="height: 100px; width: 80px; border-radius: 10px;">
+                     <c:if test="${profileImgInfo == null }">
+                     	<img src="${root }/image/user-solid.svg" style="height: 100px; width: 80px; border-radius: 10px;" />
+                     </c:if>
+                     <c:if test="${profileImgInfo != null }">
+                     	<img src="${root }/upload/${profileImgInfo}" style="height: 100px; width: 80px; border-radius: 10px;">
+                     </c:if>
+                        
                      </c:when>
                      
                   </c:choose>
+                
                   
                </div>
                

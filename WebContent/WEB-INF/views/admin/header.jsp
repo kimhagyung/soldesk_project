@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="${root}/assets/css/cs-skin-elastic.css">
     <link rel="stylesheet" href="${root}/assets/css/style.css">
@@ -53,8 +53,8 @@
         <header id="header" class="header" style="background-color:  #D9E8F5;">
             <div class="top-left">
                 <div class="navbar-header" style="background-color:  #D9E8F5;">
-                    <a class="navbar-brand" href="${root }/admin/index" style="width: 150px;"><img src="${root }/image/logo4.png" alt="Logo" style="width: 50px; height: 42px;"></a>
-                    <a class="navbar-brand hidden" href="${root }/admin/index"><img src="${root }/image/logo4.png" alt="Logo"></a>
+                    <a class="navbar-brand" href="${root }/admin/user" style="width: 150px;"><img src="${root }/image/logo4.png" alt="Logo" style="width: 50px; height: 42px;"></a>
+                    <a class="navbar-brand hidden" href="${root }/admin/user"><img src="${root }/image/logo4.png" alt="Logo"></a>
                     <a id="menuToggle" class="menutoggle" style="margin-left: 10px;"><i class="fa fa-bars"></i></a>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                         <div class="dropdown for-message">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="moveToReport()">
 
-								<i class="fa fa-envelope"></i>
+								<i class="bi bi-brightness-alt-high" style="font-size: 20px;"></i>
 								<!-- 들어온 신고 수 -->
 								<c:if test="${alarmReportBean.getReportCnt() != 0}">
 									<span class="count bg-primary">${alarmReportBean.getReportCnt() }</span>
@@ -162,6 +162,15 @@
     <script src="assets/js/lib/data-table/buttons.colVis.min.js"></script>
     <script src="assets/js/init/datatables-init.js"></script>
  -->
+ 
+ <script>
+ function moveToReport(){
+	 var root = "${root}";
+	 var targetUrl = root + "/admin/report";
+	 
+	 window.location.href = targetUrl;
+ }
+ </script>
 
 </body>
 </html>

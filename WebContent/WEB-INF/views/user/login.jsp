@@ -40,7 +40,7 @@
 						
 							<div class="mb-3">
 								<form:label path="user_email">이메일</form:label>
-								<form:input path="user_email" class="form-control" type="email" placeholder="이메일 주소를 입력하세요" />
+								<form:input path="user_email"  autocomplete='off' class="form-control" type="email" placeholder="이메일 주소를 입력하세요" />
 							</div>
 							
 							<div class="mb-3">

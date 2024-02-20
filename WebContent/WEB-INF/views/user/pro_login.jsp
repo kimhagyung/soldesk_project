@@ -36,7 +36,7 @@
 						<form:form action="${root }/user/proUser_login" method="post" modelAttribute="tempLoginUserBean2">
 							<div class="mb-3">
 								<form:label path="pro_email">이메일</form:label>
-								<form:input path="pro_email" class="form-control" type="email"
+								<form:input path="pro_email"  autocomplete='off'   class="form-control" type="email"
 									placeholder="이메일 주소를 입력하세요" />
 							</div>
 							<div class="mb-3">

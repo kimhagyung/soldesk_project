@@ -171,14 +171,14 @@ function resetUserIdExist(){
                      <form:hidden path="ProuserEmailExist" />
                       <div class="form-group mb-3">
                        <form:label path="pro_name">이름</form:label>
-                       <form:input path="pro_name" type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
+                       <form:input path="pro_name"  autocomplete='off' type="text" class="form-control" placeholder="사용자 이름을 입력하세요" />
                        <form:errors path="pro_name" style="color:red" />
                    </div>
                    
                       <div class="mb-3 form-group">
                           <form:label path="pro_email">이메일</form:label>
                           <div class="input-group">
-                              <form:input type="email" path="pro_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
+                              <form:input type="email"  autocomplete='off'    path="pro_email" class="form-control" placeholder="이메일 주소를 입력하세요" onkeypress="resetUserIdExist()" />
                               <div class="input-group-append">
                                   <button type="button" class="btn button-custom" onclick='checkProuserEmailExist()'>중복확인</button>
                               </div>

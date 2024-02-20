@@ -45,7 +45,7 @@
 		.progress-bar-fill {
 		    width: 0%; /*초기값은 0으로 설정하기 */
 		    height: 15px;
-		    background-color: #D9E8F5; /*게이지 색깔은 여기서 정해주세요*/
+		    background-color: #6387A6; /*게이지 색깔은 여기서 정해주세요*/
 		    text-align: center;
 		    line-height: 30px;
 		    color: white;
@@ -142,21 +142,33 @@
 		   	left:699px;
 		    font-size: 20px;
 		}
+		
+		#header-container{
+			position: fixed;
+			top: 0;
+			width: 100%;
+			background-color: white;
+			z-index: 1000;
+		}
 	
 	</style>
 </head>
 
 <body style="background-color: #EEEEEE;">
-    <c:import url="/WEB-INF/views/include/header.jsp" />
+
+		<div id="header-container">
+			<c:import url="/WEB-INF/views/include/header.jsp" />
+	
+			<div class="progress-container" style="margin: 20px auto; width: 50%;">
+				<div class="progress-bar-empty"></div>
+				<div class="progress-bar-fill" id="myProgressBar">
+					<span id="progress-text">0%</span>
+				</div>
+			</div>
+		</div>
     
-    <div class="progress-container" style="margin:20px auto; width: 50%;">
-        <div class="progress-bar-empty"></div>
-        <div class="progress-bar-fill" id="myProgressBar">
-            <span id="progress-text">0%</span>
-        </div>
-    </div>
     
-    <div class="question-container questionname" style="left:-456px;">
+    <div class="question-container questionname" style="left:-456px; margin-top: 190px;">
         ${param.detail_category_name}
     </div> 
 	   <div class="form-container">

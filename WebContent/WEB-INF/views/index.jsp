@@ -14,6 +14,8 @@
 <script src="${root}/script/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var timeElements = document.querySelectorAll('.time');
@@ -73,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <body>	
 <c:import url="/WEB-INF/views/include/header.jsp" />
 
-	<div id="categoryphoto" class="carousel slide" style="width: 100%; margin: auto;"> <!-- 캐러셀 부분--> 
+	<div id="categoryphoto" class="carousel" style="width: 100%; margin: auto;"> <!-- 캐러셀 부분--> 
       <div class="carousel-inner">
          <div class="carousel-item active">
             <img src="image/test5.png" class="d-block w-100" style="height: 500px;" alt="pic">
@@ -168,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	                  		<div class="f-color" style="color: gray;"><i class="bi bi-eye-fill"></i> &nbsp;${post.viewCnt }</div>
 	               		</div>
 	                	<div class="timeInfo">
-							<div class="f-color time" style="color: gray;">${post.board_date }</div>
+							<div class="time" style="color: gray;">${post.board_date }</div>
 						</div>
 	               </div>
 	            </div>
@@ -194,30 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	   
 <c:import url="/WEB-INF/views/include/footer.jsp" />
- 	 <script>
-      var stompClient = null;
-      
-      function connect() {
-          var socket = new SockJS('/ws');
-          stompClient = Stomp.over(socket);
-      
-          stompClient.connect({}, function(frame) {
-              console.log('Connected: ' + frame);
-      
-              stompClient.subscribe('/topic/boardNotifications', function(notification) {
-                
-                  alert("게시글에 댓글이 달렸습니다.");
-                 
-              });
-          });
-      }
-      
-      
-      
-      // 페이지 로드 시 연결
-      window.onload = function() {
-          connect();
-      };
-      </script>
+ 	
 </body>
 </html>

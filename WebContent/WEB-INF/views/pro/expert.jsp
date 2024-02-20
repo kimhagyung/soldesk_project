@@ -670,20 +670,7 @@ loadData();
                   <form:button class="ms-3 btn btn-light" style="width:170px;" >프로필 이미지 수정</form:button>
                </form:form>
 	            </div>
-	            <div class="col-md">
-                   <div class="container">
-                   <ul class="list-inline overview">
-                       <li class="list-inline-item text-center mx-3">
-                           <div style="font-size: 32px; font-weight: bold; color: #3E3E3E;">0</div>
-                           <div style="font-size: 14px; color: #C0C0C0;">리뷰 평점</div>
-                       </li>
-                       <li class="list-inline-item separator">|</li>
-                       <li class="list-inline-item text-center mx-3">
-                           <div style="font-size: 32px; font-weight: bold; color: #3E3E3E;">0</div>
-                           <div style="font-size: 14px; color: #C0C0C0;">리뷰수</div>
-                       </li> 
-                   </ul>
-               </div>
+	            
                </div>
 			</div>
 		</div>
