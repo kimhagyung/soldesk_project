@@ -409,7 +409,7 @@ $(document).ready(function(){
 							 
 								<!-- 견적 -->	 
 								<div class="dropdown ms-2"> 
-									<i class="bi bi-bell-fill ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
+									<i class="bi bi-pencil-square ms-3 text-center mx-auto position-relative dropdown-toggle dropdown-toggle-noarrow" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px;"> 
 										<span style="display:none;"class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
 										</span> 
 										 <c:forEach var="obj" items="${quoteBean }" varStatus="num"> 
@@ -428,8 +428,8 @@ $(document).ready(function(){
 													 	 - ${fn:replace(obj.getReceived_quote(), ',', '<br>- ')} 
 													</a>   
 										        </li> 
-				 						    </c:if>  
-										</c:forEach>					
+				 						    </c:if> 
+										</c:forEach>	 			
 									</ul>
 								</div>  
 								<!-- 캘린더 -->
